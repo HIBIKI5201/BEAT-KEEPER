@@ -93,6 +93,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "17.1.0",
       "depth": 1,
@@ -202,6 +209,15 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "symphony.framework": {
+      "version": "https://github.com/HIBIKI5201/SymphonyTemplate.git?path=Assets/SymphonyFrameWork",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "880ba11b59fd478e0f9f0b36754e632626e2a693"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
