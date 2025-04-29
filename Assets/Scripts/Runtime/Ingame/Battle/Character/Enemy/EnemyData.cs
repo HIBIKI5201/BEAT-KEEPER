@@ -10,6 +10,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         public float Beat => _beat;
         [SerializeField, Tooltip("ビートの拍子")]
-        private float _beat;
+        private float _beat = 1;
     }
 }
