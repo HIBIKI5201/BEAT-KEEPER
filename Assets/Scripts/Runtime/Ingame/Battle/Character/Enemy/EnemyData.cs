@@ -6,7 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     ///     エネミーのデータクラス
     /// </summary>
     [CreateAssetMenu(fileName = "EnemyData", menuName = CharacterData.CHARACTER_DATA_DIRECTORY + "EnemyData")]
-    public class EnemyData : ScriptableObject
+    public class EnemyData : CharacterData
     {
         public float Beat => _beat;
         [SerializeField, Tooltip("ビートの拍子")]
