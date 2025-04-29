@@ -16,6 +16,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         protected virtual void Awake()
         {
             _healthSystem = new CharacterHealthSystem(_data);
+            Debug.Log($"{_data.Name} initialized");
         }
     }
 }

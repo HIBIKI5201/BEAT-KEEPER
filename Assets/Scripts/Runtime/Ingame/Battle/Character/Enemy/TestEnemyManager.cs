@@ -8,8 +8,6 @@ namespace BeatKeeper
         protected override void Awake()
         {
             base.Awake();
-            
-            Debug.Log(_data.Beat);
         }
     }
 }
