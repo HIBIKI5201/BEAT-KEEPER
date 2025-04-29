@@ -10,7 +10,5 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public float MaxHealth => _maxHealth;
         [SerializeField, Tooltip("最大体力値")] private float _maxHealth;
-        
-        
     }
 }

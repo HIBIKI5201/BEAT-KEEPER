@@ -16,8 +16,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public CharacterHealthSystem(CharacterData data)
         {
-            _data = data;
-            _health = data.MaxHealth;
+            if (data)
+            {
+                _data = data;
+                _health = data.MaxHealth;
+            }
+            else
+            {
+                Debug.LogWarning("データがありません");
+            }
         }
 
         /// <summary>
