@@ -6,7 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// <summary>
     ///     体力システム
     /// </summary>
-    public class HealthSystem
+    public class CharacterHealthSystem
     {
         private CharacterData _data;
 
@@ -14,7 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _health;
         public Action<float> OnHealthChanged;
         
-        public HealthSystem(CharacterData data)
+        public CharacterHealthSystem(CharacterData data)
         {
             _data = data;
             _health = data.MaxHealth;
