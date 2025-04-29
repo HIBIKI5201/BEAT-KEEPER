@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
-    [CreateAssetMenu(menuName = CharacterDataDirectory + "NormalData")]
+    /// <summary>
+    ///     キャラクターのベースデータクラス
+    /// </summary>
+    [CreateAssetMenu(menuName = CHARACTER_DATA_DIRECTORY + "NormalData")]
     public class CharacterData : ScriptableObject
     {
-        public const string CharacterDataDirectory = "BeatKeeper/CharacterData/";
+        public const string CHARACTER_DATA_DIRECTORY = "BeatKeeper/CharacterData/";
         
         public string Name => _name;
         [SerializeField, Tooltip("名前")] private string _name;

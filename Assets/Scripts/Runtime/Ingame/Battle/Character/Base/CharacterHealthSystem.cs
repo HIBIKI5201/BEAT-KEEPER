@@ -12,6 +12,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public float Health => _health;
         private float _health;
+        
         public Action<float> OnHealthChanged;
         
         public CharacterHealthSystem(CharacterData data)
