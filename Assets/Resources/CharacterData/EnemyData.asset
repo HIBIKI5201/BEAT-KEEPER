@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0220965b0af58540a6566fa80ce0dd4, type: 3}
   m_Name: EnemyData
   m_EditorClassIdentifier: 
-  _name: 
-  _maxHealth: 0
-  _beat: 0
+  _name: Enemy
+  _maxHealth: 100
+  _beat: 1
