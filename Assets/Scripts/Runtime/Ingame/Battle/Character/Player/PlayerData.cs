@@ -18,7 +18,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [Space] 
         
-        public float ComboResetTime;
         [SerializeField, Tooltip("コンボ維持時間")] private float _comboRisetTime = 3;
+        public float ComboResetTime => _comboRisetTime;
     }
 }
