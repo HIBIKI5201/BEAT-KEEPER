@@ -4,7 +4,7 @@ using DG.Tweening;
 
 namespace BeatKeeper.Runtime.Ingame.Approach
 {
-    public class AutoMove : MonoBehaviour
+    public class SplineMover : MonoBehaviour
     {
         [SerializeField, Tooltip("SplineContainerを指定してください")] SplineContainer _splineContainer;
         [SerializeField, Tooltip("Spline間の移動時間")] float _speed = 1f;
@@ -24,6 +24,9 @@ namespace BeatKeeper.Runtime.Ingame.Approach
             }
         }
         [ContextMenu("MoveToNext")]
+        /// <summary>
+        /// 次のSplineに移動します。
+        /// /// </summary>
         public void MoveToNext()
         {
             if (_progress >= _splineContainer.Splines.Count)
