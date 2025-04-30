@@ -13,7 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
 
         private IAttackable _target;
-        private int _comboCount;
+        private ComboSystem _comboSystem = new();
         
         protected override void Awake()
         {
@@ -29,6 +29,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _inputBuffer.Attack.started += OnAttack;
         }
 
+        private void Update()
+        {
+             _comboSystem.Update();
+        }
+
         public void Dispose()
         {
             _inputBuffer.Attack.started -= OnAttack;
@@ -42,7 +47,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log($"{_data.Name} is attacking");
 
-            var power = _comboCount switch
+            var power = (_comboSystem.ComboCount % 3) switch
             {
                 0 => _data.FirstAttackPower,
                 1 => _data.SecondAttackPower,
@@ -52,6 +57,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             };
             
             _target.Attack(power);
+            
+            _comboSystem.Attack();
         }
 
         /// <summary>
