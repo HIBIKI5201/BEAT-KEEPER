@@ -11,4 +11,5 @@ public enum TagsEnum : int
     MainCamera = 1 << 5,
     Player = 1 << 6,
     GameController = 1 << 7,
+    Enemy = 1 << 8,
 }
