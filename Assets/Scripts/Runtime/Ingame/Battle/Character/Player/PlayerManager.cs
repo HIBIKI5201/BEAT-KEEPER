@@ -15,11 +15,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private IAttackable _target;
         
         public ComboSystem ComboSystem => _comboSystem;
-        private readonly ComboSystem _comboSystem = new();
+        private ComboSystem _comboSystem;
         
         protected override void Awake()
         {
             base.Awake();
+            
+            _comboSystem = new ComboSystem(_data);
             
             tag = TagsEnum.Player.ToString();
         }

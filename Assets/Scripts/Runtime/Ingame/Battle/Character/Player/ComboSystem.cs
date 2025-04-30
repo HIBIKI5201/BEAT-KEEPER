@@ -1,13 +1,18 @@
+using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
 namespace BeatKeeper
 {
     public class ComboSystem
     {
+        private PlayerData _data;
+        
         public int ComboCount => _comboCount;
         private int _comboCount;
         
         private float _lastAttackTime = Time.time;
+
+        public ComboSystem(PlayerData data) => _data = data;
 
         /// <summary>
         ///     攻撃時にコンボカウントを増やす
@@ -25,8 +30,8 @@ namespace BeatKeeper
 
         public void Update()
         {
-            //最後の攻撃から3病後にコンボリセっと
-            if (Time.time < _lastAttackTime + 3)
+            //コンボ維持時間が終了するとリセット
+            if (Time.time < _lastAttackTime + _data.ComboResetTime)
             {
                 ComboReset();
             }
