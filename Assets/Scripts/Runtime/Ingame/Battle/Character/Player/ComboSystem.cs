@@ -7,7 +7,7 @@ namespace BeatKeeper
         public int ComboCount => _comboCount;
         private int _comboCount;
         
-        private float _lastAttackTime;
+        private float _lastAttackTime = Time.time;
 
         /// <summary>
         ///     攻撃時にコンボカウントを増やす
