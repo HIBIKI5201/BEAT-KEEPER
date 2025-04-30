@@ -8,17 +8,40 @@ namespace BeatKeeper.Runtime.Ingame.Approach
     {
         [SerializeField, Tooltip("SplineContainerを指定してください")] SplineContainer _splineContainer;
         [SerializeField, Tooltip("Spline間の移動時間")] float _speed = 1f;
-        float _progress = 0f;
-
+        int _progress = 0;
+        Tween _moveTween;
         void Awake()
         {
+            if (_splineContainer == null)
+            {
+                Debug.LogError("SplineContainerが指定されていません。");
+                return;
+            }
+            if (_splineContainer.Splines.Count == 0)
+            {
+                Debug.LogError("SplineContainerにSplineがありません。");
+                return;
+            }
         }
-        /// <summary>
-        /// 次のSplineに移動します
-        /// </summary>
         [ContextMenu("MoveToNext")]
         public void MoveToNext()
         {
+            if (_progress >= _splineContainer.Splines.Count)
+            {
+                Debug.Log("全てのSplineを移動しました。");
+                return;
+            }
+            float _progressOnSpline = 0f;
+            _moveTween?.Kill();
+            _moveTween = DOTween.To(() => _progressOnSpline, x => _progressOnSpline = x, 1f, _speed)
+                .OnUpdate(() =>
+                {
+                    transform.position = _splineContainer.Splines[_progress].EvaluatePosition(_progressOnSpline);
+                })
+                .OnComplete(() =>
+                {
+                    _progress++;
+                });
         }
     }
 }
