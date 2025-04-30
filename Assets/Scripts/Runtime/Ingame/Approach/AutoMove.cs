@@ -31,12 +31,12 @@ namespace BeatKeeper.Runtime.Ingame.Approach
                 Debug.Log("全てのSplineを移動しました。");
                 return;
             }
-            float _progressOnSpline = 0f;
+            float progressOnSpline = 0f;
             _moveTween?.Kill();
-            _moveTween = DOTween.To(() => _progressOnSpline, x => _progressOnSpline = x, 1f, _speed)
+            _moveTween = DOTween.To(() => progressOnSpline, x => progressOnSpline = x, 1f, _speed)
                 .OnUpdate(() =>
                 {
-                    transform.position = _splineContainer.Splines[_progress].EvaluatePosition(_progressOnSpline);
+                    transform.position = _splineContainer.Splines[_progress].EvaluatePosition(progressOnSpline);
                 })
                 .OnComplete(() =>
                 {
