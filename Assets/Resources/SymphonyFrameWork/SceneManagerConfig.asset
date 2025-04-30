@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isActiveLoadScene: 0
   _loadScene: 0
-  _initializeSceneList: 
+  _initializeSceneList: 02000000
