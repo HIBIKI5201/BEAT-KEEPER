@@ -4,6 +4,6 @@ namespace BeatKeeper
 {
     public interface IAttackable
     {
-        public void Attack(float damage);
+        public void HitAttack(float damage);
     }
 }
