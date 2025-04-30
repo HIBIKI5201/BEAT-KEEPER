@@ -35,22 +35,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns>死亡したかどうか</returns>
         public bool HealthChange(float value)
         {
-            _health += value;
+            _health = Mathf.Clamp(value + _health, 0, _data.MaxHealth);
 
+            OnHealthChanged?.Invoke(_health);
+            
             //体力が残っているか
             if (_health <= 0)
             {
-                OnHealthChanged?.Invoke(0);
                 return true;
             }
-
-            //体力が上限値を超えていたら直す
-            if (_data.MaxHealth < _health)
-            {
-                _health = _data.MaxHealth;
-            }
             
-            OnHealthChanged?.Invoke(_health);
             return false;
         }
     }

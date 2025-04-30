@@ -7,16 +7,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
     ///     キャラクター管理クラスのベース
     /// </summary>
     /// <typeparam name="TDataType">キャラクターのデータ</typeparam>
-    public abstract class CharacterManagerB<TDataType> : MonoBehaviour where TDataType : CharacterData
+    public abstract class CharacterManagerB<TDataType> : MonoBehaviour, IAttackable
+        where TDataType : CharacterData
     {
-        [FormerlySerializedAs("data")] [SerializeField]
-        protected TDataType _data;
-        protected CharacterHealthSystem _healthSystem;
+        [SerializeField] protected TDataType _data;
 
         protected virtual void Awake()
         {
-            _healthSystem = new CharacterHealthSystem(_data);
             Debug.Log($"{_data.Name} initialized");
+        }
+
+        public virtual void Attack(float damage)
+        {
+             
         }
     }
 }
