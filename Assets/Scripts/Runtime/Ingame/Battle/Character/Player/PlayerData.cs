@@ -1,8 +1,8 @@
-using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
+    [CreateAssetMenu(fileName = "PlayerData", menuName = CHARACTER_DATA_DIRECTORY + "PlayerData")]
     public class PlayerData : CharacterData
     {
         [Space]
