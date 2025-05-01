@@ -17,7 +17,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} initialized");
         }
 
-        public virtual void Attack(float damage)
+        public virtual void HitAttack(float damage)
         {
              
         }
