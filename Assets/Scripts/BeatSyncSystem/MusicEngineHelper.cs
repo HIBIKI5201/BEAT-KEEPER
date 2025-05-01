@@ -120,13 +120,11 @@ namespace BeatKeeper
         public void RegisterTimingAction(int bar, int beat, int unit, Action action)
         {
             var timing = (bar, beat, unit);
-            if (_timingActions.ContainsKey(timing))
+            
+            // キーが既に辞書に存在する場合は、そのリストにactionを追加し、存在しない場合は、actionを含む新しいリストを作成して辞書に追加する
+            if (!_timingActions.TryAdd(timing, new List<Action> { action }))
             {
-                _timingActions[timing].Add(action); // 既にあったらactionをリストに追加
-            }
-            else
-            {
-                _timingActions.Add(timing, new List<Action>() { action });
+                _timingActions[timing].Add(action);
             }
         }
 
