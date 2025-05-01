@@ -28,22 +28,22 @@ namespace BeatKeeper
 
         #endregion
 
-        #region プロパティ
+        #region リアクティブプロパティ
 
-        private readonly ReactiveProperty<bool> _isNearChangedBarTime = new(false);
+        private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
 
         /// <summary>小節の切り替わりタイミングが近いかどうか</summary>
-        public ReadOnlyReactiveProperty<bool> IsNearChangedBarTime => _isNearChangedBarTime;
+        public ReadOnlyReactiveProperty<bool> IsNearBarChange => _isNearBarChange;
 
-        private readonly ReactiveProperty<bool> _isNearChangedBeatTime = new(false);
+        private readonly ReactiveProperty<bool> _isNearBeatChange = new(false);
 
         /// <summary>拍の切り替わりタイミングが近いかどうか</summary>
-        public ReadOnlyReactiveProperty<bool> IsNearChangedBeatTime => _isNearChangedBeatTime;
+        public ReadOnlyReactiveProperty<bool> IsNearBeatChange => _isNearBeatChange;
 
         #endregion
 
         // タイミングを指定して実行するアクションのディクショナリ
-        private Dictionary<(int bar, int beat, int unit), Action> _timingActions = new();
+        private Dictionary<(int bar, int beat, int unit), List<Action>> _timingActions = new();
 
 
         private void Awake()
@@ -74,16 +74,16 @@ namespace BeatKeeper
             // 小節の切り替わりチェック
             if (Music.IsJustChangedBar())
             {
-                _isNearChangedBarTime.Value = false;
+                _isNearBarChange.Value = false;
                 OnJustChangedBar?.Invoke();
                 return;
             }
 
             // 小節の切り替わりが近いかチェック
             bool isNear = Music.IsNearChangedBar();
-            if (isNear && !_isNearChangedBarTime.Value)
+            if (isNear && !_isNearBarChange.Value)
             {
-                _isNearChangedBarTime.Value = true;
+                _isNearBarChange.Value = true;
                 OnNearChangedBar?.Invoke();
             }
         }
@@ -96,7 +96,7 @@ namespace BeatKeeper
             // 拍の切り替わりチェック
             if (Music.IsJustChangedBeat())
             {
-                _isNearChangedBeatTime.Value = false;
+                _isNearBeatChange.Value = false;
                 OnJustChangedBeat?.Invoke();
                 ProcessTimingActions(); // タイミングアクションの実行
                 return;
@@ -104,9 +104,9 @@ namespace BeatKeeper
 
             // 拍の切り替わりが近いかチェック
             bool isNear = Music.IsNearChangedBeat();
-            if (isNear && !_isNearChangedBeatTime.Value)
+            if (isNear && !_isNearBeatChange.Value)
             {
-                _isNearChangedBeatTime.Value = true;
+                _isNearBeatChange.Value = true;
                 OnNearChangedBeat?.Invoke();
             }
         }
@@ -120,12 +120,22 @@ namespace BeatKeeper
         /// <summary>現在の16分音符位置を取得する</summary>
         public int GetCurrentUnitCount() => Music.Just.Unit;
 
+        #region タイミングアクション関連の処理・メソッド
+        
         /// <summary>
         /// 特定のタイミングで実行するアクションを辞書に登録
         /// </summary>
         public void RegisterTimingAction(int bar, int beat, int unit, Action action)
         {
-            _timingActions.Add((bar, beat, unit), action);
+            var timing = (bar, beat, unit);
+            if (_timingActions.ContainsKey(timing))
+            {
+                _timingActions[timing].Add(action); // 既にあったらactionをリストに追加
+            }
+            else
+            {
+                _timingActions.Add(timing, new List<Action>() { action });
+            }
         }
 
         /// <summary>
@@ -160,11 +170,15 @@ namespace BeatKeeper
             // 現在のタイミング情報をタプルに変換して取得
             (int, int, int) currentTiming = (Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
             
-            if (_timingActions.ContainsKey(currentTiming))
+            if (_timingActions.TryGetValue(currentTiming, out var action))
             {
                 try
                 {
-                    _timingActions[currentTiming]?.Invoke(); // 辞書に登録されているアクションを実行
+                    // 辞書に登録されているアクションをすべて実行
+                    foreach (var timingAction in action)
+                    {
+                        timingAction?.Invoke();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -174,6 +188,8 @@ namespace BeatKeeper
                 UnregisterTimingAction(currentTiming); // アクションを削除
             }
         }
+        
+        #endregion
     }
 }
     
