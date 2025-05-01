@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -48,16 +49,7 @@ namespace BeatKeeper
 
         private void Awake()
         {
-            // シングルトンパターンを採用
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton); // サービスロケーターに登録
         }
 
         private void Update()
@@ -190,6 +182,11 @@ namespace BeatKeeper
         }
         
         #endregion
+        
+        private void OnDestroy()
+        {   
+            ServiceLocator.DestroyInstance(this);
+        }
     }
 }
     
