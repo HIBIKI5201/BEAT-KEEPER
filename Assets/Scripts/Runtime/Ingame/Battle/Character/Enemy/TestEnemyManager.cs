@@ -5,11 +5,23 @@ namespace BeatKeeper
 {
     public class TestEnemyManager : CharacterManagerB<EnemyData>
     {
+        private EnemyAnimeManager _animeManager;
+        
         private bool _isKnockback;
         
         protected override void Awake()
         {
             base.Awake();
+            
+            var animator = GetComponent<Animator>();
+            if (animator)
+            {
+                _animeManager = new (animator);
+            }
+            else
+            {
+                Debug.LogWarning($"{_data.name} has no Animator");
+            }
         }
 
         public override async void HitAttack(float damage)
