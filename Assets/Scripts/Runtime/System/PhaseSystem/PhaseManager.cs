@@ -9,6 +9,8 @@ namespace BeatKeeper
     /// </summary>
     public class PhaseManager : MonoBehaviour
     {
+        [SerializeField] private PhaseEnum _firstPhase = PhaseEnum.Approach;
+
         /// <summary>
         /// 現在のフェーズ
         /// </summary>
@@ -19,6 +21,7 @@ namespace BeatKeeper
         private void Awake()
         {
             ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Locator);
+            TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
         
         [ContextMenu("Test")]
