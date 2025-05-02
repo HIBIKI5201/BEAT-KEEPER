@@ -11,6 +11,7 @@ namespace BeatKeeper
         /// スコア
         /// </summary>
         public ReadOnlyReactiveProperty<int> ScoreProp { get; }
+        public int Score { get; }
 
         /// <summary>
         /// スコアを増やす（マイナスで減らす）

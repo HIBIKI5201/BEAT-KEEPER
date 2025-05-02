@@ -41,7 +41,7 @@ namespace BeatKeeper
             // 正の数ならコンボボーナスも含めて計算する。負の数なら受け取ったスコアのまま
             if (score > 0)
             {
-                addedScore = (int)Mathf.Floor(score * EvaluateComboBonus()) + Score; // 小数点以下は切り捨ててint型に変換
+                addedScore = Mathf.RoundToInt(score * EvaluateComboBonus()) + Score; // 小数点以下は切り捨ててint型に変換
             }
             _scoreProp.Value = Mathf.Max(addedScore, 0); // スコアはゼロ以下にはしない
         }
