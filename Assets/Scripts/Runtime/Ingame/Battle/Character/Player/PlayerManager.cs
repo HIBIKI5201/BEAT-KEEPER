@@ -56,8 +56,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log($"{_data.Name} is attacking");
             
-            
-            
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount % 3) switch
             {
