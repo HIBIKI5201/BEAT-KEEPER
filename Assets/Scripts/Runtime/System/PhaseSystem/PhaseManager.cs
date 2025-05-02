@@ -1,4 +1,5 @@
 using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -15,50 +16,36 @@ namespace BeatKeeper
         public ReadOnlyReactiveProperty<PhaseEnum> CurrentPhaseProp => _currentPhaseProp;
         private readonly ReactiveProperty<PhaseEnum> _currentPhaseProp = new ReactiveProperty<PhaseEnum>();
 
-        private bool _skipChangedBGM;
-        
-        private void Start()
+        private void Awake()
         {
-            // MusicUnityクラスが存在するか検索する（フェーズシステム単体をテストしやすくするため）
-            if (FindObjectOfType<MusicUnity>() == null)
-            {
-                _skipChangedBGM = true;
-                Debug.Log("MusicUnityが見つかりません。BGMの変更をスキップします");
-            }
+            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Locator);
         }
         
-        [ContextMenu("あ")]
+        [ContextMenu("Test")]
         private void Test()
         {
-            SetPhase(PhaseEnum.Battle1);
+            TransitionTo(PhaseEnum.Battle1);
         }
         
         /// <summary>
         /// フェーズを変更する
         /// </summary>
-        public void SetPhase(PhaseEnum nextPhase)
+        public void TransitionTo(PhaseEnum nextPhase)
         {
-            _currentPhaseProp.Value = nextPhase;
-            ChangeBGM();
+            // 同じフェーズへの遷移をチェック
+            if (CurrentPhase == nextPhase)
+            {
+                Debug.Log($"[PhaseManager] 同じフェーズです: {nextPhase}");
+            }
             
+            // フェーズの更新
+            _currentPhaseProp.Value = nextPhase;
             Debug.Log($"[PhaseManager] フェーズが変更されました 現在：{CurrentPhase}");
         }
 
-        /// <summary>
-        /// BGMを変更する
-        /// </summary>
-        private void ChangeBGM()
+        private void OnDestroy()
         {
-            if (CurrentPhase == PhaseEnum.Clear)
-            {
-                return; //TODO: Clearフェーズの処理を作る
-            }
-            
-            int index = (int)CurrentPhase;
-            if (!_skipChangedBGM)
-            {
-                Music.SetHorizontalSequence(((BGMEnum)index).ToString());
-            }
+            ServiceLocator.DestroyInstance(this);
         }
     }
 }
