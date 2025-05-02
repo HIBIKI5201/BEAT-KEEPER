@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace BeatKeeper
 {
@@ -28,7 +27,8 @@ namespace BeatKeeper
         public BattleGradeEnum EvaluateRank()
         {
             int battleScore = _scoreManager.CalculateBattleScore();
-
+            Debug.Log($"[BattleGradeEvaluator] バトルで獲得したスコア{battleScore}");
+            
             if (battleScore > _threshold.ThresholdRankSss) return BattleGradeEnum.SSS;
             if (battleScore > _threshold.ThresholdRankSs) return BattleGradeEnum.SS;
             if (battleScore > _threshold.ThresholdRankS) return BattleGradeEnum.S;
