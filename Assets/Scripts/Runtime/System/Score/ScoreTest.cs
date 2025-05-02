@@ -4,6 +4,9 @@ using R3;
 
 namespace BeatKeeper
 {
+    /// <summary>
+    /// スコアシステムテスト用コンポーネント
+    /// </summary>
     public class ScoreTest : MonoBehaviour
     {
         [SerializeField] private ScoreManager _scoreManager;
@@ -13,31 +16,45 @@ namespace BeatKeeper
         
         private void Start()
         {
-            _scoreManager.ScoreProp.Subscribe(score => _scoreText.text = score.ToString()).AddTo(_disposables);
+            _scoreManager.ScoreProp
+                .Subscribe(score => _scoreText.text = score.ToString())
+                .AddTo(_disposables);
         }
 
-        [ContextMenu("ScoreTest")]
+        /// <summary>
+        /// スコアを加算するテスト（100ポイント追加）
+        /// </summary>
+        [ContextMenu("Test_AddScore")]
         public void AddScore()
         {
             _scoreManager.AddScore(100);
         }
 
-        [ContextMenu("Test_Save")]
+        /// <summary>
+        /// バトル前スコアの保存テスト
+        /// </summary>
+        [ContextMenu("Test_SavePreBattleScore")]
         public void Save()
         {
             _scoreManager.SavePreBattleScore();
         }
 
-        [ContextMenu("Test_Reset")]
+        /// <summary>
+        /// スコアリセットテスト
+        /// </summary>
+        [ContextMenu("Test_ResetScore")]
         public void Reset()
         {
             _scoreManager.ResetScore();
         }
 
-        [ContextMenu("Rank")]
+        /// <summary>
+        /// バトルグレード評価テスト
+        /// </summary>
+        [ContextMenu("Test_EvaluateRank")]
         public void Rank()
         {
-            Debug.Log(_battleGradeEvaluator.EvaluateRank().ToString());
+            Debug.Log($"バトルグレード: {_battleGradeEvaluator.EvaluateRank()}");
         }
 
         private void OnDestroy()
