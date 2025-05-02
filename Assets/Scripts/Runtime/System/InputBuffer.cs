@@ -13,6 +13,7 @@ namespace BeatKeeper
     {
         private PlayerInput _playerInput;
         private InputSystemUIInputModule _uiInputModule;
+        public InputSystemUIInputModule uiInputModule => _uiInputModule;
 
         # region Player
         
@@ -41,16 +42,12 @@ namespace BeatKeeper
         private InputAction _finisher;
         
         #endregion
-        
-        #region UI
-        
-        public InputAction Click => _uiInputModule.leftClick;
-        
-        #endregion
 
         private void Awake()
         {
             _playerInput = GetComponent<PlayerInput>();
+            _uiInputModule = GetComponent<InputSystemUIInputModule>();
+            
             if (_playerInput)
             {
                 _playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
