@@ -24,12 +24,6 @@ namespace BeatKeeper
             TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
         
-        [ContextMenu("Test")]
-        private void Test()
-        {
-            TransitionTo(PhaseEnum.Battle1);
-        }
-        
         /// <summary>
         /// フェーズを変更する
         /// </summary>
