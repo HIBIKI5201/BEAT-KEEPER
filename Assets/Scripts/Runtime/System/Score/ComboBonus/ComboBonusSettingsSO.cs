@@ -29,12 +29,11 @@ namespace BeatKeeper
             {
                 if (comboCount >= _thresholds[i].ComboCount)
                 {
-                    multiplier = _thresholds[i].Multiplier;
-                    break;
+                    return _thresholds[i].Multiplier;
                 }
             }
             
-            return multiplier;
+            return 1.0f;
         }
     }
 }

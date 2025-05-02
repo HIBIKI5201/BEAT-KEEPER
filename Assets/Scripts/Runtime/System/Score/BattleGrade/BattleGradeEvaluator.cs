@@ -29,12 +29,15 @@ namespace BeatKeeper
             int battleScore = _scoreManager.CalculateBattleScore();
             Debug.Log($"[BattleGradeEvaluator] バトルで獲得したスコア{battleScore}");
             
-            if (battleScore > _threshold.ThresholdRankSss) return BattleGradeEnum.SSS;
-            if (battleScore > _threshold.ThresholdRankSs) return BattleGradeEnum.SS;
-            if (battleScore > _threshold.ThresholdRankS) return BattleGradeEnum.S;
-            if (battleScore > _threshold.ThresholdRankA) return BattleGradeEnum.A;
-            if (battleScore > _threshold.ThresholdRankB) return BattleGradeEnum.B;
-            return BattleGradeEnum.C;
+            return battleScore switch
+            {
+                var score when score > _threshold.ThresholdRankSss => BattleGradeEnum.SSS,
+                var score when score > _threshold.ThresholdRankSs  => BattleGradeEnum.SS,
+                var score when score > _threshold.ThresholdRankS   => BattleGradeEnum.S,
+                var score when score > _threshold.ThresholdRankA   => BattleGradeEnum.A,
+                var score when score > _threshold.ThresholdRankB   => BattleGradeEnum.B,
+                _ => BattleGradeEnum.C
+            };
         }
     }
 }
