@@ -1,7 +1,10 @@
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     敵のアニメーション管理システム
+    /// </summary>
     public class EnemyAnimeManager : CharacterAnimeManagerB
     {
         private readonly int _knockBackHash = Animator.StringToHash("KnockBack");
