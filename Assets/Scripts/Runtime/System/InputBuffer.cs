@@ -12,6 +12,8 @@ namespace BeatKeeper
     {
         private PlayerInput _playerInput;
 
+        # region Player
+        
         public InputAction Move => _move;
         private InputAction _move;
         
@@ -35,6 +37,8 @@ namespace BeatKeeper
                 
         public InputAction Finishier => _finisher;
         private InputAction _finisher;
+        
+        #endregion
 
         private void Awake()
         {
@@ -56,6 +60,18 @@ namespace BeatKeeper
             {
                 Debug.LogWarning("PlayerInput is null");
             }
+        }
+
+        /// <summary>
+        ///     アクションマップを切り替える
+        /// </summary>
+        /// <param name="type"></param>
+        public void ChangeActionMap(ActionMapType type) => _playerInput.SwitchCurrentActionMap(type.ToString());
+
+        public enum ActionMapType
+        {
+            Player,
+            UI
         }
     }
 }
