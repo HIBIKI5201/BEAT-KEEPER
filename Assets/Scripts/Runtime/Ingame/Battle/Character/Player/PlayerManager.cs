@@ -11,6 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
         private InputBuffer _inputBuffer;
+        private MusicEngineHelper _musicEngine;
 
         private IAttackable _target;
         
@@ -29,8 +30,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void Start()
         {
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
-            _inputBuffer.Attack.started += OnAttack;
+            if (_inputBuffer)
+            {
+                _inputBuffer.Attack.started += OnAttack;
+            }
         }
 
         private void Update()
@@ -50,7 +55,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack(InputAction.CallbackContext context)
         {
             Debug.Log($"{_data.Name} is attacking");
-
+            
+            
+            
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount % 3) switch
             {
