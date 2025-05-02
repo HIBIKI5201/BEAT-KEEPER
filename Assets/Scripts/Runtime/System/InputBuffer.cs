@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 namespace BeatKeeper
 {
@@ -11,6 +12,7 @@ namespace BeatKeeper
     public class InputBuffer : MonoBehaviour
     {
         private PlayerInput _playerInput;
+        private InputSystemUIInputModule _uiInputModule;
 
         # region Player
         
@@ -37,6 +39,12 @@ namespace BeatKeeper
                 
         public InputAction Finishier => _finisher;
         private InputAction _finisher;
+        
+        #endregion
+        
+        #region UI
+        
+        public InputAction Click => _uiInputModule.leftClick;
         
         #endregion
 
