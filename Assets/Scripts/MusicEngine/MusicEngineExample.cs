@@ -16,7 +16,7 @@ public class MusicEngineExample : MonoBehaviour
         _helper = ServiceLocator.GetInstance <MusicEngineHelper> ();
         
         // BGM再生
-        Music.Play("Cube");
+        Music.Play("MusicEngineCore");
         
         // テスト用メソッドの呼び出し
         RegisterEventHandlers();
