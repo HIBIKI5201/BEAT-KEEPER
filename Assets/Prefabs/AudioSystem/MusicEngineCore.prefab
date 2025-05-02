@@ -217,11 +217,23 @@ MonoBehaviour:
   - Name: Base
     TotalVolume: 1
     LayerVolumes:
-    - 1
-  - Name: aaa
+    - 0.451
+  - Name: Layer1
     TotalVolume: 1
     LayerVolumes:
-    - 0.126
+    - 0.593
+  - Name: Layer2
+    TotalVolume: 1
+    LayerVolumes:
+    - 0.763
+  - Name: Layer3
+    TotalVolume: 1
+    LayerVolumes:
+    - 0.909
+  - Name: Layer4
+    TotalVolume: 1
+    LayerVolumes:
+    - 1
   ModeTransitionParam:
     FadeTime: 3.46
     FadeOffset: 0
