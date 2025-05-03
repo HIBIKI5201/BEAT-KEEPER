@@ -78,6 +78,25 @@ namespace BeatKeeper
         /// <summary>現在の音楽タイミングを取得する</summary>
         public TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
+        /// <summary>
+        /// 入力タイミングが許容範囲内にあるかどうかを判定します
+        /// </summary>
+        public bool IsTimingWithinAcceptableRange(float range)
+        {
+            // 許容範囲が0から1の間であることを検証
+            if (range < 0f || 1f < range)
+            {
+                Debug.LogWarning($"[MusicEngineHelper] 許容範囲は0から1の間である必要があります。現在の値:{range}");
+                return false;
+            }
+            
+            var normalizedTimingFromJust = (float)Music.UnitFromJust;
+            Debug.Log(normalizedTimingFromJust);
+            
+            // Justタイミング後の判定・Justタイミング前の判定
+            return Mathf.Abs(normalizedTimingFromJust - 0.5f) > range / 2;
+        }
+
         #endregion
 
         #region タイミング変更の検知（Update内で呼んでいるメソッド2種）

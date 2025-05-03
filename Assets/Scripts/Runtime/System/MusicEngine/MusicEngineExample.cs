@@ -1,6 +1,5 @@
 using System;
 using BeatKeeper;
-using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -66,6 +65,12 @@ public class MusicEngineExample : MonoBehaviour
     private void OnNearBeatChanged()
     {
         Debug.Log("拍変更が近づいています");
+    }
+
+    private void TestTimingAccuracy()
+    {
+        float range = 0.3f;
+        Debug.Log($"判定 ±{range} 結果: {_helper.IsTimingWithinAcceptableRange(range)}");
     }
 
     #endregion

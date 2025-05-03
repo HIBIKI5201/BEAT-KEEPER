@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   _name: Enemy
-  _maxHealth: 100
-  _beat: 1
+  _attackPower: 10
+  _beat: 0000000000000000000000000000000000000000000000000000000000000000
