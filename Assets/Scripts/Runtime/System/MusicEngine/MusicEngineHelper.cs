@@ -84,21 +84,18 @@ namespace BeatKeeper
         public bool IsTimingWithinAcceptableRange(float range)
         {
             // 許容範囲が0から1の間であることを検証
-            if (range < 0f || range > 1f)
+            if (range < 0f || 1f < range)
             {
                 Debug.LogWarning($"[MusicEngineHelper] 許容範囲は0から1の間である必要があります。現在の値:{range}");
                 return false;
             }
             
             var normalizedTimingFromJust = (float)Music.UnitFromJust;
+            Debug.Log(normalizedTimingFromJust);
             
             // Justタイミング後の判定・Justタイミング前の判定
-            if ((normalizedTimingFromJust < 0.5f && normalizedTimingFromJust < range) || 
-                (0.5f < normalizedTimingFromJust && 1 - range < normalizedTimingFromJust))
-            {
-                return true;
-            }
-            return false;
+            return (normalizedTimingFromJust < 0.5f && normalizedTimingFromJust < range) ||
+                    (0.5f < normalizedTimingFromJust && 1 - range < normalizedTimingFromJust);
         }
 
         #endregion
