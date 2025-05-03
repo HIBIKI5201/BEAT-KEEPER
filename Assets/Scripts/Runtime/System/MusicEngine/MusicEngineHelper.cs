@@ -94,8 +94,7 @@ namespace BeatKeeper
             Debug.Log(normalizedTimingFromJust);
             
             // Justタイミング後の判定・Justタイミング前の判定
-            return (normalizedTimingFromJust < 0.5f && normalizedTimingFromJust < range) ||
-                    (0.5f < normalizedTimingFromJust && 1 - range < normalizedTimingFromJust);
+            return Mathf.Abs(normalizedTimingFromJust - 0.5f) > range / 2;
         }
 
         #endregion

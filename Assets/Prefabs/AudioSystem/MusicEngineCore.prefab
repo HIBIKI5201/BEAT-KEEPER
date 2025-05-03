@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91d72a6cb3242344940bedb7f2e00f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayOnStart: 0
+  PlayOnStart: 1
   Volume: 1
   OutputMixerGroup: {fileID: 0}
   Sections:

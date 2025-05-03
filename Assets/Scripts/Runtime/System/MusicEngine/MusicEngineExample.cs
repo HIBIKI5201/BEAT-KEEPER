@@ -70,7 +70,7 @@ public class MusicEngineExample : MonoBehaviour
     private void TestTimingAccuracy()
     {
         float range = 0.3f;
-        Debug.Log($"判定 {range}秒 結果: {_helper.IsTimingWithinAcceptableRange(range)}");
+        Debug.Log($"判定 ±{range} 結果: {_helper.IsTimingWithinAcceptableRange(range)}");
     }
 
     #endregion
