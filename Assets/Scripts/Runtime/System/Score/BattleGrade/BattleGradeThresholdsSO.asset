@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0220965b0af58540a6566fa80ce0dd4, type: 3}
-  m_Name: EnemyData
+  m_Script: {fileID: 11500000, guid: 461c8179ad98fb74091515591b6706c5, type: 3}
+  m_Name: BattleGradeThresholdsSO
   m_EditorClassIdentifier: 
-  _name: Enemy
-  _attackPower: 10
-  _beat: 0000000000000000000000000000000000000000000000000000000000000000
+  _thresholdRankSSS: 10000
+  _thresholdRankSS: 8000
+  _thresholdRankS: 6000
+  _thresholdRankA: 4000
+  _thresholdRankB: 2000
