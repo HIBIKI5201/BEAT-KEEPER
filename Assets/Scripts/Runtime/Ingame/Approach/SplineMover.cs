@@ -29,6 +29,14 @@ namespace BeatKeeper.Runtime.Ingame.Approach
         /// /// </summary>
         public void MoveToNext()
         {
+            //Tweenがアクティブな場合はKillして移動する
+            if (_moveTween.IsActive())
+            {
+                Debug.Log("移動中です。");
+                _progress++;
+                _moveTween.Kill();
+            }
+            // Splineの数を超えた場合は何もしない
             if (_progress >= _splineContainer.Splines.Count)
             {
                 Debug.Log("全てのSplineを移動しました。");
@@ -40,8 +48,7 @@ namespace BeatKeeper.Runtime.Ingame.Approach
                 .OnUpdate(() =>
                 {
                     transform.position = _splineContainer.Splines[_progress].EvaluatePosition(progressOnSpline);
-                })
-                .OnComplete(() =>
+                }).OnComplete(() =>
                 {
                     _progress++;
                 });
