@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.Splines;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
-using R3;
+using static SymphonyFrameWork.System.PauseManager;
+using SymphonyFrameWork.Utility;
 
 namespace BeatKeeper.Runtime.Ingame.Approach
 {
-    public class SplineMover
+    public class SplineMover : IPausable
     {
         SplineContainer _splineContainer;
         Transform _transform;
@@ -24,7 +25,9 @@ namespace BeatKeeper.Runtime.Ingame.Approach
             _splineContainer = splineContainer;
             _transform = transform;
             _skipTime = skipTime;
+            IPausable.RegisterPauseManager(this);
         }
+        
         /// <summary>
         /// 次のSplineに移動します。
         /// /// </summary>
@@ -51,6 +54,7 @@ namespace BeatKeeper.Runtime.Ingame.Approach
             _moveTween = DOTween.To(() => progressOnSpline, x => progressOnSpline = x, 1f, time)
                 .OnUpdate(() =>
                 {
+                    _transform.forward = _splineContainer.Splines[_progress].EvaluateTangent(progressOnSpline);
                     _transform.position = _splineContainer.Splines[_progress].EvaluatePosition(progressOnSpline);
                 }).OnComplete(() =>
                 {
@@ -62,6 +66,22 @@ namespace BeatKeeper.Runtime.Ingame.Approach
             if(_progress >= _splineContainer.Splines.Count)return;
             _moveTween = _transform.DOMove(_splineContainer.Splines[_progress].EvaluatePosition(0),time);
             await _moveTween.AsyncWaitForCompletion();
+        }
+        //インターフェイスの実装
+        public void Pause()
+        {
+            if (_moveTween.IsActive())
+            {
+                _moveTween.Pause();
+            }
+        }
+
+        public void Resume()
+        {
+            if (_moveTween.IsActive())
+            {
+                _moveTween.Play();
+            }
         }
     }
 }
