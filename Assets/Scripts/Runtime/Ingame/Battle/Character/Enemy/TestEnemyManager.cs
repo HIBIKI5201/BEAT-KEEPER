@@ -13,14 +13,13 @@ namespace BeatKeeper
         {
             base.Awake();
             
-            var animator = GetComponent<Animator>();
-            if (animator)
+            if (TryGetComponent(out Animator animator))
             {
                 _animeManager = new (animator);
             }
             else
             {
-                Debug.LogWarning($"{_data.name} has no Animator");
+                Debug.LogWarning($"{_data?.name ?? "empty"} has no Animator");
             }
         }
 
