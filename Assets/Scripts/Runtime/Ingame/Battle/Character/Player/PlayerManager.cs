@@ -30,6 +30,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             #if UNITY_EDITOR
             OnResonanceHit += () => Debug.Log("Resonance Hit");
+            _target = FindAnyObjectByType<TestEnemyManager>();
             #endif
         }
 
@@ -67,6 +68,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttack(InputAction.CallbackContext context)
         {
+            if (_target == null)
+            {
+                Debug.LogWarning("Target is null");
+                return;
+            }
+            
             Debug.Log($"{_data.Name} is attacking");
 
             //リズム共鳴が成功したか
@@ -86,7 +93,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             if (isResonanceHit)
                 power *= _data.ResonanceCriticalDamage;
-            
+
             _target.HitAttack(power);
             
             _comboSystem.Attack();
