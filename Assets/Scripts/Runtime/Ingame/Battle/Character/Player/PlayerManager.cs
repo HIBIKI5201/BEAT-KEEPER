@@ -17,6 +17,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
+
+        public event Action OnResonanceHit;
         
         protected override void Awake()
         {
@@ -25,6 +27,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem = new ComboSystem(_data);
             
             tag = TagsEnum.Player.ToString();
+            
+            #if UNITY_EDITOR
+            OnResonanceHit += () => Debug.Log("Resonance Hit");
+            #endif
         }
 
         private void Start()
@@ -36,6 +42,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _inputBuffer.Attack.started += OnAttack;
             }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
+            }
+            
+            if (!_musicEngine)
+                Debug.LogWarning("Music engine is null");
         }
 
         private void Update()
@@ -55,6 +68,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack(InputAction.CallbackContext context)
         {
             Debug.Log($"{_data.Name} is attacking");
+
+            //リズム共鳴が成功したか
+            bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
+            if (isResonanceHit) OnResonanceHit?.Invoke();
+
             
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount % 3) switch
@@ -65,6 +83,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 _ => _data.FirstAttackPower
             };
+            
+            if (isResonanceHit)
+                power *= _data.ResonanceCriticalDamage;
             
             _target.HitAttack(power);
             
