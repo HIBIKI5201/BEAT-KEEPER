@@ -29,7 +29,7 @@ namespace BeatKeeper
             
             //ノックバック
             _isKnockback = true;
-            _animeManager.KnockBack();
+            _animeManager?.KnockBack();
             await Awaitable.WaitForSecondsAsync(1, destroyCancellationToken);
             _isKnockback = false;
         }
