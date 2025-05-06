@@ -14,6 +14,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected virtual void Awake()
         {
+            //データがなかったら初期データをアサイン
+            if (!_data) _data = ScriptableObject.CreateInstance<TDataType>();
+            
             Debug.Log($"{_data.Name} initialized");
         }
 
