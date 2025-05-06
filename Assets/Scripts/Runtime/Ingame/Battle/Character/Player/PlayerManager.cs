@@ -46,6 +46,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Attack.started += OnAttack;
                 _inputBuffer.Special.started += OnSpecial;
                 _inputBuffer.Finishier.started += OnFinisher;
+                _inputBuffer.Avoid.started += OnAvoid;
             }
             else
             {
@@ -68,6 +69,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Attack.started -= OnAttack;
                 _inputBuffer.Special.started -= OnSpecial;
                 _inputBuffer.Finishier.started -= OnFinisher;
+                _inputBuffer.Avoid.started -= OnAvoid;
             }
         }
         
@@ -131,8 +133,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} is charge attacking");
         }
 
+        /// <summary>
+        ///     必殺技
+        /// </summary>
+        /// <param name="context"></param>
         private void OnSpecial(InputAction.CallbackContext context)
         {
+            if (_target == null)
+            {
+                Debug.LogWarning("Target is null");
+                return;
+            }
+            
             if (1 <= _specialEnergy)
             {
                 _specialEnergy = 0;
@@ -142,9 +154,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        /// <summary>
+        ///     フィニッシャー
+        /// </summary>
+        /// <param name="context"></param>
         private void OnFinisher(InputAction.CallbackContext context)
         {
             Debug.Log($"{_data.Name} is attacking");
+        }
+
+        /// <summary>
+        ///     回避
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnAvoid(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{_data.Name} is avoiding");
         }
         
         [ContextMenu(nameof(AddSpecialEnergy))]
