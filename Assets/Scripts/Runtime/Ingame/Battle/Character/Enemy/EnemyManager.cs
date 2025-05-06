@@ -18,8 +18,7 @@ namespace BeatKeeper
         {
             base.Awake();
             
-            var animator = GetComponent<Animator>();
-            if (animator)
+            if (TryGetComponent(out Animator animator))
             {
                 _animeManager = new (animator);
             }
