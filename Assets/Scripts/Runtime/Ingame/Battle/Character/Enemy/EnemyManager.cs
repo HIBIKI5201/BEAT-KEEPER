@@ -1,11 +1,16 @@
+using System;
 using BeatKeeper.Runtime.Ingame.Character;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
 {
-    public class EnemyManager : CharacterManagerB<EnemyData>
+    public class EnemyManager : CharacterManagerB<EnemyData>, IDisposable
     {
+        private MusicEngineHelper _musicEngine;
         private EnemyAnimeManager _animeManager;
+
+        private IAttackable _target;
         
         private bool _isKnockback;
         
@@ -24,6 +29,30 @@ namespace BeatKeeper
             }
         }
 
+        private void Start()
+        {
+            _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+
+            if (_musicEngine)
+            {
+                _musicEngine.OnJustChangedBeat += OnAttack;
+            }
+            else
+            {
+                Debug.LogWarning($"{_data.name} has no music engine");
+            }
+            
+            Music.Play("Music");
+        }
+
+        public void Dispose()
+        {
+            if (_musicEngine)
+            {
+                _musicEngine.OnJustChangedBeat -= OnAttack;
+            }
+        }
+
         public override async void HitAttack(float damage)
         {
             base.HitAttack(damage);
@@ -33,6 +62,19 @@ namespace BeatKeeper
             _animeManager.KnockBack();
             await Awaitable.WaitForSecondsAsync(1, destroyCancellationToken);
             _isKnockback = false;
+        }
+
+        private void OnAttack()
+        {
+            var timing = _musicEngine.GetCurrentTiming() switch
+            {
+                var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
+            };
+
+            if (_data.Beat[timing])
+            {
+                Debug.Log($"{_data.name} attack {timing}");
+            }
         }
     }
 }
