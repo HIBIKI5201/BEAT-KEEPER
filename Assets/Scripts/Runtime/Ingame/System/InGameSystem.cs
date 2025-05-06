@@ -24,7 +24,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                  if (_inGameData.PlayerPrefab)
                  {
                      var player = Instantiate(_inGameData.PlayerPrefab);
-                     if (!TryGetComponent(out _playerManager))
+                     if (!player.TryGetComponent(out _playerManager))
                      {
                          Debug.LogWarning($"Player manager not found in {_inGameData.PlayerPrefab.name}");
                      }
