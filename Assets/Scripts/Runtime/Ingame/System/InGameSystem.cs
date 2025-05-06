@@ -1,4 +1,5 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -8,9 +9,31 @@ namespace BeatKeeper.Runtime.Ingame.System
     {
         private PhaseEnum _phase;
         
+        [SerializeField]
+        private InGameData _inGameData;
+        
+        private PlayerManager _playerManager;
+        public PlayerManager PlayerManager => _playerManager;
+        
         private void Awake()
         {
              SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
+
+             if (_inGameData)
+             {
+                 if (_inGameData.PlayerPrefab)
+                 {
+                     var player = Instantiate(_inGameData.PlayerPrefab);
+                     if (!TryGetComponent(out _playerManager))
+                     {
+                         Debug.LogWarning($"Player manager not found in {_inGameData.PlayerPrefab.name}");
+                     }
+                 }
+                 else
+                 {
+                     Debug.LogWarning($"Player Prefab not found");
+                 }
+             }
         }
 
         public void PhaseStart(PhaseEnum phase)
