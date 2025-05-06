@@ -42,6 +42,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_inputBuffer)
             {
                 _inputBuffer.Attack.started += OnAttack;
+                _inputBuffer.Special.started += OnSpecial;
+                _inputBuffer.Finishier.started += OnFinisher;
             }
             else
             {
@@ -59,7 +61,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _inputBuffer.Attack.started -= OnAttack;
+            if (_inputBuffer)
+            {
+                _inputBuffer.Attack.started -= OnAttack;
+                _inputBuffer.Special.started -= OnSpecial;
+                _inputBuffer.Finishier.started -= OnFinisher;
+            }
         }
 
         /// <summary>
@@ -106,6 +113,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnChargeAttack(InputAction.CallbackContext context)
         {
             Debug.Log($"{_data.Name} is charging");
+        }
+
+        private void OnSpecial(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{_data.Name} is special");
+        }
+
+        private void OnFinisher(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{_data.Name} is attacking");
         }
 
         public override void HitAttack(float damage)
