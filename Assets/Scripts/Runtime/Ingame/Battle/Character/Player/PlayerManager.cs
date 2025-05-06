@@ -99,7 +99,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //リズム共鳴が成功したか
             bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
             if (isResonanceHit) OnResonanceHit?.Invoke();
-
             
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount % 3) switch
@@ -117,6 +116,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target.HitAttack(power);
             
             _comboSystem.Attack();
+            
+            //スペシャルエネルギーを5%増加
+            if (isResonanceHit)
+                AddSpecialEnergy(0.05f);
         }
 
         /// <summary>
@@ -133,6 +136,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (1 <= _specialEnergy)
             {
                 _specialEnergy = 0;
+                
+                //ダメージを与える
+                _target.HitAttack(2000);
             }
         }
 
