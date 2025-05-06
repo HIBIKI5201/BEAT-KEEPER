@@ -18,6 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
 
+        private float _specialEnergy;
+
         public event Action OnResonanceHit;
         
         protected override void Awake()
@@ -68,6 +70,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Finishier.started -= OnFinisher;
             }
         }
+        
+        public override void HitAttack(float damage)
+        {
+            base.HitAttack(damage);
+            
+            _comboSystem.ComboReset();
+        }
+        
+        public void SetTarget(IAttackable target) => _target = target;
+        
+        public void AddSpecialEnergy(float energy) => _specialEnergy = Mathf.Clamp(_specialEnergy + energy, 0, 1);
 
         /// <summary>
         ///     コンボ攻撃を行う
@@ -112,26 +125,23 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnChargeAttack(InputAction.CallbackContext context)
         {
-            Debug.Log($"{_data.Name} is charging");
+            Debug.Log($"{_data.Name} is charge attacking");
         }
 
         private void OnSpecial(InputAction.CallbackContext context)
         {
-            Debug.Log($"{_data.Name} is special");
+            if (1 <= _specialEnergy)
+            {
+                _specialEnergy = 0;
+            }
         }
 
         private void OnFinisher(InputAction.CallbackContext context)
         {
             Debug.Log($"{_data.Name} is attacking");
         }
-
-        public override void HitAttack(float damage)
-        {
-            base.HitAttack(damage);
-            
-            _comboSystem.ComboReset();
-        }
         
-        public void SetTarget(IAttackable target) => _target = target;
+        [ContextMenu(nameof(AddSpecialEnergy))]
+        private void AddSpecialEnergy() => AddSpecialEnergy(1);
     }
 }
