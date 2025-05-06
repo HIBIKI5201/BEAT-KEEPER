@@ -60,12 +60,14 @@ namespace BeatKeeper
             //ノックバック
             _isKnockback = true;
             _animeManager.KnockBack();
-            await Awaitable.WaitForSecondsAsync(1, destroyCancellationToken);
+            await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
             _isKnockback = false;
         }
 
         private void OnAttack()
         {
+            if (_musicEngine) return;
+            
             var timing = _musicEngine.GetCurrentTiming() switch
             {
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値

@@ -18,5 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public bool[] Beat => _beat;
         [SerializeField, Tooltip("ビートの拍子")]
         private bool[] _beat = new bool[32];
+        
+        public float NockbackTime => _nockbackTime;
+        private float _nockbackTime = 1;
     }
 }
