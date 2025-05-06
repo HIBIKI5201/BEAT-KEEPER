@@ -11,6 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         where TDataType : CharacterData
     {
         [SerializeField] protected TDataType _data;
+        public TDataType Data => _data;
 
         protected virtual void Awake()
         {
