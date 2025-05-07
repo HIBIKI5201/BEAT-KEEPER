@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34df18e16208c604e93eb2dcbb09baaf, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  _name: empty name
-  _attackPower: 10
+  _name: Player
   _firstAttackPower: 100
   _secondAttackPower: 100
   _thirdAttackPower: 100
