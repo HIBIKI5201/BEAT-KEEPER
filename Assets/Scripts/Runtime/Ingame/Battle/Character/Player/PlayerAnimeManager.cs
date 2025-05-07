@@ -1,7 +1,7 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper.Runtime.Ingame.Battle.Character.Player
+namespace BeatKeeper.Runtime.Ingame.Battle.Character
 {
     public class PlayerAnimeManager : CharacterAnimeManagerB
     {

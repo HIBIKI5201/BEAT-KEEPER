@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     [CreateAssetMenu(fileName = "InGameData", menuName = "BeatKeeper/System/InGameSData")]
     public class InGameData : ScriptableObject

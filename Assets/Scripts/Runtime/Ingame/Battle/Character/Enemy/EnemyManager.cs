@@ -3,7 +3,7 @@ using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
     public class EnemyManager : CharacterManagerB<EnemyData>, IDisposable
     {
