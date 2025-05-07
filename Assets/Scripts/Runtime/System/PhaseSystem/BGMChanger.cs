@@ -1,5 +1,4 @@
-using R3;
-using SymphonyFrameWork.System;
+using BeatKeeper.Runtime.Ingame.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -9,17 +8,19 @@ namespace BeatKeeper
     /// </summary>
     public class BGMChanger : MonoBehaviour
     {
-        private PhaseManager _phaseManager;
-        private CompositeDisposable _phaseSubscriptions = new CompositeDisposable();
+        [SerializeField] private InGameSystem _inGameSystem;
         
         private void Start()
         {
-            _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            
-            // フェーズが切り替わったタイミングでBGM変更処理を呼ぶサブスクリプション
-            _phaseManager.CurrentPhaseProp
-                .Subscribe(OnPhaseChanged)
-                .AddTo(_phaseSubscriptions);
+            if (_inGameSystem == null)
+            {
+                _inGameSystem = FindObjectOfType<InGameSystem>();
+                if (_inGameSystem == null)
+                {
+                    Debug.LogError("[BGMChanger] InGameSystemが見つかりませんでした");
+                }
+            }
+            _inGameSystem.OnPhaseChange += OnPhaseChanged;
         }
         
         /// <summary>
@@ -29,18 +30,17 @@ namespace BeatKeeper
         {
             if (newPhase == PhaseEnum.Clear)
             {
-                return; //TODO: Clearフェーズの処理を作る
+                return; //TODO: Clearフェーズの処理を作る(曲の変更ではなく音響効果の変更を行う予定)
             }
             
             int index = (int)newPhase;
             Music.SetHorizontalSequence(((BGMEnum)index).ToString());
-            
             Debug.Log("[BGMChanger] BGMを変更しました");
         }
 
         private void OnDestroy()
         {
-            _phaseSubscriptions?.Dispose();
+            _inGameSystem.OnPhaseChange -= OnPhaseChanged;
         }
     }
 }

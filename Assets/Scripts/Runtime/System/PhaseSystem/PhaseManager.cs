@@ -5,6 +5,7 @@ using UnityEngine;
 namespace BeatKeeper
 {
     /// <summary>
+    /// ※※※これは使わずにInGameSystem内のフェーズの変数やメソッドを使う※※※
     /// インゲームのフェーズを管理するクラス
     /// </summary>
     public class PhaseManager : MonoBehaviour
