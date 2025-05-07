@@ -5,7 +5,6 @@ using UnityEngine;
 namespace BeatKeeper
 {
     /// <summary>
-    /// ※※※これは使わずにInGameSystem内のフェーズの変数やメソッドを使う※※※
     /// インゲームのフェーズを管理するクラス
     /// </summary>
     public class PhaseManager : MonoBehaviour
@@ -21,12 +20,11 @@ namespace BeatKeeper
 
         private void Awake()
         {
-            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Locator);
             TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
         
         /// <summary>
-        /// フェーズを変更する
+        /// フェーズを変更する※InGameSystemから変更すること
         /// </summary>
         public void TransitionTo(PhaseEnum nextPhase)
         {
@@ -39,11 +37,6 @@ namespace BeatKeeper
             // フェーズの更新
             _currentPhaseProp.Value = nextPhase;
             Debug.Log($"[PhaseManager] フェーズが変更されました 現在：{CurrentPhase}");
-        }
-
-        private void OnDestroy()
-        {
-            ServiceLocator.DestroyInstance(this);
         }
     }
 }

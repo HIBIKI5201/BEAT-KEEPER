@@ -1,4 +1,6 @@
 using BeatKeeper.Runtime.Ingame.System;
+using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -8,19 +10,15 @@ namespace BeatKeeper
     /// </summary>
     public class BGMChanger : MonoBehaviour
     {
-        [SerializeField] private InGameSystem _inGameSystem;
+        private InGameSystem _inGameSystem;
+        private CompositeDisposable _disposable = new CompositeDisposable();
         
         private void Start()
         {
-            if (_inGameSystem == null)
-            {
-                _inGameSystem = FindObjectOfType<InGameSystem>();
-                if (_inGameSystem == null)
-                {
-                    Debug.LogError("[BGMChanger] InGameSystemが見つかりませんでした");
-                }
-            }
-            _inGameSystem.OnPhaseChange += OnPhaseChanged;
+            _inGameSystem = ServiceLocator.GetInstance<InGameSystem>();
+            _inGameSystem.PhaseManager.CurrentPhaseProp
+                .Subscribe(OnPhaseChanged)
+                .AddTo(_disposable);
         }
         
         /// <summary>
@@ -40,7 +38,7 @@ namespace BeatKeeper
 
         private void OnDestroy()
         {
-            _inGameSystem.OnPhaseChange -= OnPhaseChanged;
+            _disposable?.Dispose();
         }
     }
 }
