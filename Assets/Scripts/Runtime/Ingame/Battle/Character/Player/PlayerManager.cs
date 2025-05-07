@@ -17,6 +17,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
+
+        private float _specialEnergy;
+
+        public event Action OnResonanceHit;
         
         protected override void Awake()
         {
@@ -25,6 +29,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem = new ComboSystem(_data);
             
             tag = TagsEnum.Player.ToString();
+            
+            #if UNITY_EDITOR
+            OnResonanceHit += () => Debug.Log("Resonance Hit");
+            _target = FindAnyObjectByType<TestEnemyManager>();
+            #endif
         }
 
         private void Start()
@@ -35,7 +44,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_inputBuffer)
             {
                 _inputBuffer.Attack.started += OnAttack;
+                _inputBuffer.Special.started += OnSpecial;
+                _inputBuffer.Finishier.started += OnFinisher;
+                _inputBuffer.Avoid.started += OnAvoid;
             }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
+            }
+            
+            if (!_musicEngine)
+                Debug.LogWarning("Music engine is null");
         }
 
         private void Update()
@@ -45,8 +64,25 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _inputBuffer.Attack.started -= OnAttack;
+            if (_inputBuffer)
+            {
+                _inputBuffer.Attack.started -= OnAttack;
+                _inputBuffer.Special.started -= OnSpecial;
+                _inputBuffer.Finishier.started -= OnFinisher;
+                _inputBuffer.Avoid.started -= OnAvoid;
+            }
         }
+        
+        public override void HitAttack(float damage)
+        {
+            base.HitAttack(damage);
+            
+            _comboSystem.ComboReset();
+        }
+        
+        public void SetTarget(IAttackable target) => _target = target;
+        
+        public void AddSpecialEnergy(float energy) => _specialEnergy = Mathf.Clamp(_specialEnergy + energy, 0, 1);
 
         /// <summary>
         ///     コンボ攻撃を行う
@@ -54,7 +90,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttack(InputAction.CallbackContext context)
         {
+            if (_target == null)
+            {
+                Debug.LogWarning("Target is null");
+                return;
+            }
+            
             Debug.Log($"{_data.Name} is attacking");
+
+            //リズム共鳴が成功したか
+            bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
+            if (isResonanceHit) OnResonanceHit?.Invoke();
             
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount % 3) switch
@@ -66,9 +112,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _ => _data.FirstAttackPower
             };
             
+            if (isResonanceHit)
+                power *= _data.ResonanceCriticalDamage;
+
             _target.HitAttack(power);
             
             _comboSystem.Attack();
+            
+            //スペシャルエネルギーを5%増加
+            if (isResonanceHit)
+                AddSpecialEnergy(0.05f);
         }
 
         /// <summary>
@@ -77,16 +130,49 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnChargeAttack(InputAction.CallbackContext context)
         {
-            Debug.Log($"{_data.Name} is charging");
+            Debug.Log($"{_data.Name} is charge attacking");
         }
 
-        public override void HitAttack(float damage)
+        /// <summary>
+        ///     必殺技
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnSpecial(InputAction.CallbackContext context)
         {
-            base.HitAttack(damage);
+            if (_target == null)
+            {
+                Debug.LogWarning("Target is null");
+                return;
+            }
             
-            _comboSystem.ComboReset();
+            if (1 <= _specialEnergy)
+            {
+                _specialEnergy = 0;
+                
+                //ダメージを与える
+                _target.HitAttack(2000);
+            }
+        }
+
+        /// <summary>
+        ///     フィニッシャー
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnFinisher(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{_data.Name} is attacking");
+        }
+
+        /// <summary>
+        ///     回避
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnAvoid(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{_data.Name} is avoiding");
         }
         
-        public void SetTarget(IAttackable target) => _target = target;
+        [ContextMenu(nameof(AddSpecialEnergy))]
+        private void AddSpecialEnergy() => AddSpecialEnergy(1);
     }
 }

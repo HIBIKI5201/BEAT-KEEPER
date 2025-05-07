@@ -14,7 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected virtual void Awake()
         {
-            Debug.Log($"{_data.Name} initialized");
+            Debug.Log($"{_data?.Name ?? "empty name"} initialized");
         }
 
         public virtual void HitAttack(float damage)
