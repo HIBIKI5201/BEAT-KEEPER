@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58fb1d59cc0bbd64b926bb01ee216a97, type: 3}
-  m_Name: VolumePreset_ApproachPhase
+  m_Name: VolumePreset_Focus
   m_EditorClassIdentifier: 
-  _presetEnumType: 0
+  _presetEnumType: 1
   _settings:
     _enableVignette: 1
     _vignetteIntensity: 0.25
@@ -34,4 +34,4 @@ MonoBehaviour:
     _enableFilmGrain: 0
     _filmGrainIntensity: 0
     _adjustCameraFov: 1
-    _cameraFov: 60
+    _cameraFov: 50

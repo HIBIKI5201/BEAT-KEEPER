@@ -25,8 +25,5 @@ namespace BeatKeeper
         
         /// <summary>クリアフェーズ</summary>
         Clear,
-        
-        /// <summary>フラッシュ</summary>
-        Flash,
     }
 }
