@@ -41,7 +41,7 @@ namespace BeatKeeper
         private Vector3 _initialScale;
         private float _baseEmissionIntensity;
         
-        private void Awake()
+        private void Start()
         {
             // コンポーネントの参照を取得
             _rend = GetComponent<Renderer>();
@@ -58,10 +58,7 @@ namespace BeatKeeper
             // パーティクルシステムの初期設定
             if (_collectionParticle != null) _collectionParticle.Stop();
             if (_playerAbsorbParticle != null) _playerAbsorbParticle.Stop();
-        }
-
-        private void Start()
-        {
+            
             DefaultSetting();
         }
         
@@ -298,12 +295,8 @@ namespace BeatKeeper
         
         private void OnDestroy()
         {
-            // 全てのTweenを終了
-            DOTween.Kill(transform);
-            
-            // ポストプロセス効果をリセット
-            _volumeController?.ResetAllEffects();
-            
+            DOTween.Kill(transform); // 全てのTweenを終了
+            _volumeController?.ApplyPreset(EffectPresetEnum.Default, 0.3f); // ポストプロセスをデフォルトに戻す
             ResetAudioEffects(0f);
         }
     }

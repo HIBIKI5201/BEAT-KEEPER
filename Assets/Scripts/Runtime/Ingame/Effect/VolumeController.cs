@@ -75,14 +75,6 @@ namespace BeatKeeper
                 }
             }
             
-            // メインカメラの取得
-            _mainCamera = Camera.main;
-            if (_mainCamera != null)
-            {
-                _defaultFov = _mainCamera.fieldOfView;
-            }
-            Debug.Log(_mainCamera.name);
-            
             // ボリュームコンポーネントの参照を取得
             if (_globalVolume.profile != null)
             {
@@ -203,6 +195,20 @@ namespace BeatKeeper
             }
         }
 
+        private void Start()
+        {
+            // メインカメラの取得
+            Camera[] allCameras = Camera.allCameras;
+            foreach (var camera in allCameras)
+            {
+                if (camera.CompareTag("MainCamera"))
+                {
+                    _mainCamera = camera;
+                    break;
+                }
+            }
+        }
+        
         #endregion
         
         

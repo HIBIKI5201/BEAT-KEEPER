@@ -373,9 +373,8 @@ MonoBehaviour:
   _ambientLightParticle: {fileID: 1032582979}
   _collectionParticle: {fileID: 0}
   _playerAbsorbParticle: {fileID: 0}
-  _postProcessingVolume: {fileID: 1606521234}
   _lockOnFovChange: 10
-  _collectionFovPulse: 15
+  _collectionFovPulse: 45
   _cameraShakeIntensity: 0.2
   _cameraShakeDuration: 0.2
 --- !u!199 &1032582978
@@ -5201,8 +5200,8 @@ GameObject:
   - component: {fileID: 1108072748}
   - component: {fileID: 1108072747}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: DevCam
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5251,7 +5250,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 6.6
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -5381,7 +5380,7 @@ Transform:
   m_GameObject: {fileID: 1606521233}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6790895, y: -0.23357102, z: 0.2808447}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5400,6 +5399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalVolume: {fileID: 1606521234}
+  _presetAssets:
+  - {fileID: 11400000, guid: 23c4437fd0fc4a1478011c68ce4f76e5, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
