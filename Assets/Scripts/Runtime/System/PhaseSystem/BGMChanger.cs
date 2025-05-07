@@ -26,9 +26,33 @@ namespace BeatKeeper
         /// </summary>
         private void OnPhaseChanged(PhaseEnum newPhase)
         {
-            if (newPhase == PhaseEnum.Clear)
+            switch (newPhase)
             {
-                return; //TODO: Clearフェーズの処理を作る(曲の変更ではなく音響効果の変更を行う予定)
+                case PhaseEnum.Approach:
+                case PhaseEnum.Battle2:
+                case PhaseEnum.Battle3:
+                    int index = (int)newPhase;
+                    Music.SetHorizontalSequence(((BGMEnum)index).ToString());
+                    Debug.Log("[BGMChanger] BGMを変更しました" + newPhase);
+                    break;
+                case PhaseEnum.Battle1:
+                    // Enumの変更タイミングとは別のタイミングで処理を行うため、ここで行うべき処理はない
+                    break;
+                case PhaseEnum.Clear:
+                    //TODO: Clearフェーズの処理を作る(曲の変更ではなく音響効果の変更を行う予定)
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// BGMを任意のタイミングで変更する
+        /// </summary>
+        public void ChangeBGM(PhaseEnum newPhase)
+        {
+            // 想定されていないBGM変更は行わないようにする
+            if (newPhase != PhaseEnum.Battle1)
+            {
+                return;
             }
             
             int index = (int)newPhase;
