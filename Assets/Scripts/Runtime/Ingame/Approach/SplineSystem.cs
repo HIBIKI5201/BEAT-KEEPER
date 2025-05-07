@@ -5,6 +5,9 @@ using UnityEngine.Splines;
 
 namespace BeatKeeper.Runtime.Ingame.Approach
 {
+    /// <summary>
+    /// SplineSystemは、アプローチフェーズの機能を提供するコンテナです。
+    /// </summary>
     public class SplineSystem : MonoBehaviour
     {
         [SerializeField]SplineContainer _splineContainer;
