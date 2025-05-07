@@ -67,6 +67,8 @@ namespace BeatKeeper
         {
             if (_musicEngine) return;
             
+            if (_isKnockback) return; //ノックバック中は攻撃しない
+            
             var timing = _musicEngine.GetCurrentTiming() switch
             {
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
