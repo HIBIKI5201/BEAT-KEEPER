@@ -8,6 +8,7 @@ namespace BeatKeeper.Runtime.Ingame.System
     public class InGameSystem : MonoBehaviour
     {
         private PhaseEnum _phase;
+        public Action<PhaseEnum> OnPhaseChange;
         
         [SerializeField]
         private InGameData _inGameData;
@@ -54,6 +55,8 @@ namespace BeatKeeper.Runtime.Ingame.System
                     StartClearPhase();
                     break;
             }
+            
+            OnPhaseChange?.Invoke(phase);
         }
 
         private void StartApproachPhase()
