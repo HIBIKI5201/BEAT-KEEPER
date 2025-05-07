@@ -96,40 +96,21 @@ namespace BeatKeeper
                 AddMissingComponents(); // 足りないコンポーネントは追加
                 CacheDefaultValues(); // デフォルト値を保存
             }
+            
+            CreateVolumePresetDict();
         }
-        
+
         /// <summary>
-        /// プリセットの初期化
-        /// スクリプタブルオブジェクトから設定を読み込む
+        /// SerializeFieldに設定されたPresetの配列を元に辞書を作成する
         /// </summary>
-        public void InitializePresets()
+        private void CreateVolumePresetDict()
         {
-            // まずデフォルトのプリセットをロード（フォールバック用）
-            _presets = VolumePresetSO.CreateDefaultPresets();
-            
-            // スクリプタブルオブジェクトが設定されている場合は上書き
-            if (_presetAssets != null && _presetAssets.Length > 0)
+            foreach (var preset in _presetAssets)
             {
-                foreach (var presetAsset in _presetAssets)
-                {
-                    if (presetAsset != null)
-                    {
-                        _presets[presetAsset.PresetEnumType] = presetAsset.Settings;
-                    }
-                }
+                _presets.Add(preset.PresetEnumType, preset.Settings);
             }
             
-            // Resourcesフォルダからすべてのプリセットを読み込む（実行時の動的ロード）
-            var resourcePresets = Resources.LoadAll<VolumePresetSO>("VolumePresets");
-            if (resourcePresets != null && resourcePresets.Length > 0)
-            {
-                foreach (var preset in resourcePresets)
-                {
-                    _presets[preset.PresetEnumType] = preset.Settings;
-                }
-            }
-            
-            Debug.Log($"[VolumeController] {_presets.Count} プリセットが読み込まれました");
+            ApplyEffectSettings(_presets[EffectPresetEnum.Default], 0.1f); // 初期化
         }
         
         /// <summary>
@@ -243,11 +224,11 @@ namespace BeatKeeper
             // ビネット
             if (_vignette != null)
             {
-                _vignette.active = settings.enableVignette;
-                if (settings.enableVignette)
+                _vignette.active = settings.EnableVignette;
+                if (settings.EnableVignette)
                 {
                     effectSequence.Join(DOTween.To(() => _vignette.intensity.value, 
-                        x => _vignette.intensity.value = x, settings.vignetteIntensity, duration)
+                        x => _vignette.intensity.value = x, settings.VignetteIntensity, duration)
                         .SetEase(easeType));
                 }
             }
@@ -255,19 +236,19 @@ namespace BeatKeeper
             // 色調整
             if (_colorAdjustments != null)
             {
-                _colorAdjustments.active = settings.enableColorAdjustments;
-                if (settings.enableColorAdjustments)
+                _colorAdjustments.active = settings.EnableColorAdjustments;
+                if (settings.EnableColorAdjustments)
                 {
                     effectSequence.Join(DOTween.To(() => _colorAdjustments.saturation.value, 
-                        x => _colorAdjustments.saturation.value = x, settings.saturation, duration)
+                        x => _colorAdjustments.saturation.value = x, settings.Saturation, duration)
                         .SetEase(easeType));
                     
                     effectSequence.Join(DOTween.To(() => _colorAdjustments.contrast.value, 
-                        x => _colorAdjustments.contrast.value = x, settings.contrast, duration)
+                        x => _colorAdjustments.contrast.value = x, settings.Contrast, duration)
                         .SetEase(easeType));
                     
                     effectSequence.Join(DOTween.To(() => _colorAdjustments.colorFilter.value, 
-                        x => _colorAdjustments.colorFilter.value = x, settings.colorFilter, duration)
+                        x => _colorAdjustments.colorFilter.value = x, settings.ColorFilter, duration)
                         .SetEase(easeType));
                 }
             }
@@ -275,19 +256,19 @@ namespace BeatKeeper
             // 被写界深度
             if (_depthOfField != null)
             {
-                _depthOfField.active = settings.enableDepthOfField;
-                if (settings.enableDepthOfField)
+                _depthOfField.active = settings.EnableDepthOfField;
+                if (settings.EnableDepthOfField)
                 {
                     effectSequence.Join(DOTween.To(() => _depthOfField.focusDistance.value, 
-                        x => _depthOfField.focusDistance.value = x, settings.focusDistance, duration)
+                        x => _depthOfField.focusDistance.value = x, settings.FocusDistance, duration)
                         .SetEase(easeType));
                     
                     effectSequence.Join(DOTween.To(() => _depthOfField.aperture.value, 
-                        x => _depthOfField.aperture.value = x, settings.aperture, duration)
+                        x => _depthOfField.aperture.value = x, settings.Aperture, duration)
                         .SetEase(easeType));
                     
                     effectSequence.Join(DOTween.To(() => _depthOfField.focalLength.value, 
-                        x => _depthOfField.focalLength.value = x, settings.focalLength, duration)
+                        x => _depthOfField.focalLength.value = x, settings.FocalLength, duration)
                         .SetEase(easeType));
                 }
             }
@@ -295,11 +276,11 @@ namespace BeatKeeper
             // レンズディストーション
             if (_lensDistortion != null)
             {
-                _lensDistortion.active = settings.enableLensDistortion;
-                if (settings.enableLensDistortion)
+                _lensDistortion.active = settings.EnableLensDistortion;
+                if (settings.EnableLensDistortion)
                 {
                     effectSequence.Join(DOTween.To(() => _lensDistortion.intensity.value, 
-                        x => _lensDistortion.intensity.value = x, settings.lensDistortionIntensity, duration)
+                        x => _lensDistortion.intensity.value = x, settings.LensDistortionIntensity, duration)
                         .SetEase(easeType));
                 }
             }
@@ -307,15 +288,15 @@ namespace BeatKeeper
             // ブルーム
             if (_bloom != null)
             {
-                _bloom.active = settings.enableBloom;
-                if (settings.enableBloom)
+                _bloom.active = settings.EnableBloom;
+                if (settings.EnableBloom)
                 {
                     effectSequence.Join(DOTween.To(() => _bloom.intensity.value, 
-                        x => _bloom.intensity.value = x, settings.bloomIntensity, duration)
+                        x => _bloom.intensity.value = x, settings.BloomIntensity, duration)
                         .SetEase(easeType));
                     
                     effectSequence.Join(DOTween.To(() => _bloom.threshold.value, 
-                        x => _bloom.threshold.value = x, settings.bloomThreshold, duration)
+                        x => _bloom.threshold.value = x, settings.BloomThreshold, duration)
                         .SetEase(easeType));
                 }
             }
@@ -323,11 +304,11 @@ namespace BeatKeeper
             // 色収差
             if (_chromaticAberration != null)
             {
-                _chromaticAberration.active = settings.enableChromaticAberration;
-                if (settings.enableChromaticAberration)
+                _chromaticAberration.active = settings.EnableChromaticAberration;
+                if (settings.EnableChromaticAberration)
                 {
                     effectSequence.Join(DOTween.To(() => _chromaticAberration.intensity.value, 
-                        x => _chromaticAberration.intensity.value = x, settings.chromaticAberrationIntensity, duration)
+                        x => _chromaticAberration.intensity.value = x, settings.ChromaticAberrationIntensity, duration)
                         .SetEase(easeType));
                 }
             }
@@ -335,20 +316,20 @@ namespace BeatKeeper
             // フィルムグレイン
             if (_filmGrain != null)
             {
-                _filmGrain.active = settings.enableFilmGrain;
-                if (settings.enableFilmGrain)
+                _filmGrain.active = settings.EnableFilmGrain;
+                if (settings.EnableFilmGrain)
                 {
                     effectSequence.Join(DOTween.To(() => _filmGrain.intensity.value, 
-                        x => _filmGrain.intensity.value = x, settings.filmGrainIntensity, duration)
+                        x => _filmGrain.intensity.value = x, settings.FilmGrainIntensity, duration)
                         .SetEase(easeType));
                 }
             }
             
             // カメラFOV
-            if (_mainCamera != null && settings.adjustCameraFov)
+            if (_mainCamera != null && settings.AdjustCameraFov)
             {
                 effectSequence.Join(DOTween.To(() => _mainCamera.fieldOfView, 
-                    x => _mainCamera.fieldOfView = x, settings.cameraFov, duration)
+                    x => _mainCamera.fieldOfView = x, settings.CameraFov, duration)
                     .SetEase(easeType));
             }
         }
@@ -472,11 +453,6 @@ namespace BeatKeeper
         /// <param name="easeType">イージングタイプ</param>
         public void ApplyPreset(EffectPresetEnum preset, float duration = 0.5f, Ease easeType = Ease.OutQuad)
         {
-            if (!_presets.ContainsKey(preset))
-            {
-                InitializePresets();
-            }
-            
             if (_presets.TryGetValue(preset, out var settings))
             {
                 ApplyEffectSettings(settings, duration, easeType);
