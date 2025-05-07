@@ -1,7 +1,7 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
     public class ComboSystem
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
     public interface IAttackable
     {

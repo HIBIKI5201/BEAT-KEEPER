@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34df18e16208c604e93eb2dcbb09baaf, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: bd4e20e81063a0f4fba6c6f476ab909c, type: 3}
+  m_Name: InGameData
   m_EditorClassIdentifier: 
-  _name: Player
-  _firstAttackPower: 100
-  _secondAttackPower: 100
-  _thirdAttackPower: 100
-  _resonanceRange: 0.5
-  _resonanceCriticalDamage: 1
-  _flowZoneThreshold: 10
-  _comboRisetTime: 3
+  _playerPrefab: {fileID: 8472192571253439788, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
+  _enemyPrefabs:
+  - {fileID: 8194842443545813967, guid: df5de4a5f97108445a02b8d856653449, type: 3}
