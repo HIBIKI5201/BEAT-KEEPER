@@ -368,7 +368,16 @@ MonoBehaviour:
   _emissionColor: {r: 0, g: 0.93405247, b: 1, a: 1}
   _lockOnColor: {r: 0, g: 1, b: 0, a: 1}
   _emissionIntensity: 3
+  _pulseSpeed: 2
+  _pulseMagnitude: 0.2
   _ambientLightParticle: {fileID: 1032582979}
+  _collectionParticle: {fileID: 0}
+  _playerAbsorbParticle: {fileID: 0}
+  _postProcessingVolume: {fileID: 1606521234}
+  _lockOnFovChange: 10
+  _collectionFovPulse: 15
+  _cameraShakeIntensity: 0.2
+  _cameraShakeDuration: 0.2
 --- !u!199 &1032582978
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5338,6 +5347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1606521235}
   - component: {fileID: 1606521234}
+  - component: {fileID: 1606521236}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -5377,6 +5387,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1606521236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606521233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27754cca75a4a3a4cba1adddaf680f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _globalVolume: {fileID: 1606521234}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

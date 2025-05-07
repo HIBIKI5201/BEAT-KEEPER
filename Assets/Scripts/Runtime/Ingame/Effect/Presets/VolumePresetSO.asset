@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fb1d59cc0bbd64b926bb01ee216a97, type: 3}
+  m_Name: VolumePresetSO
+  m_EditorClassIdentifier: 
+  presetEnumType: 8
+  settings:
+    enableVignette: 0
+    vignetteIntensity: 0.25
+    enableColorAdjustments: 0
+    saturation: 0
+    contrast: 0
+    colorFilter: {r: 1, g: 1, b: 1, a: 1}
+    enableDepthOfField: 0
+    focusDistance: 10
+    aperture: 5.6
+    focalLength: 50
+    enableLensDistortion: 0
+    lensDistortionIntensity: 0
+    enableBloom: 0
+    bloomIntensity: 1
+    bloomThreshold: 0.9
+    enableChromaticAberration: 0
+    chromaticAberrationIntensity: 0
+    enableFilmGrain: 0
+    filmGrainIntensity: 0
+    adjustCameraFov: 0
+    cameraFov: 60
