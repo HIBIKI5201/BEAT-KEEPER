@@ -1,4 +1,5 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Battle.Character.Player;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
-
+        private PlayerAnimeManager _animeManager;
+        
         private IAttackable _target;
         
         public ComboSystem ComboSystem => _comboSystem;
@@ -27,8 +29,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.Awake();
             
             _comboSystem = new ComboSystem(_data);
-            
-            tag = TagsEnum.Player.ToString();
+
+            if (TryGetComponent(out Animator animator))
+            {
+                _animeManager = new (animator);
+            }
+            else
+            {
+                Debug.LogWarning("Character animator component not found");
+            }
             
             #if UNITY_EDITOR
             OnResonanceHit += () => Debug.Log("Resonance Hit");
