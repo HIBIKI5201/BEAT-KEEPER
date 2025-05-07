@@ -64,11 +64,19 @@ namespace BeatKeeper.Runtime.Ingame.System
         private void StartBattlePhase(PhaseEnum phase)
         {
             Debug.Log("Starting battle phase");
+
+            if (0 < _inGameData.EnemyPrefabs.Count)
+            {
+                Instantiate(_inGameData.EnemyPrefabs[0]);
+            }
         }
 
         private void StartClearPhase()
         {
             Debug.Log("Starting clear phase");
         }
+        
+        [ContextMenu(nameof(StartBattlePhase))]
+        private void StartBattlePhase() => StartBattlePhase(PhaseEnum.Battle1);
     }
 }
