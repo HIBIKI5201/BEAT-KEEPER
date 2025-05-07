@@ -113,13 +113,11 @@ namespace BeatKeeper
 
         private void Start()
         {
-            // 全てのカメラを探し「MainCamera」タグがついているものを取得する（複数シーンを読み込んだ時別シーンにカメラがあるので、この方法をとっている）
-            var allCameras = Camera.allCameras;
-            _mainCamera = allCameras.FirstOrDefault(camera => camera.CompareTag("MainCamera"));
-            if (_mainCamera == null)
-            {
-                Debug.LogWarning("[VolumeController] カメラが見つかりませんでした。");
-            }
+             _mainCamera = Camera.main;
+             if (_mainCamera == null)
+             {
+                 Debug.LogWarning("[VolumeController] カメラが見つかりませんでした。");
+             }
         }
         
         #endregion

@@ -122,7 +122,7 @@ namespace BeatKeeper
             _rend.material.DOColor(_lockOnColor * _baseEmissionIntensity * 3, "_EmissionColor", 0.1f)
                 .OnComplete(() => {
                     // オブジェクトを非表示にする（パーティクルエフェクトが終わった後で消す）
-                    StartCoroutine(DelayedDestroy(2.0f));
+                    Destroy(gameObject, 2.0f);
                     _rend.enabled = false;
                 });
 
@@ -131,16 +131,6 @@ namespace BeatKeeper
         }
 
         #region privateの処理
-
-        /// <summary>
-        /// 一定時間後にオブジェクトを破棄するコルーチン
-        /// </summary>
-        private IEnumerator DelayedDestroy(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            Destroy(gameObject);
-        }
-
         /// <summary>
         /// オブジェクトを回転させるTween
         /// </summary>
