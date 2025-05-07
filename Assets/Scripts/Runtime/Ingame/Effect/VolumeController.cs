@@ -11,6 +11,7 @@ namespace BeatKeeper
     /// ポストプロセスエフェクトを制御するためのシングルトンクラス
     /// ゲーム全体で一箇所からエフェクトを制御できるようにする
     /// </summary>
+    [DefaultExecutionOrder(1010)]
     public class VolumeController : MonoBehaviour
     {
         [Header("ボリューム設定")]
@@ -59,13 +60,6 @@ namespace BeatKeeper
         /// </summary>
         private void Initialize()
         {
-            // メインカメラの取得
-            _mainCamera = Camera.main;
-            if (_mainCamera != null)
-            {
-                _defaultFov = _mainCamera.fieldOfView;
-            }
-            
             // グローバルボリュームがセットされていない場合は自動取得
             if (_globalVolume == null)
             {
@@ -80,6 +74,14 @@ namespace BeatKeeper
                     _globalVolume.isGlobal = true;
                 }
             }
+            
+            // メインカメラの取得
+            _mainCamera = Camera.main;
+            if (_mainCamera != null)
+            {
+                _defaultFov = _mainCamera.fieldOfView;
+            }
+            Debug.Log(_mainCamera.name);
             
             // ボリュームコンポーネントの参照を取得
             if (_globalVolume.profile != null)
@@ -456,6 +458,17 @@ namespace BeatKeeper
             if (_presets.TryGetValue(preset, out var settings))
             {
                 ApplyEffectSettings(settings, duration, easeType);
+            }
+        }
+
+        /// <summary>
+        /// カメラを揺らす
+        /// </summary>
+        public void CameraShake(float duration = 0.2f, float intensity = 0.2f)
+        {
+            if (_mainCamera != null && _mainCamera.transform != null)
+            {
+                _mainCamera.transform.DOShakePosition(duration, intensity);
             }
         }
         
