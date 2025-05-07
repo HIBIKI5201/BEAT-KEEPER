@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Linq;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -19,7 +21,9 @@ namespace BeatKeeper
         
         [Header("プリセット設定")]
         [SerializeField] private VolumePresetSO[] _presetAssets;
+        [SerializeField] private EffectPresetEnum _defaultPreset = EffectPresetEnum.Default;
         private Dictionary<EffectPresetEnum, EffectSettings> _presets = new Dictionary<EffectPresetEnum, EffectSettings>();
+        
         
         // ボリュームコンポーネントのキャッシュ
         private Vignette _vignette;
@@ -30,7 +34,7 @@ namespace BeatKeeper
         private ChromaticAberration _chromaticAberration;
         private FilmGrain _filmGrain;
         
-        // キャッシュしたデフォルト値
+        // デフォルト値
         private float _defaultVignetteIntensity;
         private float _defaultSaturation;
         private float _defaultContrast;
@@ -43,7 +47,7 @@ namespace BeatKeeper
         // 現在アクティブなTween（キャンセル用）
         private Dictionary<string, Sequence> _activeSequences = new Dictionary<string, Sequence>();
         
-        // カメラ関連
+        // カメラ
         private Camera _mainCamera;
         private float _defaultFov;
 
@@ -56,161 +60,106 @@ namespace BeatKeeper
         }
         
         /// <summary>
-        /// 初期化処理
+        /// 初期化処理のメインフロー
         /// </summary>
         private void Initialize()
         {
-            // グローバルボリュームがセットされていない場合は自動取得
-            if (_globalVolume == null)
-            {
-                _globalVolume = FindFirstObjectByType<Volume>();
-                
-                if (_globalVolume == null)
-                {
-                    Debug.LogWarning("[VolumeController] GlobalVolumeコンポーネントが見つかりません。新規作成します");
-                    
-                    // 自身のオブジェクトに新しいボリュームを追加
-                    _globalVolume = gameObject.AddComponent<Volume>();
-                    _globalVolume.isGlobal = true;
-                }
-            }
-            
-            // ボリュームコンポーネントの参照を取得
-            if (_globalVolume.profile != null)
-            {
-                // 各コンポーネントを取得
-                _globalVolume.profile.TryGet(out _vignette);
-                _globalVolume.profile.TryGet(out _colorAdjustments);
-                _globalVolume.profile.TryGet(out _depthOfField);
-                _globalVolume.profile.TryGet(out _lensDistortion);
-                _globalVolume.profile.TryGet(out _bloom);
-                _globalVolume.profile.TryGet(out _chromaticAberration);
-                _globalVolume.profile.TryGet(out _filmGrain);
-                
-                AddMissingComponents(); // 足りないコンポーネントは追加
-                CacheDefaultValues(); // デフォルト値を保存
-            }
-            
-            CreateVolumePresetDict();
+            InitializeGlobalVolume();
+            InitializeVolumeComponents();
+            CreateVolumePresetDictionary();
         }
 
         /// <summary>
+        /// グローバルボリュームの設定
+        /// </summary>
+        private void InitializeGlobalVolume()
+        {
+            if (_globalVolume != null) return;
+
+            _globalVolume = FindFirstObjectByType<Volume>();
+
+            if (_globalVolume == null)
+            {
+                // シーン内にVolumeコンポーネントがなかったら、自身のオブジェクトに新しいボリュームを追加
+                Debug.LogWarning("[VolumeController] GlobalVolumeコンポーネントが見つかりません。新規作成します");
+                _globalVolume = gameObject.AddComponent<Volume>();
+                _globalVolume.isGlobal = true;
+            }
+        }
+
+        /// <summary>
+        /// Volumeコンポーネントの参照を取得する
+        /// </summary>
+        private void InitializeVolumeComponents()
+        {
+            if (_globalVolume.profile == null) return;
+
+            InitializeVolumeComponent(ref _vignette, c =>
+                _defaultVignetteIntensity = c.intensity.value);
+
+            InitializeVolumeComponent(ref _colorAdjustments, c =>
+            {
+                _defaultSaturation = c.saturation.value;
+                _defaultContrast = c.contrast.value;
+            });
+
+            InitializeVolumeComponent(ref _depthOfField, c =>
+                _defaultDepthOfFieldFocusDistance = c.focusDistance.value);
+
+            InitializeVolumeComponent(ref _lensDistortion, c =>
+                _defaultLensDistortion = c.intensity.value);
+
+            InitializeVolumeComponent(ref _bloom, c =>
+                _defaultBloomIntensity = c.intensity.value);
+
+            InitializeVolumeComponent(ref _chromaticAberration, c =>
+                _defaultChromaticAberration = c.intensity.value);
+
+            InitializeVolumeComponent(ref _filmGrain, c =>
+                _defaultFilmGrainIntensity = c.intensity.value);
+        }
+        
+        /// <summary>
+        /// Volumeコンポーネントの初期化のためのメソッド
+        /// </summary>
+        private void InitializeVolumeComponent<T>(ref T component, Action<T> setUpAction = null) where T : VolumeComponent
+        {
+            if (!_globalVolume.profile.TryGet(out component))
+            {
+                component = _globalVolume.profile.Add<T>();
+            }
+            setUpAction?.Invoke(component);
+        }
+        
+        /// <summary>
         /// SerializeFieldに設定されたPresetの配列を元に辞書を作成する
         /// </summary>
-        private void CreateVolumePresetDict()
+        private void CreateVolumePresetDictionary()
         {
+            _presets.Clear();
             foreach (var preset in _presetAssets)
             {
                 _presets.Add(preset.PresetEnumType, preset.Settings);
             }
             
-            ApplyEffectSettings(_presets[EffectPresetEnum.Default], 0.1f); // 初期化
-        }
-        
-        /// <summary>
-        /// 足りないコンポーネントを追加
-        /// </summary>
-        private void AddMissingComponents()
-        {
-            if (_vignette == null)
-            {
-                _vignette = _globalVolume.profile.Add<Vignette>();
-                _vignette.intensity.Override(0.25f); // デフォルト値設定
-            }
-            
-            if (_colorAdjustments == null)
-            {
-                _colorAdjustments = _globalVolume.profile.Add<ColorAdjustments>();
-            }
-            
-            if (_depthOfField == null)
-            {
-                _depthOfField = _globalVolume.profile.Add<DepthOfField>();
-                _depthOfField.active = false; // デフォルトは無効
-            }
-            
-            if (_lensDistortion == null)
-            {
-                _lensDistortion = _globalVolume.profile.Add<LensDistortion>();
-                _lensDistortion.active = false; // デフォルトは無効
-            }
-            
-            if (_bloom == null)
-            {
-                _bloom = _globalVolume.profile.Add<Bloom>();
-            }
-            
-            if (_chromaticAberration == null)
-            {
-                _chromaticAberration = _globalVolume.profile.Add<ChromaticAberration>();
-                _chromaticAberration.active = false; // デフォルトは無効
-            }
-            
-            if (_filmGrain == null)
-            {
-                _filmGrain = _globalVolume.profile.Add<FilmGrain>();
-                _filmGrain.active = false; // デフォルトは無効
-            }
-        }
-        
-        /// <summary>
-        /// デフォルト値をキャッシュ
-        /// </summary>
-        private void CacheDefaultValues()
-        {
-            if (_vignette != null)
-            {
-                _defaultVignetteIntensity = _vignette.intensity.value;
-            }
-            
-            if (_colorAdjustments != null)
-            {
-                _defaultSaturation = _colorAdjustments.saturation.value;
-                _defaultContrast = _colorAdjustments.contrast.value;
-            }
-            
-            if (_bloom != null)
-            {
-                _defaultBloomIntensity = _bloom.intensity.value;
-            }
-            
-            if (_chromaticAberration != null)
-            {
-                _defaultChromaticAberration = _chromaticAberration.intensity.value;
-            }
-            
-            if (_lensDistortion != null)
-            {
-                _defaultLensDistortion = _lensDistortion.intensity.value;
-            }
-            
-            if (_filmGrain != null)
-            {
-                _defaultFilmGrainIntensity = _filmGrain.intensity.value;
-            }
-            
-            if (_depthOfField != null)
-            {
-                _defaultDepthOfFieldFocusDistance = _depthOfField.focusDistance.value;
-            }
+            ApplyEffectSettings(_presets[_defaultPreset], 0.1f); // 指定したデフォルトプリセットを適用
         }
 
         private void Start()
         {
-            // メインカメラの取得
-            Camera[] allCameras = Camera.allCameras;
-            foreach (var camera in allCameras)
+            // メインカメラの取得（複数シーンを読み込んだ時別シーンにカメラがあるので、この方法をとっている）
+            var allCameras = Camera.allCameras;
+    
+            _mainCamera = allCameras.FirstOrDefault(camera => camera.CompareTag("MainCamera"));
+    
+            if (_mainCamera == null && allCameras.Length > 0)
             {
-                if (camera.CompareTag("MainCamera"))
-                {
-                    _mainCamera = camera;
-                    break;
-                }
+                Debug.LogWarning("[VolumeController] MainCameraタグのカメラが見つかりませんでした。最初に見つかったカメラを使用します。");
+                _mainCamera = allCameras[0];
             }
         }
         
         #endregion
-        
         
         #region 効果適用メソッド
         
