@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Splines;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Approach
 {
     public class SplineSystem : MonoBehaviour
     {
