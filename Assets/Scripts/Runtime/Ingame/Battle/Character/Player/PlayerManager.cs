@@ -38,11 +38,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Character animator component not found");
             }
-            
-            #if UNITY_EDITOR
-            OnResonanceHit += () => Debug.Log("Resonance Hit");
-            _target = FindAnyObjectByType<TestEnemyManager>();
-            #endif
         }
 
         private void Start()
