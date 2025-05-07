@@ -9,7 +9,7 @@ namespace BeatKeeper
     public class VolumePresetSO : ScriptableObject
     {
         // プリセットの種類
-        [SerializeField] private EffectPresetEnum _presetEnumType = EffectPresetEnum.Custom;
+        [SerializeField] private EffectPresetEnum _presetEnumType = EffectPresetEnum.Default;
         public EffectPresetEnum PresetEnumType => _presetEnumType;
 
         // プリセットの設定
