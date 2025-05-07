@@ -67,7 +67,11 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             if (0 < _inGameData.EnemyPrefabs.Count)
             {
-                Instantiate(_inGameData.EnemyPrefabs[0]);
+                var enemy = Instantiate(_inGameData.EnemyPrefabs[0]);
+                if (enemy.TryGetComponent(out EnemyManager manager))
+                {
+                    _playerManager.SetTarget(manager);
+                }
             }
         }
 
