@@ -1,17 +1,20 @@
 using System;
 using BeatKeeper.Runtime.Ingame.Character;
+using Cysharp.Threading.Tasks;
+using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
+    [RequireComponent(typeof(PhaseManager))]
     public class InGameSystem : MonoBehaviour
     {
-        private PhaseEnum _phase;
-        public Action<PhaseEnum> OnPhaseChange;
-        
         [SerializeField]
         private InGameData _inGameData;
+        
+        private PhaseManager _phaseManager;
+        public PhaseManager PhaseManager => _phaseManager;
         
         private PlayerManager _playerManager;
         public PlayerManager PlayerManager => _playerManager;
@@ -20,6 +23,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
              SceneLoader.LoadScene(SceneListEnum.Stage.ToString());
 
+             _phaseManager = GetComponent<PhaseManager>();
+             
              if (_inGameData)
              {
                  if (_inGameData.PlayerPrefab)
@@ -35,29 +40,28 @@ namespace BeatKeeper.Runtime.Ingame.System
                      Debug.LogWarning($"Player Prefab not found");
                  }
              }
+
+             if (_phaseManager)
+             {
+                 _phaseManager.CurrentPhaseProp.Subscribe(e =>
+                 {
+                     switch (e)
+                     {
+                         case PhaseEnum.Approach: StartApproachPhase(); break;
+                         case PhaseEnum.Clear: StartClearPhase(); break;
+                         
+                         case PhaseEnum.Battle1:
+                         case PhaseEnum.Battle2:
+                         case PhaseEnum.Battle3:
+                             StartBattlePhase(e);
+                             break;
+                     }
+
+                 }).AddTo(destroyCancellationToken);
+             }
         }
 
-        public void PhaseStart(PhaseEnum phase)
-        {
-            switch (_phase)
-            {
-                case PhaseEnum.Approach:
-                    StartApproachPhase();
-                    break;
-                
-                case PhaseEnum.Battle1:
-                case PhaseEnum.Battle2:
-                case PhaseEnum.Battle3:
-                    StartBattlePhase(phase);
-                    break;
-                
-                case PhaseEnum.Clear:
-                    StartClearPhase();
-                    break;
-            }
-            
-            OnPhaseChange?.Invoke(phase);
-        }
+        public void PhaseStart(PhaseEnum phase) => _phaseManager.TransitionTo(phase);
 
         private void StartApproachPhase()
         {
