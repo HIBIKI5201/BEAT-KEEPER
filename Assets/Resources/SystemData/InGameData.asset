@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: InGameData
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 8472192571253439788, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
-  _enemyPrefabs: []
+  _enemyPrefabs:
+  - {fileID: 8194842443545813967, guid: df5de4a5f97108445a02b8d856653449, type: 3}
