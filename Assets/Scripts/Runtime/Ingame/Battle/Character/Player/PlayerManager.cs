@@ -106,7 +106,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isResonanceHit) OnResonanceHit?.Invoke();
             
             //コンボに応じたダメージ
-            var power = (_comboSystem.ComboCount % 3) switch
+            var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
             {
                 0 => _data.FirstAttackPower,
                 1 => _data.SecondAttackPower,
