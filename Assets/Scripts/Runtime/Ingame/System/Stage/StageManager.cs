@@ -5,7 +5,7 @@ using SymphonyFrameWork.System;
 using R3;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Stsge
 {
     public class StageManager : MonoBehaviour
     {

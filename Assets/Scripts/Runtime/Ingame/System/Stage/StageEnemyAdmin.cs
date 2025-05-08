@@ -2,7 +2,7 @@ using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Stsge
 {
     public class StageEnemyAdmin
     {
