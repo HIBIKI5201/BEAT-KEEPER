@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Character
 {
     public class SpecialSystem
     {
