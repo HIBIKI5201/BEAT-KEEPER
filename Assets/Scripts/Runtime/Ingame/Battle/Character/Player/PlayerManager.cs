@@ -15,13 +15,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private MusicEngineHelper _musicEngine;
         private PlayerAnimeManager _animeManager;
         
-        private IAttackable _target;
+        private IEnemy _target;
         
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
-
-        private float _specialEnergy;
-
+        
+        public SpecialSystem SpecialSystem => _specialSystem;
+        private SpecialSystem _specialSystem;
+        
         public event Action OnResonanceHit;
         
         protected override void Awake()
@@ -84,9 +85,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem.ComboReset();
         }
         
-        public void SetTarget(IAttackable target) => _target = target;
-        
-        public void AddSpecialEnergy(float energy) => _specialEnergy = Mathf.Clamp(_specialEnergy + energy, 0, 1);
+        public void SetTarget(IEnemy target) => _target = target;
 
         /// <summary>
         ///     コンボ攻撃を行う
@@ -125,7 +124,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             //スペシャルエネルギーを5%増加
             if (isResonanceHit)
-                AddSpecialEnergy(0.05f);
+                _specialSystem.AddSpecialEnergy(0.05f);
         }
 
         /// <summary>
@@ -149,11 +148,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
             
-            if (1 <= _specialEnergy)
+            if (1 <= _specialSystem.SpecialEnergy)
             {
-                _specialEnergy = 0;
-                
-                //ダメージを与える
+                _specialSystem.ResetSpecialEnergy();
                 _target.HitAttack(2000);
             }
         }
@@ -177,6 +174,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
         
         [ContextMenu(nameof(AddSpecialEnergy))]
-        private void AddSpecialEnergy() => AddSpecialEnergy(1);
+        private void AddSpecialEnergy() => _specialSystem.AddSpecialEnergy(1);
     }
 }
