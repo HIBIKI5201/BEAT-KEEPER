@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace BeatKeeper
 {
-    public interface IEnemy
+    public interface IEnemy : IAttackable
     {
         public EnemyData EnemyData { get; }
-        
-        public void HitAttack(float damage);
     }
 }
