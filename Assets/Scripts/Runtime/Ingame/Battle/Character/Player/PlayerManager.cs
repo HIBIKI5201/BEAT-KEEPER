@@ -1,5 +1,4 @@
 using System;
-using BeatKeeper.Runtime.Ingame.Battle.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
