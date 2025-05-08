@@ -9,23 +9,20 @@ namespace BeatKeeper
 {
     public class StageManager : MonoBehaviour
     {
-        private void Start()
-        {
-            var system = ServiceLocator.GetInstance<InGameSystem>();
-            system.PhaseManager.CurrentPhaseProp
-                .Subscribe(OnBattle)
-                .AddTo(destroyCancellationToken);
-        }
+        private StageEnemyAdmin _enemyAdmin;
+        
+        [SerializeField]
+        private Transform _enemiesParent;
 
-        private void OnBattle(PhaseEnum phase)
+        private void Awake()
         {
-            switch (phase)
+            if (_enemiesParent)
             {
-                case PhaseEnum.Battle1: 
-                case PhaseEnum.Battle2:
-                case PhaseEnum.Battle3:
-                
-                    break;
+                _enemyAdmin = new (_enemiesParent);
+            }
+            else
+            {
+                Debug.LogWarning("EnemiesParent is null");
             }
         }
     }
