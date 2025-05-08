@@ -203,28 +203,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 154410670}
-  - component: {fileID: 154410669}
+  - component: {fileID: 154410672}
   - component: {fileID: 154410671}
   m_Layer: 0
-  m_Name: InGameSystem
+  m_Name: PhaseManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!114 &154410669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154410668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5577a9c7e6f293c4ab35e2c00719a500, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inGameData: {fileID: 11400000, guid: 7f803fed28cd3864b87d94d5434ba518, type: 2}
 --- !u!4 &154410670
 Transform:
   m_ObjectHideFlags: 0
@@ -252,7 +239,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 154410669}
+  _target: {fileID: 154410672}
+--- !u!114 &154410672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154410668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b592e2e00cec444886cc9b1e9d437a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firstPhase: 0
 --- !u!1001 &692709918
 PrefabInstance:
   m_ObjectHideFlags: 0
