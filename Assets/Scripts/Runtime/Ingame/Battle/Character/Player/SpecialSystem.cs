@@ -1,14 +1,15 @@
+using R3;
 using UnityEngine;
 
 namespace BeatKeeper
 {
     public class SpecialSystem
     {
-        public float SpecialEnergy => _specialEnergy;
-        private float _specialEnergy;
+        public ReadOnlyReactiveProperty<float> SpecialEnergy => _specialEnergy;
+        private ReactiveProperty<float> _specialEnergy = new();
         
-        public void AddSpecialEnergy(float energy) => _specialEnergy = Mathf.Clamp(_specialEnergy + energy, 0, 1);
+        public void AddSpecialEnergy(float energy) => _specialEnergy.Value = Mathf.Clamp(_specialEnergy.Value + energy, 0, 1);
         
-        public void ResetSpecialEnergy() => _specialEnergy = 0;
+        public void ResetSpecialEnergy() => _specialEnergy.Value = 0;
     }
 }

@@ -148,7 +148,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
             
-            if (1 <= _specialSystem.SpecialEnergy)
+            if (1 <= _specialSystem.SpecialEnergy.CurrentValue)
             {
                 _specialSystem.ResetSpecialEnergy();
                 _target.HitAttack(2000);
