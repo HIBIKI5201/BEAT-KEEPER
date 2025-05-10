@@ -20,6 +20,7 @@ namespace BeatKeeper
 
         private void Awake()
         {
+            ServiceLocator.SetInstance(this);
             TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
         

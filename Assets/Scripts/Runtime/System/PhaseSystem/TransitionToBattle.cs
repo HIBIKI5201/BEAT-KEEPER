@@ -1,4 +1,3 @@
-using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
@@ -24,13 +23,13 @@ namespace BeatKeeper
         private float _defaultTextPosY;
         
         private PhaseEnum _nextPhase;
-        private InGameSystem _inGameSystem;
+        private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
 
         private void Start()
         {
-            _inGameSystem = ServiceLocator.GetInstance<InGameSystem>();
+            _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             
             _defaultTextPosY = _encountText.position.y;
@@ -102,7 +101,7 @@ namespace BeatKeeper
         /// </summary>
         private void ActivateBattlePhase()
         {
-            _inGameSystem.PhaseStart(PhaseEnum.Battle1);
+            _phaseManager.TransitionTo(PhaseEnum.Battle1);
             _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
 

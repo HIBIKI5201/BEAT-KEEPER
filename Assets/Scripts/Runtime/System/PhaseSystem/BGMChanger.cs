@@ -1,9 +1,8 @@
-using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper.Runtime.Ingame.System
+namespace BeatKeeper
 {
     /// <summary>
     /// フェーズ情報を元にBGMを変更するためのクラス
