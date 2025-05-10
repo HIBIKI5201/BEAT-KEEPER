@@ -3,20 +3,20 @@ using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     /// フェーズ情報を元にBGMを変更するためのクラス
     /// </summary>
     public class BGMChanger : MonoBehaviour
     {
-        private InGameSystem _inGameSystem;
+        private PhaseManager _phaseManager;
         private CompositeDisposable _disposable = new CompositeDisposable();
         
         private void Start()
         {
-            _inGameSystem = ServiceLocator.GetInstance<InGameSystem>();
-            _inGameSystem.PhaseManager.CurrentPhaseProp
+            _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            _phaseManager.CurrentPhaseProp
                 .Subscribe(OnPhaseChanged)
                 .AddTo(_disposable);
         }
