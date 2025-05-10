@@ -56,7 +56,7 @@ namespace BeatKeeper
                 return 1.0f;
             }
 
-            int currentCombo = _playerManager.ComboSystem.ComboCount;
+            int currentCombo = _playerManager.ComboSystem.ComboCount.CurrentValue;
             return _comboBonusData.GetBonusMultiplier(currentCombo);
         }
         

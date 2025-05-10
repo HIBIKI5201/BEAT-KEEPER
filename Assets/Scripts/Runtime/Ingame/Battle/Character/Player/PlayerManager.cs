@@ -1,5 +1,4 @@
 using System;
-using BeatKeeper.Runtime.Ingame.Battle.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,13 +14,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private MusicEngineHelper _musicEngine;
         private PlayerAnimeManager _animeManager;
         
-        private IAttackable _target;
+        private IEnemy _target;
         
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
-
-        private float _specialEnergy;
-
+        
+        public SpecialSystem SpecialSystem => _specialSystem;
+        private SpecialSystem _specialSystem;
+        
         public event Action OnResonanceHit;
         
         protected override void Awake()
@@ -84,9 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem.ComboReset();
         }
         
-        public void SetTarget(IAttackable target) => _target = target;
-        
-        public void AddSpecialEnergy(float energy) => _specialEnergy = Mathf.Clamp(_specialEnergy + energy, 0, 1);
+        public void SetTarget(IEnemy target) => _target = target;
 
         /// <summary>
         ///     コンボ攻撃を行う
@@ -107,7 +105,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isResonanceHit) OnResonanceHit?.Invoke();
             
             //コンボに応じたダメージ
-            var power = (_comboSystem.ComboCount % 3) switch
+            var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
             {
                 0 => _data.FirstAttackPower,
                 1 => _data.SecondAttackPower,
@@ -125,7 +123,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             //スペシャルエネルギーを5%増加
             if (isResonanceHit)
-                AddSpecialEnergy(0.05f);
+                _specialSystem.AddSpecialEnergy(0.05f);
         }
 
         /// <summary>
@@ -149,11 +147,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
             
-            if (1 <= _specialEnergy)
+            if (1 <= _specialSystem.SpecialEnergy.CurrentValue)
             {
-                _specialEnergy = 0;
-                
-                //ダメージを与える
+                _specialSystem.ResetSpecialEnergy();
                 _target.HitAttack(2000);
             }
         }
@@ -173,10 +169,27 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAvoid(InputAction.CallbackContext context)
         {
+            var timing = _musicEngine.GetCurrentTiming() switch
+            {
+                var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
+            };
+
+            //nターン後までに攻撃があるかどうか
+            bool willAttack = false;
+            for (int i = 0; i < 3; i++)
+            {
+                willAttack |= _target.EnemyData.Beat[timing + i];
+            }
+
+            if (willAttack)
+            {
+                Debug.Log($"Enemy will be attack player");
+            }
+            
             Debug.Log($"{_data.Name} is avoiding");
         }
         
         [ContextMenu(nameof(AddSpecialEnergy))]
-        private void AddSpecialEnergy() => AddSpecialEnergy(1);
+        private void AddSpecialEnergy() => _specialSystem.AddSpecialEnergy(1);
     }
 }

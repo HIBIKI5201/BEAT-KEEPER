@@ -1,4 +1,5 @@
 using BeatKeeper.Runtime.Ingame.Character;
+using R3;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -7,8 +8,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         private PlayerData _data;
         
-        public int ComboCount => _comboCount;
-        private int _comboCount;
+        public ReadOnlyReactiveProperty<int> ComboCount => _comboCount;
+        private ReactiveProperty<int> _comboCount = new();
         
         private float _lastAttackTime = Time.time;
 
@@ -19,14 +20,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void Attack()
         {
-            _comboCount++;
+            _comboCount.Value++;
             _lastAttackTime = Time.time;
         }
 
         /// <summary>
         ///     コンボをリセットする
         /// </summary>
-        public void ComboReset() => _comboCount = 0;
+        public void ComboReset() => _comboCount.Value = 0;
 
         public void Update()
         {

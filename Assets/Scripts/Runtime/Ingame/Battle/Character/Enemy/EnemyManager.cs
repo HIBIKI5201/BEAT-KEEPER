@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
-    public class EnemyManager : CharacterManagerB<EnemyData>, IDisposable
+    public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
+        EnemyData IEnemy.EnemyData => _data;
+        
         private MusicEngineHelper _musicEngine;
         private EnemyAnimeManager _animeManager;
 
@@ -51,6 +53,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _musicEngine.OnJustChangedBeat -= OnAttack;
             }
         }
+
 
         public override async void HitAttack(float damage)
         {
