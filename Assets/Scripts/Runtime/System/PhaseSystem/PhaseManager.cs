@@ -1,5 +1,4 @@
 using R3;
-using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -20,7 +19,6 @@ namespace BeatKeeper
 
         private void Awake()
         {
-            ServiceLocator.SetInstance(this);
             TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
         

@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
