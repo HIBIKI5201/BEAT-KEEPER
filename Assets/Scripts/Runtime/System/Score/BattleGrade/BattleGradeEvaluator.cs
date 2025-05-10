@@ -21,6 +21,12 @@ namespace BeatKeeper
         }
 
         /// <summary>
+        /// 今回のバトルで獲得したスコアを取得する
+        /// </summary>
+        /// <returns></returns>
+        public int CalculateBattleScore() => _scoreManager.CalculateBattleScore();
+
+        /// <summary>
         /// バトルランクを計算する
         /// TODO: クリアフェーズで使用する
         /// </summary>
