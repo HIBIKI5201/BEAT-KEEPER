@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,8 @@ namespace BeatKeeper
         public void Show()
         {
             DataSet();
-            _canvasGroup.alpha = 1;
+            _canvasGroup.DOFade(1, 1f);
+            _canvasGroup.transform.DOLocalMoveX(-100, 1f);
         }
 
         /// <summary>
@@ -29,15 +31,17 @@ namespace BeatKeeper
         {
             int score = _battleGradeEvaluator.CalculateBattleScore(); // 今回のバトルのスコア
             _rankText.text = _battleGradeEvaluator.EvaluateRank().ToString();
-            _scoreText.text = $"score {score} !!!";
+            DOTween.To(() => 0, 
+                x =>  _scoreText.text = $"score {Mathf.FloorToInt(x).ToString()} !!!",
+                score, 2f).SetEase(Ease.OutQuad);
         }
-        
         /// <summary>
         /// 非表示にする
         /// </summary>
         public void Hide()
         {
-            _canvasGroup.alpha = 0;
+            _canvasGroup.DOFade(0, 0.5f);
+            _canvasGroup.transform.DOLocalMoveX(0, 0.5f);
         }
     }
 }
