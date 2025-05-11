@@ -24,7 +24,7 @@ namespace BeatKeeper
         /// <summary>
         /// ゲージを更新する
         /// </summary>
-        public void FillUpdate(float value)
+        private void FillUpdate(float value)
         {
             _image.fillAmount = value;
         }
