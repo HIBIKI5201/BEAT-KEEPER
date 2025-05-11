@@ -1,5 +1,4 @@
 using SymphonyFrameWork.System;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -9,10 +8,8 @@ namespace BeatKeeper
     /// </summary>
     public class ClearPhaseManager : MonoBehaviour
     {
-        [SerializeField] private CinemachineCamera _camera;
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
-        
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;

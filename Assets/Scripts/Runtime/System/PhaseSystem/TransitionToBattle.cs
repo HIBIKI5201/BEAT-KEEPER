@@ -1,7 +1,6 @@
 using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using SymphonyFrameWork.System;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -12,14 +11,10 @@ namespace BeatKeeper
     public class TransitionToBattle : MonoBehaviour
     {
         [SerializeField] private BGMChanger _bgmChanger;
-        
-        [Header("シーンオブジェクト参照")] 
-        [SerializeField] private Transform _player;
-        [SerializeField] private Transform _enemy;
+        [SerializeField] private CameraManager _cameraManager;
         
         // 仮
         [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
-        [SerializeField] private CinemachineCamera _camera;
         [SerializeField] private Transform _encountText;
         private float _defaultTextPosY;
         
@@ -34,14 +29,9 @@ namespace BeatKeeper
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             
             _defaultTextPosY = _encountText.position.y;
-            _camera.Follow = _player;
+            _cameraManager.CameraChange(CameraAim.Player);
             TransitionStart(_startPhase); //TODO: テスト用。アプローチフェーズの処理と連携して呼び出すようにしたい
         }
-
-        /// <summary>
-        /// 敵の参照を設定する
-        /// </summary>
-        public void SetEnemyRef(Transform enemy) => _enemy = enemy;
 
         /// <summary>
         /// 遷移処理を開始する
@@ -73,7 +63,7 @@ namespace BeatKeeper
         /// </summary>
         private void ZoomInOnEnemy()
         {
-            _camera.Follow = _enemy;
+            _cameraManager.CameraChange(CameraAim.FirstBattleEnemy);
             _encountText.DOLocalMoveY(400f, 0.5f); // 遭遇UIを上からスライド
         }
         
@@ -82,7 +72,7 @@ namespace BeatKeeper
         /// </summary>
         private void PrepareForBattle()
         {
-            _camera.Follow = _player;
+            _cameraManager.CameraChange(CameraAim.Player);
             _encountText.gameObject.SetActive(false); // 遭遇UIを非表示に
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
             // プレイヤーの着地アニメーション再生

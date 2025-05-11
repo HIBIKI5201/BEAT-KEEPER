@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BeatKeeper
 {
@@ -11,7 +12,7 @@ namespace BeatKeeper
         [SerializeField] private CinemachineCamera _camera;
         [SerializeField] private Transform _playerCameraTarget; // プレイヤーのカメラターゲット
         [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
-        [SerializeField] private Transform[] _nextEnemyCameraTarget; // 次に出現する敵のカメラターゲット 
+        [SerializeField] private Transform[] _enemyCameraTarget; // 次に出現する敵のカメラターゲット 
         
         /// <summary>
         /// プレイヤーとNPCのカメラを切り替える
@@ -23,7 +24,8 @@ namespace BeatKeeper
             {
                 CameraAim.Player => _playerCameraTarget,
                 CameraAim.NPC1 => _npcCameraTarget[0],
-                CameraAim.SecondBattleEnemy => _nextEnemyCameraTarget[0],
+                CameraAim.FirstBattleEnemy => _enemyCameraTarget[0],
+                CameraAim.SecondBattleEnemy => _enemyCameraTarget[1],
             };
             
             _camera.Follow = target;
@@ -36,6 +38,7 @@ namespace BeatKeeper
         NPC1,
         NPC2,
         NPC3,
+        FirstBattleEnemy,
         SecondBattleEnemy,
         ThirdBattleEnemy,
     }
