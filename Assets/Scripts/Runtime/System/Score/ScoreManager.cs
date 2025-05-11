@@ -15,6 +15,12 @@ namespace BeatKeeper
         public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;
         private readonly ReactiveProperty<int> _scoreProp = new ReactiveProperty<int>(0);
         public int Score => _scoreProp.Value;
+        
+        /// <summary>
+        /// コンボによるスコアボーナス倍率
+        /// </summary>
+        public ReadOnlyReactiveProperty<float> BonusMultiply => _bonusMultiply;
+        private readonly ReactiveProperty<float> _bonusMultiply = new ReactiveProperty<float>(0);
 
         private int _preBattleScore = 0; // バトルが始まる直前のスコア（バトルグレードの判定用）
 
@@ -57,12 +63,13 @@ namespace BeatKeeper
             }
 
             int currentCombo = _playerManager.ComboSystem.ComboCount.CurrentValue;
-            return _comboBonusData.GetBonusMultiplier(currentCombo);
+            float bonusMultiply = _comboBonusData.GetBonusMultiplier(currentCombo);
+            _bonusMultiply.Value = bonusMultiply; // スコア倍率のリアクティブプロパティを更新
+            return bonusMultiply;
         }
         
         /// <summary>
         /// バトル開始時にスコアを保存する
-        /// TODO: バトルフェーズ開始タイミングで呼び出したい
         /// </summary>
         public void SavePreBattleScore()
         {
@@ -81,7 +88,6 @@ namespace BeatKeeper
 
         /// <summary>
         /// スコアをリセットする
-        /// TODO: インゲーム終了後に呼び出す（シーンの切り替えがあるなら不要）
         /// </summary>
         public void ResetScore()
         {

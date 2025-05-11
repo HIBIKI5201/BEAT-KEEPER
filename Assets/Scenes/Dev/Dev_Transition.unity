@@ -802,22 +802,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: Volume
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: PlayOnStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: SectionTransitionOverrides.Array.data[0].Transition.FadeInTime
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: SectionTransitionOverrides.Array.data[0].Transition.FadeOutTime
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
       propertyPath: m_Name
       value: MusicEngineCore
@@ -1214,7 +1198,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1451943330}
   - component: {fileID: 1451943329}
-  - component: {fileID: 1451943328}
   - component: {fileID: 1451943331}
   m_Layer: 0
   m_Name: InGameSystem
@@ -1223,19 +1206,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1451943328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451943327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5577a9c7e6f293c4ab35e2c00719a500, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inGameData: {fileID: 11400000, guid: 7f803fed28cd3864b87d94d5434ba518, type: 2}
 --- !u!114 &1451943329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1277,11 +1247,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgmChanger: {fileID: 1918585414}
-  _player: {fileID: 1227550611}
-  _enemy: {fileID: 3326554}
+  _cameraManager: {fileID: 0}
+  _uiManager: {fileID: 0}
+  _enemyMove: {fileID: 0}
   _startPhase: 1
-  _camera: {fileID: 1207030175}
-  _encountText: {fileID: 306711385}
 --- !u!1001 &1859846723
 PrefabInstance:
   m_ObjectHideFlags: 0

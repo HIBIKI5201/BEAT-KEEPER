@@ -1,26 +1,22 @@
 using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using SymphonyFrameWork.System;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace BeatKeeper
 {
     /// <summary>
-    /// アプローチフェーズからバトルフェーズへの遷移処理
+    /// 開始演出
     /// </summary>
-    public class TransitionToBattle : MonoBehaviour
+    public class StartPerformance : MonoBehaviour
     {
         [SerializeField] private BGMChanger _bgmChanger;
-        
-        [Header("シーンオブジェクト参照")] 
-        [SerializeField] private Transform _player;
-        [SerializeField] private Transform _enemy;
+        [SerializeField] private CameraManager _cameraManager;
+        [SerializeField] private InGameUIManager _uiManager;
+        [SerializeField] private Tmp_EnemyMove _enemyMove;
         
         // 仮
         [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
-        [SerializeField] private CinemachineCamera _camera;
-        [SerializeField] private Transform _encountText;
         private float _defaultTextPosY;
         
         private PhaseEnum _nextPhase;
@@ -32,16 +28,10 @@ namespace BeatKeeper
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
-            
-            _defaultTextPosY = _encountText.position.y;
-            _camera.Follow = _player;
+            _cameraManager.ChangeCamera(CameraType.StartPerformance);
+            _cameraManager.ChangeTarget(CameraAim.Player);
             TransitionStart(_startPhase); //TODO: テスト用。アプローチフェーズの処理と連携して呼び出すようにしたい
         }
-
-        /// <summary>
-        /// 敵の参照を設定する
-        /// </summary>
-        public void SetEnemyRef(Transform enemy) => _enemy = enemy;
 
         /// <summary>
         /// 遷移処理を開始する
@@ -50,10 +40,6 @@ namespace BeatKeeper
         {
             _musicEngineHelper.OnJustChangedBar += Counter;
             _nextPhase = nextPhase;
-            
-            //TODO: 後で消す。テキスト
-            _encountText.position = new Vector3(_encountText.position.x, _defaultTextPosY, _encountText.position.z);
-            _encountText.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -73,8 +59,8 @@ namespace BeatKeeper
         /// </summary>
         private void ZoomInOnEnemy()
         {
-            _camera.Follow = _enemy;
-            _encountText.DOLocalMoveY(400f, 0.5f); // 遭遇UIを上からスライド
+            _cameraManager.ChangeTarget(CameraAim.FirstBattleEnemy);
+            _uiManager.ShowEncounterText(1); // 遭遇時のテキストを表示する
         }
         
         /// <summary>
@@ -82,11 +68,13 @@ namespace BeatKeeper
         /// </summary>
         private void PrepareForBattle()
         {
-            _camera.Follow = _player;
-            _encountText.gameObject.SetActive(false); // 遭遇UIを非表示に
+            _cameraManager.ChangeCamera(CameraType.PlayerTPS);
+            _cameraManager.ChangeTarget(CameraAim.Player);
+            _uiManager.HideEncounterText(); // 遭遇時のテキストを非表示にする
+            _uiManager.BattleStart(); // バトルUIを表示する
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
             // プレイヤーの着地アニメーション再生
-            // 敵がNPCから離れてバトルの初期位置まで移動する
+            _enemyMove.MoveStart(); // 敵がNPCから離れてバトルの初期位置まで移動する
         }
         
         /// <summary>
