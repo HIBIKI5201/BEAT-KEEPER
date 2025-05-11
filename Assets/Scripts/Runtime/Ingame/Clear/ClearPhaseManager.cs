@@ -10,6 +10,7 @@ namespace BeatKeeper
     {
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
+        [SerializeField] private InGameUIManager _uiManager;
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
@@ -39,6 +40,7 @@ namespace BeatKeeper
             {
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
+                _uiManager.BattleEnd();
                 _cameraManager.CameraChange(CameraAim.NPC1);
             }
             else if (_count == 5)

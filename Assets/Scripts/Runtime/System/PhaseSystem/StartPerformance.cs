@@ -68,6 +68,7 @@ namespace BeatKeeper
         {
             _cameraManager.CameraChange(CameraAim.Player);
             _uiManager.HideEncounterText(); // 遭遇時のテキストを非表示にする
+            _uiManager.BattleStart(); // バトルUIを表示する
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
             // プレイヤーの着地アニメーション再生
             // 敵がNPCから離れてバトルの初期位置まで移動する

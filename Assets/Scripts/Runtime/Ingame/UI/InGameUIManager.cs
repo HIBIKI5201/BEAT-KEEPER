@@ -12,6 +12,7 @@ namespace BeatKeeper
 
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
+        [SerializeField] private UIElement_SpecialMoveIcon _specialMoveIcon;
         
         private void Start()
         {
@@ -60,6 +61,11 @@ namespace BeatKeeper
                 canvasController.Hide();
             }
         }
+
+        /// <summary>
+        /// 必殺技ゲージを更新する
+        /// </summary>
+        public void SpecialMove(float value) => _specialMoveIcon.FillUpdate(value);
 
         #endregion
     }
