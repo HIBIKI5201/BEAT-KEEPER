@@ -6,16 +6,16 @@ using UnityEngine;
 namespace BeatKeeper
 {
     /// <summary>
-    /// アプローチフェーズからバトルフェーズへの遷移処理
+    /// 開始演出
     /// </summary>
-    public class TransitionToBattle : MonoBehaviour
+    public class StartPerformance : MonoBehaviour
     {
         [SerializeField] private BGMChanger _bgmChanger;
         [SerializeField] private CameraManager _cameraManager;
+        [SerializeField] private InGameUIManager _uiManager;
         
         // 仮
         [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
-        [SerializeField] private Transform _encountText;
         private float _defaultTextPosY;
         
         private PhaseEnum _nextPhase;
@@ -27,8 +27,6 @@ namespace BeatKeeper
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
-            
-            _defaultTextPosY = _encountText.position.y;
             _cameraManager.CameraChange(CameraAim.Player);
             TransitionStart(_startPhase); //TODO: テスト用。アプローチフェーズの処理と連携して呼び出すようにしたい
         }
@@ -40,10 +38,6 @@ namespace BeatKeeper
         {
             _musicEngineHelper.OnJustChangedBar += Counter;
             _nextPhase = nextPhase;
-            
-            //TODO: 後で消す。テキスト
-            _encountText.position = new Vector3(_encountText.position.x, _defaultTextPosY, _encountText.position.z);
-            _encountText.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -64,7 +58,7 @@ namespace BeatKeeper
         private void ZoomInOnEnemy()
         {
             _cameraManager.CameraChange(CameraAim.FirstBattleEnemy);
-            _encountText.DOLocalMoveY(400f, 0.5f); // 遭遇UIを上からスライド
+            _uiManager.ShowEncounterText(1); // 遭遇時のテキストを表示する
         }
         
         /// <summary>
@@ -73,7 +67,7 @@ namespace BeatKeeper
         private void PrepareForBattle()
         {
             _cameraManager.CameraChange(CameraAim.Player);
-            _encountText.gameObject.SetActive(false); // 遭遇UIを非表示に
+            _uiManager.HideEncounterText(); // 遭遇時のテキストを非表示にする
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
             // プレイヤーの着地アニメーション再生
             // 敵がNPCから離れてバトルの初期位置まで移動する
