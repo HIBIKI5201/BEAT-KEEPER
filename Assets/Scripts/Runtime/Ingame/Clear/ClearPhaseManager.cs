@@ -1,5 +1,4 @@
 using SymphonyFrameWork.System;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -9,12 +8,10 @@ namespace BeatKeeper
     /// </summary>
     public class ClearPhaseManager : MonoBehaviour
     {
-        [SerializeField] private CinemachineCamera _camera;
+        [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
-        [SerializeField] private Transform _playerCameraTarget; // プレイヤーのカメラターゲット
-        [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
-        [SerializeField] private Transform[] _nextEnemyCameraTarget; // 次に出現する敵のカメラターゲット 
-        
+        [SerializeField] private InGameUIManager _uiManager;
+        [SerializeField] private GameObject[] _enemies;
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
@@ -24,8 +21,6 @@ namespace BeatKeeper
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _battleResultController.Hide(); // 最初は表示しないようにする
-            
-            ClearPhaseStart(); // TODO: 現在テスト用にStart関数から呼んでいるが、フィニッシャー終了時に呼ぶようにしてほしい
         }
 
         /// <summary>
@@ -34,6 +29,7 @@ namespace BeatKeeper
         public void ClearPhaseStart()
         {
             _musicEngineHelper.OnJustChangedBar += Counter;
+            _enemies[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
         
         /// <summary>
@@ -46,7 +42,8 @@ namespace BeatKeeper
             {
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
-                CameraChange(CameraAim.NPC1);
+                _uiManager.BattleEnd();
+                _cameraManager.ChangeTarget(CameraAim.NPC1);
             }
             else if (_count == 5)
             {
@@ -55,13 +52,14 @@ namespace BeatKeeper
             }
             else if (_count == 9)
             {
-                // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
-                CameraChange(CameraAim.SecondBattleEnemy);
+                _enemies[1].gameObject.SetActive(true); // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
+                _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
             }
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
-                CameraChange(CameraAim.Player);
+                _uiManager.BattleStart();
+                _cameraManager.ChangeTarget(CameraAim.Player);
             }
             else if (_count == 17)
             {
@@ -85,22 +83,6 @@ namespace BeatKeeper
         {
             _battleResultController.Hide();
         }
-
-        /// <summary>
-        /// プレイヤーとNPCのカメラを切り替える
-        /// </summary>
-        private void CameraChange(CameraAim targetName)
-        {
-            // 引数で指定されたターゲットにカメラを向ける
-            Transform target = targetName switch
-            {
-                CameraAim.Player => _playerCameraTarget,
-                CameraAim.NPC1 => _npcCameraTarget[0],
-                CameraAim.SecondBattleEnemy => _nextEnemyCameraTarget[0],
-            };
-            
-            _camera.Follow = target;
-        }
         
         /// <summary>
         /// バトルフェーズに移行する
@@ -114,16 +96,6 @@ namespace BeatKeeper
         private void OnDestroy()
         {
             _musicEngineHelper.OnJustChangedBar -= Counter;
-        }
-        
-        private enum CameraAim
-        {
-            Player,
-            NPC1,
-            NPC2,
-            NPC3,
-            SecondBattleEnemy,
-            ThirdBattleEnemy,
         }
     }
 }
