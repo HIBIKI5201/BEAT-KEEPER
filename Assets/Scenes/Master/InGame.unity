@@ -1796,6 +1796,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1323604299}
     - target: {fileID: 5406587513857687177, guid: e8d90cb52f46e754dbc5ee6fbb4445ba, type: 3}
+      propertyPath: _encounterText
+      value: 
+      objectReference: {fileID: 1196260218}
+    - target: {fileID: 5406587513857687177, guid: e8d90cb52f46e754dbc5ee6fbb4445ba, type: 3}
       propertyPath: _enemies.Array.size
       value: 2
       objectReference: {fileID: 0}
