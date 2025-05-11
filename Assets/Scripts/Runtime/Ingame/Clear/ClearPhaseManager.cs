@@ -1,3 +1,4 @@
+using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -12,7 +13,8 @@ namespace BeatKeeper
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
         [SerializeField] private InGameUIManager _uiManager;
-        [SerializeField] private GameObject[] _enemies;
+        [SerializeField] private GameObject[] _objects;
+        [SerializeField] private Vector3[] _positions;
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
@@ -33,7 +35,7 @@ namespace BeatKeeper
         public void ClearPhaseStart()
         {
             _musicEngineHelper.OnJustChangedBar += Counter;
-            _enemies[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
+            _objects[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
         
         /// <summary>
@@ -57,14 +59,18 @@ namespace BeatKeeper
             }
             else if (_count == 9)
             {
-                _enemies[1].gameObject.SetActive(true); // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
-                _cameraManager.ChangeCamera(CameraType.StartPerformance);
+                _objects[1].gameObject.SetActive(true); // 次の敵が出現
+                _objects[2].gameObject.SetActive(true); 
+                _objects[2].transform.DOMove(_positions[0], 4f); // NPCを追いかけている状態
+                _cameraManager.ChangeCamera(CameraType.StartPerformance); // カメラを向ける
                 _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
             }
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
                 _uiManager.BattleStart();
+                _objects[1].transform.DOMove(_positions[1], 4f); // 敵が戦闘位置まで移動
+                _objects[3].transform.LookAt(_objects[1].transform); // プレイヤーを次の敵の方に向かせる
                 _cameraManager.ChangeCamera(CameraType.PlayerTPS);
                 _cameraManager.ChangeTarget(CameraAim.Player);
             }
