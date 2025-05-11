@@ -13,6 +13,7 @@ namespace BeatKeeper
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
         [SerializeField] private UIElement_ScoreText _scoreText;
+        [SerializeField] private UIElement_SeekBar _seekBar;
         
         private void Start()
         {
@@ -50,6 +51,7 @@ namespace BeatKeeper
                 canvasController.Show();
             }
             _scoreText.SavePreBattleScore(); // バトル前の時点のスコアを保存する
+            _seekBar.Initialize();
         }
 
         /// <summary>
