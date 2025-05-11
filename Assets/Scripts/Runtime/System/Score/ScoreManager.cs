@@ -88,7 +88,6 @@ namespace BeatKeeper
 
         /// <summary>
         /// スコアをリセットする
-        /// TODO: インゲーム終了後に呼び出す（シーンの切り替えがあるなら不要）
         /// </summary>
         public void ResetScore()
         {

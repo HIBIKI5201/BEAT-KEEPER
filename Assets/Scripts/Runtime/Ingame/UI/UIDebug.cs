@@ -6,7 +6,6 @@ namespace BeatKeeper
     {
         [SerializeField] private Transform _enemy;
         [SerializeField] private DamageTextManager dmgTextManager;
-        private int count = 0;
         
         [ContextMenu("Damage Text")]
         public void DamageText()
@@ -14,6 +13,5 @@ namespace BeatKeeper
             dmgTextManager.DisplayDamage(500, _enemy.position, false);
         }
 
-        
     }
 }
