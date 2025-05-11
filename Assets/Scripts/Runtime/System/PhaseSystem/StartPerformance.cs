@@ -13,6 +13,7 @@ namespace BeatKeeper
         [SerializeField] private BGMChanger _bgmChanger;
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private InGameUIManager _uiManager;
+        [SerializeField] private Tmp_EnemyMove _enemyMove;
         
         // 仮
         [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
@@ -73,7 +74,7 @@ namespace BeatKeeper
             _uiManager.BattleStart(); // バトルUIを表示する
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
             // プレイヤーの着地アニメーション再生
-            // 敵がNPCから離れてバトルの初期位置まで移動する
+            _enemyMove.MoveStart(); // 敵がNPCから離れてバトルの初期位置まで移動する
         }
         
         /// <summary>
