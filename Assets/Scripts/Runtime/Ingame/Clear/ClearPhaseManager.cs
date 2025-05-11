@@ -11,6 +11,7 @@ namespace BeatKeeper
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
         [SerializeField] private InGameUIManager _uiManager;
+        [SerializeField] private GameObject[] _enemies;
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
@@ -28,6 +29,7 @@ namespace BeatKeeper
         public void ClearPhaseStart()
         {
             _musicEngineHelper.OnJustChangedBar += Counter;
+            _enemies[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
         
         /// <summary>
@@ -50,12 +52,13 @@ namespace BeatKeeper
             }
             else if (_count == 9)
             {
-                // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
+                _enemies[1].gameObject.SetActive(true); // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
                 _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
             }
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
+                _uiManager.BattleStart();
                 _cameraManager.ChangeTarget(CameraAim.Player);
             }
             else if (_count == 17)
