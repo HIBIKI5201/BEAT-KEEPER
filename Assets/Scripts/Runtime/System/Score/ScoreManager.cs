@@ -1,5 +1,7 @@
+using System;
 using BeatKeeper.Runtime.Ingame.Character;
 using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -26,17 +28,17 @@ namespace BeatKeeper
 
         private void Awake()
         {
-            if (_playerManager == null)
-            {
-                Debug.LogError("[ScoreManager] PlayerManager が設定されていません");
-            }
-            
             if (_comboBonusData == null)
             {
                 Debug.LogError("[ScoreManager] ComboBonusData が設定されていません。デフォルト値を使用します");
             }
         }
-        
+
+        private void Start()
+        {
+            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+        }
+
         /// <summary>
         /// スコアを更新する
         /// </summary>
