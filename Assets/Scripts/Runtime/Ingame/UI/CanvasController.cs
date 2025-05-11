@@ -16,8 +16,9 @@ namespace BeatKeeper
         private CanvasGroup _canvasGroup;
         private Vector3 _defaultPosition;
         private Vector3 _hiddenPosition;
+        private Tweener _fadeTween;
+        private Tweener _moveTween;
         
-
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
@@ -26,16 +27,30 @@ namespace BeatKeeper
             SetHiddenState();
         }
         
+        /// <summary>
+        /// UIを表示する
+        /// </summary>
         public void Show()
         {
-            _canvasGroup.DOFade(1f, _showDuration);
-            transform.DOLocalMove(_defaultPosition, _showDuration).SetEase(Ease.OutQuad);
+            KillTweens();
+            _fadeTween = _canvasGroup.DOFade(1f, _showDuration);
+            _moveTween = transform.DOLocalMove(_defaultPosition, _showDuration).SetEase(Ease.OutQuad);
         }
 
         public void Hide()
         {
-            _canvasGroup.DOFade(0f, _hideDuration);
-            transform.DOLocalMove(_hiddenPosition, _hideDuration).SetEase(Ease.InQuad);
+            KillTweens();
+            _fadeTween = _canvasGroup.DOFade(0f, _hideDuration);
+            _moveTween = transform.DOLocalMove(_hiddenPosition, _hideDuration).SetEase(Ease.InQuad);
+        }
+        
+        /// <summary>
+        /// アクティブなTweenを停止
+        /// </summary>
+        private void KillTweens()
+        {
+            _fadeTween?.Kill();
+            _moveTween?.Kill();
         }
         
         /// <summary>
@@ -68,6 +83,11 @@ namespace BeatKeeper
         {
             _canvasGroup.alpha = 0f;
             transform.localPosition = _hiddenPosition;
+        }
+
+        private void OnDestroy()
+        {
+            KillTweens();
         }
 
         /// <summary>

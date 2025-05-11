@@ -18,7 +18,20 @@ namespace BeatKeeper
         
         private void Start()
         {
+            ValidateComponents();
             Initialize();
+        }
+        
+        /// <summary>
+        /// コンポーネントの検証を行う
+        /// </summary>
+        private void ValidateComponents()
+        {
+            Debug.Assert(_encounterText != null, "encounterText が設定されていません");
+            Debug.Assert(_canvasControllers != null && _canvasControllers.Length > 0, "canvasControllers が設定されていません");
+            Debug.Assert(_scoreText != null, "scoreText が設定されていません");
+            Debug.Assert(_seekBar != null, "seekBar が設定されていません");
+            Debug.Assert(_finisherGuide != null, "finisherGuide が設定されていません");
         }
 
         private void Initialize()
@@ -51,6 +64,15 @@ namespace BeatKeeper
             {
                 canvasController.Show();
             }
+
+            PrepareUIElements();
+        }
+
+        /// <summary>
+        /// UI要素の準備
+        /// </summary>
+        private void PrepareUIElements()
+        {
             _scoreText.SavePreBattleScore(); // バトル前の時点のスコアを保存する
             _seekBar.Initialize();
             _finisherGuide.CountReset();
@@ -67,8 +89,14 @@ namespace BeatKeeper
             }
         }
         
+        /// <summary>
+        /// フィニッシャーガイドを表示
+        /// </summary>
         public void ShowFinisherGuide() => _finisherGuide.Show();
         
+        /// <summary>
+        /// フィニッシャーガイドを非表示
+        /// </summary>
         public void HideFinisherGuide() => _finisherGuide.Hide();
 
         #endregion
