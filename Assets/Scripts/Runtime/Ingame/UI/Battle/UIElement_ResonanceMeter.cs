@@ -39,6 +39,12 @@ namespace BeatKeeper
         /// </summary>
         private void IconColorChanged(int count)
         {
+            if (count < 0 || count >= _icons.Length)
+            {
+                Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");
+                return;
+            }
+            
             _icons[count].color = _resonanceColor;
         }
 
