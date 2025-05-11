@@ -26,6 +26,7 @@ namespace BeatKeeper
                 CameraAim.NPC1 => _npcCameraTarget[0],
                 CameraAim.FirstBattleEnemy => _enemyCameraTarget[0],
                 CameraAim.SecondBattleEnemy => _enemyCameraTarget[1],
+                _ => _playerCameraTarget
             };
             
             _useCamera.Follow = target;
