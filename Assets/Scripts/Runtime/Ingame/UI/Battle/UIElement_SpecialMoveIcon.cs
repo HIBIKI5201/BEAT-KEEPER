@@ -1,3 +1,5 @@
+using BeatKeeper.Runtime.Ingame.Character;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +11,14 @@ namespace BeatKeeper
     [RequireComponent(typeof(Image))]
     public class UIElement_SpecialMoveIcon : MonoBehaviour
     {
+        [SerializeField] private PlayerManager _playerManager; // SpecialSystem取得用
         private Image _image;
+        private CompositeDisposable _disposable = new CompositeDisposable();
 
-        public void Initialize()
+        private void Start()
         {
             _image = GetComponent<Image>();
+            _playerManager.SpecialSystem.SpecialEnergy.Subscribe(FillUpdate).AddTo(_disposable);
         }
 
         /// <summary>
@@ -22,6 +27,11 @@ namespace BeatKeeper
         public void FillUpdate(float value)
         {
             _image.fillAmount = value;
+        }
+
+        private void OnDestroy()
+        {
+            _disposable.Dispose();
         }
     }
 }

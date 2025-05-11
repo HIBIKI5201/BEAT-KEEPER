@@ -14,7 +14,7 @@ namespace BeatKeeper
         private Text _text;
         private CompositeDisposable _disposable = new CompositeDisposable();
 
-        public void Initialize()
+        private void Start()
         {
             _text = GetComponent<Text>();
             _scoreManager.ScoreProp.Subscribe(UpdateScore).AddTo(_disposable);

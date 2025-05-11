@@ -29,6 +29,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.Awake();
             
             _comboSystem = new ComboSystem(_data);
+            _specialSystem = new SpecialSystem();
 
             if (TryGetComponent(out Animator animator))
             {
