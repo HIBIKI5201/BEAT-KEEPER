@@ -14,6 +14,7 @@ namespace BeatKeeper
         [SerializeField] private CanvasController[] _canvasControllers;
         [SerializeField] private UIElement_ScoreText _scoreText;
         [SerializeField] private UIElement_SeekBar _seekBar;
+        [SerializeField] private UIElement_FinisherGuide _finisherGuide;
         
         private void Start()
         {
@@ -52,6 +53,7 @@ namespace BeatKeeper
             }
             _scoreText.SavePreBattleScore(); // バトル前の時点のスコアを保存する
             _seekBar.Initialize();
+            _finisherGuide.CountReset();
         }
 
         /// <summary>
@@ -64,6 +66,10 @@ namespace BeatKeeper
                 canvasController.Hide();
             }
         }
+        
+        public void ShowFinisherGuide() => _finisherGuide.Show();
+        
+        public void HideFinisherGuide() => _finisherGuide.Hide();
 
         #endregion
     }
