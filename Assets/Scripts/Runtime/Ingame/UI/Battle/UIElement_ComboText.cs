@@ -1,5 +1,6 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ namespace BeatKeeper
         
         private void Start()
         {
+            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            
             _text = GetComponent<Text>();
             _canvasGroup = GetComponent<CanvasGroup>();
             _playerManager.ComboSystem.ComboCount.Subscribe(UpdateText).AddTo(_disposables);
