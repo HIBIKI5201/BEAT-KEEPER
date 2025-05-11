@@ -24,12 +24,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public event Action OnResonanceHit;
         
+        // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
+        public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
+        private  FlowZoneSystem _flowZoneSystem;
+        
         protected override void Awake()
         {
             base.Awake();
             
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
+            _flowZoneSystem = new FlowZoneSystem();
 
             if (TryGetComponent(out Animator animator))
             {
@@ -103,7 +108,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             //リズム共鳴が成功したか
             bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
-            if (isResonanceHit) OnResonanceHit?.Invoke();
+            if (isResonanceHit)
+            {
+                OnResonanceHit?.Invoke();
+                _flowZoneSystem.SuccessResonanceHit();
+            }
             
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
