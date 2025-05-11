@@ -10,6 +10,9 @@ namespace BeatKeeper
         [Header("開始演出")]
         [SerializeField] private UIElement_EncounterText _encounterText;
 
+        [Header("バトル中")]
+        [SerializeField] private CanvasController[] _canvasControllers;
+        
         private void Start()
         {
             Initialize();
@@ -32,6 +35,32 @@ namespace BeatKeeper
         /// </summary>
         public void HideEncounterText() => _encounterText.HideEncounterText();
         
+        #endregion
+
+        #region バトル中のUI
+
+        /// <summary>
+        /// バトル開始時に関連するUIの表示処理を行う
+        /// </summary>
+        public void BattleStart()
+        {
+            foreach (CanvasController canvasController in _canvasControllers)
+            {
+                canvasController.Show();
+            }
+        }
+
+        /// <summary>
+        /// バトル終了時に関連するUIを非表示にする処理を行う
+        /// </summary>
+        public void BattleEnd()
+        {
+            foreach (CanvasController canvasController in _canvasControllers)
+            {
+                canvasController.Hide();
+            }
+        }
+
         #endregion
     }
 }
