@@ -21,11 +21,27 @@ public class DamageTextManager : MonoBehaviour
     [SerializeField] private Vector2 _randomOffset = new Vector2(0.5f, 0.3f);
     [SerializeField] private float _scaleMultiplier = 1.5f;
     
+    [Header("カメラ参照")]
+    private Camera _gameCamera;
+    [SerializeField] private Canvas _targetCanvas;
+    
     private ObjectPool<GameObject> _textPool;
+    private RectTransform _canvasRectTransform;
     
     private void Awake()
     {
         InitializePool();
+        
+        // キャンバスのRectTransformを取得
+        if (_targetCanvas != null)
+        {
+            _canvasRectTransform = _targetCanvas.GetComponent<RectTransform>();
+        }
+    }
+
+    private void Start()
+    {
+        _gameCamera = Camera.main;
     }
     
     /// <summary>
@@ -57,34 +73,38 @@ public class DamageTextManager : MonoBehaviour
     /// <summary>
     /// ダメージを表示する
     /// </summary>
-    public void DisplayDamage(int damage, Vector3 position, bool isCritical = false)
+    public void DisplayDamage(int damage, Vector3 worldPosition, bool isCritical = false)
     {
-        Transform textInstance = _textPool.Get().transform;
-        textInstance.position = position;
+        // ワールド座標をキャンバス座標に変換
+        Vector2 canvasPosition = WorldToCanvasPosition(worldPosition);
         
-        Text textComponent = textInstance.GetComponent<Text>();
+        // UIオブジェクトを取得して位置を設定
+        GameObject textObject = _textPool.Get();
+        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = canvasPosition;
+        
+        Text textComponent = textObject.GetComponent<Text>();
         if (textComponent != null)
         {
             textComponent.text = damage.ToString();
             textComponent.color = isCritical ? _criticalColor : _normalColor;
             
             // スケールと色をリセットする
-            textInstance.transform.localScale = Vector3.one;
+            rectTransform.localScale = Vector3.one;
             textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 1f);
             
             // ランダムな座標を作る
-            Vector3 randomPos = new Vector3(
+            Vector2 randomPos = new Vector2(
                 Random.Range(-_randomOffset.x, _randomOffset.x),
-                Random.Range(0, _randomOffset.y),
-                0
+                Random.Range(0, _randomOffset.y)
             );
             
             Sequence sequence = DOTween.Sequence();
             
             // 少し拡大して、上方向にスライドする
-            sequence.Append(textInstance.DOScale(Vector3.one * _scaleMultiplier, _popupDuration).SetEase(Ease.OutBack));
-            sequence.Join(textInstance.transform.DOMove(
-                position + randomPos + Vector3.up * _moveDistance, 
+            sequence.Append(rectTransform.DOScale(Vector3.one * _scaleMultiplier, _popupDuration).SetEase(Ease.OutBack));
+            sequence.Join(rectTransform.DOAnchorPos(
+                canvasPosition + randomPos + Vector2.up * _moveDistance, 
                 _popupDuration + _holdDuration)
                 .SetEase(Ease.OutCubic));
             
@@ -92,12 +112,34 @@ public class DamageTextManager : MonoBehaviour
             sequence.AppendInterval(_holdDuration);
             
             // 消える処理
-            sequence.Append(textComponent.DOColor(new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0f)
-                    , _fadeDuration).SetEase(Ease.InQuad));
+            sequence.Append(textComponent.DOColor(new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0f), 
+                _fadeDuration).SetEase(Ease.InQuad));
             
             // 手放す処理。テキストを非表示にする
-            sequence.OnComplete(() => _textPool.Release(textInstance.gameObject));
+            sequence.OnComplete(() => _textPool.Release(textObject));
         }
+    }
+    
+    /// <summary>
+    /// ワールド座標をUIキャンバス上の座標に変換
+    /// </summary>
+    private Vector2 WorldToCanvasPosition(Vector3 worldPosition)
+    {
+        if (_gameCamera == null || _canvasRectTransform == null)
+        {
+            Debug.LogError("カメラまたはキャンバスが設定されていません");
+            return Vector2.zero;
+        }
+        
+        // ワールド座標をスクリーン座標に変換
+        Vector2 screenPoint = _gameCamera.WorldToScreenPoint(worldPosition);
+        
+        // スクリーン座標からキャンバス上の座標に変換
+        Vector2 canvasPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _canvasRectTransform, screenPoint, _targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _gameCamera, out canvasPosition);
+        
+        return canvasPosition;
     }
     
     private void OnDestroy()
