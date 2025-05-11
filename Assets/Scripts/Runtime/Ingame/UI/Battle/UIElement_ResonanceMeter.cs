@@ -8,7 +8,7 @@ namespace BeatKeeper
     /// <summary>
     /// リズム共鳴アイコンを管理するクラス
     /// </summary>
-    public class UIElement_FlowZoneMeter : MonoBehaviour
+    public class UIElement_ResonanceMeter : MonoBehaviour
     {
         [SerializeField] private PlayerManager _playerManager;
         [SerializeField] private Color _defaultColor = Color.black;

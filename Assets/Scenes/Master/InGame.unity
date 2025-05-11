@@ -2057,7 +2057,7 @@ GameObject:
   - component: {fileID: 1095826715}
   - component: {fileID: 1095826716}
   m_Layer: 5
-  m_Name: FlowZoneMeter
+  m_Name: ResonanceMeter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
