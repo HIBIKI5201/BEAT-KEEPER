@@ -447,7 +447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113602642}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.003208623, y: 0.23450272, z: 0.0017779609, w: 0.9721086}
+  m_LocalRotation: {x: 0.0024968095, y: 0.23062134, z: -0.00059177156, w: 0.9730402}
   m_LocalPosition: {x: -3.511776, y: 0.86, z: -6.389179}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -848,11 +848,178 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1564515585217593851, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 306336701}
   m_SourcePrefab: {fileID: 100100000, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
+--- !u!1 &306336700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
+  m_PrefabInstance: {fileID: 306336699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &306336701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306336700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91d72a6cb3242344940bedb7f2e00f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayOnStart: 0
+  Volume: 1
+  OutputMixerGroup: {fileID: 0}
+  Sections:
+  - Name: Approach
+    Clips:
+    - {fileID: 8300000, guid: f06649a6b6c7b1c40affd823f0678ae1, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 160
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 79
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 79
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Battle1
+    Clips:
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 210
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 131
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 131
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Battle2
+    Clips:
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 157
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 98
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 98
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  Modes:
+  - Name: Mode
+    TotalVolume: 1
+    LayerVolumes:
+    - 1
+  ModeTransitionParam:
+    FadeTime: 1
+    FadeOffset: 0
+    TimeUnitType: 0
+    SyncType: 0
+    SyncFactor: 1
+  SectionTransitionOverrides:
+  - FromSectionIndex: -1
+    ToSectionIndex: -1
+    SyncType: 0
+    SyncFactor: 0
+    Transition:
+      UseFadeOut: 1
+      FadeOutTime: 5
+      FadeOutOffset: 0
+      UseFadeIn: 1
+      FadeInTime: 5
+      FadeInOffset: 0
+  ModeTransitionOverrides: []
+  NumTracks: 1
+  SeekBar: -1
+  PreviewSectionIndex: 0
+  PreviewModeIndex: 0
 --- !u!1 &410184696
 GameObject:
   m_ObjectHideFlags: 0
