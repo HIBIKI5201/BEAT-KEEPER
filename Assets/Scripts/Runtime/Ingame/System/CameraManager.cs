@@ -1,6 +1,5 @@
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace BeatKeeper
 {
@@ -9,15 +8,16 @@ namespace BeatKeeper
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        [SerializeField] private CinemachineCamera _camera;
+        [SerializeField] private CinemachineCamera[] _camera;
         [SerializeField] private Transform _playerCameraTarget; // プレイヤーのカメラターゲット
         [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
         [SerializeField] private Transform[] _enemyCameraTarget; // 次に出現する敵のカメラターゲット 
+        private CinemachineCamera _useCamera;
         
         /// <summary>
         /// プレイヤーとNPCのカメラを切り替える
         /// </summary>
-        public void CameraChange(CameraAim targetName)
+        public void ChangeTarget(CameraAim targetName)
         {
             // 引数で指定されたターゲットにカメラを向ける
             Transform target = targetName switch
@@ -28,7 +28,26 @@ namespace BeatKeeper
                 CameraAim.SecondBattleEnemy => _enemyCameraTarget[1],
             };
             
-            _camera.Follow = target;
+            _useCamera.Follow = target;
+        }
+
+        /// <summary>
+        /// 使用するカメラを変更する
+        /// </summary>
+        public void ChangeCamera(CameraType cameraType)
+        {
+            for (int i = 0; i < _camera.Length; i++)
+            {
+                if (i == (int)cameraType)
+                {
+                    _useCamera = _camera[i];
+                    _camera[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    _camera[i].gameObject.SetActive(false);
+                }
+            }
         }
     }
     
@@ -41,5 +60,11 @@ namespace BeatKeeper
         FirstBattleEnemy,
         SecondBattleEnemy,
         ThirdBattleEnemy,
+    }
+
+    public enum CameraType
+    {
+        PlayerTPS,
+        StartPerformance,
     }
 }

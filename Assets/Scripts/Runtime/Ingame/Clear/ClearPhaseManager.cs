@@ -41,7 +41,7 @@ namespace BeatKeeper
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
                 _uiManager.BattleEnd();
-                _cameraManager.CameraChange(CameraAim.NPC1);
+                _cameraManager.ChangeTarget(CameraAim.NPC1);
             }
             else if (_count == 5)
             {
@@ -51,12 +51,12 @@ namespace BeatKeeper
             else if (_count == 9)
             {
                 // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
-                _cameraManager.CameraChange(CameraAim.SecondBattleEnemy);
+                _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
             }
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
-                _cameraManager.CameraChange(CameraAim.Player);
+                _cameraManager.ChangeTarget(CameraAim.Player);
             }
             else if (_count == 17)
             {
