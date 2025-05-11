@@ -62,7 +62,6 @@ namespace BeatKeeper
         
         /// <summary>
         /// バトル開始時にスコアを保存する
-        /// TODO: バトルフェーズ開始タイミングで呼び出したい
         /// </summary>
         public void SavePreBattleScore()
         {

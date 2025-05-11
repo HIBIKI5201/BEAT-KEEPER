@@ -12,6 +12,7 @@ namespace BeatKeeper
 
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
+        [SerializeField] private UIElement_ScoreText _scoreText;
         [SerializeField] private UIElement_SpecialMoveIcon _specialMoveIcon;
         
         private void Start()
@@ -22,6 +23,8 @@ namespace BeatKeeper
         private void Initialize()
         {
             _encounterText.Initialize();
+            _scoreText.Initialize();
+            _specialMoveIcon.Initialize();
         }
 
         #region 開始演出関連のUI
@@ -49,6 +52,7 @@ namespace BeatKeeper
             {
                 canvasController.Show();
             }
+            _scoreText.SavePreBattleScore(); // バトル前の時点のスコアを保存する
         }
 
         /// <summary>
