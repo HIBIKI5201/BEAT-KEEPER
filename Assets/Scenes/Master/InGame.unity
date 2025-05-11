@@ -1733,6 +1733,7 @@ RectTransform:
   - {fileID: 180577596}
   - {fileID: 1160216448}
   - {fileID: 1054540520}
+  - {fileID: 1837853078}
   - {fileID: 1099895366}
   - {fileID: 650529573}
   m_Father: {fileID: 1724300868}
@@ -3566,6 +3567,7 @@ GameObject:
   - component: {fileID: 1724300866}
   - component: {fileID: 1724300865}
   - component: {fileID: 1724300869}
+  - component: {fileID: 1724300870}
   m_Layer: 5
   m_Name: InGameUICanvas
   m_TagString: Untagged
@@ -3680,6 +3682,79 @@ MonoBehaviour:
   _scoreText: {fileID: 1324544996}
   _seekBar: {fileID: 415161607}
   _finisherGuide: {fileID: 650529574}
+--- !u!114 &1724300870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724300864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1712301a1e964c14492bb6c121a468de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dmgTextManager: {fileID: 1837853079}
+--- !u!1 &1837853077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1837853078}
+  - component: {fileID: 1837853079}
+  m_Layer: 5
+  m_Name: DamageText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1837853078
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837853077}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 771983688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 673, y: 21.123474}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1837853079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837853077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6d4b2fcfbd0c84bb5e76c568030048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageTextPrefab: {fileID: 3847034630532522072, guid: 206f479d7e2dc6b4eaf62137deb8d507, type: 3}
+  poolSize: 20
+  poolParent: {fileID: 1837853078}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  criticalColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  popupDuration: 0.3
+  holdDuration: 0.5
+  fadeDuration: 0.4
+  moveDistance: 1.5
+  randomOffset: {x: 0.5, y: 0.3}
+  scaleMultiplier: 1.5
+  playerManager: {fileID: 1464784794}
 --- !u!1001 &1928093918
 PrefabInstance:
   m_ObjectHideFlags: 0
