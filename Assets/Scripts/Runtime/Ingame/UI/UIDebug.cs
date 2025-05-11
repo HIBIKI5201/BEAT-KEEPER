@@ -12,6 +12,5 @@ namespace BeatKeeper
         {
             dmgTextManager.DisplayDamage(500, _enemy.position, false);
         }
-
     }
 }

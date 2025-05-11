@@ -1,4 +1,5 @@
 using BeatKeeper.Runtime.Ingame.Character;
+using DG.Tweening;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,10 @@ namespace BeatKeeper
     public class UIElement_SpecialMoveIcon : MonoBehaviour
     {
         [SerializeField] private PlayerManager _playerManager; // SpecialSystem取得用
+        [SerializeField] private float _animationDuration = 0.5f; // アニメーションの長さ（秒）
+        
         private Image _image;
+        private Tweener _currentTween;
         private CompositeDisposable _disposable = new CompositeDisposable();
 
         private void Start()
@@ -22,15 +26,17 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// ゲージを更新する
+        /// ゲージを徐々に更新する
         /// </summary>
         private void FillUpdate(float value)
         {
-            _image.fillAmount = value;
+            _currentTween?.Kill();
+            _currentTween = _image.DOFillAmount(value, _animationDuration).SetEase(Ease.OutQuad);
         }
 
         private void OnDestroy()
         {
+            _currentTween?.Kill();
             _disposable.Dispose();
         }
     }
