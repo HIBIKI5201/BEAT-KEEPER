@@ -802,22 +802,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: Volume
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: PlayOnStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: SectionTransitionOverrides.Array.data[0].Transition.FadeInTime
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2527027441719818210, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: SectionTransitionOverrides.Array.data[0].Transition.FadeOutTime
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
       propertyPath: m_Name
       value: MusicEngineCore
@@ -1263,11 +1247,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bgmChanger: {fileID: 1918585414}
-  _player: {fileID: 1227550611}
-  _enemy: {fileID: 3326554}
+  _cameraManager: {fileID: 0}
+  _uiManager: {fileID: 0}
+  _enemyMove: {fileID: 0}
   _startPhase: 1
-  _camera: {fileID: 1207030175}
-  _encountText: {fileID: 306711385}
 --- !u!1001 &1859846723
 PrefabInstance:
   m_ObjectHideFlags: 0
