@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6305378352285518296
+--- !u!1 &6088042519619824439
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8984457344891974924}
-  - component: {fileID: 1564515585217593851}
+  - component: {fileID: 1698903292700426188}
+  - component: {fileID: 1870356416114767642}
   m_Layer: 0
-  m_Name: MusicEngineCore
+  m_Name: MusicEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8984457344891974924
+--- !u!4 &1698903292700426188
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305378352285518296}
+  m_GameObject: {fileID: 6088042519619824439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,28 +32,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1564515585217593851
+--- !u!114 &1870356416114767642
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305378352285518296}
+  m_GameObject: {fileID: 6088042519619824439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53b71847506d7040b215cba81282db0, type: 3}
+  m_Script: {fileID: 11500000, guid: f91d72a6cb3242344940bedb7f2e00f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayOnStart: 0
+  PlayOnStart: 1
   Volume: 1
   OutputMixerGroup: {fileID: 0}
   Sections:
   - Name: Approach
     Clips:
-    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    - {fileID: 8300000, guid: f06649a6b6c7b1c40affd823f0678ae1, type: 3}
     Meters:
     - StartBar: 0
-      Tempo: 120
+      Tempo: 160
       UnitPerBeat: 4
       UnitPerBar: 16
       Numerator: 4
@@ -66,7 +66,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 74
+      Bar: 79
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -74,7 +74,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 74
+      Bar: 79
       Beat: 0
       Unit: 0
     Transition:
@@ -88,10 +88,10 @@ MonoBehaviour:
     TransitionDestinationIndex: 0
   - Name: Battle1
     Clips:
-    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    - {fileID: 8300000, guid: 256c718541058bc42aa92f7bb57fa8cd, type: 3}
     Meters:
     - StartBar: 0
-      Tempo: 120
+      Tempo: 210
       UnitPerBeat: 4
       UnitPerBar: 16
       Numerator: 4
@@ -104,7 +104,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 74
+      Bar: 140
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -112,7 +112,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 74
+      Bar: 140
       Beat: 0
       Unit: 0
     Transition:
@@ -126,10 +126,10 @@ MonoBehaviour:
     TransitionDestinationIndex: 0
   - Name: Battle2
     Clips:
-    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    - {fileID: 8300000, guid: 256c718541058bc42aa92f7bb57fa8cd, type: 3}
     Meters:
     - StartBar: 0
-      Tempo: 120
+      Tempo: 157
       UnitPerBeat: 4
       UnitPerBar: 16
       Numerator: 4
@@ -142,7 +142,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 74
+      Bar: 105
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -150,7 +150,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 74
+      Bar: 105
       Beat: 0
       Unit: 0
     Transition:
@@ -164,7 +164,7 @@ MonoBehaviour:
     TransitionDestinationIndex: 0
   - Name: Battle3
     Clips:
-    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    - {fileID: 8300000, guid: beada51392d6120499f86664e799d037, type: 3}
     Meters:
     - StartBar: 0
       Tempo: 120
@@ -180,7 +180,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 74
+      Bar: 76
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -188,7 +188,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 74
+      Bar: 76
       Beat: 0
       Unit: 0
     Transition:
@@ -201,17 +201,44 @@ MonoBehaviour:
     TransitionType: 0
     TransitionDestinationIndex: 0
   Modes:
-  - Name: Mode
+  - Name: Base
     TotalVolume: 1
     LayerVolumes:
-    - 0
+    - 0.5
+  - Name: Layer1
+    TotalVolume: 1
+    LayerVolumes:
+    - 0.65
+  - Name: Layer2
+    TotalVolume: 1
+    LayerVolumes:
+    - 0.7
+  - Name: Layer3
+    TotalVolume: 1
+    LayerVolumes:
+    - 0.85
+  - Name: Layer4
+    TotalVolume: 1
+    LayerVolumes:
+    - 1
   ModeTransitionParam:
     FadeTime: 1
     FadeOffset: 0
     TimeUnitType: 0
     SyncType: 0
     SyncFactor: 1
-  SectionTransitionOverrides: []
+  SectionTransitionOverrides:
+  - FromSectionIndex: -1
+    ToSectionIndex: -1
+    SyncType: 0
+    SyncFactor: 0
+    Transition:
+      UseFadeOut: 1
+      FadeOutTime: 5
+      FadeOutOffset: 0
+      UseFadeIn: 1
+      FadeInTime: 5
+      FadeInOffset: 0
   ModeTransitionOverrides: []
   NumTracks: 1
   SeekBar: -1
