@@ -1,3 +1,4 @@
+using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -15,12 +16,15 @@ namespace BeatKeeper
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
+        private CompositeDisposable _disposables = new CompositeDisposable();
         
         private void Start()
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _battleResultController.Hide(); // 最初は表示しないようにする
+            
+            _phaseManager.CurrentPhaseProp.Subscribe(value => {if(value == PhaseEnum.Clear) ClearPhaseStart(); }).AddTo(_disposables);
         }
 
         /// <summary>
@@ -43,6 +47,7 @@ namespace BeatKeeper
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
                 _uiManager.BattleEnd();
+                _cameraManager.ChangeCamera(CameraType.ClearPhase);
                 _cameraManager.ChangeTarget(CameraAim.NPC1);
             }
             else if (_count == 5)
@@ -53,12 +58,14 @@ namespace BeatKeeper
             else if (_count == 9)
             {
                 _enemies[1].gameObject.SetActive(true); // 次の敵が出現（NPCを追いかけている状態）。カメラを向ける
+                _cameraManager.ChangeCamera(CameraType.StartPerformance);
                 _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
             }
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
                 _uiManager.BattleStart();
+                _cameraManager.ChangeCamera(CameraType.PlayerTPS);
                 _cameraManager.ChangeTarget(CameraAim.Player);
             }
             else if (_count == 17)
@@ -96,6 +103,13 @@ namespace BeatKeeper
         private void OnDestroy()
         {
             _musicEngineHelper.OnJustChangedBar -= Counter;
+            _disposables?.Dispose();
+        }
+
+        [ContextMenu("Activate Battle Phase")]
+        public void ChangeState()
+        {
+            _phaseManager.TransitionTo(PhaseEnum.Clear);
         }
     }
 }
