@@ -13,32 +13,32 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
         private PlayerAnimeManager _animeManager;
-        
+
         private IEnemy _target;
-        
+
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
-        
+
         public SpecialSystem SpecialSystem => _specialSystem;
         private SpecialSystem _specialSystem;
-        
+
         public event Action OnResonanceHit;
-        
+
         // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
         public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
-        private  FlowZoneSystem _flowZoneSystem;
-        
+        private FlowZoneSystem _flowZoneSystem;
+
         protected override void Awake()
         {
             base.Awake();
-            
+
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
             _flowZoneSystem = new FlowZoneSystem();
 
             if (TryGetComponent(out Animator animator))
             {
-                _animeManager = new (animator);
+                _animeManager = new(animator);
             }
             else
             {
@@ -62,14 +62,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Input buffer is null");
             }
-            
+
             if (!_musicEngine)
                 Debug.LogWarning("Music engine is null");
         }
 
         private void Update()
         {
-             _comboSystem.Update();
+            _comboSystem.Update();
         }
 
         public void Dispose()
@@ -82,14 +82,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Avoid.started -= OnAvoid;
             }
         }
-        
+
         public override void HitAttack(float damage)
         {
             base.HitAttack(damage);
-            
+
             _comboSystem.ComboReset();
         }
-        
+
         public void SetTarget(IEnemy target) => _target = target;
 
         /// <summary>
@@ -98,12 +98,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttack(InputAction.CallbackContext context)
         {
-            if (_target == null)
-            {
-                Debug.LogWarning("Target is null");
-                return;
-            }
-            
+            if (_target == null) return;
+
             Debug.Log($"{_data.Name} is attacking");
 
             //リズム共鳴が成功したか
@@ -113,7 +109,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnResonanceHit?.Invoke();
                 _flowZoneSystem.SuccessResonanceHit();
             }
-            
+
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
             {
@@ -123,14 +119,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 _ => _data.FirstAttackPower
             };
-            
+
             if (isResonanceHit)
                 power *= _data.ResonanceCriticalDamage;
 
             _target.HitAttack(power);
-            
+
             _comboSystem.Attack();
-            
+
             //スペシャルエネルギーを5%増加
             if (isResonanceHit)
                 _specialSystem.AddSpecialEnergy(0.05f);
@@ -156,7 +152,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("Target is null");
                 return;
             }
-            
+
             if (1 <= _specialSystem.SpecialEnergy.CurrentValue)
             {
                 _specialSystem.ResetSpecialEnergy();
@@ -195,10 +191,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log($"Enemy will be attack player");
             }
-            
+
             Debug.Log($"{_data.Name} is avoiding");
         }
-        
+
         [ContextMenu(nameof(AddSpecialEnergy))]
         private void AddSpecialEnergy() => _specialSystem.AddSpecialEnergy(1);
     }
