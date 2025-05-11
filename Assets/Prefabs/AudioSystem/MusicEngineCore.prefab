@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6088042519619824439
+--- !u!1 &6305378352285518296
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1698903292700426188}
-  - component: {fileID: 1870356416114767642}
+  - component: {fileID: 8984457344891974924}
+  - component: {fileID: 1564515585217593851}
   m_Layer: 0
-  m_Name: MusicEngine
+  m_Name: MusicEngineCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1698903292700426188
+--- !u!4 &8984457344891974924
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6088042519619824439}
+  m_GameObject: {fileID: 6305378352285518296}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,139 +32,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1870356416114767642
+--- !u!114 &1564515585217593851
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6088042519619824439}
+  m_GameObject: {fileID: 6305378352285518296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f91d72a6cb3242344940bedb7f2e00f7, type: 3}
+  m_Script: {fileID: 11500000, guid: b53b71847506d7040b215cba81282db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayOnStart: 1
+  PlayOnStart: 0
   Volume: 1
   OutputMixerGroup: {fileID: 0}
   Sections:
   - Name: Approach
     Clips:
-    - {fileID: 8300000, guid: f06649a6b6c7b1c40affd823f0678ae1, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 160
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 79
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 79
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle1
-    Clips:
-    - {fileID: 8300000, guid: 256c718541058bc42aa92f7bb57fa8cd, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 210
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 140
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 140
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle2
-    Clips:
-    - {fileID: 8300000, guid: 256c718541058bc42aa92f7bb57fa8cd, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 157
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 105
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 105
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle3
-    Clips:
-    - {fileID: 8300000, guid: beada51392d6120499f86664e799d037, type: 3}
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
     Meters:
     - StartBar: 0
       Tempo: 120
@@ -180,7 +66,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 76
+      Bar: 74
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -188,7 +74,121 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 76
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Battle1
+    Clips:
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 120
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Battle2
+    Clips:
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 120
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Battle3
+    Clips:
+    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 120
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 74
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 74
       Beat: 0
       Unit: 0
     Transition:
@@ -201,44 +201,17 @@ MonoBehaviour:
     TransitionType: 0
     TransitionDestinationIndex: 0
   Modes:
-  - Name: Base
+  - Name: Mode
     TotalVolume: 1
     LayerVolumes:
-    - 0.5
-  - Name: Layer1
-    TotalVolume: 1
-    LayerVolumes:
-    - 0.65
-  - Name: Layer2
-    TotalVolume: 1
-    LayerVolumes:
-    - 0.7
-  - Name: Layer3
-    TotalVolume: 1
-    LayerVolumes:
-    - 0.85
-  - Name: Layer4
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
+    - 0
   ModeTransitionParam:
     FadeTime: 1
     FadeOffset: 0
     TimeUnitType: 0
     SyncType: 0
     SyncFactor: 1
-  SectionTransitionOverrides:
-  - FromSectionIndex: -1
-    ToSectionIndex: -1
-    SyncType: 0
-    SyncFactor: 0
-    Transition:
-      UseFadeOut: 1
-      FadeOutTime: 5
-      FadeOutOffset: 0
-      UseFadeIn: 1
-      FadeInTime: 5
-      FadeInOffset: 0
+  SectionTransitionOverrides: []
   ModeTransitionOverrides: []
   NumTracks: 1
   SeekBar: -1
