@@ -1,4 +1,5 @@
 using BeatKeeper.Runtime.Ingame.Character;
+using DG.Tweening;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,22 @@ namespace BeatKeeper
         [SerializeField] private Color _defaultColor = Color.black;
         [SerializeField] private Color _resonanceColor = Color.yellow;
         [SerializeField] private Image[] _icons;
+        [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
         private CompositeDisposable _disposable = new CompositeDisposable();
         
         private void Start()
         {
             _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
-            _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value => { if(!value) AllReset(); }).AddTo(_disposable);
+            _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
+            {
+                _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
+                
+                if (!value)
+                {
+                    AllReset();
+                }
+            }).AddTo(_disposable);
+            
             AllReset();
         }
 
