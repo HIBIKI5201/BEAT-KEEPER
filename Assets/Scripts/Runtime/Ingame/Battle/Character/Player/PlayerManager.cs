@@ -1,7 +1,9 @@
 using System;
+using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using R3;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -65,6 +67,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (!_musicEngine)
                 Debug.LogWarning("Music engine is null");
+
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            if (phaseManager)
+            {
+                phaseManager.CurrentPhaseProp
+                    .Subscribe(OnPhaseChanged)
+                    .AddTo(destroyCancellationToken);
+            }
+            else
+            {
+                Debug.LogWarning("Phase manager is null");
+            }
         }
 
         private void Update()
@@ -91,6 +105,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         public void SetTarget(IEnemy target) => _target = target;
+
+        private void OnPhaseChanged(PhaseEnum phase)
+        {
+            
+        }
 
         /// <summary>
         ///     コンボ攻撃を行う
