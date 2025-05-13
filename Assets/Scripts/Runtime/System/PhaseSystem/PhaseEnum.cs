@@ -5,10 +5,8 @@ namespace BeatKeeper
     /// </summary>
     public enum PhaseEnum
     {
-        Approach,
-        Battle1,
-        Battle2,
-        Battle3,
+        Movie,
+        Battle,
         Clear,
     }
 }
