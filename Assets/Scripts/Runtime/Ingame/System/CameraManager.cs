@@ -1,3 +1,6 @@
+using System;
+using BeatKeeper.Runtime.Ingame.Character;
+using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -13,7 +16,13 @@ namespace BeatKeeper
         [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
         [SerializeField] private Transform[] _enemyCameraTarget; // 次に出現する敵のカメラターゲット 
         private CinemachineCamera _useCamera;
-        
+
+        private void Start()
+        {
+             _playerCameraTarget = ServiceLocator.GetInstance<PlayerManager>().transform;
+             ChangeCamera(CameraType.PlayerTPS);
+        }
+
         /// <summary>
         /// プレイヤーとNPCのカメラを切り替える
         /// </summary>
