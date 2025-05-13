@@ -25,9 +25,6 @@ namespace BeatKeeper.Runtime.Ingame.Stsge
             {
                 Debug.LogWarning("EnemiesParent is null");
             }
-            
-            //インゲームをロード
-            SceneLoader.LoadScene(SceneListEnum.InGame.ToString());
         }
     }
 }
