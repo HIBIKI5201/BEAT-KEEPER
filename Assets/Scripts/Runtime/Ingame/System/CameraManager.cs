@@ -66,5 +66,6 @@ namespace BeatKeeper
     {
         PlayerTPS,
         StartPerformance,
+        ClearPhase,
     }
 }
