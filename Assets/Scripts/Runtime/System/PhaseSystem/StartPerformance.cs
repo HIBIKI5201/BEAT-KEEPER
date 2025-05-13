@@ -16,7 +16,7 @@ namespace BeatKeeper
         [SerializeField] private Tmp_EnemyMove _enemyMove;
         
         // 仮
-        [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
+        [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Movie;
         private float _defaultTextPosY;
         
         private PhaseEnum _nextPhase;
@@ -90,7 +90,7 @@ namespace BeatKeeper
         /// </summary>
         private void ActivateBattlePhase()
         {
-            _phaseManager.TransitionTo(PhaseEnum.Battle1);
+            _phaseManager.NextPhase();
             _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
 
