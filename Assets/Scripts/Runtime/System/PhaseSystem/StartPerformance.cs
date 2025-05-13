@@ -24,8 +24,16 @@ namespace BeatKeeper
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
 
-        private void Start()
+        private async void Start()
         {
+            var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
+            if (multiSceneManager)
+            {
+                await multiSceneManager.WaitForSceneLoad(SceneListEnum.Stage);
+            }
+            
+            _cameraManager = FindAnyObjectByType<CameraManager>();
+            
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _cameraManager.ChangeCamera(CameraType.StartPerformance);
