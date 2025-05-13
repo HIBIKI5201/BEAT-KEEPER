@@ -20,7 +20,6 @@ namespace BeatKeeper
         private void Start()
         {
              _playerCameraTarget = ServiceLocator.GetInstance<PlayerManager>().transform;
-             ChangeCamera(CameraType.PlayerTPS);
         }
 
         /// <summary>
