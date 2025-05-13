@@ -1,5 +1,6 @@
 using System;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -19,7 +20,9 @@ namespace BeatKeeper
 
         private void Start()
         {
-             _playerCameraTarget = ServiceLocator.GetInstance<PlayerManager>().transform;
+            _playerCameraTarget = ServiceLocator.GetInstance<PlayerManager>().transform;
+            
+            _useCamera = _camera[0];
         }
 
         /// <summary>
