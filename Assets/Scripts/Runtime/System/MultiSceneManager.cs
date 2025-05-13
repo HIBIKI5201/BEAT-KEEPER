@@ -7,19 +7,30 @@ namespace BeatKeeper.Runtime.Ingame.System
 {
     public class MultiSceneManager : MonoBehaviour
     {
-        private Dictionary<SceneListEnum, bool> _sceneLoadProgress;
+        private Dictionary<SceneListEnum, bool> _sceneLoadProgress = new();
 
-        public void SceneLoad(SceneListEnum scene)
+        public async void SceneLoad(SceneListEnum scene)
         {
-            SceneLoader.LoadScene(scene.ToString());
+            var task = SceneLoader.LoadScene(scene.ToString());
 
             if (!_sceneLoadProgress.TryAdd(scene, false))
             {
                 Debug.LogWarning($"failed to load scene : {scene}");
+                return;
             }
+            
+            await PauseManager.PausableWaitUntil(() => task.IsCompleted, destroyCancellationToken);
+            
+            _sceneLoadProgress[scene] = true;
         }
-        
-        public bool GetSceneLoadProgress(SceneListEnum scene) => _sceneLoadProgress[scene];
+
+        public bool GetSceneLoadProgress(SceneListEnum scene)
+        {
+            if (_sceneLoadProgress.TryGetValue(scene, out var result))
+                return result; 
+            
+            return true;
+        }
 
         /// <summary>
         /// シーンのロードが終わるまで待機
@@ -30,10 +41,9 @@ namespace BeatKeeper.Runtime.Ingame.System
             if (!_sceneLoadProgress.ContainsKey(scene))
             {
                 Debug.LogWarning($"{scene} is not loaded");
-                return;
             }
             
-            while (GetSceneLoadProgress(scene)) //シーンのロードが終わるまで待機
+            while (!GetSceneLoadProgress(scene)) //シーンのロードが終わるまで待機
             {
                 await PauseManager.PausableNextFrameAsync(destroyCancellationToken);
             }
