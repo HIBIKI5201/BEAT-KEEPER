@@ -17,7 +17,9 @@ namespace BeatKeeper
 
         private void Start()
         {
-            ServiceLocator.GetInstance<MultiSceneManager>().SceneLoad(SceneListEnum.Stage);
+            var multiScene = ServiceLocator.GetInstance<MultiSceneManager>();
+            multiScene.SceneLoad(SceneListEnum.Stage);
+            multiScene.SceneLoad(SceneListEnum.Battle);
         }
     }
 }
