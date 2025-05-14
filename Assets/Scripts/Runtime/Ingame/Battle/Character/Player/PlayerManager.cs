@@ -50,9 +50,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
+            Initialize();
 
-            Task.Run(async () =>
-                _flowZoneSystem = new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>()));
+            async void Initialize() => _flowZoneSystem =
+                new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>());
         }
 
         private void Start()
