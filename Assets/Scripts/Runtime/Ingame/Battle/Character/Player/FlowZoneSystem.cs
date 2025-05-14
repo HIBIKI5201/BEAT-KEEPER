@@ -1,6 +1,6 @@
 using System;
 using R3;
-using SymphonyFrameWork.System;
+using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -9,9 +9,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
-        private MusicEngineHelper _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+        private readonly MusicEngineHelper _musicEngineHelper;
         private int _count;
         private const int DURATION = 16; // フローゾーンの継続拍数
+
+        public FlowZoneSystem(MusicEngineHelper musicEngineHelper)
+        {
+            _musicEngineHelper = musicEngineHelper;
+        }
         
         /// <summary>
         /// リズム共鳴回数
