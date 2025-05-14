@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Stsge;
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
@@ -49,7 +50,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
-            _flowZoneSystem = new FlowZoneSystem(ServiceLocator.GetInstance<MusicEngineHelper>());
+
+            Task.Run(async () =>
+                _flowZoneSystem = new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>()));
         }
 
         private void Start()
@@ -115,7 +118,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _isBattle = phase == PhaseEnum.Battle;
 
             //ターゲットを探す
-            var stage = ServiceLocator.GetInstance<StageManager>();
+            var stage = ServiceLocator.GetInstance<BattleSceneManager>();
             _target = stage.EnemyAdmin.FindClosestEnemy(transform.position);
         }
 
