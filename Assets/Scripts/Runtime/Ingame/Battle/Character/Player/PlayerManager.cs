@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -56,7 +57,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
-            if (_inputBuffer)
+            if (_inputBuffer) //入力を購買する
             {
                 _inputBuffer.Attack.started += OnAttack;
                 _inputBuffer.Special.started += OnSpecial;
@@ -91,7 +92,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            if (_inputBuffer)
+            if (_inputBuffer) //入力の購買を終わる
             {
                 _inputBuffer.Attack.started -= OnAttack;
                 _inputBuffer.Special.started -= OnSpecial;
@@ -112,6 +113,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnPhaseChanged(PhaseEnum phase)
         {
             _isBattle = phase == PhaseEnum.Battle;
+
+            //ターゲットを探す
+            var stage = ServiceLocator.GetInstance<StageManager>();
+            _target = stage.EnemyAdmin.FindClosestEnemy(transform.position);
         }
 
         /// <summary>

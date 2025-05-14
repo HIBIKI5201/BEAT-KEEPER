@@ -15,7 +15,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public FlowZoneSystem(MusicEngineHelper musicEngineHelper)
         {
-            _musicEngineHelper = musicEngineHelper;
+            if (musicEngineHelper)
+            {
+                _musicEngineHelper = musicEngineHelper;
+            }
+            else
+            {
+                Debug.LogWarning("FlowZoneSystem: musicEngineHelper is null");
+            }
         }
         
         /// <summary>
