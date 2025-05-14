@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 752650004}
+  _autoSet: 1
+  _autoDestroy: 1
 --- !u!1 &993873023
 GameObject:
   m_ObjectHideFlags: 0
