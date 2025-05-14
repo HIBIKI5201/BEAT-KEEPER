@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -15,6 +16,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
         private PlayerAnimeManager _animeManager;
+
+        private bool _isBattle;
 
         private IEnemy _target;
 
@@ -34,10 +37,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             base.Awake();
 
-            _comboSystem = new ComboSystem(_data);
-            _specialSystem = new SpecialSystem();
-            _flowZoneSystem = new FlowZoneSystem();
-
             if (TryGetComponent(out Animator animator))
             {
                 _animeManager = new(animator);
@@ -46,6 +45,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Character animator component not found");
             }
+
+            _comboSystem = new ComboSystem(_data);
+            _specialSystem = new SpecialSystem();
+            _flowZoneSystem = new FlowZoneSystem(ServiceLocator.GetInstance<MusicEngineHelper>());
         }
 
         private void Start()
@@ -108,7 +111,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnPhaseChanged(PhaseEnum phase)
         {
-            
+            _isBattle = phase == PhaseEnum.Battle;
         }
 
         /// <summary>
@@ -117,6 +120,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttack(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
             if (_target == null) return;
 
             Debug.Log($"{_data.Name} is attacking");
@@ -157,6 +161,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnChargeAttack(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
+
             Debug.Log($"{_data.Name} is charge attacking");
         }
 
@@ -166,6 +172,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnSpecial(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
+
             if (_target == null)
             {
                 Debug.LogWarning("Target is null");
@@ -185,6 +193,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnFinisher(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
+
             Debug.Log($"{_data.Name} is attacking");
         }
 
@@ -194,6 +204,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAvoid(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
+
             var timing = _musicEngine.GetCurrentTiming() switch
             {
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
