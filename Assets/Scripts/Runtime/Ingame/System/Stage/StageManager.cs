@@ -9,22 +9,7 @@ namespace BeatKeeper.Runtime.Ingame.Stsge
 {
     public class StageManager : MonoBehaviour
     {
-        public StageEnemyAdmin EnemyAdmin => _enemyAdmin;
-        private StageEnemyAdmin _enemyAdmin;
-        
-        [SerializeField]
-        private Transform _enemiesParent;
-
-        private void Awake()
-        {
-            if (_enemiesParent)
-            {
-                _enemyAdmin = new (_enemiesParent);
-            }
-            else
-            {
-                Debug.LogWarning("EnemiesParent is null");
-            }
-        }
+        CameraManager CameraManager => _cameraManager;
+        CameraManager _cameraManager;
     }
 }
