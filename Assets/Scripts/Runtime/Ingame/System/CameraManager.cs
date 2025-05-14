@@ -12,6 +12,10 @@ namespace BeatKeeper
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
+        private CinemachineBrain _brain;
+        
+        private CinemachineCamera _playerCamera;
+        
         [SerializeField] private CinemachineCamera[] _camera;
         [SerializeField] private Transform _playerCameraTarget; // プレイヤーのカメラターゲット
         [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
@@ -20,9 +24,13 @@ namespace BeatKeeper
 
         private void Start()
         {
-            _playerCameraTarget = ServiceLocator.GetInstance<PlayerManager>().transform;
+            _brain = Camera.main?.GetComponent<CinemachineBrain>();
             
-            _useCamera = _camera[0];
+            var player = ServiceLocator.GetInstance<PlayerManager>();
+            _playerCamera = player.GetComponentInChildren<CinemachineCamera>();
+            _playerCameraTarget = player.transform;
+            
+            ChangeCamera(CameraType.StartPerformance);
         }
 
         /// <summary>
@@ -48,16 +56,25 @@ namespace BeatKeeper
         /// </summary>
         public void ChangeCamera(CameraType cameraType)
         {
+            switch (cameraType) //特定のカメラの時はそれをアクティブにする
+            {
+                case CameraType.PlayerTPS:
+                    foreach (var cinemachineCamera in _camera)
+                    cinemachineCamera.enabled = false;
+                    _playerCamera.enabled = true;
+                    return;
+            }
+            
             for (int i = 0; i < _camera.Length; i++)
             {
                 if (i == (int)cameraType)
                 {
                     _useCamera = _camera[i];
-                    _camera[i].gameObject.SetActive(true);
+                    _camera[i].enabled = true;
                 }
                 else
                 {
-                    _camera[i].gameObject.SetActive(false);
+                    _camera[i].enabled = false;
                 }
             }
         }
@@ -76,7 +93,7 @@ namespace BeatKeeper
 
     public enum CameraType
     {
-        PlayerTPS,
-        StartPerformance,
+        StartPerformance = 0,
+        PlayerTPS = 1,
     }
 }
