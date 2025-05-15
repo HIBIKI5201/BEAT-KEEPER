@@ -225,6 +225,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             for (int i = 0; i < 3; i++)
             {
                 willAttack |= _target.EnemyData.Beat[timing + i];
+                if (willAttack) break; //あったら終了
             }
 
             if (willAttack)
