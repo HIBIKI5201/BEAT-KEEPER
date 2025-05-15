@@ -1,6 +1,7 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using DG.Tweening;
 using R3;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ namespace BeatKeeper
 
         private void Start()
         {
+            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            
             _image = GetComponent<Image>();
             _playerManager.SpecialSystem.SpecialEnergy.Subscribe(FillUpdate).AddTo(_disposable);
         }

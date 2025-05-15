@@ -16,7 +16,7 @@ namespace BeatKeeper
         [SerializeField] private Tmp_EnemyMove _enemyMove;
         
         // 仮
-        [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Battle1;
+        [SerializeField] private PhaseEnum _startPhase = PhaseEnum.Movie;
         private float _defaultTextPosY;
         
         private PhaseEnum _nextPhase;
@@ -24,8 +24,16 @@ namespace BeatKeeper
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
 
-        private void Start()
+        private async void Start()
         {
+            var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
+            if (multiSceneManager)
+            {
+                await multiSceneManager.WaitForSceneLoad(SceneListEnum.Stage);
+            }
+            
+            _cameraManager = FindAnyObjectByType<CameraManager>();
+            
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _cameraManager.ChangeCamera(CameraType.StartPerformance);
@@ -90,7 +98,7 @@ namespace BeatKeeper
         /// </summary>
         private void ActivateBattlePhase()
         {
-            _phaseManager.TransitionTo(PhaseEnum.Battle1);
+            _phaseManager.NextPhase();
             _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
 

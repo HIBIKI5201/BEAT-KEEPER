@@ -72,11 +72,4 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-Assets/Arts/Audio/BGM/cyber.mp3
-Assets/Arts/Audio/BGM/cyber.mp3.meta
-Assets/Arts/Audio/BGM/Cybernetic.mp3
-Assets/Arts/Audio/BGM/Cybernetic.mp3.meta
-Assets/Arts/Audio/BGM/Glacial brilliance.mp3
-Assets/Arts/Audio/BGM/Glacial brilliance.mp3.meta
-Assets/Arts/Audio/BGM/Unwanted strife.mp3
-Assets/Arts/Audio/BGM/Unwanted strife.mp3.meta
+Assets/Arts/Audio/BGM/

@@ -1,6 +1,9 @@
+using System.Threading.Tasks;
 using BeatKeeper.Runtime.Ingame.Character;
 using DG.Tweening;
 using R3;
+using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,16 +23,23 @@ namespace BeatKeeper
         
         private void Start()
         {
-            _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
-            _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
+            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+
+            Task.Run(async () =>
             {
-                _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
+                await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
                 
-                if (!value)
+                _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
+                _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
                 {
-                    AllReset();
-                }
-            }).AddTo(_disposable);
+                    _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
+                
+                    if (!value)
+                    {
+                        AllReset();
+                    }
+                }).AddTo(_disposable);
+            });
             
             AllReset();
         }
