@@ -43,6 +43,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void Start()
         {
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _target = ServiceLocator.GetInstance<PlayerManager>();
 
             if (_musicEngine)
             {
@@ -90,6 +91,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log($"{_data.name} attack {timing}");
                 
+                _target.HitAttack(1);
                 _particleSystem?.Play();
             }
         }
