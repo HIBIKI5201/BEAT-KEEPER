@@ -15,17 +15,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private IAttackable _target;
         
         private bool _isKnockback;
+
+        public event Action OnHitAttack;
         
         #region モック用の機能
         
         [SerializeField] private ParticleSystem _particleSystem;
         
         #endregion
-        
-        protected override void Awake()
+
+        private void OnEnable()
         {
-            base.Awake();
-            
             if (TryGetComponent(out Animator animator))
             {
                 _animeManager = new (animator);
@@ -34,6 +34,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no Animator");
             }
+            
+            OnHitAttack += _animeManager.KnockBack;
         }
 
         private void Start()
@@ -63,9 +65,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             base.HitAttack(damage);
             
+            OnHitAttack?.Invoke();
+            
             //ノックバック
             _isKnockback = true;
-            _animeManager.KnockBack();
             await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
             _isKnockback = false;
         }
