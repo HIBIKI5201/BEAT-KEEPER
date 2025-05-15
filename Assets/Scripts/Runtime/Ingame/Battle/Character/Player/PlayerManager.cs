@@ -18,7 +18,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
         private PlayerAnimeManager _animeManager;
-        
+
         private bool _isBattle;
 
         private IEnemy _target;
@@ -29,12 +29,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public SpecialSystem SpecialSystem => _specialSystem;
         private SpecialSystem _specialSystem;
 
-        public event Action OnResonanceHit;
+        public event Action OnComboAttack;
+        public event Action OnResonanceAttack;
+        public event Action OnNonResonanceAttack;
+
+        public event Action OnHitAttack;
         
+        public event Action OnJustAvoid;
+
         #region モック用の機能
-        
+
         [SerializeField] private ParticleSystem _particleSystem;
-        
+
         #endregion
 
         // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
@@ -61,6 +67,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _specialSystem = new SpecialSystem();
             _flowZoneSystem =
                 new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>());
+
+            OnComboAttack += _comboSystem.Attack;
+            OnComboAttack += _particleSystem.Play;
+            OnResonanceAttack += () => _specialSystem.AddSpecialEnergy(0.05f);
+
+            OnHitAttack += _comboSystem.ComboReset;
         }
 
         private void Start()
@@ -115,8 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(float damage)
         {
             base.HitAttack(damage);
-
-            _comboSystem.ComboReset();
+            OnHitAttack?.Invoke();
         }
 
         public void SetTarget(IEnemy target) => _target = target;
@@ -140,13 +151,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_target == null) return;
 
             Debug.Log($"{_data.Name} is attacking");
+            OnComboAttack?.Invoke();
 
             //リズム共鳴が成功したか
             bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
             if (isResonanceHit)
             {
-                OnResonanceHit?.Invoke();
+                OnResonanceAttack?.Invoke();
                 _flowZoneSystem.SuccessResonanceHit();
+            }
+            else
+            {
+                OnNonResonanceAttack?.Invoke();
             }
 
             //コンボに応じたダメージ
@@ -158,19 +174,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 _ => _data.FirstAttackPower
             };
-
             if (isResonanceHit)
                 power *= _data.ResonanceCriticalDamage;
 
             _target.HitAttack(power);
-
-            _comboSystem.Attack();
-
-            //スペシャルエネルギーを5%増加
-            if (isResonanceHit)
-                _specialSystem.AddSpecialEnergy(0.05f);
-            
-            _particleSystem?.Play();
         }
 
         /// <summary>
@@ -191,12 +198,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnSpecial(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
-
-            if (_target == null)
-            {
-                Debug.LogWarning("Target is null");
-                return;
-            }
+            if (_target == null) return;
 
             if (1 <= _specialSystem.SpecialEnergy.CurrentValue)
             {
@@ -224,7 +226,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (!_isBattle) return;
             Debug.Log($"{_data.Name} is avoiding");
-            
+
             var timing = _musicEngine.GetCurrentTiming() switch
             {
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
@@ -241,6 +243,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (willAttack)
             {
                 Debug.Log($"Enemy will be attack player");
+                OnJustAvoid?.Invoke();
             }
         }
 
