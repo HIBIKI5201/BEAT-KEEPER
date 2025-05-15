@@ -42,8 +42,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
             }
-            
-            Music.Play("Music");
         }
 
         public void Dispose()

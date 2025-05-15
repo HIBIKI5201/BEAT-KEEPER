@@ -5,4 +5,5 @@
     System = 2,
     InGame = 3,
     Stage = 4,
+    Battle = 5,
 }
