@@ -133,7 +133,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &469800026
 Transform:
@@ -267,6 +267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 1842630817}
+  _autoSet: 1
+  _autoDestroy: 1
 --- !u!1001 &1938406886
 PrefabInstance:
   m_ObjectHideFlags: 0
