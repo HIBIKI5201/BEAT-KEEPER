@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05571e519c794754e913bd4de7eea948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerManager: {fileID: 0}
   _comboBonusData: {fileID: 11400000, guid: 7d7c1e9296d2458489706cd293b7e5eb, type: 2}
 --- !u!114 &4122666561369169013
 MonoBehaviour:

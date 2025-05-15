@@ -16,6 +16,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         private bool _isKnockback;
         
+        #region モック用の機能
+        
+        [SerializeField] private ParticleSystem _particleSystem;
+        
+        #endregion
+        
         protected override void Awake()
         {
             base.Awake();
@@ -66,7 +72,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnAttack()
         {
-            if (_musicEngine) return;
+            if (!_musicEngine) return;
             
             if (_isKnockback) return; //ノックバック中は攻撃しない
             
@@ -78,6 +84,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_data.Beat[timing])
             {
                 Debug.Log($"{_data.name} attack {timing}");
+                
+                _particleSystem?.Play();
             }
         }
     }

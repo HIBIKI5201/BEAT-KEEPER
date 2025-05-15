@@ -20,28 +20,29 @@ namespace BeatKeeper
         [SerializeField] private Image[] _icons;
         [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
         private CompositeDisposable _disposable = new CompositeDisposable();
-        
+
         private void Start()
         {
             _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            Initialize();
+            
+            AllReset();
 
-            Task.Run(async () =>
+            async void Initialize()
             {
                 await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
-                
+
                 _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
                 _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
                 {
                     _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
-                
+
                     if (!value)
                     {
                         AllReset();
                     }
                 }).AddTo(_disposable);
-            });
-            
-            AllReset();
+            }
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace BeatKeeper
                 Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");
                 return;
             }
-            
+
             _icons[count].color = _resonanceColor;
         }
 
