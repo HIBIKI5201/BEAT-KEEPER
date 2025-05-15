@@ -50,8 +50,8 @@ namespace BeatKeeper
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
                 _uiManager.BattleEnd();
-                _cameraManager.ChangeCamera(CameraType.ClearPhase);
-                _cameraManager.ChangeTarget(CameraAim.NPC1);
+                _cameraManager.ChangeCamera(CameraType.StartPerformance);
+                _cameraManager.ChangeTarget(CameraAim.Npc);
             }
             else if (_count == 5)
             {
@@ -113,12 +113,6 @@ namespace BeatKeeper
         {
             _musicEngineHelper.OnJustChangedBar -= Counter;
             _disposables?.Dispose();
-        }
-
-        [ContextMenu("Activate Battle Phase")]
-        public void ChangeState()
-        {
-            _phaseManager.TransitionTo(PhaseEnum.Clear);
         }
     }
 }
