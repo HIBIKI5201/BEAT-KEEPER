@@ -34,7 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnNonResonanceAttack;
 
         public event Action OnHitAttack;
-        
+
         public event Action OnJustAvoid;
 
         #region モック用の機能
@@ -50,15 +50,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         protected override void Awake()
         {
             base.Awake();
-
-            if (TryGetComponent(out Animator animator))
-            {
-                _animeManager = new(animator);
-            }
-            else
-            {
-                Debug.LogWarning("Character animator component not found");
-            }
         }
 
         private async void OnEnable()
@@ -67,6 +58,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _specialSystem = new SpecialSystem();
             _flowZoneSystem =
                 new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>());
+            
+            if (TryGetComponent(out Animator animator))
+                _animeManager = new(animator);
+            else Debug.LogWarning("Character animator component not found");
 
             OnComboAttack += _comboSystem.Attack;
             OnComboAttack += _particleSystem.Play;
