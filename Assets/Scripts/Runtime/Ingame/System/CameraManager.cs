@@ -42,7 +42,7 @@ namespace BeatKeeper
             Transform target = targetName switch
             {
                 CameraAim.Player => _playerCameraTarget,
-                CameraAim.NPC1 => _npcCameraTarget[0],
+                CameraAim.Npc => _npcCameraTarget[0],
                 CameraAim.FirstBattleEnemy => _enemyCameraTarget[0],
                 CameraAim.SecondBattleEnemy => _enemyCameraTarget[1],
                 _ => _playerCameraTarget
@@ -83,9 +83,7 @@ namespace BeatKeeper
     public enum CameraAim
     {
         Player,
-        NPC1,
-        NPC2,
-        NPC3,
+        Npc,
         FirstBattleEnemy,
         SecondBattleEnemy,
         ThirdBattleEnemy,

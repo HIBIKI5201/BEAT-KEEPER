@@ -43,7 +43,7 @@ namespace BeatKeeper
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
                 _uiManager.BattleEnd();
-                _cameraManager.ChangeTarget(CameraAim.NPC1);
+                _cameraManager.ChangeTarget(CameraAim.Npc);
             }
             else if (_count == 5)
             {
