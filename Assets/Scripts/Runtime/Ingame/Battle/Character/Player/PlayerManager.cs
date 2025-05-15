@@ -223,7 +223,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAvoid(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
-
+            Debug.Log($"{_data.Name} is avoiding");
+            
             var timing = _musicEngine.GetCurrentTiming() switch
             {
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
@@ -233,7 +234,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool willAttack = false;
             for (int i = 0; i < 3; i++)
             {
-                willAttack |= _target.EnemyData.Beat[timing + i];
+                willAttack |= _target.EnemyData.Beat[(timing + i) % 32];
                 if (willAttack) break; //あったら終了
             }
 
@@ -241,8 +242,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log($"Enemy will be attack player");
             }
-
-            Debug.Log($"{_data.Name} is avoiding");
         }
 
         [ContextMenu(nameof(AddSpecialEnergy))]
