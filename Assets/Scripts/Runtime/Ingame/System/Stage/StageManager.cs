@@ -9,7 +9,7 @@ namespace BeatKeeper.Runtime.Ingame.Stsge
 {
     public class StageManager : MonoBehaviour
     {
-        CameraManager CameraManager => _cameraManager;
-        CameraManager _cameraManager;
+        public CameraManager CameraManager => _cameraManager;
+        [SerializeField] private CameraManager _cameraManager;
     }
 }
