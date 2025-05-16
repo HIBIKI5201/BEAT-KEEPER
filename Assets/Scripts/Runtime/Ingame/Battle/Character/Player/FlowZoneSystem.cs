@@ -42,18 +42,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void SuccessResonanceHit()
         {
-            if (_isFlowZone.Value)
-            {
-                return; // フローゾーン中であれば以下の処理はスキップする
-            }
+            // フローゾーン中であれば以下の処理はスキップする
+            if (_isFlowZone.Value) return;
+            
+            _resonanceCount.Value++; // 0~6の範囲
             
             if (_resonanceCount.Value >= 6)
             {
                 _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
                 _musicEngineHelper.OnJustChangedBeat += Count;
             }
-            
-            _resonanceCount.Value++; // 0~6の範囲
         }
 
         private void Count()

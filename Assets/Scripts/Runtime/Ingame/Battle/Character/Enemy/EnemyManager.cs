@@ -15,17 +15,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private IAttackable _target;
         
         private bool _isKnockback;
+
+        public event Action OnNormalAttack; 
+        
+        public event Action OnHitAttack;
         
         #region モック用の機能
         
         [SerializeField] private ParticleSystem _particleSystem;
         
         #endregion
-        
-        protected override void Awake()
+
+        private void OnEnable()
         {
-            base.Awake();
-            
             if (TryGetComponent(out Animator animator))
             {
                 _animeManager = new (animator);
@@ -34,11 +36,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no Animator");
             }
+            
+            OnHitAttack += _animeManager.KnockBack;
         }
 
         private void Start()
         {
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _target = ServiceLocator.GetInstance<PlayerManager>();
 
             if (_musicEngine)
             {
@@ -58,14 +63,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
-
         public override async void HitAttack(float damage)
         {
             base.HitAttack(damage);
             
+            OnHitAttack?.Invoke();
+            
             //ノックバック
             _isKnockback = true;
-            _animeManager.KnockBack();
             await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
             _isKnockback = false;
         }
@@ -73,8 +78,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack()
         {
             if (!_musicEngine) return;
-            
             if (_isKnockback) return; //ノックバック中は攻撃しない
+
+            OnNormalAttack?.Invoke();
             
             var timing = _musicEngine.GetCurrentTiming() switch
             {
@@ -85,6 +91,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log($"{_data.name} attack {timing}");
                 
+                _target.HitAttack(1);
                 _particleSystem?.Play();
             }
         }
