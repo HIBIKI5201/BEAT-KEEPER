@@ -81,7 +81,6 @@ namespace BeatKeeper
             _uiManager.HideEncounterText(); // 遭遇時のテキストを非表示にする
             _uiManager.BattleStart(); // バトルUIを表示する
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
-            // プレイヤーの着地アニメーション再生
             _enemyMove.MoveStart(); // 敵がNPCから離れてバトルの初期位置まで移動する
         }
         
@@ -90,7 +89,8 @@ namespace BeatKeeper
         /// </summary>
         private void SetupWeaponStance()
         {
-            // 武器を構えるモーションを再生
+            _phaseManager.NextPhase();
+            _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
         
         /// <summary>
@@ -98,8 +98,7 @@ namespace BeatKeeper
         /// </summary>
         private void ActivateBattlePhase()
         {
-            _phaseManager.NextPhase();
-            _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
+            // 一旦この中の処理を13拍目から16拍目に移した
         }
 
         private void OnDestroy()
