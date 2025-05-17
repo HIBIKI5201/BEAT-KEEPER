@@ -32,9 +32,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnComboAttack;
         public event Action OnResonanceAttack;
         public event Action OnNonResonanceAttack;
-
-        public event Action OnHitAttack;
-
         public event Action OnJustAvoid;
 
         #region モック用の機能

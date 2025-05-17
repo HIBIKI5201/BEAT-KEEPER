@@ -13,13 +13,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private ScoreManager _scoreManager;
         private EnemyAnimeManager _animeManager;
 
-        private IAttackable _target;
+        private IHitable _target;
         
         private bool _isKnockback;
 
         public event Action OnNormalAttack; 
-        
-        public event Action OnHitAttack;
         
         #region モック用の機能
         
