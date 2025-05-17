@@ -36,8 +36,8 @@ namespace BeatKeeper
             
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
-            _cameraManager.ChangeCamera(CameraType.StartPerformance);
-            _cameraManager.ChangeTarget(CameraAim.Player);
+            _cameraManager.ChangeCamera(1);
+            _cameraManager.ChangeCamera(0);
             TransitionStart(_startPhase); //TODO: テスト用。アプローチフェーズの処理と連携して呼び出すようにしたい
         }
 
@@ -67,7 +67,7 @@ namespace BeatKeeper
         /// </summary>
         private void ZoomInOnEnemy()
         {
-            _cameraManager.ChangeTarget(CameraAim.FirstBattleEnemy);
+            _cameraManager.ChangeCamera(0);
             _uiManager.ShowEncounterText(1); // 遭遇時のテキストを表示する
         }
         
@@ -76,8 +76,7 @@ namespace BeatKeeper
         /// </summary>
         private void PrepareForBattle()
         {
-            _cameraManager.ChangeCamera(CameraType.PlayerTPS);
-            _cameraManager.ChangeTarget(CameraAim.Player);
+            _cameraManager.ChangeCamera(0);
             _uiManager.HideEncounterText(); // 遭遇時のテキストを非表示にする
             _uiManager.BattleStart(); // バトルUIを表示する
             _bgmChanger.ChangeBGM(_nextPhase); // BGMの遷移開始
