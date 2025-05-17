@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2040322843303209117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2044196445283270100}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2044196445283270100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040322843303209117}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.1558592, y: -0.054922953, z: -0.008679917, w: 0.98621297}
+  m_LocalPosition: {x: 0.211, y: 1.36, z: 0.673}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1692959584129457158}
+  m_LocalEulerAnglesHint: {x: -12.6, y: -32.791, z: 0}
 --- !u!1 &2534429014834333266
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +191,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5029,8 +5060,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3783443888499803700}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20003702, y: -0.25921488, z: -0.054970678, w: 0.9432768}
-  m_LocalPosition: {x: 4.7405252, y: 0.99472153, z: -3.7226017}
+  m_LocalRotation: {x: -0.15354918, y: -0.014494683, z: -0.0022526055, w: 0.98803216}
+  m_LocalPosition: {x: 2.3991344, y: 1.5150787, z: -4.6276135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5220,6 +5251,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5127357512197914910}
+  - {fileID: 2044196445283270100}
   m_Father: {fileID: 6271943180603376666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8472192571253439788
@@ -5234,6 +5266,7 @@ GameObject:
   - component: {fileID: 6630069945058443533}
   - component: {fileID: 3184296290978092416}
   - component: {fileID: 8265417069668042560}
+  - component: {fileID: 5183150484617519683}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5311,3 +5344,18 @@ MonoBehaviour:
   _target: {fileID: 6630069945058443533}
   _autoSet: 1
   _autoDestroy: 1
+--- !u!114 &5183150484617519683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8472192571253439788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5043fa5efd14db3479a08d882c7e67c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _muzzleFlash:
+    _muzzle: {fileID: 2044196445283270100}
+    _muzzleFlash: {fileID: 5368706015596788293}
