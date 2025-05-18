@@ -29,7 +29,7 @@ namespace BeatKeeper.Runtime.Ingame
         {
             if(!_hitEffect) return; // nullなら以降の処理は行わない
             
-            transform.position = _hitEffect.transform.position; // 座標を設定する
+            // transform.position = _hitEffect.transform.position; // TODO: 座標を設定する?
             _hitEffect.Play();
         }
 
