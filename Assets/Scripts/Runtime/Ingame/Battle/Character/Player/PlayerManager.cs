@@ -63,6 +63,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnComboAttack += _comboSystem.Attack;
             OnComboAttack += _particleSystem.Play;
             OnResonanceAttack += () => _specialSystem.AddSpecialEnergy(0.05f);
+            OnJustAvoid += _flowZoneSystem.SuccessResonance;
 
             OnHitAttack += _comboSystem.ComboReset;
         }
@@ -150,7 +151,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isResonanceHit)
             {
                 OnResonanceAttack?.Invoke();
-                _flowZoneSystem.SuccessResonanceHit();
             }
             else
             {
