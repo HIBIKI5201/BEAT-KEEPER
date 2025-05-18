@@ -47,7 +47,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             _resonanceCount.Value++;
             
-            if (_resonanceCount.Value >= 6)
+            if (_resonanceCount.Value >= 7)
             {
                 _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
                 _musicEngineHelper.OnJustChangedBeat += Count; // 継続時間を確認するために拍数を取得する
@@ -64,6 +64,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_count >= DURATION) // フローゾーン継続時間が終了したら
             {
                 _isFlowZone.Value = false;
+                _count = 0; // 使いまわせるようにリセット
                 _resonanceCount.Value = 0; // 共鳴回数をリセット
                 _musicEngineHelper.OnJustChangedBeat -= Count; // 購読をやめる
             }
