@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using BeatKeeper.Runtime.Ingame.Character;
 using DG.Tweening;
 using R3;
@@ -50,7 +49,9 @@ namespace BeatKeeper
         /// </summary>
         private void IconColorChanged(int count)
         {
-            if (count < 0 || count >= _icons.Length)
+            count--; // カウントが1オリジンで渡ってくるので、1減らす処理を挟む
+            
+            if (count < -1 || count >= _icons.Length) // 0-6の範囲に収めたい
             {
                 Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");
                 return;
