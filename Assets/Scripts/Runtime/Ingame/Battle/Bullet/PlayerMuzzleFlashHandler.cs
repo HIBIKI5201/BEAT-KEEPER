@@ -7,7 +7,7 @@ namespace BeatKeeper.Runtime.Ingame
     /// <summary>
     /// プレイヤーのマズルフラッシュエフェクトの再生タイミングを管理するクラス
     /// </summary>
-    public class PlayerMuzzleFlachHandler : MonoBehaviour
+    public class PlayerMuzzleFlashHandler : MonoBehaviour
     {
         [SerializeField] private MuzzleFlashController _muzzleFlash = new MuzzleFlashController();
         private PlayerManager _playerManager;
