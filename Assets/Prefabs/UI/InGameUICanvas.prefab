@@ -1312,7 +1312,6 @@ GameObject:
   - component: {fileID: 3272895625840884379}
   - component: {fileID: 7570882987804717030}
   - component: {fileID: 7239464005814020127}
-  - component: {fileID: 5682283400060865095}
   m_Layer: 5
   m_Name: InGameUICanvas
   m_TagString: Untagged
@@ -1427,20 +1426,6 @@ MonoBehaviour:
   _scoreText: {fileID: 4097051169465662113}
   _seekBar: {fileID: 5247262157891360532}
   _finisherGuide: {fileID: 2006703405593705863}
---- !u!114 &5682283400060865095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4546012881941083311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1712301a1e964c14492bb6c121a468de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemy: {fileID: 0}
-  dmgTextManager: {fileID: 5683830202444042698}
 --- !u!1 &4760488735296370544
 GameObject:
   m_ObjectHideFlags: 0
