@@ -40,7 +40,7 @@ namespace BeatKeeper
                 Show(); // コンボがゼロ以外で、かつ非表示状態だったら表示処理を行う
             }
             
-            _text.text = $"{value} COMBO!";
+            _text.text = $"{value} COMBO!"; // テキストの書き換え
         }
         
         private void Show() => _canvasGroup.alpha = 1;
