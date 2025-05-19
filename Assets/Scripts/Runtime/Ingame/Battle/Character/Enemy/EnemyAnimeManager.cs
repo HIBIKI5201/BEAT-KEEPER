@@ -12,6 +12,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public EnemyAnimeManager(Animator animator) : base(animator) { }
 
-        public void KnockBack() => _animator?.SetTrigger(_knockBackHash);
+        public void KnockBack(int value = 0) => _animator?.SetTrigger(_knockBackHash);
     }
 }
