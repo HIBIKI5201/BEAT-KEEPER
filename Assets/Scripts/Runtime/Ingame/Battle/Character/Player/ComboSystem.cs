@@ -32,7 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Update()
         {
             //コンボ維持時間が終了するとリセット
-            if (Time.time < _lastAttackTime + _data.ComboResetTime)
+            if (Time.time > _lastAttackTime + _data.ComboResetTime)
             {
                 ComboReset();
             }
