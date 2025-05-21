@@ -88,7 +88,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
             };
 
-            if (_data.Beat[timing])
+            if (_data.Chart[timing])
             {
                 Debug.Log($"{_data.name} attack {timing}");
                 

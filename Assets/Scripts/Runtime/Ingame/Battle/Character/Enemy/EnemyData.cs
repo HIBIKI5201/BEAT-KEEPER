@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -11,15 +12,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         private void Awake()
         {
-             if (_beat.Length != 32)
-                 Debug.LogWarning("譜面データの長さが不適切です。");
+            if (_chart.Length != 32)
+                Debug.LogWarning("譜面データの長さが不適切です。");
         }
 
-        public bool[] Beat => _beat;
-        [SerializeField, Tooltip("ビートの拍子")]
-        private bool[] _beat = new bool[32];
-        
+        public bool[] Chart => _chart;
+        [SerializeField, Tooltip("ビートの拍子")] private bool[] _chart = new bool[32];
+
         public float NockbackTime => _nockbackTime;
-        private float _nockbackTime = 1;
+        [SerializeField, Tooltip("ノックバック時間")] private float _nockbackTime = 1;
     }
 }
