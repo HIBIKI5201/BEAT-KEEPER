@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace BeatKeeper.Editor.Ingame.Character
     [CustomEditor(typeof(EnemyData))]
     public class EnemyDataDrawer : UnityEditor.Editor
     {
-        private const string ARRAY_PROPATY = "_beat";
+        private const string ARRAY_PROPATY = "_chart";
         private SerializedProperty _array;
         
         void OnEnable()
@@ -30,23 +31,26 @@ namespace BeatKeeper.Editor.Ingame.Character
             for (int i = 0; i < _array.arraySize; i++)
             {
                 SerializedProperty element = _array.GetArrayElementAtIndex(i);
-                bool current = element.boolValue;
+                int index = element.enumValueIndex;
+                string name = element.enumNames[index];
 
-                //スタイル
                 GUIStyle style = new GUIStyle(GUI.skin.button);
                 style.normal.textColor = Color.white;
 
                 Color originalColor = GUI.backgroundColor;
-                GUI.backgroundColor = current ? Color.green : Color.gray;
+
+                bool isAttack = index != (int)AttackKindEnum.None;
+                //攻撃するならグリーン
+                GUI.backgroundColor = isAttack ? Color.green : Color.gray;
 
                 //要素配置
                 GUILayout.BeginHorizontal();
                 
-                GUILayout.Label((i + 1).ToString(), GUILayout.Width(30));
+                GUILayout.Label((i + 1).ToString(), GUILayout.Width(30)); //番号を表示
                 
-                if (GUILayout.Button(current ? "〇" : "×", GUILayout.Width(50), GUILayout.Height(25)))
+                if (GUILayout.Button(name, GUILayout.Width(50), GUILayout.Height(25)))
                 {
-                    element.boolValue = !current;
+                    element.enumValueIndex = (index + 1) % element.enumNames.Length; //次のEnumにする
                 }
 
                 GUILayout.EndHorizontal();
