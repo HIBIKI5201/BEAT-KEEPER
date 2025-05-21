@@ -1,4 +1,5 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Battle;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,10 +17,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("譜面データの長さが不適切です。");
         }
 
-        public bool[] Chart => _chart;
-        [SerializeField, Tooltip("ビートの拍子")] private bool[] _chart = new bool[32];
+        public AttackKindEnum[] Chart => _chart;
+        [SerializeField, Tooltip("ビートの拍子")] private AttackKindEnum[] _chart = new AttackKindEnum[32];
 
         public float NockbackTime => _nockbackTime;
         [SerializeField, Tooltip("ノックバック時間")] private float _nockbackTime = 1;
+
+        public bool IsAttack(int index)
+        {
+            index %= _chart.Length;
+            return _chart[index] != AttackKindEnum.None;
+        }
     }
 }
