@@ -17,12 +17,12 @@ namespace BeatKeeper.Runtime.Ingame
             _playerManager = ServiceLocator.GetInstance<PlayerManager>();
             
             // プレイヤーが攻撃したタイミングでマズルフラッシュのエフェクトが再生されるようにする
-            _playerManager.OnComboAttack += _muzzleFlash.Fire;
+            _playerManager.OnShootComboAttack += _muzzleFlash.Fire;
         }
 
         private void OnDestroy()
         {
-            _playerManager.OnComboAttack -= _muzzleFlash.Fire;
+            _playerManager.OnShootComboAttack -= _muzzleFlash.Fire;
         }
     }
 }
