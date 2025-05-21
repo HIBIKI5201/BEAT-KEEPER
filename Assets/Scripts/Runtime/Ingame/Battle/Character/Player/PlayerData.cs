@@ -15,7 +15,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         [SerializeField] private float _thirdAttackPower = 100;
         public float ThirdAttackPower => _thirdAttackPower;
-
+        
+        [SerializeField, Tooltip("最大チャージになるまでの拍数")]
+        private float _chargeAttackTime = 3;
+        public float ChargeAttackTime => _chargeAttackTime;
+        
         [Space]
         
         [SerializeField, Range(0,1), Tooltip("リズム共鳴の範囲")]

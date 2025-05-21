@@ -16,6 +16,7 @@ MonoBehaviour:
   _firstAttackPower: 100
   _secondAttackPower: 100
   _thirdAttackPower: 100
+  _chargeAttackTime: 3
   _resonanceRange: 0.5
   _resonanceCriticalDamage: 1
   _flowZoneThreshold: 10
