@@ -32,6 +32,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnComboAttack;
         public event Action OnResonanceAttack;
         public event Action OnNonResonanceAttack;
+        
+        public event Action OnNormalAvoid;
         public event Action OnJustAvoid;
 
         #region モック用の機能
@@ -63,6 +65,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnComboAttack += _comboSystem.Attack;
             OnComboAttack += _particleSystem.Play;
             OnResonanceAttack += () => _specialSystem.AddSpecialEnergy(0.05f);
+            OnNormalAvoid += _animeManager.Avoid;
             OnJustAvoid += _flowZoneSystem.SuccessResonance;
 
             OnHitAttack += _comboSystem.ComboReset;
@@ -75,6 +78,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_inputBuffer) //入力を購買する
             {
+                _inputBuffer.Move.performed += OnMove;
+                _inputBuffer.Move.canceled += OnMove;
                 _inputBuffer.Attack.started += OnAttack;
                 _inputBuffer.Special.started += OnSpecial;
                 _inputBuffer.Finishier.started += OnFinisher;
@@ -134,6 +139,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target = stage.EnemyAdmin.FindClosestEnemy(transform.position);
         }
 
+        private void OnMove(InputAction.CallbackContext context)
+        {
+            var dir = context.ReadValue<Vector2>();
+            _animeManager.MoveVector(dir);
+        }
+        
         /// <summary>
         ///     コンボ攻撃を行う
         /// </summary>
@@ -217,6 +228,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAvoid(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
+            
+            OnNormalAvoid?.Invoke();
             Debug.Log($"{_data.Name} is avoiding");
 
             var timing = _musicEngine.GetCurrentTiming() switch
@@ -226,15 +239,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             //nターン後までに攻撃があるかどうか
             bool willAttack = false;
+            AttackKindEnum enemyAttackKind = AttackKindEnum.None;
             for (int i = 0; i < 3; i++)
             {
-                willAttack |= _target.EnemyData.Beat[(timing + i) % 32];
-                if (willAttack) break; //あったら終了
+                willAttack |= _target.EnemyData.IsAttack(timing);
+                
+                if (willAttack)
+                {
+                    enemyAttackKind = _target.EnemyData.Chart[timing];
+                    break; //あったら終了
+                }
             }
 
             if (willAttack)
             {
-                Debug.Log($"Enemy will be attack player");
+                //SuperとCharge攻撃は回避できない
+                if ((enemyAttackKind & (AttackKindEnum.Super | AttackKindEnum.Charge)) != 0)
+                {
+                    Debug.Log($"Enemy's attack of {enemyAttackKind} can't be avoided");
+                    return;
+                }
+                
+                Debug.Log($"Success Avoid");
                 OnJustAvoid?.Invoke();
             }
         }
