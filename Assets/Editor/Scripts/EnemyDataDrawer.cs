@@ -1,3 +1,4 @@
+using System;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEditor;
@@ -31,15 +32,17 @@ namespace BeatKeeper.Editor.Ingame.Character
             for (int i = 0; i < _array.arraySize; i++)
             {
                 SerializedProperty element = _array.GetArrayElementAtIndex(i);
-                int index = element.enumValueIndex;
-                string name = element.enumNames[index];
+                int value = element.intValue;
+                AttackKindEnum kind = (AttackKindEnum)value;
+                
+                string name = kind.ToString();
 
                 GUIStyle style = new GUIStyle(GUI.skin.button);
                 style.normal.textColor = Color.white;
 
                 Color originalColor = GUI.backgroundColor;
 
-                bool isAttack = index != (int)AttackKindEnum.None;
+                bool isAttack = kind != AttackKindEnum.None;
                 //攻撃するならグリーン
                 GUI.backgroundColor = isAttack ? Color.green : Color.gray;
 
@@ -48,9 +51,17 @@ namespace BeatKeeper.Editor.Ingame.Character
                 
                 GUILayout.Label((i + 1).ToString(), GUILayout.Width(30)); //番号を表示
                 
-                if (GUILayout.Button(name, GUILayout.Width(50), GUILayout.Height(25)))
+                if (GUILayout.Button(kind.ToString(), GUILayout.Width(50), GUILayout.Height(25)))
                 {
-                    element.enumValueIndex = (index + 1) % element.enumNames.Length; //次のEnumにする
+                    //1以上なら左シフト、0なら1に
+                    value = 0 < value ? value << 1 : 1;
+                    
+                    //もしAttackKindの最大値より大きければ0にリセット
+                    //-2はNoneとzero originの補正
+                    if (1 << Enum.GetValues(typeof(AttackKindEnum)).Length - 2 < value)
+                        value = 0;
+
+                    element.intValue = value;
                 }
 
                 GUILayout.EndHorizontal();
