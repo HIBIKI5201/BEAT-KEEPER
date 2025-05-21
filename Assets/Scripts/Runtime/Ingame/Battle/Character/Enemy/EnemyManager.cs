@@ -1,4 +1,5 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -88,9 +89,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
             };
 
-            if (_data.Beat[timing])
+            if (_data.IsAttack(timing))
             {
-                Debug.Log($"{_data.name} attack {timing}");
+                Debug.Log($"{_data.name} {_data.Chart[timing]} attack {timing}");
                 
                 _target.HitAttack(1);
                 _particleSystem?.Play();

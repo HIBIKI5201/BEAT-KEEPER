@@ -226,15 +226,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             //nターン後までに攻撃があるかどうか
             bool willAttack = false;
+            AttackKindEnum enemyAttackKind = AttackKindEnum.None;
             for (int i = 0; i < 3; i++)
             {
-                willAttack |= _target.EnemyData.Beat[(timing + i) % 32];
-                if (willAttack) break; //あったら終了
+                willAttack |= _target.EnemyData.IsAttack(timing);
+                
+                if (willAttack)
+                {
+                    enemyAttackKind = _target.EnemyData.Chart[timing];
+                    break; //あったら終了
+                }
             }
 
             if (willAttack)
             {
-                Debug.Log($"Enemy will be attack player");
+                //SuperとCharge攻撃は回避できない
+                if ((enemyAttackKind & (AttackKindEnum.Super | AttackKindEnum.Charge)) != 0)
+                {
+                    Debug.Log($"Enemy's attack of {enemyAttackKind} can't be avoided");
+                    return;
+                }
+                
+                Debug.Log($"Success Avoid");
                 OnJustAvoid?.Invoke();
             }
         }
