@@ -4,7 +4,7 @@ namespace BeatKeeper.Runtime.Ingame.Battle
     {
         None = 0,
         Normal = 1,
-        Avoid = 2,
-        Charge = 3
+        Charge = 2,
+        Super = 3
     }
 }
