@@ -5060,8 +5060,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3783443888499803700}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15354918, y: -0.014494683, z: -0.0022526055, w: 0.98803216}
-  m_LocalPosition: {x: 2.3991344, y: 1.5150787, z: -4.6276135}
+  m_LocalRotation: {x: -0.1558592, y: -0.054922953, z: -0.008679917, w: 0.98621297}
+  m_LocalPosition: {x: 3.58547, y: 2.593453, z: -3.5378823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5089,7 +5089,7 @@ MonoBehaviour:
   Target:
     TrackingTarget: {fileID: 6407525150786479931}
     LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
+    CustomLookAtTarget: 1
   Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
@@ -5123,10 +5123,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.4, y: 0, z: 0}
+  ShoulderOffset: {x: 1.7, y: 0.77, z: 0}
   VerticalArmLength: 0.85
   CameraSide: 1
-  CameraDistance: 4
+  CameraDistance: 3
   AvoidObstacles:
     Enabled: 0
     CollisionFilter:
