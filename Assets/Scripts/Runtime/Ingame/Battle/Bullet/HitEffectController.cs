@@ -25,7 +25,7 @@ namespace BeatKeeper.Runtime.Ingame
         /// <summary>
         /// ヒット時にエフェクトを再生する
         /// </summary>
-        private void PlayHitEffect()
+        private void PlayHitEffect(int value = 0)
         {
             if(!_hitEffect) return; // nullなら以降の処理は行わない
             

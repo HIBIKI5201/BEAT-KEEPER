@@ -68,7 +68,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             base.HitAttack(damage);
             
-            OnHitAttack?.Invoke();
+            OnHitAttack?.Invoke(Mathf.FloorToInt(damage)); ////
             _scoreManager.AddScore(Mathf.FloorToInt(damage)); // スコアを加算。小数点以下は切り捨てる
             
             //ノックバック

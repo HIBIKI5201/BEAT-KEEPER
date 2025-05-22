@@ -131,7 +131,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(float damage)
         {
             base.HitAttack(damage);
-            OnHitAttack?.Invoke();
+            OnHitAttack?.Invoke(Mathf.FloorToInt(damage)); ////
         }
 
         public void SetTarget(IEnemy target) => _target = target;

@@ -6,6 +6,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         public void HitAttack(float damage);
         
-        public Action OnHitAttack { get; set; }
+        public Action<int> OnHitAttack { get; set; }
     }
 }

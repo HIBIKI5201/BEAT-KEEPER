@@ -1,4 +1,5 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
@@ -13,20 +14,20 @@ namespace BeatKeeper
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        private CinemachineBrain _brain;
-        
         private CinemachineCamera _playerCamera;
-        
-        [FormerlySerializedAs("_camera")] [SerializeField] private CinemachineCamera[] _cameras;
+        [SerializeField] private CinemachineCamera[] _cameras;
         private int _index;
 
-        private void Start()
+        private async void Start()
         {
-            _brain = Camera.main?.GetComponent<CinemachineBrain>();
-            
             var player = ServiceLocator.GetInstance<PlayerManager>();
             _playerCamera = player.GetComponentInChildren<CinemachineCamera>();
-            _cameras[0] = _playerCamera;
+            _cameras[0] = _playerCamera; // 仮 プレイヤーの子オブジェクトのカメラを使用する
+            
+            await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
+            
+            _cameras[0].Follow = player.transform;
+            _cameras[0].LookAt = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0].transform;
             
             ChangeCamera(0);
         }
@@ -40,11 +41,5 @@ namespace BeatKeeper
             _cameras[index].enabled = true;
             _index = index;
         }
-    }
-
-    public enum CameraType
-    {
-        Player = 0,
-        StartPerformance = 1,
     }
 }

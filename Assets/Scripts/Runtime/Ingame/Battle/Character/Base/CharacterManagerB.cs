@@ -13,7 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField] protected TDataType _data;
         public TDataType Data => _data;
 
-        public Action OnHitAttack { get; set; }
+        public Action<int> OnHitAttack { get; set; }
 
         protected virtual void Awake()
         {
