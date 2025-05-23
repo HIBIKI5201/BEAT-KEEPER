@@ -1310,7 +1310,6 @@ GameObject:
   - component: {fileID: 3215405233938621961}
   - component: {fileID: 6754851350437530259}
   - component: {fileID: 6881208694701519702}
-  - component: {fileID: 3241647114674279166}
   - component: {fileID: 4894527622705955650}
   m_Layer: 5
   m_Name: Ring_Thick
@@ -1376,18 +1375,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &3241647114674279166
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4137246190893352269}
-  m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!114 &4894527622705955650
 MonoBehaviour:
   m_ObjectHideFlags: 0
