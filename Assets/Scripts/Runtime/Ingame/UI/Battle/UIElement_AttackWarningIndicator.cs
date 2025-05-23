@@ -1,9 +1,12 @@
+using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.Stage;
 using DG.Tweening;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
     /// 敵の攻撃警告UI
@@ -31,16 +34,42 @@ namespace BeatKeeper
         private bool _processEveryOtherBeat; // 2拍に1回のみ処理を行うための変数
         private int _beatCount; // 現在の拍数
 
+        private StageEnemyAdmin _enemies;
+
         private const float DURATION = 0.57f; // BPM210 / 2の時間 
         
-        private void Start()
+        private async void Start()
         {
             _image = GetComponent<Image>();
             _childImage = transform.GetChild(0).GetComponent<Image>();
             _canvasGroup = GetComponent<CanvasGroup>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            
+            SceneLoader.RegisterAfterSceneLoad(SceneListEnum.Battle.ToString(),
+                () =>
+                {
+                    Debug.LogWarning("end battle scene load");
+                    _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
+                    _musicEngineHelper.OnJustChangedBeat += OnBeat;
+                });
         }
+        
+        private void OnBeat()
+        {
+            if (_enemies != null)
+            {
+                var timing = _musicEngineHelper.GetCurrentTiming();
 
+                foreach (var enemy in _enemies.Enemies)
+                {
+                    if (enemy.Data.IsAttack(timing.Bar * 4 + timing.Beat + 10))
+                    {
+                        EffectStart();
+                    }
+                }
+            }
+        }
+        
         [ContextMenu("エフェクト")]
         public void EffectStart()
         {
@@ -149,6 +178,7 @@ namespace BeatKeeper
 
         private void OnDestroy()
         {
+            _musicEngineHelper.OnJustChangedBeat -= OnBeat;
             _musicEngineHelper.OnJustChangedBeat -= ProcessBeat;
         }
     }
