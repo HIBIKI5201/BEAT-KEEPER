@@ -1,4 +1,5 @@
 using BeatKeeper.Runtime.Ingame.Character;
+using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -9,11 +10,14 @@ namespace BeatKeeper.Runtime.Ingame
     /// </summary>
     public class CameraShaker : MonoBehaviour
     {
-        [SerializeField] private CinemachineImpulseSource _impulseSource;
-        [SerializeField] private PlayerManager _playerManager;
+        private CinemachineImpulseSource _impulseSource;
+        private PlayerManager _playerManager;
 
         private void Start()
         {
+            _playerManager = GetComponent<PlayerManager>();
+            _impulseSource = GetComponent<CinemachineImpulseSource>();
+            
             _playerManager.OnHitAttack += HandleShake;
         }
 
@@ -27,7 +31,6 @@ namespace BeatKeeper.Runtime.Ingame
         /// </summary>
         private void Shake()
         {
-            if(!_impulseSource) _impulseSource = GetComponent<CinemachineImpulseSource>();
             _impulseSource.GenerateImpulse();
         }
 
