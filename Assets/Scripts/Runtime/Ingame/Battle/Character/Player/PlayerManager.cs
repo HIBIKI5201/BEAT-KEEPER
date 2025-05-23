@@ -132,7 +132,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //無敵時間判定
             if (_avoidSuccessTiming + _data.AvoidInvincibilityTime > Time.time)
             {
-                Debug.LogWarning("During Avoid Invincibility Time");
+                Debug.Log("During Avoid Invincibility Time");
                 return;
             }
             
