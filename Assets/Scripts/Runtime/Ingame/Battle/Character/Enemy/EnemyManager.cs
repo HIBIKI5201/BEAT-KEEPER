@@ -88,7 +88,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_data.IsAttack(timing.Bar * 4 + timing.Beat))
             {
-                Debug.Log($"{_data.name} {_data.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack {timing}");
+                Debug.Log($"{_data.name} {_data.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
                 
                 _target.HitAttack(1);
                 _particleSystem?.Play();
