@@ -23,7 +23,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Space]
         [SerializeField] private float _blinkDuration = 0.2f;
         [SerializeField] private float _fadeDuration = 0.3f;
-        [SerializeField, Tooltip("リングの縮小時間の拍数")] private float _reductionTime = 3;
+        [SerializeField, Tooltip("リングの縮小時間の拍数")] private int _reductionTime = 3;
 
         [Header("色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -97,7 +97,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var timing = _musicEngineHelper.GetCurrentTiming();
             foreach (var enemy in _enemies.Enemies)
             {
-                if (enemy.Data.IsAttack(timing.Bar * 4 + timing.Beat + 6))
+                if (enemy.Data.IsAttack(timing.Bar * 4 + timing.Beat + _reductionTime + 2))
                 {
                     EffectStart(_ringPool.Get());
                 }
