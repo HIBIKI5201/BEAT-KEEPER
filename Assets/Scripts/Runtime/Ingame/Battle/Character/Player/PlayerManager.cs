@@ -272,18 +272,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             };
 
             //nターン後までに攻撃があるかどうか
-            bool willAttack = false;
-            AttackKindEnum enemyAttackKind = AttackKindEnum.None;
-            for (int i = 0; i < 3; i++)
-            {
-                willAttack |= _target.EnemyData.IsAttack(timing);
-
-                if (willAttack)
-                {
-                    enemyAttackKind = _target.EnemyData.Chart[timing];
-                    break; //あったら終了
-                }
-            }
+            (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
 
             if (willAttack)
             {
@@ -298,6 +287,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnJustAvoid?.Invoke();
                 _avoidSuccessTiming = Time.time;
             }
+        }
+
+        public (bool, AttackKindEnum) IsSuccessAvoid(int timing)
+        {
+            bool willAttack = false;
+            for (int i = 0; i < 3; i++)
+            {
+                willAttack |= _target.EnemyData.IsAttack(timing);
+
+                if (willAttack)
+                {
+                    return (true, _target.EnemyData.Chart[timing]);
+                }
+            }
+
+            return (false, AttackKindEnum.None);
         }
 
         [ContextMenu(nameof(AddSpecialEnergy))]
