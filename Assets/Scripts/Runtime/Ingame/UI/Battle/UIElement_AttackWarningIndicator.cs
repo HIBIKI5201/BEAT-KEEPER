@@ -73,6 +73,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private async void Start()
         {
             _image = GetComponent<Image>();
+            _image.color = new Color(1,1,1,0);
             _playerManager = ServiceLocator.GetInstance<PlayerManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
 
