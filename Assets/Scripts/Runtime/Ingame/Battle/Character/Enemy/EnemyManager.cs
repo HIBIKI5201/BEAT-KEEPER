@@ -83,15 +83,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isKnockback) return; //ノックバック中は攻撃しない
 
             OnNormalAttack?.Invoke();
-            
-            var timing = _musicEngine.GetCurrentTiming() switch
-            {
-                var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
-            };
 
-            if (_data.IsAttack(timing))
+            var timing = _musicEngine.GetCurrentTiming();
+
+            if (_data.IsAttack(timing.Bar * 4 + timing.Beat))
             {
-                Debug.Log($"{_data.name} {_data.Chart[timing]} attack {timing}");
+                Debug.Log($"{_data.name} {_data.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
                 
                 _target.HitAttack(1);
                 _particleSystem?.Play();

@@ -18,13 +18,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private PlayerAnimeManager _animeManager;
 
         private bool _isBattle;
+        private float _chargeAttackTimer;
+        private float _avoidSuccessTiming;
 
         private IEnemy _target;
 
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
-
-        private float _chargeAttackTimer;
 
         public SpecialSystem SpecialSystem => _specialSystem;
         private SpecialSystem _specialSystem;
@@ -34,7 +34,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnNonResonanceAttack;
 
         public event Action OnShootChargeAttack;
-        public event Action OnChargeAttackComplete;
         public event Action OnFullChargeAttack;
 
         public event Action OnNonFullChargeAttack;
@@ -130,6 +129,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public override void HitAttack(float damage)
         {
+            //無敵時間判定
+            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime > Time.time)
+            {
+                Debug.Log("During Avoid Invincibility Time");
+                return;
+            }
+            
             base.HitAttack(damage);
             OnHitAttack?.Invoke(Mathf.FloorToInt(damage)); ////
         }
@@ -266,18 +272,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             };
 
             //nターン後までに攻撃があるかどうか
-            bool willAttack = false;
-            AttackKindEnum enemyAttackKind = AttackKindEnum.None;
-            for (int i = 0; i < 3; i++)
-            {
-                willAttack |= _target.EnemyData.IsAttack(timing);
-
-                if (willAttack)
-                {
-                    enemyAttackKind = _target.EnemyData.Chart[timing];
-                    break; //あったら終了
-                }
-            }
+            (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
 
             if (willAttack)
             {
@@ -290,7 +285,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 Debug.Log($"Success Avoid");
                 OnJustAvoid?.Invoke();
+                _avoidSuccessTiming = Time.time;
             }
+        }
+
+        public (bool, AttackKindEnum) IsSuccessAvoid(int timing)
+        {
+            bool willAttack = false;
+            for (int i = 0; i < 3; i++)
+            {
+                willAttack |= _target.EnemyData.IsAttack(timing);
+
+                if (willAttack)
+                {
+                    return (true, _target.EnemyData.Chart[timing]);
+                }
+            }
+
+            return (false, AttackKindEnum.None);
         }
 
         [ContextMenu(nameof(AddSpecialEnergy))]
