@@ -1,5 +1,8 @@
+using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 using DG.Tweening;
+using SymphonyFrameWork.System;
 using UnityEngine.Pool;
 using UnityEngine.UI;
 
@@ -27,6 +30,7 @@ public class DamageTextManager : MonoBehaviour
     
     private ObjectPool<GameObject> _textPool;
     private RectTransform _canvasRectTransform;
+    private EnemyManager _enemy;
     
     private void Awake()
     {
@@ -39,11 +43,33 @@ public class DamageTextManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private async void Start()
     {
         _gameCamera = Camera.main;
+
+        await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
+
+        // バトルシーンが読み込まれたら敵の参照を取得する
+        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0];
+
+        if (_enemy != null)
+        {
+            // 敵がダメージを受けた時のイベントにダメージ表記UIの処理を追加する
+            _enemy.OnHitAttack += OnEnemyOnHitAttack;
+        }
+        else
+        {
+            Debug.Log($"[{typeof(DamageTextManager)}] {typeof(EnemyManager)}が取得できませんでした");
+        }
     }
-    
+
+    /// <summary>
+    /// ダメージ表記UIを表示する
+    /// </summary>
+    private void OnEnemyOnHitAttack(int value) => DisplayDamage(value, _enemy.transform.position);
+
+    #region オブジェクトプールとアニメーション
+
     /// <summary>
     /// オブジェクトプールの初期化
     /// </summary>
@@ -73,7 +99,7 @@ public class DamageTextManager : MonoBehaviour
     /// <summary>
     /// ダメージを表示する
     /// </summary>
-    public void DisplayDamage(int damage, Vector3 worldPosition, bool isCritical = false)
+    private void DisplayDamage(int damage, Vector3 worldPosition, bool isCritical = false)
     {
         // ワールド座標をキャンバス座標に変換
         Vector2 canvasPosition = WorldToCanvasPosition(worldPosition);
@@ -135,15 +161,18 @@ public class DamageTextManager : MonoBehaviour
         Vector2 screenPoint = _gameCamera.WorldToScreenPoint(worldPosition);
         
         // スクリーン座標からキャンバス上の座標に変換
-        Vector2 canvasPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _canvasRectTransform, screenPoint, _targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _gameCamera, out canvasPosition);
+            _canvasRectTransform, screenPoint, _targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? 
+                null : _gameCamera, out Vector2 canvasPosition);
         
         return canvasPosition;
     }
+
+    #endregion
     
     private void OnDestroy()
     {
         _textPool.Clear();
+        if(_enemy != null) _enemy.OnHitAttack -= OnEnemyOnHitAttack;
     }
 }

@@ -27,12 +27,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     コンボをリセットする
         /// </summary>
-        public void ComboReset() => _comboCount.Value = 0;
+        public void ComboReset(int value = 0) => _comboCount.Value = 0;
 
         public void Update()
         {
             //コンボ維持時間が終了するとリセット
-            if (Time.time < _lastAttackTime + _data.ComboResetTime)
+            if (Time.time > _lastAttackTime + _data.ComboResetTime)
             {
                 ComboReset();
             }

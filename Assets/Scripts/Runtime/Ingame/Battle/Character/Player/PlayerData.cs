@@ -5,7 +5,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     [CreateAssetMenu(fileName = "PlayerData", menuName = CHARACTER_DATA_DIRECTORY + "PlayerData")]
     public class PlayerData : CharacterData
     {
-        [Space]
+        [Header("攻撃 パラメータ")]
         
         [SerializeField] private float _firstAttackPower = 100;
         public float FirstAttackPower => _firstAttackPower;
@@ -15,8 +15,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         [SerializeField] private float _thirdAttackPower = 100;
         public float ThirdAttackPower => _thirdAttackPower;
-
-        [Space]
+        
+        [SerializeField, Tooltip("最大チャージになるまでの拍数")]
+        private float _chargeAttackTime = 3;
+        public float ChargeAttackTime => _chargeAttackTime;
+        
+        [Space] 
+        
+        [SerializeField, Min(0), Tooltip("コンボ維持時間")] private float _comboRisetTime = 3;
+        public float ComboResetTime => _comboRisetTime;
+        
+        [Header("リズム パラメータ")]
         
         [SerializeField, Range(0,1), Tooltip("リズム共鳴の範囲")]
         private float _resonanceRange = 0.5f;
@@ -28,9 +37,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Min(1), Tooltip("フローゾーン突入の敷居")] private float _flowZoneThreshold = 10;
         public float FlowZoneThreshold => _flowZoneThreshold;
         
-        [Space] 
         
-        [SerializeField, Min(0), Tooltip("コンボ維持時間")] private float _comboRisetTime = 3;
-        public float ComboResetTime => _comboRisetTime;
+        [SerializeField]
+        private float _avoidInvincibilityTime = 0.5f;
+        public float AvoidInvincibilityTime => _avoidInvincibilityTime;
     }
 }

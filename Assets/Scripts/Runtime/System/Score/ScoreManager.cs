@@ -11,7 +11,7 @@ namespace BeatKeeper
     /// </summary>
     public class ScoreManager : MonoBehaviour, IScoreManager
     {
-        [SerializeField] private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
+        private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
         [SerializeField] private ComboBonusSettingsSO _comboBonusData;
         
         public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;

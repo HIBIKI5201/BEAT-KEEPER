@@ -66,6 +66,9 @@ namespace BeatKeeper
 
         #region 音楽タイミングの取得
 
+        /// <summary>1拍の秒数</summary>
+        public double DurationOfBeat => 60 / Music.CurrentTempo;
+        
         /// <summary>現在の小節数を取得する</summary>
         public int GetCurrentBarCount() => Music.Just.Bar;
 

@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -7,11 +7,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
     ///     キャラクター管理クラスのベース
     /// </summary>
     /// <typeparam name="TDataType">キャラクターのデータ</typeparam>
-    public abstract class CharacterManagerB<TDataType> : MonoBehaviour, IAttackable
+    public abstract class CharacterManagerB<TDataType> : MonoBehaviour, IHitable
         where TDataType : CharacterData
     {
         [SerializeField] protected TDataType _data;
         public TDataType Data => _data;
+
+        public Action<int> OnHitAttack { get; set; }
 
         protected virtual void Awake()
         {

@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.UI;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -15,6 +16,7 @@ namespace BeatKeeper
         [SerializeField] private UIElement_ScoreText _scoreText;
         [SerializeField] private UIElement_SeekBar _seekBar;
         [SerializeField] private UIElement_FinisherGuide _finisherGuide;
+        [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
         
         private void Start()
         {
@@ -32,6 +34,7 @@ namespace BeatKeeper
             Debug.Assert(_scoreText != null, "scoreText が設定されていません");
             Debug.Assert(_seekBar != null, "seekBar が設定されていません");
             Debug.Assert(_finisherGuide != null, "finisherGuide が設定されていません");
+            Debug.Assert(_warningIndicator != null, "warningIndicatorが設定されていません");
         }
 
         private void Initialize()

@@ -1,9 +1,11 @@
 using System;
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace BeatKeeper
 {
@@ -12,88 +14,32 @@ namespace BeatKeeper
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        private CinemachineBrain _brain;
-        
         private CinemachineCamera _playerCamera;
-        
-        [SerializeField] private CinemachineCamera[] _camera;
-        [SerializeField] private Transform _playerCameraTarget; // プレイヤーのカメラターゲット
-        [SerializeField] private Transform[] _npcCameraTarget; // NPCのカメラターゲット（バトルごとにNPCが異なる予定なので、一旦配列で作成）
-        [SerializeField] private Transform[] _enemyCameraTarget; // 次に出現する敵のカメラターゲット 
-        private CinemachineCamera _useCamera;
+        [SerializeField] private CinemachineCamera[] _cameras;
+        private int _index;
 
-        private void Start()
+        private async void Start()
         {
-            _brain = Camera.main?.GetComponent<CinemachineBrain>();
-            
             var player = ServiceLocator.GetInstance<PlayerManager>();
             _playerCamera = player.GetComponentInChildren<CinemachineCamera>();
-            _playerCameraTarget = player.transform;
+            _cameras[0] = _playerCamera; // 仮 プレイヤーの子オブジェクトのカメラを使用する
             
-            ChangeCamera(CameraType.StartPerformance);
-        }
-
-        /// <summary>
-        /// プレイヤーとNPCのカメラを切り替える
-        /// </summary>
-        public void ChangeTarget(CameraAim targetName)
-        {
-            // 引数で指定されたターゲットにカメラを向ける
-            Transform target = targetName switch
-            {
-                CameraAim.Player => _playerCameraTarget,
-                CameraAim.NPC1 => _npcCameraTarget[0],
-                CameraAim.FirstBattleEnemy => _enemyCameraTarget[0],
-                CameraAim.SecondBattleEnemy => _enemyCameraTarget[1],
-                _ => _playerCameraTarget
-            };
+            await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
             
-            _useCamera.Follow = target;
+            _cameras[0].Follow = player.transform;
+            _cameras[0].LookAt = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0].transform;
+            
+            ChangeCamera(0);
         }
 
         /// <summary>
         /// 使用するカメラを変更する
         /// </summary>
-        public void ChangeCamera(CameraType cameraType)
+        public void ChangeCamera(int index)
         {
-            switch (cameraType) //特定のカメラの時はそれをアクティブにする
-            {
-                case CameraType.PlayerTPS:
-                    foreach (var cinemachineCamera in _camera)
-                    cinemachineCamera.enabled = false;
-                    _playerCamera.enabled = true;
-                    return;
-            }
-            
-            for (int i = 0; i < _camera.Length; i++)
-            {
-                if (i == (int)cameraType)
-                {
-                    _useCamera = _camera[i];
-                    _camera[i].enabled = true;
-                }
-                else
-                {
-                    _camera[i].enabled = false;
-                }
-            }
+            _cameras[_index].enabled = false;
+            _cameras[index].enabled = true;
+            _index = index;
         }
-    }
-    
-    public enum CameraAim
-    {
-        Player,
-        NPC1,
-        NPC2,
-        NPC3,
-        FirstBattleEnemy,
-        SecondBattleEnemy,
-        ThirdBattleEnemy,
-    }
-
-    public enum CameraType
-    {
-        StartPerformance = 0,
-        PlayerTPS = 1,
     }
 }

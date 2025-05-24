@@ -50,8 +50,7 @@ namespace BeatKeeper
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
                 _uiManager.BattleEnd();
-                _cameraManager.ChangeCamera(CameraType.ClearPhase);
-                _cameraManager.ChangeTarget(CameraAim.NPC1);
+                _cameraManager.ChangeCamera(1);
             }
             else if (_count == 5)
             {
@@ -64,8 +63,7 @@ namespace BeatKeeper
                 _objects[2].gameObject.SetActive(true); 
                 _encounterText.ShowEncounterText(2);
                 _objects[2].transform.DOMove(_positions[0], 4f); // NPCを追いかけている状態
-                _cameraManager.ChangeCamera(CameraType.StartPerformance); // カメラを向ける
-                _cameraManager.ChangeTarget(CameraAim.SecondBattleEnemy);
+                _cameraManager.ChangeCamera(1); // カメラを向ける
             }
             else if (_count == 13)
             {
@@ -74,8 +72,7 @@ namespace BeatKeeper
                 _encounterText.HideEncounterText();
                 _objects[1].transform.DOMove(_positions[1], 4f); // 敵が戦闘位置まで移動
                 _objects[3].transform.LookAt(_objects[1].transform); // プレイヤーを次の敵の方に向かせる
-                _cameraManager.ChangeCamera(CameraType.PlayerTPS);
-                _cameraManager.ChangeTarget(CameraAim.Player);
+                _cameraManager.ChangeCamera(0);
             }
             else if (_count == 17)
             {
@@ -113,12 +110,6 @@ namespace BeatKeeper
         {
             _musicEngineHelper.OnJustChangedBar -= Counter;
             _disposables?.Dispose();
-        }
-
-        [ContextMenu("Activate Battle Phase")]
-        public void ChangeState()
-        {
-            _phaseManager.TransitionTo(PhaseEnum.Clear);
         }
     }
 }
