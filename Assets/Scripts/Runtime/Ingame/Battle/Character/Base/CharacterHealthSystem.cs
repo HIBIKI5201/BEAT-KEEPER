@@ -6,6 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// <summary>
     ///     体力システム
     /// </summary>
+    [Serializable]
     public class CharacterHealthSystem
     {
         private readonly float _maxHealth;
