@@ -13,6 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private MusicEngineHelper _musicEngine;
         private ScoreManager _scoreManager;
         private EnemyAnimeManager _animeManager;
+        private CharacterHealthSystem _healthSystem;
 
         private IHitable _target;
         
@@ -22,7 +23,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         #region モック用の機能
         
-        [SerializeField] private ParticleSystem _particleSystem;
+        [SerializeField, Obsolete] private ParticleSystem _particleSystem;
         
         #endregion
 
@@ -36,8 +37,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no Animator");
             }
-            
-            OnHitAttack += _animeManager.KnockBack;
+
+            _healthSystem = new(_data.MaxHealth);
         }
 
         private void Start()
@@ -68,8 +69,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             base.HitAttack(damage);
             
-            OnHitAttack?.Invoke(Mathf.FloorToInt(damage)); ////
-            _scoreManager.AddScore(Mathf.FloorToInt(damage)); // スコアを加算。小数点以下は切り捨てる
+            _healthSystem?.HealthChange(-damage);
+            _scoreManager?.AddScore(Mathf.FloorToInt(damage)); // スコアを加算。小数点以下は切り捨てる
+            _animeManager?.KnockBack();
+            
+            OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
             
             //ノックバック
             _isKnockback = true;

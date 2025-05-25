@@ -16,6 +16,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_chart.Length != 32)
                 Debug.LogWarning("譜面データの長さが不適切です。");
         }
+        
+        public float MaxHealth => _maxHealth;
+        [SerializeField, Tooltip("最大体力値")] private float _maxHealth = 100;
 
         public AttackKindEnum[] Chart => _chart;
         [SerializeField, Tooltip("ビートの拍子")] private AttackKindEnum[] _chart = new AttackKindEnum[32];
