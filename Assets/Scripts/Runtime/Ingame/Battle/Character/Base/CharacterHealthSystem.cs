@@ -8,24 +8,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class CharacterHealthSystem
     {
-        private CharacterData _data;
+        private readonly float _maxHealth;
 
         public float Health => _health;
         private float _health;
-        
-        public Action<float> OnHealthChanged;
-        
-        public CharacterHealthSystem(CharacterData data)
+
+        public event Action<float> OnHealthChanged;
+
+        public CharacterHealthSystem(float maxHealth)
         {
-            if (data)
-            {
-                _data = data;
-                _health = data.MaxHealth;
-            }
-            else
-            {
-                Debug.LogWarning("データがありません");
-            }
+            _maxHealth = maxHealth;
+            _health = maxHealth;
         }
 
         /// <summary>
@@ -35,16 +28,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns>死亡したかどうか</returns>
         public bool HealthChange(float value)
         {
-            _health = Mathf.Clamp(value + _health, 0, _data.MaxHealth);
+            _health = Mathf.Clamp(value + _health, 0, _maxHealth);
 
             OnHealthChanged?.Invoke(_health);
-            
+
             //体力が残っているか
             if (_health <= 0)
             {
                 return true;
             }
-            
+
             return false;
         }
     }
