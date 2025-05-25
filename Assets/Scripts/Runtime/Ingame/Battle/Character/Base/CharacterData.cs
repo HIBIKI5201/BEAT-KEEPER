@@ -14,15 +14,5 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         public string Name => _name;
         [SerializeField, Tooltip("名前")] private string _name = "empty name";
-        
-        # region 未使用パラメータ
-        [Obsolete("未使用パラメータ")]
-        public float AttackPower => _attackPower;
-        [Tooltip("攻撃力")] private float _attackPower = 10;
-        
-        [Obsolete("未使用パラメータ")]
-        public float MaxHealth => _maxHealth;
-        [Tooltip("最大体力値")] private float _maxHealth = 100;
-        #endregion
     }
 }
