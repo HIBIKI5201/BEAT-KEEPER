@@ -130,7 +130,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(float damage)
         {
             //無敵時間判定
-            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime > Time.time)
+            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime * _musicEngine.DurationOfBeat > Time.time)
             {
                 Debug.Log("During Avoid Invincibility Time");
                 return;
