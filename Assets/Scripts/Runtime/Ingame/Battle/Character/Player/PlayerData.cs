@@ -38,8 +38,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float FlowZoneThreshold => _flowZoneThreshold;
         
         
-        [SerializeField]
-        private float _avoidInvincibilityTime = 0.5f;
+        [SerializeField,Tooltip("無敵時間の拍数")]
+        private float _avoidInvincibilityTime = 2;
         public float AvoidInvincibilityTime => _avoidInvincibilityTime;
     }
 }

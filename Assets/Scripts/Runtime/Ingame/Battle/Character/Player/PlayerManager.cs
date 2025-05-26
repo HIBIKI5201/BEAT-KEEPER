@@ -130,7 +130,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(float damage)
         {
             //無敵時間判定
-            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime > Time.time)
+            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime * _musicEngine.DurationOfBeat > Time.time)
             {
                 Debug.Log("During Avoid Invincibility Time");
                 return;
@@ -268,7 +268,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             var timing = _musicEngine.GetCurrentTiming() switch
             {
-                var data => (data.Bar * 4 + data.Beat) % 32 //節と拍を足した値
+                var data => (data.Bar * 4 + data.Beat) % 32
             };
 
             //nターン後までに攻撃があるかどうか
@@ -292,13 +292,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public (bool, AttackKindEnum) IsSuccessAvoid(int timing)
         {
             bool willAttack = false;
-            for (int i = 0; i < 3; i++)
+            for (int i = timing; i < timing + 3; i++)
             {
-                willAttack |= _target.EnemyData.IsAttack(timing);
+                willAttack |= _target.EnemyData.IsAttack(i);
 
                 if (willAttack)
                 {
-                    return (true, _target.EnemyData.Chart[timing]);
+                    return (true, _target.EnemyData.Chart[i]);
                 }
             }
 
