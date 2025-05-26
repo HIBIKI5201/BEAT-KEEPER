@@ -103,39 +103,41 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             ring.rectTransform.anchoredPosition = Vector2.zero;
             _thickRefCount++;
-            
-            var effectSequence = DOTween.Sequence();
 
-            // 赤く点滅する
-            effectSequence.Append(_image.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
-            effectSequence.Join(ring.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
+            // 点滅シーケンス（先に再生開始）
+            var blinkSequence = DOTween.Sequence().SetAutoKill(false);
 
-            // 元の色に戻す
-            effectSequence.Append(_image.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-            effectSequence.Join(ring.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-            
+            blinkSequence.Append(_image.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo));
+            blinkSequence.Join(ring.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo));
+
+            blinkSequence.Append(_image.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
+            blinkSequence.Join(ring.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
+
+            blinkSequence.Play();
+
+            // 待機（縮小処理）
             await Awaitable.WaitForSecondsAsync((float)_musicEngineHelper.DurationOfBeat * 2, destroyCancellationToken);
-            
-            ring.rectTransform.DOScale(Vector3.one, (float)_musicEngineHelper.DurationOfBeat * 2).SetEase(Ease.Linear); //段々小さく
-            
+
+            blinkSequence.Kill();
+            ring.rectTransform.DOScale(Vector3.one, (float)_musicEngineHelper.DurationOfBeat * _reductionTime - 0.15f).SetEase(Ease.Linear);
+
+            // 指定時間が経過したら成功演出（別シーケンスで独立に動く）
             await Awaitable.WaitForSecondsAsync((float)_musicEngineHelper.DurationOfBeat * _reductionTime, destroyCancellationToken);
-            
-            // パルスエフェクト追加
-            effectSequence.Append(ring.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f)
-                .SetLoops(3, LoopType.Restart));
 
-            // 円を黄色に光らせる
-            effectSequence.Join(ring.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
-            effectSequence.Join(_image.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
+            var successSequence = DOTween.Sequence();
 
-            // フェードしながら消える
-            effectSequence.Join(ring.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
+            successSequence.Append(ring.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(ring.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
+            successSequence.Join(_image.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
+            successSequence.Join(ring.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
 
             _thickRefCount--;
             if (_thickRefCount <= 0)
             {
-                effectSequence.Join(_image.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
+                successSequence.Join(_image.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
             }
+
+            successSequence.Play();
         }
     }
 }
