@@ -33,8 +33,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Image _image;
         private MusicEngineHelper _musicEngineHelper; // タイミング調整用
 
-        private Sequence _effectSequence; // 警告時の赤い明滅を行うシーケンス
-
         private PlayerManager _playerManager;
         private StageEnemyAdmin _enemies;
 
@@ -106,15 +104,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ring.rectTransform.anchoredPosition = Vector2.zero;
             _thickRefCount++;
             
-            _effectSequence = DOTween.Sequence();
+            var effectSequence = DOTween.Sequence();
 
             // 赤く点滅する
-            _effectSequence.Append(_image.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
-            _effectSequence.Join(ring.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
+            effectSequence.Append(_image.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
+            effectSequence.Join(ring.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Restart));
 
             // 元の色に戻す
-            _effectSequence.Append(_image.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-            _effectSequence.Join(ring.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
+            effectSequence.Append(_image.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
+            effectSequence.Join(ring.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
             
             await Awaitable.WaitForSecondsAsync((float)_musicEngineHelper.DurationOfBeat * 2, destroyCancellationToken);
             
@@ -123,20 +121,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             await Awaitable.WaitForSecondsAsync((float)_musicEngineHelper.DurationOfBeat * _reductionTime, destroyCancellationToken);
             
             // パルスエフェクト追加
-            _effectSequence.Append(ring.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f)
+            effectSequence.Append(ring.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f)
                 .SetLoops(3, LoopType.Restart));
 
             // 円を黄色に光らせる
-            _effectSequence.Join(ring.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
-            _effectSequence.Join(_image.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
+            effectSequence.Join(ring.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
+            effectSequence.Join(_image.DOColor(_successColor, _fadeDuration).SetEase(Ease.OutFlash));
 
             // フェードしながら消える
-            _effectSequence.Join(ring.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
+            effectSequence.Join(ring.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
 
             _thickRefCount--;
             if (_thickRefCount <= 0)
             {
-                _effectSequence.Join(_image.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
+                effectSequence.Join(_image.DOFade(0f, _fadeDuration).SetEase(Ease.OutQuint));
             }
         }
     }
