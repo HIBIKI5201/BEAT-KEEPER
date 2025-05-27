@@ -9,17 +9,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
     [Serializable]
     public class CharacterHealthSystem
     {
-        private readonly float _maxHealth;
+        private EnemyData _data;
+        
+        public float MaxHealth => _data.MaxHealth;
 
         public float Health => _health;
         private float _health;
 
         public event Action<float> OnHealthChanged;
 
-        public CharacterHealthSystem(float maxHealth)
+        public CharacterHealthSystem(EnemyData data)
         {
-            _maxHealth = maxHealth;
-            _health = maxHealth;
+            _data = data;
+            _health = data.MaxHealth;
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns>死亡したかどうか</returns>
         public bool HealthChange(float value)
         {
-            _health = Mathf.Clamp(value + _health, 0, _maxHealth);
+            _health = Mathf.Clamp(value + _health, 0, _data.MaxHealth);
 
             OnHealthChanged?.Invoke(_health);
 
