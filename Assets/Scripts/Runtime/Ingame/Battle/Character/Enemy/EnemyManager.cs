@@ -13,6 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private MusicEngineHelper _musicEngine;
         private ScoreManager _scoreManager;
         private EnemyAnimeManager _animeManager;
+        public CharacterHealthSystem HealthSystem => _healthSystem;
         private CharacterHealthSystem _healthSystem;
 
         private IHitable _target;
@@ -38,7 +39,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning($"{_data.name} has no Animator");
             }
 
-            _healthSystem = new(_data.MaxHealth);
+            _healthSystem = new(_data);
         }
 
         private void Start()
