@@ -359,6 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3884830661968032753}
+  - component: {fileID: 5653411042876740993}
   m_Layer: 5
   m_Name: EnemyHealthBar
   m_TagString: Untagged
@@ -386,6 +387,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5653411042876740993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912600952470086673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae99cb2100268454b8ea4dfc10bf358b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bar: {fileID: 5675759198403848459}
 --- !u!1 &1110454428292955910
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +412,7 @@ GameObject:
   - component: {fileID: 8804018845242063154}
   - component: {fileID: 5675759198403848459}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1438,6 +1452,7 @@ MonoBehaviour:
   _seekBar: {fileID: 5247262157891360532}
   _finisherGuide: {fileID: 2006703405593705863}
   _warningIndicator: {fileID: 4894527622705955650}
+  _healthBar: {fileID: 5653411042876740993}
 --- !u!223 &8441500394411540005
 Canvas:
   m_ObjectHideFlags: 0
@@ -2070,7 +2085,7 @@ GameObject:
   - component: {fileID: 1247206999869346656}
   - component: {fileID: 5042529450522896342}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

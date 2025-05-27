@@ -17,6 +17,7 @@ namespace BeatKeeper
         [SerializeField] private UIElement_SeekBar _seekBar;
         [SerializeField] private UIElement_FinisherGuide _finisherGuide;
         [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
+        [SerializeField] private UIElement_HealthBar _healthBar;
         
         private void Start()
         {
