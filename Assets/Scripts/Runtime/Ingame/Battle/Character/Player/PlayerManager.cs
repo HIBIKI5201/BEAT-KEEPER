@@ -42,7 +42,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region モック用の機能
 
-        [SerializeField] private ParticleSystem _particleSystem;
+        [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)] private float _damageScale = 1;
+        [Obsolete("モック用"), SerializeField] private ParticleSystem _particleSystem;
 
         #endregion
 
@@ -137,10 +138,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             
             base.HitAttack(damage);
-            OnHitAttack?.Invoke(Mathf.FloorToInt(damage)); ////
+            OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
         }
-
-        public void SetTarget(IEnemy target) => _target = target;
 
         private void OnPhaseChanged(PhaseEnum phase)
         {
@@ -191,6 +190,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             };
             if (isResonanceHit)
                 power *= _data.ResonanceCriticalDamage;
+
+            power *= _damageScale;
 
             _target.HitAttack(power);
         }
