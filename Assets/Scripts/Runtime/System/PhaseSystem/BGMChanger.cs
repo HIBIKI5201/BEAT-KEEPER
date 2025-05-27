@@ -44,13 +44,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <summary>
         /// BGMを任意のタイミングで変更する
         /// </summary>
-        public void ChangeBGM(PhaseEnum newPhase)
+        public void ChangeBGM(string name)
         {
-            // バトル中以外のBGM変更は行わないようにする
-            if (newPhase != PhaseEnum.Battle) return;
-            
-            int index = (int)newPhase;
-            Music.SetHorizontalSequence(((BGMEnum)index).ToString());
+            Music.SetHorizontalSequence(name);
             Debug.Log($"{nameof(BGMChanger)} BGMを変更しました");
         }
 
