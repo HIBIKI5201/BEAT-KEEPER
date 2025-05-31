@@ -10,7 +10,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     [CreateAssetMenu(fileName = "NormalData", menuName = CHARACTER_DATA_DIRECTORY + "NormalData")]
     public class CharacterData : ScriptableObject
     {
-        public const string CHARACTER_DATA_DIRECTORY = "BeatKeeper/CharacterData/";
+        protected const string CHARACTER_DATA_DIRECTORY = "BeatKeeper/CharacterData/";
         
         public string Name => _name;
         [SerializeField, Tooltip("名前")] private string _name = "empty name";

@@ -10225,6 +10225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: b02e335feeb586f4ca543a64070ad17f, type: 2}
+  _battleBuffData: {fileID: 11400000, guid: c6122e1c9553b36458f86d2b23be5d29, type: 2}
+  _damageScale: 1
   _particleSystem: {fileID: 5368706015596788293}
 --- !u!95 &3184296290978092416
 Animator:
@@ -10261,6 +10263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 6630069945058443533}
+  _locateType: 1
   _autoSet: 1
   _autoDestroy: 1
 --- !u!114 &5183150484617519683
@@ -10303,8 +10306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276be2ef42ab2c045a8b54181bf0f9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _impulseSource: {fileID: 5781008636427819547}
-  _playerManager: {fileID: 6630069945058443533}
 --- !u!114 &5781008636427819547
 MonoBehaviour:
   m_ObjectHideFlags: 0
