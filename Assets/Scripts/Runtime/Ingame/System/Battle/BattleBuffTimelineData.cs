@@ -13,7 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             [SerializeField, Tooltip("バフが入る拍数"), Min(0)] private int _timing;
             public int Timing => _timing;
 
-            [SerializeField] private float _value;
+            [SerializeField, Min(1)] private float _value;
             public float Value => _value;
         }
 
