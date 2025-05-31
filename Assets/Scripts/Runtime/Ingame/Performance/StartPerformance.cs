@@ -26,8 +26,8 @@ namespace BeatKeeper
             }
 
             var director = GetComponent<PlayableDirector>();
-            director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
             director.Play();
+            director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
         }
     }
 }
