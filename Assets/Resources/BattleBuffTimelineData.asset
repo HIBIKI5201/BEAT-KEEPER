@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad5ae13cc3efdf41b3153602562c35a, type: 3}
   m_Name: BattleBuffTimelineData
   m_EditorClassIdentifier: 
+  _data:
+  - _timing: 64
+    _value: 1
