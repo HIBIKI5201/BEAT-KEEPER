@@ -22,6 +22,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _avoidSuccessTiming;
 
         private IEnemy _target;
+        [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
@@ -42,7 +43,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region モック用の機能
 
-        [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)] private float _damageScale = 1;
+        [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)]
+        private float _damageScale = 1;
+
         [Obsolete("モック用"), SerializeField] private ParticleSystem _particleSystem;
 
         #endregion
@@ -136,7 +139,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.Log("During Avoid Invincibility Time");
                 return;
             }
-            
+
             base.HitAttack(damage);
             OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
         }
@@ -191,6 +194,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isResonanceHit)
                 power *= _data.ResonanceCriticalDamage;
 
+            if (_battleBuffData) //タイムラインバフ
+            {
+                var buffData = _battleBuffData.Data;
+                
+                //TODO ループした際に合計拍数がリセットされないようにする
+                var timing = _musicEngine.GetCurrentTiming() switch { var n => n.Bar * 4 + n.Beat };
+                
+                for (int i = buffData.Length - 1 ; i >= 0 ; i--)
+                {
+                    if (buffData[i].Timing < timing)
+                    {
+                        power *= buffData[i].Value;
+                        Debug.Log($"{buffData[i].Value} buff of {buffData[i].Timing} active");
+                        break;
+                    }
+                }
+            }
+
             power *= _damageScale;
 
             _target.HitAttack(power);
@@ -203,18 +224,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnChargeAttack(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
-            
+
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
                     Debug.Log($"{_data.Name} start charge attack");
                     _chargeAttackTimer = Time.time;
                     break;
-                
+
                 case InputActionPhase.Canceled:
                     OnShootChargeAttack?.Invoke();
 
-                    if (_chargeAttackTimer + _musicEngine.DurationOfBeat * _data.ChargeAttackTime < Time.time) //フルチャージかどうか
+                    if (_chargeAttackTimer + _musicEngine.DurationOfBeat * _data.ChargeAttackTime <
+                        Time.time) //フルチャージかどうか
 
                     {
                         OnFullChargeAttack?.Invoke();
@@ -225,6 +247,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                         Debug.Log($"{_data.Name} is non full charge attacking");
                         OnNonFullChargeAttack?.Invoke();
                     }
+
                     break;
             }
         }
