@@ -5,18 +5,20 @@ using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     public class UIElement_HealthBar : MonoBehaviour
     {
-        [SerializeField] private Image _bar;
+        [SerializeField] private Image[] _bars;
+
         private CharacterHealthSystem _enemyHealthSystem;
 
         private void Start()
         {
-            if (!_bar) Debug.LogWarning("bar is null");
+            if (_bars == null || _bars.Length < 1) Debug.LogWarning("bar is null");
 
             ServiceLocator.RegisterAfterLocate<BattleSceneManager>(RegisterEnemyEvent);
 
@@ -43,7 +45,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void SetBarAmount(float amount)
         {
-            if (_bar) _bar.fillAmount = amount;
+            float segment = 1f / 3f;
+            
+            float remain = Mathf.Clamp01(amount);
+
+            for (int i = 0; i < _bars.Length; i++)
+            {
+                float fill = Mathf.Min(remain, segment);
+                _bars[i].fillAmount = fill / segment;
+                remain -= fill;
+            }
         }
     }
 }
