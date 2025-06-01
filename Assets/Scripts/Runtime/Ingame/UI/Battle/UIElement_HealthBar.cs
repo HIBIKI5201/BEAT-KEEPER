@@ -38,11 +38,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
+        /// <summary>
+        ///     敵のヘルス変更時にバーを更新する
+        /// </summary>
+        /// <param name="health"></param>
         private void OnEnemyHealthChange(float health)
         {
             SetBarAmount(health / _enemyHealthSystem.MaxHealth);
         }
 
+        /// <summary>
+        ///     ヘルスバーを更新
+        /// </summary>
+        /// <param name="amount"></param>
         private void SetBarAmount(float amount)
         {
             float segment = 1f / 3f;
