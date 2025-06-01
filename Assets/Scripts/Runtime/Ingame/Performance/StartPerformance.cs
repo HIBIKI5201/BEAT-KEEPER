@@ -23,6 +23,7 @@ namespace BeatKeeper
             if (multiSceneManager)
             {
                 await multiSceneManager.WaitForSceneLoad(SceneListEnum.Stage);
+                await multiSceneManager.WaitForSceneLoad(SceneListEnum.Battle);
             }
 
             var director = GetComponent<PlayableDirector>();
