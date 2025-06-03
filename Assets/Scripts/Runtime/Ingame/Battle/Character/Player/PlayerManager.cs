@@ -151,7 +151,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             //ターゲットを探す
             var stage = ServiceLocator.GetInstance<BattleSceneManager>();
-            _target = stage.EnemyAdmin.FindClosestEnemy(transform.position);
+            _target = stage.EnemyAdmin.GetActiveEnemy(transform.position);
         }
 
         private void OnMove(InputAction.CallbackContext context)
