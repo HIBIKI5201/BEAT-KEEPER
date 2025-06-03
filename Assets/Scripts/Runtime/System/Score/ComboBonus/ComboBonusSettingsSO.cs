@@ -22,8 +22,6 @@ namespace BeatKeeper
         /// </summary>
         public float GetBonusMultiplier(int comboCount)
         {
-            float multiplier = 1.0f; // デフォルト倍率
-            
             // 適用可能な最高の倍率を探す（高いコンボ数から検索）
             for (int i = _thresholds.Length - 1; i >= 0; i--)
             {
@@ -32,7 +30,7 @@ namespace BeatKeeper
                     return _thresholds[i].Multiplier;
                 }
             }
-            
+           
             return 1.0f;
         }
     }
