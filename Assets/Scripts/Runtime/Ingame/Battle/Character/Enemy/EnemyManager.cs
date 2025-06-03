@@ -1,7 +1,5 @@
-using System;
-using BeatKeeper.Runtime.Ingame.Battle;
-using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -9,7 +7,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
         EnemyData IEnemy.EnemyData => _data;
-        
+
         private MusicEngineHelper _musicEngine;
         private ScoreManager _scoreManager;
         private EnemyAnimeManager _animeManager;
@@ -17,22 +15,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private CharacterHealthSystem _healthSystem;
 
         private IHitable _target;
-        
+
+        private bool _canFinisher;
         private bool _isKnockback;
 
-        public event Action OnNormalAttack; 
-        
+        public event Action OnFinisherable;
+        public event Action OnNormalAttack;
+
         #region モック用の機能
-        
+
         [SerializeField, Obsolete("モック用")] private ParticleSystem _particleSystem;
-        
+
         #endregion
 
         private void OnEnable()
         {
             if (TryGetComponent(out Animator animator))
             {
-                _animeManager = new (animator);
+                _animeManager = new(animator);
             }
             else
             {
@@ -69,13 +69,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override async void HitAttack(float damage)
         {
             base.HitAttack(damage);
-            
+
             _healthSystem?.HealthChange(-damage);
             _scoreManager?.AddScore(Mathf.FloorToInt(damage)); // スコアを加算。小数点以下は切り捨てる
             _animeManager?.KnockBack();
-            
+
             OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
-            
+
+            if (_healthSystem.Health / _healthSystem.MaxHealth <= _data.FinisherThreshold / 100)
+            {
+                Debug.Log($"enemy:{name} is dead");
+
+                if (!_canFinisher)
+                {
+                    _canFinisher = true;
+                    OnFinisherable?.Invoke();
+                }
+            }
+
             //ノックバック
             _isKnockback = true;
             await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
@@ -94,7 +105,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_data.IsAttack(timing.Bar * 4 + timing.Beat))
             {
                 Debug.Log($"{_data.name} {_data.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
-                
+
                 _target.HitAttack(1);
                 _particleSystem?.Play();
             }
