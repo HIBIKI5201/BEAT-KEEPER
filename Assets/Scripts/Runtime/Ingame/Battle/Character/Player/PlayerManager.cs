@@ -5,6 +5,7 @@ using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using R3;
+using SymphonyFrameWork.Debugger;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -168,7 +169,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_isBattle) return;
             if (_target == null) return;
 
-            Debug.Log($"{_data.Name} is attacking");
+            SymphonyDebugLog.AddText($"{_data.Name} is attacking");
             OnShootComboAttack?.Invoke();
 
             //リズム共鳴が成功したか
@@ -206,7 +207,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     if (buffData[i].Timing < timing)
                     {
                         power *= buffData[i].Value;
-                        Debug.Log($"{buffData[i].Value} buff of {buffData[i].Timing} active");
+                        SymphonyDebugLog.AddText($"{buffData[i].Value} buff of {buffData[i].Timing} active");
                         break;
                     }
                 }
@@ -215,6 +216,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             power *= _damageScale;
 
             _target.HitAttack(power);
+            SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
