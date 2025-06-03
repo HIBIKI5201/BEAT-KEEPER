@@ -65,10 +65,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 maxSize: 10);
         }
 
-        private async void Start()
+        private void Start()
         {
             _image = GetComponent<Image>();
-            _image.color = new Color(1,1,1,0);
+            _image.color = new Color(1, 1, 1, 0);
             _playerManager = ServiceLocator.GetInstance<PlayerManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
 
@@ -79,7 +79,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     _musicEngineHelper.OnJustChangedBeat += OnBeat;
                 });
         }
-        
+
         private void OnDestroy()
         {
             _musicEngineHelper.OnJustChangedBeat -= OnBeat;

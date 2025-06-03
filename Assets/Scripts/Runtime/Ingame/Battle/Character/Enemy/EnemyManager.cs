@@ -24,7 +24,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         #region モック用の機能
         
-        [SerializeField, Obsolete] private ParticleSystem _particleSystem;
+        [SerializeField, Obsolete("モック用")] private ParticleSystem _particleSystem;
         
         #endregion
 

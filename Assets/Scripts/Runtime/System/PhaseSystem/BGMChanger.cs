@@ -15,18 +15,14 @@ namespace BeatKeeper.Runtime.Ingame.System
         private void Start()
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            _phaseManager.CurrentPhaseProp
-                .Subscribe(OnPhaseChanged)
-                .AddTo(_disposable);
         }
         
+            /*
         /// <summary>
         /// BGMを変更する
         /// </summary>
         private void OnPhaseChanged(PhaseEnum newPhase)
         {
-            return;
-            
             switch (newPhase)
             {
                 case PhaseEnum.Movie:
@@ -40,6 +36,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                     break;
             }
         }
+            */
 
         /// <summary>
         /// BGMを任意のタイミングで変更する
