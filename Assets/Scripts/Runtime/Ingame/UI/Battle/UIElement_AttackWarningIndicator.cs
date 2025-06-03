@@ -1,10 +1,7 @@
-using System;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
-using BeatKeeper.Runtime.Ingame.Stage;
 using DG.Tweening;
 using SymphonyFrameWork.System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
@@ -17,7 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     [RequireComponent(typeof(Image))]
     public class UIElement_AttackWarningIndicator : MonoBehaviour
     {
-        [Header("基本設定")] 
+        [Header("基本設定")]
         [SerializeField] private Sprite _ringSprite;
         [SerializeField] private float _initialScale = 3.5f;
         [Space]
@@ -29,7 +26,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Color _warningColor = Color.red;
         [SerializeField] private Color _successColor = Color.yellow;
         [SerializeField] private Color _defaultColor = Color.white;
-        
+
         private Image _image;
         private MusicEngineHelper _musicEngineHelper; // タイミング調整用
 
@@ -39,8 +36,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private ObjectPool<Image> _ringPool;
 
         private int _thickRefCount;
-        
-        private const float DURATION = 0.57f; // BPM210 / 2の時間 
 
         private void Awake()
         {
@@ -88,7 +83,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnBeat()
         {
             if (_enemies == null) return;
-            
+
             var timing = _musicEngineHelper.GetCurrentTiming();
             foreach (var enemy in _enemies.Enemies)
             {

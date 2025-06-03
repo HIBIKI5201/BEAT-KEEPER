@@ -1,17 +1,28 @@
+using System;
 using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
+using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper.Runtime.Ingame.Stage
+namespace BeatKeeper.Runtime.Ingame.Battle
 {
-    public class StageEnemyAdmin
+    public class StageEnemyAdmin : MonoBehaviour
     {
-        public EnemyManager[] Enemies => _enemies;
         private EnemyManager[] _enemies;
-        
-        public StageEnemyAdmin(Transform parent)
+        public EnemyManager[] Enemies => _enemies;
+
+        private int _activeEnemyIndex;
+
+        private void Awake()
         {
-            _enemies = parent.GetComponentsInChildren<EnemyManager>();
+            _enemies = GetComponentsInChildren<EnemyManager>();
+        }
+
+        private async void Start()
+        {
+            var ui = ServiceLocator.GetInstance<InGameUIManager>();
+
+            Array.ForEach(_enemies, ui.HealthBar.RegisterEnemyEvent);
         }
 
         /// <summary>
@@ -19,11 +30,29 @@ namespace BeatKeeper.Runtime.Ingame.Stage
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public EnemyManager FindClosestEnemy(Vector3 position)
+        public EnemyManager GetActiveEnemy(Vector3 position)
         {
-            return _enemies
-                .OrderBy(p => Vector3.Distance(position, p.transform.position))
-                .FirstOrDefault();
+            return _enemies[_activeEnemyIndex];
+        }
+
+        /// <summary>
+        /// /     アクティブな敵を設定する
+        /// </summary>
+        /// <param name="index"></param>
+        public void SetActiveEnemy(int index)
+        {
+            if (index < 0 || index >= _enemies.Length)
+            {
+                Debug.LogWarning($"Index {index} is out of range for enemies.");
+                return;
+            }
+
+            // 既存のアクティブな敵を非アクティブにする
+            _enemies[_activeEnemyIndex].gameObject.SetActive(false);
+
+            // 新しい敵をアクティブにする
+            _activeEnemyIndex = index;
+            _enemies[index].gameObject.SetActive(true);
         }
     }
 }
