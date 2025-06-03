@@ -55,7 +55,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
-            }
+            } 
         }
 
         public void Dispose()
@@ -82,6 +82,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 if (!_canFinisher)
                 {
+                    Debug.Log("Finisherable event triggered for " + _data.name);
+
                     _canFinisher = true;
                     OnFinisherable?.Invoke();
                 }
