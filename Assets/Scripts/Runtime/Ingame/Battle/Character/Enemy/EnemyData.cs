@@ -20,11 +20,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float MaxHealth => _maxHealth;
         [SerializeField, Tooltip("最大体力値")] private float _maxHealth = 100;
 
+        [SerializeField, Tooltip("フィニッシャーの閾値"), Range(0, 100)] private float _finisherThreshold = 10;
+        public float FinisherThreshold => _finisherThreshold;
+
+        [SerializeField, Tooltip("ノックバック時間")] private float _nockbackTime = 1;
+        public float NockbackTime => _nockbackTime;
+
         public AttackKindEnum[] Chart => _chart;
         [SerializeField, Tooltip("ビートの拍子")] private AttackKindEnum[] _chart = new AttackKindEnum[32];
 
-        public float NockbackTime => _nockbackTime;
-        [SerializeField, Tooltip("ノックバック時間")] private float _nockbackTime = 1;
 
         public bool IsAttack(int index)
         {
