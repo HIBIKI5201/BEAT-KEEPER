@@ -19,6 +19,7 @@ namespace BeatKeeper
         [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
         [SerializeField] private UIElement_HealthBar _healthBar;
         
+        public UIElement_HealthBar HealthBar => _healthBar;
         private void Start()
         {
             ValidateComponents();
