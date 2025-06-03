@@ -20,9 +20,9 @@ namespace BeatKeeper
         private Tweener _currentTween;
         private CompositeDisposable _disposable = new CompositeDisposable();
 
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             
             _image = GetComponent<Image>();
             _playerManager.SpecialSystem.SpecialEnergy.Subscribe(FillUpdate).AddTo(_disposable);

@@ -34,9 +34,9 @@ namespace BeatKeeper
             }
         }
 
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
         }
 
         /// <summary>

@@ -65,11 +65,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 maxSize: 10);
         }
 
-        private void Start()
+        private async void Start()
         {
             _image = GetComponent<Image>();
             _image.color = new Color(1, 1, 1, 0);
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
 
             SceneLoader.RegisterAfterSceneLoad(SceneListEnum.Battle.ToString(),

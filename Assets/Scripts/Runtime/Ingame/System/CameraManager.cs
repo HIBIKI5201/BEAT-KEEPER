@@ -20,7 +20,7 @@ namespace BeatKeeper
 
         private async void Start()
         {
-            var player = ServiceLocator.GetInstance<PlayerManager>();
+            var player = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             _playerCamera = player.GetComponentInChildren<CinemachineCamera>();
             _cameras[0] = _playerCamera; // 仮 プレイヤーの子オブジェクトのカメラを使用する
             

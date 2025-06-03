@@ -8,13 +8,6 @@ namespace BeatKeeper
 {
     public class InGameSceneManager : SceneManagerB
     {
-        [SerializeField] GameObject _playerPrefab;
-        
-        private void Awake()
-        {
-            Instantiate(_playerPrefab);
-        }
-
         private void Start()
         {
             var multiScene = ServiceLocator.GetInstance<MultiSceneManager>();
