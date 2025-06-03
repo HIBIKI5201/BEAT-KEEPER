@@ -15,7 +15,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public TDataType Data => _data;
 
-        public Action OnDeath { get; set; }
         public Action<int> OnHitAttack { get; set; }
 
         protected virtual void Awake()

@@ -17,6 +17,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _health;
 
         public event Action<float> OnHealthChanged;
+        public event Action OnDeath;
 
         public CharacterHealthSystem(EnemyData data)
         {
@@ -35,9 +36,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnHealthChanged?.Invoke(_health);
 
-            //体力が残っているか
+            //体力が残っていないかどうか
             if (_health <= 0)
             {
+                OnDeath?.Invoke();
                 return true;
             }
 
