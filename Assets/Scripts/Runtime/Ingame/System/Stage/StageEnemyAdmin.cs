@@ -2,16 +2,16 @@ using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper.Runtime.Ingame.Stage
+namespace BeatKeeper.Runtime.Ingame.Battle
 {
-    public class StageEnemyAdmin
+    public class StageEnemyAdmin : MonoBehaviour
     {
-        public EnemyManager[] Enemies => _enemies;
         private EnemyManager[] _enemies;
-        
-        public StageEnemyAdmin(Transform parent)
+        public EnemyManager[] Enemies => _enemies;
+
+        private void Awake()
         {
-            _enemies = parent.GetComponentsInChildren<EnemyManager>();
+            _enemies = GetComponentsInChildren<EnemyManager>();
         }
 
         /// <summary>
