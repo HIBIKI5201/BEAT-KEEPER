@@ -1,68 +1,56 @@
-using System.Linq;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
-using SymphonyFrameWork.Debugger;
+using SymphonyFrameWork.Attribute;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
+using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     public class UIElement_HealthBar : MonoBehaviour
     {
-        [SerializeField] private Image[] _bars;
+        [SerializeField] private GameObject _healthBarPrefab;
 
-        private CharacterHealthSystem _enemyHealthSystem;
+        [SerializeField, ReadOnly] private Image[] _bars;
+        private EnemyManager[] _enemies;
 
         private void Start()
         {
-            if (_bars == null || _bars.Length < 1) Debug.LogWarning("bar is null");
-
             ServiceLocator.RegisterAfterLocate<BattleSceneManager>(RegisterEnemyEvent);
+        }
 
-            async void RegisterEnemyEvent()
+        private async void RegisterEnemyEvent()
+        {
+            var manager = ServiceLocator.GetInstance<BattleSceneManager>();
+            if (manager)
             {
-                var manager = ServiceLocator.GetInstance<BattleSceneManager>();
-                if (manager)
+                _enemies = manager.EnemyAdmin.Enemies;
+                _bars = new Image[_enemies.Length]; 
+
+                for (int i = 0; i < _enemies.Length; i++)
                 {
-                    var enemy = manager.EnemyAdmin.Enemies.First();
-                    
-                    await SymphonyTask.WaitUntil(() => enemy.HealthSystem != null);
+                    int index = i; // クロージャー対策
+                    await SymphonyTask.WaitUntil(() => _enemies[i].HealthSystem != null);
 
-                    _enemyHealthSystem = enemy.HealthSystem;
-                    _enemyHealthSystem.OnHealthChanged += OnEnemyHealthChange;
+                    // ヘルスバーのイベントを登録
+                    _enemies[i].HealthSystem.OnHealthChanged += h => OnEnemyHealthChange(h, index);
+
+                    // ヘルスバーのUIを生成
+                    var healthBar = Instantiate(_healthBarPrefab, transform);
+                    healthBar.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -i * 30 + 30);
+                    _bars[i] = healthBar.transform.GetChild(0).GetComponent<Image>();
                 }
-                else Debug.LogWarning("manager is null");
             }
+            else Debug.LogWarning("manager is null");
         }
 
-        /// <summary>
-        ///     敵のヘルス変更時にバーを更新する
-        /// </summary>
-        /// <param name="health"></param>
-        private void OnEnemyHealthChange(float health)
+        //ヘルスバーの更新
+        void OnEnemyHealthChange(float health, int index)
         {
-            SetBarAmount(health / _enemyHealthSystem.MaxHealth);
-        }
-
-        /// <summary>
-        ///     ヘルスバーを更新
-        /// </summary>
-        /// <param name="amount"></param>
-        private void SetBarAmount(float amount)
-        {
-            float segment = 1f / 3f;
-            
-            float remain = Mathf.Clamp01(amount);
-
-            for (int i = 0; i < _bars.Length; i++)
-            {
-                float fill = Mathf.Min(remain, segment);
-                _bars[i].fillAmount = fill / segment;
-                remain -= fill;
-            }
+            _bars[index].fillAmount = health / _enemies[index].HealthSystem.MaxHealth;
         }
     }
 }
