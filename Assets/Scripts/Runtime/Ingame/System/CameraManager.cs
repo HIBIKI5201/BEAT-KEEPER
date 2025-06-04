@@ -14,32 +14,33 @@ namespace BeatKeeper
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        private CinemachineCamera _playerCamera;
-        [SerializeField] private CinemachineCamera[] _cameras;
+        private CinemachineCamera _camera;
         private int _index;
 
         private async void Start()
         {
             var player = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-            _playerCamera = player.GetComponentInChildren<CinemachineCamera>();
-            _cameras[0] = _playerCamera; // 仮 プレイヤーの子オブジェクトのカメラを使用する
-            
+
             await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
-            
-            _cameras[0].Follow = player.transform;
-            _cameras[0].LookAt = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0].transform;
-            
-            ChangeCamera(0);
+
+            ChangeCamera(player.PlayerCamera);
         }
 
         /// <summary>
-        /// 使用するカメラを変更する
+        ///     使用するカメラを変更する
         /// </summary>
-        public void ChangeCamera(int index)
+        public void ChangeCamera(CinemachineCamera camera)
         {
-            _cameras[_index].enabled = false;
-            _cameras[index].enabled = true;
-            _index = index;
+            if (!camera)
+            {
+                Debug.LogWarning("[CameraManager] camera is null");
+                return;
+            }
+
+            if (_camera) _camera.enabled = false;
+            camera.enabled = true;
+
+            _camera = camera;
         }
     }
 }
