@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using R3;
 using SymphonyFrameWork.Debugger;
+using Unity.Cinemachine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -14,16 +15,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
+        [SerializeField] private BattleBuffTimelineData _battleBuffData;
+
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
-        private PlayerAnimeManager _animeManager;
 
+        public CinemachineCamera PlayerCamera => _playerCamera;
+        private CinemachineCamera _playerCamera;
+
+        private IEnemy _target;
         private bool _isBattle;
         private float _chargeAttackTimer;
         private float _avoidSuccessTiming;
 
-        private IEnemy _target;
-        [SerializeField] private BattleBuffTimelineData _battleBuffData;
+        private PlayerAnimeManager _animeManager;
 
         public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
@@ -66,13 +71,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _animeManager = new(animator);
             else Debug.LogWarning("Character animator component not found");
 
-            OnShootComboAttack += _comboSystem.Attack;
             OnShootComboAttack += _particleSystem.Play;
-            OnResonanceAttack += () => _specialSystem.AddSpecialEnergy(0.05f);
-            OnNormalAvoid += _animeManager.Avoid;
-            OnJustAvoid += _flowZoneSystem.SuccessResonance;
-
-            OnHitAttack += _comboSystem.ComboReset;
         }
 
         private void Start()
@@ -108,9 +107,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             InputUnregister();
         }
 
+        /// <summary>
+        ///     入力を購買する
+        /// </summary>
         private void InputRegister()
         {
-            if (_inputBuffer) //入力を購買する
+            if (_inputBuffer)
             {
                 _inputBuffer.Move.performed += OnMove;
                 _inputBuffer.Move.canceled += OnMove;
@@ -127,9 +129,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        /// <summary>
+        ///     入力の購買を終わる
+        /// </summary>
         private void InputUnregister()
         {
-            if (_inputBuffer) //入力の購買を終わる
+            if (_inputBuffer)
             {
                 _inputBuffer.Move.performed -= OnMove;
                 _inputBuffer.Move.canceled -= OnMove;
@@ -146,6 +151,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        /// <summary>
+        ///     攻撃を受けた際の処理
+        /// </summary>
+        /// <param name="damage"></param>
         public override void HitAttack(float damage)
         {
             //無敵時間判定
@@ -157,8 +166,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             base.HitAttack(damage);
             OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
+
+            _comboSystem.ComboReset();
         }
 
+        /// <summary>
+        ///     フェーズが変わった際の処理
+        /// </summary>
+        /// <param name="phase"></param>
         private void OnPhaseChanged(PhaseEnum phase)
         {
             _isBattle = phase == PhaseEnum.Battle;
@@ -168,6 +183,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target = stage.EnemyAdmin.GetActiveEnemy();
         }
 
+        /// <summary>
+        ///     移動入力を受け取った際の処理
+        /// </summary>
+        /// <param name="context"></param>
         private void OnMove(InputAction.CallbackContext context)
         {
             var dir = context.ReadValue<Vector2>();
@@ -184,13 +203,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_target == null) return;
 
             SymphonyDebugLog.AddText($"{_data.Name} is attacking");
+
             OnShootComboAttack?.Invoke();
+            _comboSystem.Attack();
 
             //リズム共鳴が成功したか
             bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
             if (isResonanceHit)
             {
                 OnResonanceAttack?.Invoke();
+                _specialSystem.AddSpecialEnergy(0.05f);
             }
             else
             {
@@ -213,7 +235,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 var buffData = _battleBuffData.Data;
                 
-                //TODO ループした際に合計拍数がリセットされないようにする
+                //TODO 音楽がループした際に合計拍数がリセットされないようにする
                 var timing = _musicEngine.GetCurrentTiming() switch { var n => n.Bar * 4 + n.Beat };
                 
                 for (int i = buffData.Length - 1 ; i >= 0 ; i--)
@@ -304,6 +326,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_isBattle) return;
 
             OnNormalAvoid?.Invoke();
+            
+            _animeManager.Avoid();
+
             Debug.Log($"{_data.Name} is avoiding");
 
             var timing = _musicEngine.GetCurrentTiming() switch
@@ -325,10 +350,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 Debug.Log($"Success Avoid");
                 OnJustAvoid?.Invoke();
+
+                _flowZoneSystem.SuccessResonance();
                 _avoidSuccessTiming = Time.time;
             }
         }
 
+        /// <summary>
+        ///     回避が成功したかどうかを判定する
+        /// </summary>
+        /// <param name="timing"></param>
+        /// <returns></returns>
         public (bool, AttackKindEnum) IsSuccessAvoid(int timing)
         {
             bool willAttack = false;
@@ -345,7 +377,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             return (false, AttackKindEnum.None);
         }
 
+# if UNITY_EDITOR
+        /// <summary>
+        ///     スペシャルエネルギーを追加するためのデバッグ機能
+        /// </summary>
         [ContextMenu(nameof(AddSpecialEnergy))]
         private void AddSpecialEnergy() => _specialSystem.AddSpecialEnergy(1);
+#endif
     }
 }
