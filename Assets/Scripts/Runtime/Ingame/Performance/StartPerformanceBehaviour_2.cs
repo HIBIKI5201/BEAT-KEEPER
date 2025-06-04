@@ -1,5 +1,6 @@
 using BeatKeeper.Runtime.Ingame.Stsge;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;

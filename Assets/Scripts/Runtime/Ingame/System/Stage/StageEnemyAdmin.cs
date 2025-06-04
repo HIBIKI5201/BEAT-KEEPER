@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
