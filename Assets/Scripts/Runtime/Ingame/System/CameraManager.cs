@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
@@ -15,7 +16,8 @@ namespace BeatKeeper
     public class CameraManager : MonoBehaviour
     {
         private CinemachineCamera _camera;
-        private int _index;
+
+        private readonly Dictionary<string, CinemachineCamera> _cameras = new ();
 
         private async void Start()
         {

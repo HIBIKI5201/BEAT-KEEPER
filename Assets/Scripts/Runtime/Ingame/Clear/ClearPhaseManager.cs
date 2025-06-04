@@ -20,7 +20,7 @@ namespace BeatKeeper
         private PhaseManager _phaseManager;
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
-        private CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         
         private void Start()
         {
