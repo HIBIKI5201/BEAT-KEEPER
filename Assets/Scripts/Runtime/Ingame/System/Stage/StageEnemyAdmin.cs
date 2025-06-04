@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -18,11 +19,11 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             _enemies = GetComponentsInChildren<EnemyManager>();
         }
 
-        private async void Start()
+        private void Start()
         {
             var ui = ServiceLocator.GetInstance<InGameUIManager>();
 
-            Array.ForEach(_enemies, ui.HealthBar.RegisterEnemyEvent);
+            Array.ForEach(_enemies, ui.HealthBarInitialize);
         }
 
         /// <summary>
