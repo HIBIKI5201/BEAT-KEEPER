@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.UI
@@ -18,12 +19,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
         [SerializeField] private UIElement_HealthBar _healthBar;
 
-        public UIElement_HealthBar HealthBar => _healthBar;
         private void Start()
         {
             ValidateComponents();
             Initialize();
         }
+
+        public void HealthBarInitialize(EnemyManager enemy) =>
+            _healthBar.RegisterEnemyEvent(enemy);
 
         /// <summary>
         /// コンポーネントの検証を行う

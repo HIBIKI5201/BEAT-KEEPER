@@ -19,11 +19,11 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             _enemies = GetComponentsInChildren<EnemyManager>();
         }
 
-        private async void Start()
+        private void Start()
         {
             var ui = ServiceLocator.GetInstance<InGameUIManager>();
 
-            Array.ForEach(_enemies, ui.HealthBar.RegisterEnemyEvent);
+            Array.ForEach(_enemies, ui.HealthBarInitialize);
         }
 
         /// <summary>
