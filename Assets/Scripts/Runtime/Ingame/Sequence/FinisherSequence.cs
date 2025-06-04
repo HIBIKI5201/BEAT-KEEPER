@@ -8,14 +8,31 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     public class FinisherSequence : MonoBehaviour
     {
+        private InputBuffer _inputBuffer;
         private EnemyManager _registeredEnemy;
 
         private void Start()
         {
-            FinisherEventRegister(0); //Å‰‚Ì“G‚ğ“o˜^
+            FinisherEventRegister(); //Å‰‚Ì“G‚ğ“o˜^
+
+            _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
         }
 
-        public async void FinisherEventRegister(int index)
+        private void OnDestroy()
+        {
+            if (_registeredEnemy != null)
+            {
+                _registeredEnemy.OnFinisherable -= OnFinisherable;
+            }
+
+            if (_inputBuffer)
+                _inputBuffer.Finishier.started -= Finisher;
+        }
+
+        /// <summary>
+        ///     Finisher‰Â”\‚ÌƒCƒxƒ“ƒg‚ğw”ƒ‚·‚é
+        /// </summary>
+        public async void FinisherEventRegister()
         {
             var battleScene = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
 
@@ -23,15 +40,23 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _registeredEnemy.OnFinisherable += OnFinisherable;
         }
 
+        /// <summary>
+        ///     Finisher‰Â”\‚ÉƒtƒBƒjƒbƒVƒƒ[“ü—Í‚ğó‚¯•t‚¯‚é
+        /// </summary>
         private void OnFinisherable()
         {
-            var inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-            inputBuffer.Finishier.started += Finisher;
+            _inputBuffer.Finishier.started += Finisher;
         }
 
+        /// <summary>
+        ///     Finisher“ü—Í‚ğó‚¯æ‚Á‚½Û‚Ìˆ—
+        /// </summary>
+        /// <param name="context"></param>
         private void Finisher(InputAction.CallbackContext context)
         {
             Debug.Log("Finisher Sequence Start");
+
+            _inputBuffer.Finishier.started -= Finisher;
         }
     }
 }
