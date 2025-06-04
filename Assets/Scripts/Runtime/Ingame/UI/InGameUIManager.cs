@@ -1,7 +1,7 @@
-using BeatKeeper.Runtime.Ingame.UI;
+using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
     /// インゲームのUIを管理するマネージャークラス
@@ -18,14 +18,16 @@ namespace BeatKeeper
         [SerializeField] private UIElement_FinisherGuide _finisherGuide;
         [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
         [SerializeField] private UIElement_HealthBar _healthBar;
-        
-        public UIElement_HealthBar HealthBar => _healthBar;
+
         private void Start()
         {
             ValidateComponents();
             Initialize();
         }
-        
+
+        public void HealthBarInitialize(EnemyManager enemy) =>
+            _healthBar.RegisterEnemyEvent(enemy);
+
         /// <summary>
         /// コンポーネントの検証を行う
         /// </summary>
@@ -45,7 +47,7 @@ namespace BeatKeeper
         }
 
         #region 開始演出関連のUI
-        
+
         /// <summary>
         /// 遭遇時のテキストを表示する
         /// </summary>
@@ -55,7 +57,7 @@ namespace BeatKeeper
         /// 遭遇時のテキストを非表示にする
         /// </summary>
         public void HideEncounterText() => _encounterText.HideEncounterText();
-        
+
         #endregion
 
         #region バトル中のUI
@@ -93,12 +95,12 @@ namespace BeatKeeper
                 canvasController.Hide();
             }
         }
-        
+
         /// <summary>
         /// フィニッシャーガイドを表示
         /// </summary>
         public void ShowFinisherGuide() => _finisherGuide.Show();
-        
+
         /// <summary>
         /// フィニッシャーガイドを非表示
         /// </summary>
