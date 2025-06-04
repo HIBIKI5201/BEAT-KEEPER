@@ -60,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
 
-        private async void Awake()
+        protected override async void Awake()
         {
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
@@ -72,6 +72,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else Debug.LogWarning("Character animator component not found");
 
             _playerCamera = GetComponentInChildren<CinemachineCamera>();
+            if (_playerCamera)
+            {
+                //カメラを敵に向ける
+                _playerCamera.LookAt = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>()).EnemyAdmin.GetActiveEnemy().transform;
+            }
 
             OnShootComboAttack += _particleSystem.Play;
         }
