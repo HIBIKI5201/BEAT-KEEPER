@@ -15,12 +15,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
+        public CinemachineCamera PlayerCamera => _playerCamera;
+        public ComboSystem ComboSystem => _comboSystem;
+        public SpecialSystem SpecialSystem => _specialSystem;
+        public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
+
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
-
-        public CinemachineCamera PlayerCamera => _playerCamera;
         private CinemachineCamera _playerCamera;
 
         private IEnemy _target;
@@ -29,13 +32,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _avoidSuccessTiming;
 
         private PlayerAnimeManager _animeManager;
-
-        public ComboSystem ComboSystem => _comboSystem;
         private ComboSystem _comboSystem;
-
-        public SpecialSystem SpecialSystem => _specialSystem;
         private SpecialSystem _specialSystem;
+        private FlowZoneSystem _flowZoneSystem;
 
+        #region イベント
         public event Action OnShootComboAttack;
         public event Action OnResonanceAttack;
         public event Action OnNonResonanceAttack;
@@ -46,6 +47,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnNonFullChargeAttack;
         public event Action OnNormalAvoid;
         public event Action OnJustAvoid;
+        #endregion
 
         #region モック用の機能
 
@@ -57,10 +59,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
-        public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
-        private FlowZoneSystem _flowZoneSystem;
 
-        private async void OnEnable()
+        private async void Awake()
         {
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
@@ -70,6 +70,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (TryGetComponent(out Animator animator))
                 _animeManager = new(animator);
             else Debug.LogWarning("Character animator component not found");
+
+            _playerCamera = GetComponentInChildren<CinemachineCamera>();
 
             OnShootComboAttack += _particleSystem.Play;
         }
