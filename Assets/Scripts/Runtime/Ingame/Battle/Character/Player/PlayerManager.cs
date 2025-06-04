@@ -80,21 +80,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
-            if (_inputBuffer) //入力を購買する
-            {
-                _inputBuffer.Move.performed += OnMove;
-                _inputBuffer.Move.canceled += OnMove;
-                _inputBuffer.Interact.started += OnChargeAttack;
-                _inputBuffer.Interact.canceled += OnChargeAttack;
-                _inputBuffer.Attack.started += OnAttack;
-                _inputBuffer.Special.started += OnSpecial;
-                _inputBuffer.Finishier.started += OnFinisher;
-                _inputBuffer.Avoid.started += OnAvoid;
-            }
-            else
-            {
-                Debug.LogWarning("Input buffer is null");
-            }
+            InputRegister();
 
             if (!_musicEngine)
                 Debug.LogWarning("Music engine is null");
@@ -119,6 +105,30 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
+            InputUnregister();
+        }
+
+        private void InputRegister()
+        {
+            if (_inputBuffer) //入力を購買する
+            {
+                _inputBuffer.Move.performed += OnMove;
+                _inputBuffer.Move.canceled += OnMove;
+                _inputBuffer.Interact.started += OnChargeAttack;
+                _inputBuffer.Interact.canceled += OnChargeAttack;
+                _inputBuffer.Attack.started += OnAttack;
+                _inputBuffer.Special.started += OnSpecial;
+                _inputBuffer.Finishier.started += OnFinisher;
+                _inputBuffer.Avoid.started += OnAvoid;
+            }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
+            }
+        }
+
+        private void InputUnregister()
+        {
             if (_inputBuffer) //入力の購買を終わる
             {
                 _inputBuffer.Move.performed -= OnMove;
@@ -129,6 +139,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Special.started -= OnSpecial;
                 _inputBuffer.Finishier.started -= OnFinisher;
                 _inputBuffer.Avoid.started -= OnAvoid;
+            }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
             }
         }
 
