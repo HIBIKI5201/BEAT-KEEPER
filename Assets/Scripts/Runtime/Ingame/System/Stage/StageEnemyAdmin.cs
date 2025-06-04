@@ -31,7 +31,7 @@ namespace BeatKeeper.Runtime.Ingame.Battle
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public EnemyManager GetActiveEnemy(Vector3 position)
+        public EnemyManager GetActiveEnemy()
         {
             return _enemies[_activeEnemyIndex];
         }
