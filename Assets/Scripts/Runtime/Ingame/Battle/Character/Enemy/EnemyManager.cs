@@ -78,8 +78,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_healthSystem.Health / _healthSystem.MaxHealth <= _data.FinisherThreshold / 100)
             {
-                Debug.Log($"enemy:{name} is dead");
-
                 if (!_canFinisher)
                 {
                     Debug.Log("Finisherable event triggered for " + _data.name);
