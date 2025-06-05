@@ -14,7 +14,7 @@ namespace BeatKeeper
             base.OnBehaviourPlay(playable, info);
             
             var cameraManager = ServiceLocator.GetInstance<StageManager>().CameraManager;
-            cameraManager.ChangeCamera(0);
+            //cameraManager.ChangeCamera();
             var uiManager = ServiceLocator.GetInstance<InGameUIManager>();
             uiManager.HideEncounterText();
             uiManager.BattleStart();

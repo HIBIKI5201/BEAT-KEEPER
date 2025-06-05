@@ -29,13 +29,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// リズム共鳴回数
         /// </summary>
         public ReadOnlyReactiveProperty<int> ResonanceCount => _resonanceCount;
-        private ReactiveProperty<int> _resonanceCount = new();
+        private readonly ReactiveProperty<int> _resonanceCount = new();
         
         /// <summary>
         /// フローゾーン中か
         /// </summary>
         public ReadOnlyReactiveProperty<bool> IsFlowZone => _isFlowZone;
-        private ReactiveProperty<bool> _isFlowZone = new();
+        private readonly ReactiveProperty<bool> _isFlowZone = new();
 
         /// <summary>
         /// リズム共鳴に成功
