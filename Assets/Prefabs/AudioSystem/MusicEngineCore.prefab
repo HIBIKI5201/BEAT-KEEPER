@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayOnStart: 1
   Volume: 0.204
-  OutputMixerGroup: {fileID: 24300002, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
+  OutputMixerGroup: {fileID: 1630776837128064713, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
   Sections:
   - Name: Approach
     Clips:
