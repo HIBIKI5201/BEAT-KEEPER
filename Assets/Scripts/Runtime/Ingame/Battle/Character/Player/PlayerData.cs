@@ -27,10 +27,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         [Header("リズム パラメータ")]
         
-        [SerializeField, Range(0,1), Tooltip("リズム共鳴の範囲")]
-        private float _resonanceRange = 0.5f;
-        public float ResonanceRange => _resonanceRange;
-        
+        [SerializeField, Range(0,1), Tooltip("パーフェクトヒットの範囲")]
+        private float _perfectRange = 0.1f;
+        public float PerfectRange => _perfectRange;
+
+        [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
+        private float _goodRange = 0.5f;
+        public float GoodRange => _goodRange;
+
+
+
         [SerializeField, Min(1), Tooltip("リズム共鳴時のダメージ倍率")] private float _resonanceCriticalDamage = 1f;
         public float ResonanceCriticalDamage => _resonanceCriticalDamage;
         
