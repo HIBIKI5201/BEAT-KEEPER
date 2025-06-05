@@ -1,12 +1,12 @@
-using System;
 using BeatKeeper.Runtime.Ingame.Battle;
 using Cysharp.Threading.Tasks;
-using SymphonyFrameWork.System;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using R3;
 using SymphonyFrameWork.Debugger;
+using SymphonyFrameWork.System;
+using System;
 using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -38,7 +38,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region イベント
         public event Action OnShootComboAttack;
-        public event Action OnResonanceAttack;
+        public event Action OnPerfectAttack;
         public event Action OnNonResonanceAttack;
 
         public event Action OnShootChargeAttack;
@@ -62,11 +62,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected override async void Awake()
         {
+            //システムの初期化
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
             _flowZoneSystem =
                 new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>());
 
+            //コンポーネント取得
             if (TryGetComponent(out Animator animator))
                 _animeManager = new(animator);
             else Debug.LogWarning("Character animator component not found");
@@ -114,6 +116,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             InputUnregister();
         }
 
+        #region 入力の購買
+
         /// <summary>
         ///     入力を購買する
         /// </summary>
@@ -157,6 +161,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("Input buffer is null");
             }
         }
+#endregion
 
         /// <summary>
         ///     攻撃を受けた際の処理
@@ -214,11 +219,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnShootComboAttack?.Invoke();
             _comboSystem.Attack();
 
-            //リズム共鳴が成功したか
-            bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
-            if (isResonanceHit)
+            //攻撃が成功したか
+            bool isPerfectHit = _musicEngine.IsTimingWithinAcceptableRange(_data.PerfectRange);
+            bool isGoodHit = _musicEngine.IsTimingWithinAcceptableRange(_data.GoodRange);
+
+            if (isPerfectHit)
             {
-                OnResonanceAttack?.Invoke();
+                OnPerfectAttack?.Invoke();
                 _specialSystem.AddSpecialEnergy(0.05f);
             }
             else
@@ -226,39 +233,52 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnNonResonanceAttack?.Invoke();
             }
 
-            //コンボに応じたダメージ
-            var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
-            {
-                0 => _data.FirstAttackPower,
-                1 => _data.SecondAttackPower,
-                2 => _data.ThirdAttackPower,
+            //評価のログ
+            SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
 
-                _ => _data.FirstAttackPower
-            };
-            if (isResonanceHit)
-                power *= _data.ResonanceCriticalDamage;
 
-            if (_battleBuffData) //タイムラインバフ
+            if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
             {
-                var buffData = _battleBuffData.Data;
-                
-                //TODO 音楽がループした際に合計拍数がリセットされないようにする
-                var timing = _musicEngine.GetCurrentTiming() switch { var n => n.Bar * 4 + n.Beat };
-                
-                for (int i = buffData.Length - 1 ; i >= 0 ; i--)
+                //コンボに応じたダメージ
+                var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
                 {
-                    if (buffData[i].Timing < timing)
+                    0 => _data.FirstAttackPower,
+                    1 => _data.SecondAttackPower,
+                    2 => _data.ThirdAttackPower,
+
+                    _ => _data.FirstAttackPower
+                };
+
+                if (isPerfectHit)
+                    power *= _data.PerfectCriticalDamage;
+
+                if (_battleBuffData) //タイムラインバフ
+                {
+                    var buffData = _battleBuffData.Data;
+
+                    //TODO 音楽がループした際に合計拍数がリセットされないようにする
+                    var timing = _musicEngine.GetBeatsSinceStart();
+
+                    for (int i = buffData.Length - 1; i >= 0; i--)
                     {
-                        power *= buffData[i].Value;
-                        SymphonyDebugLog.AddText($"{buffData[i].Value} buff of {buffData[i].Timing} active");
-                        break;
+                        if (buffData[i].Timing < timing)
+                        {
+                            power *= buffData[i].Value;
+                            SymphonyDebugLog.AddText($"{buffData[i].Value} buff of {buffData[i].Timing} active");
+                            break;
+                        }
                     }
                 }
+
+                power *= _damageScale;
+
+                _target.HitAttack(power);
+            }
+            else
+            {
+                _comboSystem.ComboReset();
             }
 
-            power *= _damageScale;
-
-            _target.HitAttack(power);
             SymphonyDebugLog.TextLog();
         }
 
@@ -333,15 +353,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_isBattle) return;
 
             OnNormalAvoid?.Invoke();
-            
+
             _animeManager.Avoid();
 
             Debug.Log($"{_data.Name} is avoiding");
 
-            var timing = _musicEngine.GetCurrentTiming() switch
-            {
-                var data => (data.Bar * 4 + data.Beat) % 32
-            };
+            var timing = _musicEngine.GetBeatsSinceStart() % 32;
 
             //nターン後までに攻撃があるかどうか
             (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
