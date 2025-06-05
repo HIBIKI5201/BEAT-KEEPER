@@ -38,7 +38,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region イベント
         public event Action OnShootComboAttack;
-        public event Action OnResonanceAttack;
+        public event Action OnPerfectAttack;
         public event Action OnNonResonanceAttack;
 
         public event Action OnShootChargeAttack;
@@ -215,16 +215,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem.Attack();
 
             //リズム共鳴が成功したか
-            bool isResonanceHit = _musicEngine.IsTimingWithinAcceptableRange(_data.ResonanceRange);
-            if (isResonanceHit)
+            bool isPerfectHit = _musicEngine.IsTimingWithinAcceptableRange(_data.PerfectRange);
+            bool isGoodHit = _musicEngine.IsTimingWithinAcceptableRange(_data.GoodRange);
+
+            if (isPerfectHit)
             {
-                OnResonanceAttack?.Invoke();
+                OnPerfectAttack?.Invoke();
                 _specialSystem.AddSpecialEnergy(0.05f);
             }
             else
             {
                 OnNonResonanceAttack?.Invoke();
             }
+
+            //評価のログ
+            SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss") )}attack");
 
             //コンボに応じたダメージ
             var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
@@ -235,7 +240,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 _ => _data.FirstAttackPower
             };
-            if (isResonanceHit)
+            if (isPerfectHit)
                 power *= _data.ResonanceCriticalDamage;
 
             if (_battleBuffData) //タイムラインバフ
