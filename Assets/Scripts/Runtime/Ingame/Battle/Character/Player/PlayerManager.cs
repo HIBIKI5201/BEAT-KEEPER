@@ -257,7 +257,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     var buffData = _battleBuffData.Data;
 
                     //TODO 音楽がループした際に合計拍数がリセットされないようにする
-                    var timing = _musicEngine.GetCurrentTiming() switch { var n => n.Bar * 4 + n.Beat };
+                    var timing = _musicEngine.GetBeatsSinceStart();
 
                     for (int i = buffData.Length - 1; i >= 0; i--)
                     {
@@ -358,10 +358,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             Debug.Log($"{_data.Name} is avoiding");
 
-            var timing = _musicEngine.GetCurrentTiming() switch
-            {
-                var data => (data.Bar * 4 + data.Beat) % 32
-            };
+            var timing = _musicEngine.GetBeatsSinceStart() % 32;
 
             //nターン後までに攻撃があるかどうか
             (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
