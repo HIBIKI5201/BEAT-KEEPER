@@ -189,10 +189,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1564515585217593851, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
-      propertyPath: OutputMixerGroup
-      value: 
-      objectReference: {fileID: 1630776837128064713, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
     - target: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
       propertyPath: m_Name
       value: MusicEngineCore
