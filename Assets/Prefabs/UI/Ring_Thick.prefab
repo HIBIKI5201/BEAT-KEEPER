@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3881591208483994666}
   - component: {fileID: 4971772945296117936}
   - component: {fileID: 5061960755056945525}
-  - component: {fileID: 6534052724568856929}
+  - component: {fileID: 9008003532994830846}
   m_Layer: 5
   m_Name: Ring_Thick
   m_TagString: Untagged
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6534052724568856929
+--- !u!114 &9008003532994830846
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,12 +86,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2318007837649346414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60aa308153dfbf049835f02a8acce8e6, type: 3}
+  m_Script: {fileID: 11500000, guid: c6ed958f87f17154a992f349ea08047e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _ringSprite: {fileID: 21300000, guid: 5138be4718baabe4bbd80f2f99709c2a, type: 3}
   _initialScale: 3.5
-  _blinkDuration: 0.1
+  _blinkDuration: 0.2
   _fadeDuration: 0.3
   _reductionTime: 3
   _warningColor: {r: 1, g: 0, b: 0, a: 1}
