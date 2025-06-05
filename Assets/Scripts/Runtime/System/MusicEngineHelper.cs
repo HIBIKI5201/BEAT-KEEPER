@@ -95,7 +95,7 @@ namespace BeatKeeper
             
             var normalizedTimingFromJust = (float)Music.UnitFromJust;
             Debug.Log($"{ (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2 ? "Success" : "Failed")}\n"
-                      + $"timing : {normalizedTimingFromJust}\n"
+                      + $"timing : {Mathf.Abs(normalizedTimingFromJust - 0.5f) * 2}\n"
                       + $"range : {range}");
             
             // Justタイミング後の判定・Justタイミング前の判定
