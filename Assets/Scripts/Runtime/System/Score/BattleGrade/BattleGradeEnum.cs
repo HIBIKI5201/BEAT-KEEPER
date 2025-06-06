@@ -1,4 +1,4 @@
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Battle
 {
     /// <summary>
     /// バトルグレードの列挙型
