@@ -12,7 +12,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// <summary>
     ///     譜面のリング表示をするマネージャー
     /// </summary>
-    public class UIElement_ChertRingManager : MonoBehaviour
+    public class UIElement_ChartRingManager : MonoBehaviour
     {
         [SerializeField, Tooltip("リングのデータ群")] private RingData[] _ringDatas;
 
