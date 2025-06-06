@@ -1342,7 +1342,7 @@ MonoBehaviour:
   _scoreText: {fileID: 4097051169465662113}
   _seekBar: {fileID: 5247262157891360532}
   _finisherGuide: {fileID: 2006703405593705863}
-  _chartRingManager: {fileID: 0}
+  _chartRingManager: {fileID: 9020171153741558029}
   _healthBar: {fileID: 5653411042876740993}
 --- !u!114 &9154990786555147002
 MonoBehaviour:
