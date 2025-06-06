@@ -12,7 +12,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// <summary>
     ///     譜面のリング表示をするマネージャー
     /// </summary>
-    public class UIElement_ChertRingManager : MonoBehaviour
+    public class UIElement_ChartRingManager : MonoBehaviour
     {
         [SerializeField, Tooltip("リングのデータ群")] private RingData[] _ringDatas;
 
@@ -22,7 +22,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private EnemyData _targetData;
         private Dictionary<AttackKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
 
-        private async void Start()
+        private Action _onBeat;
+
+        private void Start()
         {
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
 
@@ -49,13 +51,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
                             if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
                             {
-                                manager.Initialize((float)_musicEngineHelper.DurationOfBeat);
+                                manager.gameObject.SetActive(false);
                                 return manager;
                             }
                             else
                             {
                                 SymphonyDebugLog.DirectLog("このプレハブはリングインジケーターがアタッチされていません", SymphonyDebugLog.LogKind.Warning);
                                 return null;
+                            }
+                        },
+                        actionOnGet: go =>
+                        {
+                            go.gameObject.SetActive(true);
+                            if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
+                            {
+                                _onBeat += manager.AddCount;
+                            }
+                        },
+                        actionOnRelease: go =>
+                        {
+                            if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
+                            {
+                                _onBeat -= manager.AddCount;
                             }
                         },
                         actionOnDestroy: go => Destroy(go),
@@ -69,21 +86,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (_enemies == null) return;
 
-            var timing = _musicEngineHelper.GetBeatsSinceStart();
+            var timing = MusicEngineHelper.GetBeatsSinceStart();
 
+            _onBeat?.Invoke(); //リングのカウントを更新
 
+            //新しいリングを監視
             foreach (var data in _ringDatas)
             {
-                var kind = _targetData.Chart[(timing + data.ApearTiming) % 32];
+                var chart = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
 
-                if (_ringPools.TryGetValue(kind, out var op)) //対応するプールを呼び出して
+                if (_ringPools.TryGetValue(chart.AttackKind, out var op)) //対応するプールを呼び出し
                 {
                     var ring = op.Get(); //リングを取得
-                    //TODO 位置を譜面から取得する
-                    ring.OnGet(() => _ringPools[kind].Release(ring),
-                        new Vector2(UnityEngine.Random.Range(Screen.width / 4, Screen.width * 3 / 4),
-                        UnityEngine.Random.Range(Screen.height / 4, Screen.height * 3 / 4)));
-                    ring.EffectStart();
+                    ring.OnGet(() => op.Release(ring), //終了時のイベントを設定
+                        chart.Position);
                 }
             }
         }
@@ -92,7 +108,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (_musicEngineHelper)
             {
-                var currentBeat = _musicEngineHelper.GetBeatsSinceStart();
+                var currentBeat = MusicEngineHelper.GetBeatsSinceStart();
 
                 GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
             }
@@ -111,8 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private GameObject _ringPrefab;
         public GameObject RingPrefab => _ringPrefab;
 
-        [SerializeField, Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")] private int _defaultCapacity;
-        public int DefaultCapacity => _defaultCapacity = 3;
+        [SerializeField, Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")] private int _defaultCapacity = 3;
+        public int DefaultCapacity => _defaultCapacity;
     }
-
 }

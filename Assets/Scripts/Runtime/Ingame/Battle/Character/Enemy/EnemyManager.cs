@@ -100,11 +100,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnNormalAttack?.Invoke();
 
-            var timing = _musicEngine.GetCurrentTiming();
+            var timing = MusicEngineHelper.GetCurrentTiming();
 
-            if (_data.IsAttack(timing.Bar * 4 + timing.Beat))
+            if (_data.ChartData.IsAttack(timing.Bar * 4 + timing.Beat))
             {
-                Debug.Log($"{_data.name} {_data.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
+                Debug.Log($"{_data.name} {_data.ChartData.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
 
                 _target.HitAttack(1);
                 _particleSystem?.Play();

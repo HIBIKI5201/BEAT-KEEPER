@@ -399,6 +399,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthBarPrefab: {fileID: 8904241971001950680, guid: d256e58c4cbaa80479e4979b6e5a5214, type: 3}
+--- !u!1 &1316319912688006519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1116584958319909152}
+  - component: {fileID: 4345660259998423304}
+  - component: {fileID: 9020171153741558029}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1116584958319909152
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316319912688006519}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 302145706440026476}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4345660259998423304
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316319912688006519}
+  m_CullTransparentMesh: 1
+--- !u!114 &9020171153741558029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316319912688006519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f5c0f12e56fd347875b56e1a91ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ringDatas:
+  - _attackKind: 1
+    _apearTiming: 5
+    _ringPrefab: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+    _defaultCapacity: 3
 --- !u!1 &1810738741571308948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1280,7 +1342,7 @@ MonoBehaviour:
   _scoreText: {fileID: 4097051169465662113}
   _seekBar: {fileID: 5247262157891360532}
   _finisherGuide: {fileID: 2006703405593705863}
-  _chertRingManager: {fileID: 1440035494042594947}
+  _chartRingManager: {fileID: 9020171153741558029}
   _healthBar: {fileID: 5653411042876740993}
 --- !u!114 &9154990786555147002
 MonoBehaviour:
@@ -1848,6 +1910,7 @@ RectTransform:
   - {fileID: 5020823783569968095}
   - {fileID: 3343023035188979881}
   - {fileID: 8366811420049265359}
+  - {fileID: 1116584958319909152}
   m_Father: {fileID: 1517865131295371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2284,7 +2347,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8366811420049265359}
-  - component: {fileID: 1440035494042594947}
   m_Layer: 0
   m_Name: ChertRingManager
   m_TagString: Untagged
@@ -2300,30 +2362,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8401888950081466672}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 302145706440026476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1440035494042594947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8401888950081466672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f5c0f12e56fd347875b56e1a91ecf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ringDatas:
-  - _attackKind: 1
-    _apearTiming: 5
-    _ringPrefab: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-    _defaultCapacity: 3
 --- !u!1 &8439436246184452771
 GameObject:
   m_ObjectHideFlags: 0

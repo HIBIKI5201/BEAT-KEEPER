@@ -11,8 +11,11 @@ namespace BeatKeeper
             base.OnBehaviourPlay(playable, info);
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            phaseManager.NextPhase();
-            
+            if (phaseManager)
+            {
+                phaseManager.NextPhase();
+            }
+
             Debug.Log("StartPerformanceBehaviour_3");
         }
     }

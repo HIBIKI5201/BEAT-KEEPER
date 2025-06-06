@@ -18,14 +18,26 @@ namespace BeatKeeper
         
         override public Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            Playable playable = _behaviourKind switch
+            switch(_behaviourKind)
             {
-                BehaviourKind.Behaviour1 => ScriptPlayable<StartPerformanceBehaviour_1>.Create(graph),
-                BehaviourKind.Behaviour2 => ScriptPlayable<StartPerformanceBehaviour_2>.Create(graph),
-                BehaviourKind.Behaviour3 => ScriptPlayable<StartPerformanceBehaviour_3>.Create(graph),
-                _ => new Playable()
-            };
-            return playable;
+                case BehaviourKind.Behaviour1:
+                    var playable1 = ScriptPlayable<StartPerformanceBehaviour_1>.Create(graph);
+                    var behaviour1 = playable1.GetBehaviour();
+
+                    behaviour1.OnCreate(owner);
+                    return playable1;
+
+                case BehaviourKind.Behaviour2:
+                    var playable2 = ScriptPlayable<StartPerformanceBehaviour_2>.Create(graph);
+                    return playable2;
+
+                    case BehaviourKind.Behaviour3:
+                    var playable3 = ScriptPlayable<StartPerformanceBehaviour_3>.Create(graph);
+                    
+                    return playable3;
+            }
+
+            return new Playable();
         }
     }
 }

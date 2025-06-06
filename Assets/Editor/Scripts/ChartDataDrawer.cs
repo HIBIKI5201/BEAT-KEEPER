@@ -1,74 +1,68 @@
-using System;
 using BeatKeeper.Runtime.Ingame.Battle;
-using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
+using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace BeatKeeper.Editor.Ingame.Character
 {
-    [CustomEditor(typeof(EnemyData))]
-    public class EnemyDataDrawer : UnityEditor.Editor
+    [CustomEditor(typeof(ChartData))]
+    public class ChartDataDrawer : UnityEditor.Editor
     {
         private const string ARRAY_PROPATY = "_chart";
         private SerializedProperty _array;
-        
+
         void OnEnable()
         {
             _array = serializedObject.FindProperty(ARRAY_PROPATY);
         }
-        
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            
+
             //配列以外のパラメータを表示
             DrawPropertiesExcluding(serializedObject, ARRAY_PROPATY);
 
             #region 譜面エディタ
-            
+
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("譜面編集", EditorStyles.boldLabel);
-            
+
             for (int i = 0; i < _array.arraySize; i++)
             {
+                //ChartDataElementの要素
                 SerializedProperty element = _array.GetArrayElementAtIndex(i);
-                int value = element.intValue;
-                AttackKindEnum kind = (AttackKindEnum)value;
-                
-                string name = kind.ToString();
+                SerializedProperty attackKindProp = element.FindPropertyRelative("AttackKind");
+                SerializedProperty positionProp = element.FindPropertyRelative("Position");
 
-                GUIStyle style = new GUIStyle(GUI.skin.button);
-                style.normal.textColor = Color.white;
+                AttackKindEnum kind = (AttackKindEnum)attackKindProp.enumValueFlag;
+                string kindName = kind.ToString();
 
                 Color originalColor = GUI.backgroundColor;
+                GUI.backgroundColor = kind != AttackKindEnum.None ? Color.green : Color.gray;
 
-                bool isAttack = kind != AttackKindEnum.None;
-                //攻撃するならグリーン
-                GUI.backgroundColor = isAttack ? Color.green : Color.gray;
-
-                //要素配置
                 GUILayout.BeginHorizontal();
-                
-                GUILayout.Label((i + 1).ToString(), GUILayout.Width(30)); //番号を表示
-                
-                if (GUILayout.Button(kind.ToString(), GUILayout.Width(50), GUILayout.Height(25)))
+
+                GUILayout.Label($"{i + 1}", GUILayout.Width(30));
+
+                if (GUILayout.Button(kindName, GUILayout.Width(80), GUILayout.Height(25)))
                 {
-                    //1以上なら左シフト、0なら1に
+                    int value = (int)kind;
                     value = 0 < value ? value << 1 : 1;
-                    
-                    //もしAttackKindの最大値より大きければ0にリセット
-                    //-2はNoneとzero originの補正
-                    if (1 << Enum.GetValues(typeof(AttackKindEnum)).Length - 2 < value)
+
+                    // AttackKindEnum の最大値を超えたらリセット
+                    if (value > (1 << (Enum.GetValues(typeof(AttackKindEnum)).Length - 2)))
                         value = 0;
 
-                    element.intValue = value;
+                    attackKindProp.enumValueFlag = value;
                 }
+
+                positionProp.vector2Value = EditorGUILayout.Vector2Field(GUIContent.none, positionProp.vector2Value, GUILayout.Width(150));
 
                 GUILayout.EndHorizontal();
 
-                //節ごとにスペースを空ける
                 if ((i + 1) % 4 == 0) GUILayout.Space(10);
-                
                 GUI.backgroundColor = originalColor;
             }
 

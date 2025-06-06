@@ -170,7 +170,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(float damage)
         {
             //無敵時間判定
-            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime * _musicEngine.DurationOfBeat > Time.time)
+            if (_avoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
             {
                 Debug.Log("During Avoid Invincibility Time");
                 return;
@@ -220,8 +220,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem.Attack();
 
             //攻撃が成功したか
-            bool isPerfectHit = _musicEngine.IsTimingWithinAcceptableRange(_data.PerfectRange);
-            bool isGoodHit = _musicEngine.IsTimingWithinAcceptableRange(_data.GoodRange);
+            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
+            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
 
             if (isPerfectHit)
             {
@@ -257,7 +257,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     var buffData = _battleBuffData.Data;
 
                     //TODO 音楽がループした際に合計拍数がリセットされないようにする
-                    var timing = _musicEngine.GetBeatsSinceStart();
+                    var timing = MusicEngineHelper.GetBeatsSinceStart();
 
                     for (int i = buffData.Length - 1; i >= 0; i--)
                     {
@@ -300,7 +300,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 case InputActionPhase.Canceled:
                     OnShootChargeAttack?.Invoke();
 
-                    if (_chargeAttackTimer + _musicEngine.DurationOfBeat * _data.ChargeAttackTime <
+                    if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime <
                         Time.time) //フルチャージかどうか
 
                     {
@@ -358,7 +358,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             Debug.Log($"{_data.Name} is avoiding");
 
-            var timing = _musicEngine.GetBeatsSinceStart() % 32;
+            var timing = MusicEngineHelper.GetBeatsSinceStart() % 32;
 
             //nターン後までに攻撃があるかどうか
             (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
@@ -390,11 +390,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool willAttack = false;
             for (int i = timing; i < timing + 3; i++)
             {
-                willAttack |= _target.EnemyData.IsAttack(i);
+                willAttack |= _target.EnemyData.ChartData.IsAttack(i);
 
                 if (willAttack)
                 {
-                    return (true, _target.EnemyData.Chart[i]);
+                    return (true, _target.EnemyData.ChartData.Chart[i].AttackKind);
                 }
             }
 

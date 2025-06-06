@@ -5,8 +5,6 @@ namespace BeatKeeper.Runtime.Develop
 {
     public class EmmitionDev : MonoBehaviour
     {
-        private float _durationOfBeat;
-
         private Material _material;
         private Color _color;
 
@@ -15,7 +13,6 @@ namespace BeatKeeper.Runtime.Develop
             var musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
             musicEngine.OnJustChangedBeat += OnBeat;
-            _durationOfBeat = (float)musicEngine.DurationOfBeat;
 
             var renderer = GetComponent<Renderer>();
             _material = renderer.material;
@@ -33,7 +30,7 @@ namespace BeatKeeper.Runtime.Develop
                 var color = _color * i / 5;
                 _material.SetColor("_Color", color);
 
-                await Awaitable.WaitForSecondsAsync(_durationOfBeat / (count + 20));
+                await Awaitable.WaitForSecondsAsync((float)MusicEngineHelper.DurationOfBeat / (count + 20));
             }
 
             _material.SetColor("_Color", _color);
