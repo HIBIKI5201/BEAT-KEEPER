@@ -17,6 +17,8 @@ namespace BeatKeeper
         [SerializeField] private float _blinkDuration = 0.2f;
         [SerializeField] private float _fadeDuration = 0.3f;
 
+        public override int EffectLength => 5;
+
 
         /// <summary>
         /// ビートごとに実行される処理
@@ -24,8 +26,6 @@ namespace BeatKeeper
         /// <param name="count"></param>
         public override void Effect(int count)
         {
-            Debug.Log(count);
-
             switch (count)
             {
                 case 1:
@@ -42,11 +42,13 @@ namespace BeatKeeper
             }
         }
 
+        /// <summary>
+        /// 点滅シークエンス
+        /// </summary>
         private void Effect1()
         {
             _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
 
-            // 点滅シーケンス（先に再生開始）
             var blinkSequence = DOTween.Sequence().SetAutoKill(false);
 
             blinkSequence.Append(_ringImage.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo));
@@ -58,11 +60,17 @@ namespace BeatKeeper
             blinkSequence.Play();
         }
         
+        /// <summary>
+        /// リングの縮小
+        /// </summary>
         private void Effect2()
         {
             _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
         }
 
+        /// <summary>
+        /// 当たりエフェクト
+        /// </summary>
         private void Effect3()
         {
             var successSequence = DOTween.Sequence();
