@@ -20,7 +20,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private MusicEngineHelper _musicEngineHelper;
 
         private EnemyData _targetData;
-        private Dictionary<AttackKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
+        private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
 
         private Action _onBeat;
 
@@ -118,8 +118,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
     [Serializable]
     public class RingData
     {
-        [SerializeField] private AttackKindEnum _attackKind;
-        public AttackKindEnum AttackKind => _attackKind;
+        [SerializeField] private ChartKindEnum _attackKind;
+        public ChartKindEnum AttackKind => _attackKind;
 
         [SerializeField, Tooltip("出現タイミングの拍数")] private int _apearTiming = 5;
         public int ApearTiming => _apearTiming;

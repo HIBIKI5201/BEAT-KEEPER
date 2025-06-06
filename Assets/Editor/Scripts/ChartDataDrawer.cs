@@ -36,11 +36,11 @@ namespace BeatKeeper.Editor.Ingame.Character
                 SerializedProperty attackKindProp = element.FindPropertyRelative("AttackKind");
                 SerializedProperty positionProp = element.FindPropertyRelative("Position");
 
-                AttackKindEnum kind = (AttackKindEnum)attackKindProp.enumValueFlag;
+                ChartKindEnum kind = (ChartKindEnum)attackKindProp.enumValueFlag;
                 string kindName = kind.ToString();
 
                 Color originalColor = GUI.backgroundColor;
-                GUI.backgroundColor = kind != AttackKindEnum.None ? Color.green : Color.gray;
+                GUI.backgroundColor = kind != ChartKindEnum.None ? Color.green : Color.gray;
 
                 GUILayout.BeginHorizontal();
 
@@ -52,7 +52,7 @@ namespace BeatKeeper.Editor.Ingame.Character
                     value = 0 < value ? value << 1 : 1;
 
                     // AttackKindEnum の最大値を超えたらリセット
-                    if (value > (1 << (Enum.GetValues(typeof(AttackKindEnum)).Length - 2)))
+                    if (value > (1 << (Enum.GetValues(typeof(ChartKindEnum)).Length - 2)))
                         value = 0;
 
                     attackKindProp.enumValueFlag = value;
