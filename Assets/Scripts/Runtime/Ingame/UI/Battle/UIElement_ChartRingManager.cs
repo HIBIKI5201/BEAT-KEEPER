@@ -93,12 +93,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             //新しいリングを監視
             foreach (var data in _ringDatas)
             {
-                var chart = _targetData.Chart[(timing + data.ApearTiming) % 32];
+                var chart = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
 
                 if (_ringPools.TryGetValue(chart.AttackKind, out var op)) //対応するプールを呼び出し
                 {
                     var ring = op.Get(); //リングを取得
-                    //TODO 位置を譜面から取得する
                     ring.OnGet(() => op.Release(ring), //終了時のイベントを設定
                         chart.Position);
                 }
@@ -128,8 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private GameObject _ringPrefab;
         public GameObject RingPrefab => _ringPrefab;
 
-        [SerializeField, Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")] private int _defaultCapacity;
-        public int DefaultCapacity => _defaultCapacity = 3;
+        [SerializeField, Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")] private int _defaultCapacity = 3;
+        public int DefaultCapacity => _defaultCapacity;
     }
-
 }
