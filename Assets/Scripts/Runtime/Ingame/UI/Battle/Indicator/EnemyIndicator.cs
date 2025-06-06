@@ -16,7 +16,6 @@ namespace BeatKeeper
 
         [SerializeField] private float _blinkDuration = 0.2f;
         [SerializeField] private float _fadeDuration = 0.3f;
-        [SerializeField, Tooltip("ƒŠƒ“ƒO‚Ìk¬ŠÔ‚Ì””")] private int _reductionTime = 3;
 
 
         /// <summary>
@@ -25,7 +24,9 @@ namespace BeatKeeper
         /// <param name="count"></param>
         public override void Effect(int count)
         {
-            switch(count)
+            Debug.Log(count);
+
+            switch (count)
             {
                 case 1:
                     Effect1();
@@ -59,7 +60,7 @@ namespace BeatKeeper
         
         private void Effect2()
         {
-            _ringImage.rectTransform.DOScale(Vector3.one, _durationOfBeat * _reductionTime - 0.15f).SetEase(Ease.Linear);
+            _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
         }
 
         private void Effect3()

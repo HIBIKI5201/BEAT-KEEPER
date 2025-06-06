@@ -19,18 +19,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Image _selfImage;
         protected Image _ringImage;
 
-        protected float _durationOfBeat;
         protected int _count;
 
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
             _ringImage = transform.GetChild(0).GetComponent<Image>();
-        }
-
-        public void Initialize(float durationOfBeat)
-        {
-            _durationOfBeat = durationOfBeat;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos)

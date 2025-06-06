@@ -100,7 +100,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnNormalAttack?.Invoke();
 
-            var timing = _musicEngine.GetCurrentTiming();
+            var timing = MusicEngineHelper.GetCurrentTiming();
 
             if (_data.ChartData.IsAttack(timing.Bar * 4 + timing.Beat))
             {

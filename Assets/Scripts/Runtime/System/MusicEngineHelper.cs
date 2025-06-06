@@ -67,26 +67,26 @@ namespace BeatKeeper
         #region 音楽タイミングの取得
 
         /// <summary>1拍の秒数</summary>
-        public double DurationOfBeat => 60 / Music.CurrentTempo;
+        public static double DurationOfBeat => 60 / Music.CurrentTempo;
         
         /// <summary>現在の小節数を取得する</summary>
-        public int GetCurrentBarCount() => Music.Just.Bar;
+        public static int GetCurrentBarCount() => Music.Just.Bar;
 
         /// <summary>現在の拍数を取得する</summary>
-        public int GetCurrentBeatCount() => Music.Just.Beat;
+        public static int GetCurrentBeatCount() => Music.Just.Beat;
 
         /// <summary>現在の16分音符位置を取得する</summary>
-        public int GetCurrentUnitCount() => Music.Just.Unit;
+        public static int GetCurrentUnitCount() => Music.Just.Unit;
 
         /// <summary>現在の音楽タイミングを取得する</summary>
-        public TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
+        public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
-        public int GetBeatsSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
+        public static int GetBeatsSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
 
         /// <summary>
         /// 入力タイミングが許容範囲内にあるかどうかを判定します
         /// </summary>
-        public bool IsTimingWithinAcceptableRange(float range)
+        public static bool IsTimingWithinAcceptableRange(float range)
         {
             // 許容範囲が0から1の間であることを検証
             if (range < 0f || 1f < range)
