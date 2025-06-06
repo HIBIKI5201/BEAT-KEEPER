@@ -26,14 +26,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("ノックバック時間")] private float _nockbackTime = 1;
         public float NockbackTime => _nockbackTime;
 
-        public AttackKindEnum[] Chart => _chart;
-        [SerializeField, Tooltip("ビートの拍子")] private AttackKindEnum[] _chart = new AttackKindEnum[32];
+        public ChartData[] Chart => _chart;
+        [SerializeField, Tooltip("ビートの拍子")] private ChartData[] _chart = new AttackKindEnum[32];
 
 
         public bool IsAttack(int index)
         {
             index %= _chart.Length;
-            return _chart[index] != AttackKindEnum.None;
+            return _chart[index].AttackKind != AttackKindEnum.None;
+        }
+
+        [Serializable]
+        public struct ChartData
+        {
+            public AttackKindEnum AttackKind;
+            public Vector2 Position;
         }
     }
 }
