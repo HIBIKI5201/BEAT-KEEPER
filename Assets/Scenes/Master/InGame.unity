@@ -1244,6 +1244,10 @@ PrefabInstance:
       propertyPath: _scoreManager
       value: 
       objectReference: {fileID: 719706917}
+    - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _ringDatas.Array.data[0]._defaultCapacity
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 9100631615109704522, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
