@@ -394,7 +394,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 if (willAttack)
                 {
-                    return (true, _target.EnemyData.Chart[i]);
+                    return (true, _target.EnemyData.Chart[i].AttackKind);
                 }
             }
 
