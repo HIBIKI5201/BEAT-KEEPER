@@ -390,11 +390,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool willAttack = false;
             for (int i = timing; i < timing + 3; i++)
             {
-                willAttack |= _target.EnemyData.IsAttack(i);
+                willAttack |= _target.EnemyData.ChartData.IsAttack(i);
 
                 if (willAttack)
                 {
-                    return (true, _target.EnemyData.Chart[i].AttackKind);
+                    return (true, _target.EnemyData.ChartData.Chart[i].AttackKind);
                 }
             }
 
