@@ -52,7 +52,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     new(
                         createFunc: () =>
                         {
-                            var go = Instantiate(_ringDatas[index].RingPrefab);
+                            var go = Instantiate(data.RingPrefab);
                             go.transform.SetParent(transform);
 
                             if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
@@ -82,7 +82,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             }
                         },
                         actionOnDestroy: go => Destroy(go),
-                        defaultCapacity: _ringDatas[i].DefaultCapacity,
+                        defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }
             #endregion
