@@ -41,6 +41,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 var index = i;
                 var data = _ringDatas[i];
+
+                if (!data.RingPrefab)
+                    return;
+
+                data.ApearTiming = data.RingPrefab.GetComponent<UIElement_RingIndicator>()?.EffectLength ?? 5;
+
                 _ringPools.Add(
                     data.AttackKind,
                     new(
@@ -118,11 +124,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
     [Serializable]
     public class RingData
     {
+        [HideInInspector] public int ApearTiming;
+
         [SerializeField] private ChartKindEnum _attackKind;
         public ChartKindEnum AttackKind => _attackKind;
-
-        [SerializeField, Tooltip("出現タイミングの拍数")] private int _apearTiming = 5;
-        public int ApearTiming => _apearTiming;
 
         [SerializeField] private GameObject _ringPrefab;
         public GameObject RingPrefab => _ringPrefab;
