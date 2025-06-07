@@ -21,7 +21,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public bool IsAttack(int index)
+        public bool IsEnemyAttack(int index)
         {
             index %= _chart.Length;
             return _chart[index].AttackKind != ChartKindEnum.None;
