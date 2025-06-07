@@ -9,7 +9,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         EnemyData IEnemy.EnemyData => _data;
 
         private MusicEngineHelper _musicEngine;
-        private ScoreManager _scoreManager;
         private EnemyAnimeManager _animeManager;
         public CharacterHealthSystem HealthSystem => _healthSystem;
         private CharacterHealthSystem _healthSystem;
@@ -45,7 +44,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void Start()
         {
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
-            _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
             if (_musicEngine)
@@ -71,7 +69,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.HitAttack(damage);
 
             _healthSystem?.HealthChange(-damage);
-            _scoreManager?.AddScore(Mathf.FloorToInt(damage)); // スコアを加算。小数点以下は切り捨てる
             _animeManager?.KnockBack();
 
             OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
