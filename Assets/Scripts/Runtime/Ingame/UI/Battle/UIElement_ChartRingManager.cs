@@ -1,5 +1,7 @@
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using Cysharp.Threading.Tasks;
+using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
@@ -23,18 +25,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
 
         private Action _onBeat;
-
         private void Start()
         {
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
-            SceneLoader.RegisterAfterSceneLoad(SceneListEnum.Battle.ToString(),
-                () =>
-                {
-                    _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
-                    _targetData = _enemies.GetActiveEnemy().Data;
-                    _musicEngineHelper.OnJustChangedBeat += OnBeat;
-                });
 
             #region 各リングのオブジェクトプールを初期化
             for (int i = 0; i < _ringDatas.Length; i++)
@@ -88,24 +84,38 @@ namespace BeatKeeper.Runtime.Ingame.UI
             #endregion
         }
 
+        private void OnChangePhase(PhaseEnum phase)
+        {
+            if (phase == PhaseEnum.Battle)
+            {
+                _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
+                _targetData = _enemies.GetActiveEnemy().Data;
+                _musicEngineHelper.OnJustChangedBeat += OnBeat;
+            }
+        }
+
         private void OnBeat()
         {
             if (_enemies == null) return;
 
             var timing = MusicEngineHelper.GetBeatsSinceStart();
 
-            _onBeat?.Invoke(); //リングのカウントを更新
+            _onBeat?.Invoke(); //リングのカウントを更新 
 
             //新しいリングを監視
             foreach (var data in _ringDatas)
             {
-                var chart = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
+                var element = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
 
-                if (_ringPools.TryGetValue(chart.AttackKind, out var op)) //対応するプールを呼び出し
+                if (element.AttackKind != data.AttackKind)
+                    continue;
+
+                //リングを生成
+                if (_ringPools.TryGetValue(data.AttackKind, out var op))
                 {
                     var ring = op.Get(); //リングを取得
                     ring.OnGet(() => op.Release(ring), //終了時のイベントを設定
-                        chart.Position);
+                        element.Position);
                 }
             }
         }
