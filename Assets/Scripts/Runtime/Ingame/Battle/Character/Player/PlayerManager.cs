@@ -24,6 +24,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private InputBuffer _inputBuffer;
         private MusicEngineHelper _musicEngine;
+        private ScoreManager _scoreManager;
         private CinemachineCamera _playerCamera;
 
         private IEnemy _target;
@@ -87,6 +88,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void Start()
         {
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
             _musicEngine.OnJustChangedBeat += OnBeat;
@@ -381,14 +383,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void AttackEnemy(float damageScale = 1)
         {
             //コンボに応じたダメージ
-            var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
-            {
-                0 => _data.FirstAttackPower,
-                1 => _data.SecondAttackPower,
-                2 => _data.ThirdAttackPower,
-
-                _ => _data.FirstAttackPower
-            };
+            var power = _data.ComboAttackPower;
 
             power *= damageScale;
 
@@ -412,6 +407,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             power *= _damageScale;
 
             _target.HitAttack(power);
+
+            // スコア計算
+            float score = power * _data.ComboScoreScale
+                [_comboSystem.ComboCount.CurrentValue % _data.ComboScoreScale.Length];
+            _scoreManager?.AddScore(Mathf.FloorToInt(power)); // スコアを加算。小数点以下は切り捨てる
         }
 
         /// <summary>
