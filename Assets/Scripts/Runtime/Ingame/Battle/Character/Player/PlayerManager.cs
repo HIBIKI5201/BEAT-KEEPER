@@ -237,14 +237,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 if (isPerfectHit)
                 {
-                    _willPerfectAttack = true;
+                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
+                    {
+                        _willPerfectAttack = true;
+                    }
+                    else //ビート後なら即座に実行
+                    {
+                        PerfectAttack();
+                    }
                 }
                 else if (isGoodHit) //Goodなら即座に実行する
                 {
                     OnGoodAttack?.Invoke();
+                    AttackEnemy();
                 }
-
-                AttackEnemy();
             }
             else
             {
@@ -358,14 +364,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 SymphonyDebugLog.DirectLog("Perfect attack executed");
 
-                OnPerfectAttack?.Invoke();
-                _specialSystem.AddSpecialEnergy(0.05f);
-
-                AttackEnemy(_data.PerfectCriticalDamage);
+                PerfectAttack();
             }
         }
 
         private void OnNearBeat() => _willPerfectAttack = false;
+
+        private void PerfectAttack()
+        {
+            OnPerfectAttack?.Invoke();
+            _specialSystem.AddSpecialEnergy(0.05f);
+
+            AttackEnemy(_data.PerfectCriticalDamage);
+        }
 
         private void AttackEnemy(float damageScale = 1)
         {
