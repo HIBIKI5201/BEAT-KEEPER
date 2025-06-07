@@ -102,7 +102,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             var timing = MusicEngineHelper.GetCurrentTiming();
 
-            if (_data.ChartData.IsAttack(timing.Bar * 4 + timing.Beat))
+            if (_data.ChartData.IsEnemyAttack(timing.Bar * 4 + timing.Beat))
             {
                 Debug.Log($"{_data.name} {_data.ChartData.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
 
