@@ -361,12 +361,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             var timing = MusicEngineHelper.GetBeatsSinceStart() % 32;
 
             //nターン後までに攻撃があるかどうか
-            (bool willAttack, AttackKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
+            (bool willAttack, ChartKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
 
             if (willAttack)
             {
                 //SuperとCharge攻撃は回避できない
-                if ((enemyAttackKind & (AttackKindEnum.Super | AttackKindEnum.Charge)) != 0)
+                if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
                 {
                     Debug.Log($"Enemy's attack of {enemyAttackKind} can't be avoided");
                     return;
@@ -385,7 +385,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         /// <param name="timing"></param>
         /// <returns></returns>
-        public (bool, AttackKindEnum) IsSuccessAvoid(int timing)
+        public (bool, ChartKindEnum) IsSuccessAvoid(int timing)
         {
             bool willAttack = false;
             for (int i = timing; i < timing + 3; i++)
@@ -398,7 +398,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 }
             }
 
-            return (false, AttackKindEnum.None);
+            return (false, ChartKindEnum.None);
         }
 
 # if UNITY_EDITOR

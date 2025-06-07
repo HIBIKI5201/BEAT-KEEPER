@@ -24,7 +24,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         public bool IsAttack(int index)
         {
             index %= _chart.Length;
-            return _chart[index].AttackKind != AttackKindEnum.None;
+            return _chart[index].AttackKind != ChartKindEnum.None;
         }
 
         [Serializable]
@@ -32,11 +32,11 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             public ChartDataElement(int x)
             {
-                AttackKind = AttackKindEnum.Normal;
+                AttackKind = ChartKindEnum.Normal;
                 Position = Vector2.zero;
             }
 
-            public AttackKindEnum AttackKind;
+            public ChartKindEnum AttackKind;
             public Vector2 Position;
         }
     }

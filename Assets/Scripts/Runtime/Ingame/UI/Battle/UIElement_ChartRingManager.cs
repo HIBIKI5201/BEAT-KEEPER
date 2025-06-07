@@ -1,5 +1,7 @@
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using Cysharp.Threading.Tasks;
+using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
@@ -20,33 +22,33 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private MusicEngineHelper _musicEngineHelper;
 
         private EnemyData _targetData;
-        private Dictionary<AttackKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
+        private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
 
         private Action _onBeat;
-
         private void Start()
         {
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
-            SceneLoader.RegisterAfterSceneLoad(SceneListEnum.Battle.ToString(),
-                () =>
-                {
-                    _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
-                    _targetData = _enemies.GetActiveEnemy().Data;
-                    _musicEngineHelper.OnJustChangedBeat += OnBeat;
-                });
 
             #region 各リングのオブジェクトプールを初期化
             for (int i = 0; i < _ringDatas.Length; i++)
             {
                 var index = i;
                 var data = _ringDatas[i];
+
+                if (!data.RingPrefab)
+                    return;
+
+                data.ApearTiming = data.RingPrefab.GetComponent<UIElement_RingIndicator>()?.EffectLength ?? 5;
+
                 _ringPools.Add(
                     data.AttackKind,
                     new(
                         createFunc: () =>
                         {
-                            var go = Instantiate(_ringDatas[index].RingPrefab);
+                            var go = Instantiate(data.RingPrefab);
                             go.transform.SetParent(transform);
 
                             if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
@@ -76,10 +78,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             }
                         },
                         actionOnDestroy: go => Destroy(go),
-                        defaultCapacity: _ringDatas[i].DefaultCapacity,
+                        defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }
             #endregion
+        }
+
+        private void OnChangePhase(PhaseEnum phase)
+        {
+            if (phase == PhaseEnum.Battle)
+            {
+                _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
+                _targetData = _enemies.GetActiveEnemy().Data;
+                _musicEngineHelper.OnJustChangedBeat += OnBeat;
+            }
         }
 
         private void OnBeat()
@@ -88,18 +100,22 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             var timing = MusicEngineHelper.GetBeatsSinceStart();
 
-            _onBeat?.Invoke(); //リングのカウントを更新
+            _onBeat?.Invoke(); //リングのカウントを更新 
 
             //新しいリングを監視
             foreach (var data in _ringDatas)
             {
-                var chart = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
+                var element = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
 
-                if (_ringPools.TryGetValue(chart.AttackKind, out var op)) //対応するプールを呼び出し
+                if (element.AttackKind != data.AttackKind)
+                    continue;
+
+                //リングを生成
+                if (_ringPools.TryGetValue(data.AttackKind, out var op))
                 {
                     var ring = op.Get(); //リングを取得
                     ring.OnGet(() => op.Release(ring), //終了時のイベントを設定
-                        chart.Position);
+                        element.Position);
                 }
             }
         }
@@ -118,11 +134,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
     [Serializable]
     public class RingData
     {
-        [SerializeField] private AttackKindEnum _attackKind;
-        public AttackKindEnum AttackKind => _attackKind;
+        [HideInInspector] public int ApearTiming;
 
-        [SerializeField, Tooltip("出現タイミングの拍数")] private int _apearTiming = 5;
-        public int ApearTiming => _apearTiming;
+        [SerializeField] private ChartKindEnum _attackKind;
+        public ChartKindEnum AttackKind => _attackKind;
 
         [SerializeField] private GameObject _ringPrefab;
         public GameObject RingPrefab => _ringPrefab;

@@ -3,7 +3,7 @@ using System;
 namespace BeatKeeper.Runtime.Ingame.Battle
 {
     [Flags]
-    public enum AttackKindEnum : int
+    public enum ChartKindEnum : int
     {
         None = 0,
 

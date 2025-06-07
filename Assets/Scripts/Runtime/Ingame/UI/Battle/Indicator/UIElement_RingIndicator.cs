@@ -10,6 +10,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
     [RequireComponent(typeof(Image))]
     public abstract class UIElement_RingIndicator : MonoBehaviour
     {
+        public abstract int EffectLength { get; }
+
         [Header("基本設定")]
         [SerializeField] protected Sprite _ringSprite;
         [SerializeField] protected float _initialScale = 3.5f;
