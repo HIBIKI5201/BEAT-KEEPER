@@ -16,4 +16,4 @@ MonoBehaviour:
   _maxHealth: 10000
   _finisherThreshold: 90
   _nockbackTime: 1
-  _chartData: {fileID: 11400000, guid: aee3540d662a97d4aafa50cee4816f7e, type: 2}
+  _chartData: {fileID: 11400000, guid: d11148f4b1a589e4ba0e861904b7ba14, type: 2}
