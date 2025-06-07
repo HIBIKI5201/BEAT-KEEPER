@@ -81,6 +81,7 @@ namespace BeatKeeper
         /// <summary>現在の音楽タイミングを取得する</summary>
         public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
+        //TODO 音楽がループした際に合計拍数がリセットされないようにする
         public static int GetBeatsSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
 
         /// <summary>

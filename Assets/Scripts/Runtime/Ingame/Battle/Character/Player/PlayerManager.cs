@@ -30,6 +30,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _isBattle;
         private float _chargeAttackTimer;
         private float _avoidSuccessTiming;
+        private bool _willPerfectAttack;
 
         private PlayerAnimeManager _animeManager;
         private ComboSystem _comboSystem;
@@ -39,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #region イベント
         public event Action OnShootComboAttack;
         public event Action OnPerfectAttack;
-        public event Action OnNonResonanceAttack;
+        public event Action OnGoodAttack;
 
         public event Action OnShootChargeAttack;
         public event Action OnFullChargeAttack;
@@ -88,6 +89,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
 
+            _musicEngine.OnJustChangedBeat += OnBeat;
+            _musicEngine.OnNearChangedBeat += OnNearBeat;
+
             InputRegister();
 
             if (!_musicEngine)
@@ -113,6 +117,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
+            _musicEngine.OnJustChangedBeat -= OnBeat;
+            _musicEngine.OnNearChangedBeat -= OnNearBeat;
+
             InputUnregister();
         }
 
@@ -161,7 +168,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("Input buffer is null");
             }
         }
-#endregion
+        #endregion
 
         /// <summary>
         ///     攻撃を受けた際の処理
@@ -223,56 +230,27 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
             bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
 
-            if (isPerfectHit)
-            {
-                OnPerfectAttack?.Invoke();
-                _specialSystem.AddSpecialEnergy(0.05f);
-            }
-            else
-            {
-                OnNonResonanceAttack?.Invoke();
-            }
-
             //評価のログ
             SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
 
-
             if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
             {
-                //コンボに応じたダメージ
-                var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
-                {
-                    0 => _data.FirstAttackPower,
-                    1 => _data.SecondAttackPower,
-                    2 => _data.ThirdAttackPower,
-
-                    _ => _data.FirstAttackPower
-                };
-
                 if (isPerfectHit)
-                    power *= _data.PerfectCriticalDamage;
-
-                if (_battleBuffData) //タイムラインバフ
                 {
-                    var buffData = _battleBuffData.Data;
-
-                    //TODO 音楽がループした際に合計拍数がリセットされないようにする
-                    var timing = MusicEngineHelper.GetBeatsSinceStart();
-
-                    for (int i = buffData.Length - 1; i >= 0; i--)
+                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
                     {
-                        if (buffData[i].Timing < timing)
-                        {
-                            power *= buffData[i].Value;
-                            SymphonyDebugLog.AddText($"{buffData[i].Value} buff of {buffData[i].Timing} active");
-                            break;
-                        }
+                        _willPerfectAttack = true;
+                    }
+                    else //ビート後なら即座に実行
+                    {
+                        PerfectAttack();
                     }
                 }
-
-                power *= _damageScale;
-
-                _target.HitAttack(power);
+                else if (isGoodHit) //Goodなら即座に実行する
+                {
+                    OnGoodAttack?.Invoke();
+                    AttackEnemy();
+                }
             }
             else
             {
@@ -378,6 +356,62 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _flowZoneSystem.SuccessResonance();
                 _avoidSuccessTiming = Time.time;
             }
+        }
+
+        private void OnBeat()
+        {
+            if (_willPerfectAttack) //もしパーフェクト攻撃が予約されていれば実行
+            {
+                SymphonyDebugLog.DirectLog("Perfect attack executed");
+
+                PerfectAttack();
+            }
+        }
+
+        private void OnNearBeat() => _willPerfectAttack = false;
+
+        private void PerfectAttack()
+        {
+            OnPerfectAttack?.Invoke();
+            _specialSystem.AddSpecialEnergy(0.05f);
+
+            AttackEnemy(_data.PerfectCriticalDamage);
+        }
+
+        private void AttackEnemy(float damageScale = 1)
+        {
+            //コンボに応じたダメージ
+            var power = (_comboSystem.ComboCount.CurrentValue % 3) switch
+            {
+                0 => _data.FirstAttackPower,
+                1 => _data.SecondAttackPower,
+                2 => _data.ThirdAttackPower,
+
+                _ => _data.FirstAttackPower
+            };
+
+            power *= damageScale;
+
+            if (_battleBuffData) //タイムラインバフ
+            {
+                var buffData = _battleBuffData.Data;
+
+                var timing = MusicEngineHelper.GetBeatsSinceStart();
+
+                for (int i = buffData.Length - 1; i >= 0; i--)
+                {
+                    if (buffData[i].Timing < timing)
+                    {
+                        power *= buffData[i].Value;
+                        SymphonyDebugLog.AddText($"{buffData[i].Value} buff of {buffData[i].Timing} active");
+                        break;
+                    }
+                }
+            }
+
+            power *= _damageScale;
+
+            _target.HitAttack(power);
         }
 
         /// <summary>
