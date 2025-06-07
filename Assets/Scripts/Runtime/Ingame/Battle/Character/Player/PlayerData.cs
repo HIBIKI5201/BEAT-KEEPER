@@ -10,18 +10,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [Header("攻撃 パラメータ")]
 
         [DisplayText("コンボ攻撃")]
-        [SerializeField] private float _firstAttackPower = 100;
-        public float FirstAttackPower => _firstAttackPower;
-        
-        [SerializeField] private float _secondAttackPower = 100;
-        public float SecondAttackPower => _secondAttackPower;
-        
-        [SerializeField] private float _thirdAttackPower = 100;
-        public float ThirdAttackPower => _thirdAttackPower;
+
+        [SerializeField, Tooltip("コンボの攻撃力")] private float _comboAttackPower = 100f;
+        public float ComboAttackPower => _comboAttackPower;
 
         [Space(10)]
         [SerializeField, Min(1), Tooltip("パーフェクト時のダメージ倍率")] private float _perfectCriticalDamage = 1f;
         public float PerfectCriticalDamage => _perfectCriticalDamage;
+
+        [Space(10)]
+        [SerializeField] private float[] _comboScoreScale = { 100, 100, 100 };
+        public float[] ComboScoreScale => _comboScoreScale;
 
         [SerializeField, Min(0), Tooltip("コンボ維持時間")] private float _comboRisetTime = 3;
         public float ComboResetTime => _comboRisetTime;
