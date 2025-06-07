@@ -24,7 +24,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         public bool IsEnemyAttack(int index)
         {
             index %= _chart.Length;
-            return _chart[index].AttackKind != ChartKindEnum.None;
+
+            var attackKind = ChartKindEnum.Normal | ChartKindEnum.Charge | ChartKindEnum.Super; //“G‚ÌUŒ‚
+
+            return (_chart[index].AttackKind & attackKind) != 0;
         }
 
         [Serializable]
