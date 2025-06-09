@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1395610771496967193}
-  - component: {fileID: 6873245634307159982}
+  - component: {fileID: 15378519586768199}
+  - component: {fileID: 6862399396053557512}
   m_Layer: 0
   m_Name: MusicEngineHelper
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6873245634307159982
+--- !u!114 &15378519586768199
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,3 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5634a11d49a871a4f8c38e5909d18d86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6862399396053557512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3308093386745655845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 15378519586768199}
+  _locateType: 0
+  _autoSet: 1
+  _autoDestroy: 1
