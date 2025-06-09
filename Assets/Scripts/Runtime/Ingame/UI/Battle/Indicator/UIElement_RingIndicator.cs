@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +31,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public void OnGet(Action onEndAction, Vector2 rectPos)
         {
-            _selfImage.rectTransform.position = rectPos;
+            _selfImage.rectTransform.position = rectPos 
+                + new Vector2(Screen.width / 2, Screen.height / 2);
             _onEndAction = onEndAction;
 
             _count = 0;
