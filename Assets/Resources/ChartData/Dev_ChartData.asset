@@ -18,7 +18,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 2
-    Position: {x: 990, y: 540}
+    Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
