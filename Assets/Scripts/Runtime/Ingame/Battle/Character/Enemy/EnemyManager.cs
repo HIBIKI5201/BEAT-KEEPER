@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.Battle;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -64,14 +65,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
-        public override async void HitAttack(float damage)
+        public override async void HitAttack(AttackData data)
         {
-            base.HitAttack(damage);
+            base.HitAttack(data);
 
-            _healthSystem?.HealthChange(-damage);
+            _healthSystem?.HealthChange(-data.Damage);
             _animeManager?.KnockBack();
 
-            OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
+            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
             if (_healthSystem.Health / _healthSystem.MaxHealth <= _data.FinisherThreshold / 100)
             {
@@ -103,7 +104,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log($"{_data.name} {_data.ChartData.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
 
-                _target.HitAttack(1);
+                _target.HitAttack(new AttackData(1));
                 _particleSystem?.Play();
             }
         }
