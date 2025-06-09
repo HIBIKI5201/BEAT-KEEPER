@@ -33,7 +33,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return playable3;
             }
 
-            return new Playable();
+            return Playable.Null;
         }
     }
 }
