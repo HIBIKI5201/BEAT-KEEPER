@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d753db3f9d0666f4ebe61268de8015c4, type: 3}
   m_Name: StartPerformanceAsset(Clone)
   m_EditorClassIdentifier: 
-  _behaviourKind: 1
+  _behaviourKind: 2
 --- !u!114 &-3823801922051626621
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d753db3f9d0666f4ebe61268de8015c4, type: 3}
   m_Name: StartPerformanceAsset(Clone)(Clone)
   m_EditorClassIdentifier: 
-  _behaviourKind: 2
+  _behaviourKind: 3
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d753db3f9d0666f4ebe61268de8015c4, type: 3}
   m_Name: StartPerformanceAsset
   m_EditorClassIdentifier: 
-  _behaviourKind: 0
+  _behaviourKind: 1
 --- !u!114 &7124359279244088407
 MonoBehaviour:
   m_ObjectHideFlags: 1
