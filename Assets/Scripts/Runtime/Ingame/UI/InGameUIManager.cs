@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Character;
+﻿using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.UI
@@ -8,9 +8,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class InGameUIManager : MonoBehaviour
     {
-        [Header("開始演出")]
-        [SerializeField] private UIElement_EncounterText _encounterText;
-
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
         [SerializeField] private UIElement_ScoreText _scoreText;
@@ -21,7 +18,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void Start()
         {
             ValidateComponents();
-            Initialize();
         }
 
         public void HealthBarInitialize(EnemyManager enemy) =>
@@ -32,32 +28,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void ValidateComponents()
         {
-            Debug.Assert(_encounterText != null, "encounterText が設定されていません");
             Debug.Assert(_canvasControllers != null && _canvasControllers.Length > 0, "canvasControllers が設定されていません");
             Debug.Assert(_scoreText != null, "scoreText が設定されていません");
             Debug.Assert(_seekBar != null, "seekBar が設定されていません");
             Debug.Assert(_finisherGuide != null, "finisherGuide が設定されていません");
             Debug.Assert(_chartRingManager != null, "warningIndicatorが設定されていません");
         }
-
-        private void Initialize()
-        {
-            _encounterText.Initialize();
-        }
-
-        #region 開始演出関連のUI
-
-        /// <summary>
-        /// 遭遇時のテキストを表示する
-        /// </summary>
-        public void ShowEncounterText(int battleNumber) => _encounterText.ShowEncounterText(battleNumber);
-
-        /// <summary>
-        /// 遭遇時のテキストを非表示にする
-        /// </summary>
-        public void HideEncounterText() => _encounterText.HideEncounterText();
-
-        #endregion
 
         #region バトル中のUI
 

@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
@@ -60,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
-        // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
+        #region ライフサイクル
 
         protected override async void Awake()
         {
@@ -125,12 +125,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             InputUnregister();
         }
 
+        #endregion
+
         #region 入力の購買
 
         /// <summary>
         ///     入力を購買する
         /// </summary>
-        private void InputRegister()
+        public void InputRegister()
         {
             if (_inputBuffer)
             {
@@ -152,7 +154,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     入力の購買を終わる
         /// </summary>
-        private void InputUnregister()
+        public void InputUnregister()
         {
             if (_inputBuffer)
             {
@@ -360,6 +362,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        /// <summary>
+        ///     ビートが変わった際の処理
+        /// </summary>
         private void OnBeat()
         {
             if (_willPerfectAttack) //もしパーフェクト攻撃が予約されていれば実行
@@ -372,6 +377,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnNearBeat() => _willPerfectAttack = false;
 
+        /// <summary>
+        ///     パーフェクト攻撃を行う
+        /// </summary>
         private void PerfectAttack()
         {
             OnPerfectAttack?.Invoke();
@@ -380,6 +388,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             AttackEnemy(_data.PerfectCriticalDamage);
         }
 
+        /// <summary>
+        ///     敵に攻撃を行う
+        /// </summary>
+        /// <param name="damageScale"></param>
         private void AttackEnemy(float damageScale = 1)
         {
             //コンボに応じたダメージ
@@ -406,7 +418,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             power *= _damageScale;
 
-            _target.HitAttack(new (power));
+            _target.HitAttack(new(power));
 
             // スコア計算
             float score = power * _data.ComboScoreScale

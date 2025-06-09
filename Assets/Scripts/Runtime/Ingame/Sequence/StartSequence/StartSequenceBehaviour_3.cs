@@ -1,10 +1,10 @@
-using SymphonyFrameWork.System;
+﻿using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    public class StartPerformanceBehaviour_3 : PlayableBehaviour
+    public class StartSequenceBehaviour_3 : PlayableBehaviour
     {
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
