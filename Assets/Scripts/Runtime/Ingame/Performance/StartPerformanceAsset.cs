@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -29,6 +29,9 @@ namespace BeatKeeper
 
                 case BehaviourKind.Behaviour2:
                     var playable2 = ScriptPlayable<StartPerformanceBehaviour_2>.Create(graph);
+                    var behaviour2 = playable2.GetBehaviour();
+
+                    behaviour2.OnCreate(owner);
                     return playable2;
 
                     case BehaviourKind.Behaviour3:
