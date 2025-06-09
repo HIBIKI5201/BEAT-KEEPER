@@ -1,5 +1,5 @@
+﻿using R3;
 using System;
-using R3;
 using UnityEngine;
 
 namespace BeatKeeper
