@@ -27,8 +27,9 @@ namespace BeatKeeper
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _battleResultController.Hide(); // 最初は表示しないようにする
-            
-            _phaseManager.CurrentPhaseProp.Subscribe(value => {if(value == PhaseEnum.Clear) ClearPhaseStart(); }).AddTo(_disposables);
+
+            //クリアフェーズを廃止する可能性があるため、以下のコードはコメントアウトしておく
+            //_phaseManager.CurrentPhaseProp.Subscribe(value => {if(value == PhaseEnum.Clear) ClearPhaseStart(); }).AddTo(_disposables);
         }
 
         /// <summary>
