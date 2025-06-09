@@ -18,7 +18,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var text = _owner.GetComponentInChildren<Text>();
             if (text)
             {
-                text.color = Color.white;
+                text.color = Color.clear;
             }
         }
     }

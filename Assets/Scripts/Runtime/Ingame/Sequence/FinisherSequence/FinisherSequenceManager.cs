@@ -4,6 +4,7 @@ using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -63,6 +64,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 player.InputUnregister(); // プレイヤーの入力を一時的に無効化
             }
+
+            var text = GetComponentInChildren<Text>();
+            if (text)
+                text.color = Color.white; // テキストの色を白に変更
         }
 
         /// <summary>
