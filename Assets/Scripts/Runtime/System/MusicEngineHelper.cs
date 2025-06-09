@@ -46,20 +46,10 @@ namespace BeatKeeper
 
         #region ライフサイクル
 
-        private void Awake()
-        {
-            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton); // サービスロケーターに登録
-        }
-
         private void Update()
         {
             CheckAndNotifyBarChanges();
             CheckAndNotifyBeatChanges();
-        }
-        
-        private void OnDestroy()
-        {   
-            ServiceLocator.DestroyInstance(this);
         }
 
         #endregion
