@@ -85,10 +85,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 }
             }
 
-            //ノックバック
-            _isKnockback = true;
-            await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
-            _isKnockback = false;
+            if (data.IsNockback) //ノックバックする
+            {
+                _isKnockback = true;
+                await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
+                _isKnockback = false;
+            }
         }
 
         private void OnAttack()
