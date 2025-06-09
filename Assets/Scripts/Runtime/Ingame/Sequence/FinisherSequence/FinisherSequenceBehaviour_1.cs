@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SymphonyFrameWork.System;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
@@ -19,6 +20,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (text)
             {
                 text.color = Color.clear;
+            }
+
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            if (phaseManager)
+            {
+                phaseManager.NextPhase();
             }
         }
     }
