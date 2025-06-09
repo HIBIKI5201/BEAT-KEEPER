@@ -1,4 +1,6 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using Cysharp.Threading.Tasks;
+using R3;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -9,18 +11,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         EnemyData IEnemy.EnemyData => _data;
 
+        public event Action OnFinisherable;
+        public event Action OnNormalAttack;
+
         private MusicEngineHelper _musicEngine;
-        private EnemyAnimeManager _animeManager;
-        public CharacterHealthSystem HealthSystem => _healthSystem;
-        private CharacterHealthSystem _healthSystem;
 
         private IHitable _target;
 
         private bool _canFinisher;
         private bool _isKnockback;
 
-        public event Action OnFinisherable;
-        public event Action OnNormalAttack;
+        private EnemyAnimeManager _animeManager;
+        private CharacterHealthSystem _healthSystem;
+        public CharacterHealthSystem HealthSystem => _healthSystem;
 
         #region モック用の機能
 
@@ -47,14 +50,37 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
+            if (!_musicEngine)
+            {
+                Debug.LogWarning($"{_data.name} has no music engine");
+            }
+
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            phaseManager.CurrentPhaseProp
+                .Subscribe(OnPhaseChange)
+                .AddTo(destroyCancellationToken);
+        }
+
+        /// <summary>
+        ///     入力の登録を行う
+        /// </summary>
+        public void InputRegister()
+        {
             if (_musicEngine)
             {
                 _musicEngine.OnJustChangedBeat += OnAttack;
             }
-            else
+        }
+
+        /// <summary>
+        ///     入力の登録を解除する
+        /// </summary>
+        public void InputUnregister()
+        {
+            if (_musicEngine)
             {
-                Debug.LogWarning($"{_data.name} has no music engine");
-            } 
+                _musicEngine.OnJustChangedBeat -= OnAttack;
+            }
         }
 
         public void Dispose()
@@ -87,6 +113,23 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (data.IsNockback) //ノックバックする
             {
                 Nockback();
+            }
+        }
+
+        /// <summary>
+        ///     フェーズが変わったときの処理
+        /// </summary>
+        private void OnPhaseChange(PhaseEnum phase)
+        {
+            switch(phase)
+            {
+                case PhaseEnum.Battle:
+                    InputRegister(); //バトルフェーズになったら入力を登録する
+                    break;
+
+                case PhaseEnum.Movie:
+                    InputUnregister(); //ムービーフェーズになったら入力を解除する
+                    break;
             }
         }
 
