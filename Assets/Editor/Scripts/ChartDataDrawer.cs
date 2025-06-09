@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.System;
 using System;
 using UnityEditor;
@@ -9,6 +9,8 @@ namespace BeatKeeper.Editor.Ingame.Character
     [CustomEditor(typeof(ChartData))]
     public class ChartDataDrawer : UnityEditor.Editor
     {
+        private const int SCREEN_SIZE_X = 1920;
+        private const int SCREEN_SIZE_Y = 1080;
         private const string ARRAY_PROPATY = "_chart";
         private SerializedProperty _array;
 
@@ -58,7 +60,13 @@ namespace BeatKeeper.Editor.Ingame.Character
                     attackKindProp.enumValueFlag = value;
                 }
 
-                positionProp.vector2Value = EditorGUILayout.Vector2Field(GUIContent.none, positionProp.vector2Value, GUILayout.Width(150));
+                var halfWidth = SCREEN_SIZE_X / 2;
+                var halfHeight = SCREEN_SIZE_Y / 2;
+
+                Vector2 positionClamp = new(
+                    Mathf.Clamp(positionProp.vector2Value.x, -halfWidth, halfWidth), 
+                    Mathf.Clamp(positionProp.vector2Value.y, -halfHeight, halfHeight));
+                positionProp.vector2Value = EditorGUILayout.Vector2Field(GUIContent.none, positionClamp, GUILayout.Width(150));
 
                 GUILayout.EndHorizontal();
 
