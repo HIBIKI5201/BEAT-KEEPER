@@ -41,11 +41,17 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
         /// <summary>
-        ///     Finisher可能時にフィニッシャー入力を受け付ける
+        ///     Finisher可能になったらフィニッシャー入力を受け付ける
         /// </summary>
         private void OnFinisherable()
         {
             _inputBuffer.Finishier.started += Finisher;
+
+            var player = ServiceLocator.GetInstance<PlayerManager>();
+            if (player)
+            {
+                player.InputUnregister(); // プレイヤーの入力を一時的に無効化
+            }
         }
 
         /// <summary>
