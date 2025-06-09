@@ -1,7 +1,7 @@
+﻿using R3;
+using SymphonyFrameWork.Debugger;
 using System;
 using System.Collections.Generic;
-using R3;
-using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -12,10 +12,10 @@ namespace BeatKeeper
     public class MusicEngineHelper : MonoBehaviour
     {
         private const int DEFAULT_MAX_REPEAT_COUNT = 100; //TODO: 繰り返し回数の上限を適切な値が渡せるように修正する
-        
+
         // タイミングを指定して実行するアクションのディクショナリ
         private readonly Dictionary<TimingKey, Dictionary<Guid, TimingActionInfo>> _timingActions = new();
-        
+
         #region イベント
 
         /// <summary>小節が切り替わった時に発火するイベント</summary>
@@ -58,7 +58,7 @@ namespace BeatKeeper
 
         /// <summary>1拍の秒数</summary>
         public static double DurationOfBeat => 60 / Music.CurrentTempo;
-        
+
         /// <summary>現在の小節数を取得する</summary>
         public static int GetCurrentBarCount() => Music.Just.Bar;
 
@@ -85,12 +85,14 @@ namespace BeatKeeper
                 Debug.LogWarning($"[MusicEngineHelper] 許容範囲は0から1の間である必要があります。現在の値:{range}");
                 return false;
             }
-            
+
             var normalizedTimingFromJust = (float)Music.UnitFromJust;
-            Debug.Log($"{ (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2 ? "Success" : "Failed")}\n"
-                      + $"timing : {Mathf.Abs(normalizedTimingFromJust - 0.5f) * 2}\n"
-                      + $"range : {range}");
-            
+            SymphonyDebugLog.DirectLog(
+                "[MusicEngineHelper]\n"
+                + $"{(Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2 ? "Success" : "Failed")}\n"
+                + $"timing : {Mathf.Abs(normalizedTimingFromJust - 0.5f) * 2}\n"
+                + $"range : {range}");
+
             // Justタイミング後の判定・Justタイミング前の判定
             return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2;
         }
@@ -147,7 +149,7 @@ namespace BeatKeeper
         #endregion
 
         #region タイミングアクション追加
-        
+
         /// <summary>
         /// 特定のタイミングで1回実行するアクションを辞書に登録
         /// </summary>
@@ -156,7 +158,7 @@ namespace BeatKeeper
         {
             return RegisterTimingAction(new TimingKey(bar, beat, unit), action);
         }
-        
+
         /// <summary>
         /// 特定のタイミングで1回実行するアクションを辞書に登録
         /// </summary>
@@ -165,7 +167,7 @@ namespace BeatKeeper
         {
             var actionId = Guid.NewGuid(); // 解除のためのIDを作成
             var actionInfo = new TimingActionInfo(action, false);
-            
+
             AddActionToTiming(timing, actionId, actionInfo);
 
             return actionId;
@@ -182,7 +184,7 @@ namespace BeatKeeper
         {
             return RegisterBarCycleAction(barCycle, new TimingKey(bar, beat, unit), action, repeatCount);
         }
-        
+
         /// <summary>
         /// StartBarから繰り返し実行するアクションを辞書に登録
         /// </summary>
@@ -196,7 +198,7 @@ namespace BeatKeeper
             {
                 throw new ArgumentException("barCycleは1以上の値を指定してください", nameof(barCycle));
             }
-            
+
             var actionId = Guid.NewGuid(); // 解除のためのIDを作成
             var actionInfo = new TimingActionInfo(action, true);
 
@@ -204,13 +206,13 @@ namespace BeatKeeper
             {
                 int targetBar = timing.Bar + (i * barCycle);
                 var targetTiming = new TimingKey(targetBar, timing.Beat, timing.Unit); // 新しくタイミングを作成
-                
+
                 AddActionToTiming(targetTiming, actionId, actionInfo); // 辞書に追加
             }
-            
+
             return actionId;
         }
-        
+
         /// <summary>
         /// タイミングアクションを辞書に追加する
         /// </summary>
@@ -224,9 +226,9 @@ namespace BeatKeeper
             }
         }
         #endregion
-        
+
         #region タイミングアクション削除
-        
+
         /// <summary>
         /// 指定IDのタイミングアクションを削除
         /// </summary>
@@ -234,7 +236,7 @@ namespace BeatKeeper
         {
             UnregisterTimingAction(new TimingKey(bar, beat, unit), actionId);
         }
-        
+
         /// <summary>
         /// 指定IDのタイミングアクションを削除
         /// </summary>
@@ -243,7 +245,7 @@ namespace BeatKeeper
             if (_timingActions.TryGetValue(timing, out var actions))
             {
                 actions.Remove(actionId);
-                
+
                 // アクションが空になった場合はタイミングエントリーも削除
                 if (actions.Count == 0)
                 {
@@ -251,7 +253,7 @@ namespace BeatKeeper
                 }
             }
         }
-        
+
         /// <summary>
         /// 指定のIDの繰り返しアクションをすべて削除
         /// </summary>
@@ -259,7 +261,7 @@ namespace BeatKeeper
         {
             // 削除対象のタイミングキーを記録するリスト
             List<TimingKey> timingsToCleanup = new List<TimingKey>();
-    
+
             // すべてのタイミングエントリーをチェック
             foreach (var entry in _timingActions)
             {
@@ -276,20 +278,20 @@ namespace BeatKeeper
                     }
                 }
             }
-            
+
             // 空になったタイミングエントリーを削除
             foreach (var timing in timingsToCleanup)
             {
                 _timingActions.Remove(timing);
             }
         }
-        
+
         /// <summary>
         /// 指定の拍のタイミングアクションをすべて削除
         /// </summary>
         public void ClearTimingActionsAt(int bar, int beat, int unit)
         {
-           ClearTimingActionsAt(new TimingKey(bar, beat, unit));
+            ClearTimingActionsAt(new TimingKey(bar, beat, unit));
         }
 
         /// <summary>
@@ -299,7 +301,7 @@ namespace BeatKeeper
         {
             _timingActions.Remove(timing);
         }
-        
+
         /// <summary>
         /// 登録されたすべてのタイミングアクションをクリア
         /// </summary>
@@ -307,33 +309,33 @@ namespace BeatKeeper
         {
             _timingActions.Clear();
         }
-        
+
         #endregion
 
         #region タイミングアクションの実行処理
-        
+
         /// <summary>
         /// 拍が切り替わるタイミングで登録されたタイミングアクションを処理
         /// </summary>
         private void ProcessTimingActions()
         {
             var currentTiming = GetCurrentTiming();
-            
+
             if (_timingActions.TryGetValue(currentTiming, out var actionDict))
             {
                 // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
                 List<Guid> actionsToRemove = new List<Guid>();
-                
+
                 // 登録されたアクションを全て実行する
                 foreach (var actionEntry in actionDict)
                 {
                     var actionId = actionEntry.Key;
                     var actionInfo = actionEntry.Value;
-                    
+
                     try
                     {
                         actionInfo.Action?.Invoke(); // アクション実行
-                        
+
                         if (!actionInfo.IsRepeating)
                         {
                             actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
@@ -345,13 +347,13 @@ namespace BeatKeeper
                         actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
                     }
                 }
-                
+
                 // 削除リストに含まれるアクションを削除
                 foreach (var actionId in actionsToRemove)
                 {
                     actionDict.Remove(actionId);
                 }
-                
+
                 // アクションが空になった場合はタイミングエントリーも削除
                 if (actionDict.Count == 0)
                 {
@@ -359,9 +361,9 @@ namespace BeatKeeper
                 }
             }
         }
-        
+
         #endregion
-        
+
         /// <summary>
         /// タイミングアクションの情報を格納する構造体
         /// </summary>
@@ -371,7 +373,7 @@ namespace BeatKeeper
             public Action Action { get; }
             /// <summary>繰り返し実行するかどうか</summary>
             public bool IsRepeating { get; }
-            
+
             public TimingActionInfo(Action action, bool isRepeating)
             {
                 Action = action;
