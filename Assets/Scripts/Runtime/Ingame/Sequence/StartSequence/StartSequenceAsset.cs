@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     [Serializable]
-    public class StartPerformanceAsset : PlayableAsset
+    public class StartSequenceAsset : PlayableAsset
     {
         private enum BehaviourKind
         {
@@ -21,21 +21,21 @@ namespace BeatKeeper
             switch(_behaviourKind)
             {
                 case BehaviourKind.Behaviour1:
-                    var playable1 = ScriptPlayable<StartPerformanceBehaviour_1>.Create(graph);
+                    var playable1 = ScriptPlayable<StartSequenceBehaviour_1>.Create(graph);
                     var behaviour1 = playable1.GetBehaviour();
 
                     behaviour1.OnCreate(owner);
                     return playable1;
 
                 case BehaviourKind.Behaviour2:
-                    var playable2 = ScriptPlayable<StartPerformanceBehaviour_2>.Create(graph);
+                    var playable2 = ScriptPlayable<StartSequenceBehaviour_2>.Create(graph);
                     var behaviour2 = playable2.GetBehaviour();
 
                     behaviour2.OnCreate(owner);
                     return playable2;
 
                     case BehaviourKind.Behaviour3:
-                    var playable3 = ScriptPlayable<StartPerformanceBehaviour_3>.Create(graph);
+                    var playable3 = ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
                     
                     return playable3;
             }

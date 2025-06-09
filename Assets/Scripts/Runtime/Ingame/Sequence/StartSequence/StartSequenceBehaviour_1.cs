@@ -1,12 +1,11 @@
-﻿using BeatKeeper.Runtime.Ingame.UI;
-using SymphonyFrameWork.System;
+﻿using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    public class StartPerformanceBehaviour_1 : PlayableBehaviour
+    public class StartSequenceBehaviour_1 : PlayableBehaviour
     {
         private GameObject _owner;
 

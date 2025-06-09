@@ -1,19 +1,18 @@
-using BeatKeeper.Runtime.Ingame.System;
-using DG.Tweening;
+﻿using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     /// <summary>
     /// 開始演出
     /// </summary>
-    public class StartPerformance : MonoBehaviour
+    public class StartSequenceManager : MonoBehaviour
     {
         private PhaseEnum _nextPhase;
         private PhaseManager _phaseManager;
-        
+
         private MusicEngineHelper _musicEngineHelper;
         private int _count;
 
