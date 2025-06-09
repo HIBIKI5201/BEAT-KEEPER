@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
@@ -60,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
-        // NOTE: フローゾーンシステムを作成してみました。設計に合わせて修正してください
+        #region ライフサイクル
 
         protected override async void Awake()
         {
@@ -124,6 +124,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             InputUnregister();
         }
+
+        #endregion
 
         #region 入力の購買
 
@@ -416,7 +418,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             power *= _damageScale;
 
-            _target.HitAttack(new (power));
+            _target.HitAttack(new(power));
 
             // スコア計算
             float score = power * _data.ComboScoreScale
