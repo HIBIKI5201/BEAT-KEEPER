@@ -175,8 +175,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     攻撃を受けた際の処理
         /// </summary>
-        /// <param name="damage"></param>
-        public override void HitAttack(float damage)
+        /// <param name="data"></param>
+        public override void HitAttack(AttackData data)
         {
             //無敵時間判定
             if (_avoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
@@ -185,8 +185,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
 
-            base.HitAttack(damage);
-            OnHitAttack?.Invoke(Mathf.FloorToInt(damage));
+            base.HitAttack(data);
+            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
             _comboSystem.ComboReset();
         }
@@ -309,7 +309,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (1 <= _specialSystem.SpecialEnergy.CurrentValue)
             {
                 _specialSystem.ResetSpecialEnergy();
-                _target.HitAttack(2000);
+                _target.HitAttack(new AttackData(2000, true));
             }
         }
 
@@ -406,7 +406,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             power *= _damageScale;
 
-            _target.HitAttack(power);
+            _target.HitAttack(new (power));
 
             // スコア計算
             float score = power * _data.ComboScoreScale
