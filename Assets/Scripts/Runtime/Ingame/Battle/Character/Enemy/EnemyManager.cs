@@ -65,12 +65,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
-        public override async void HitAttack(AttackData data)
+        public override void HitAttack(AttackData data)
         {
             base.HitAttack(data);
 
             _healthSystem?.HealthChange(-data.Damage);
-            _animeManager?.KnockBack();
 
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
@@ -87,9 +86,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (data.IsNockback) //ノックバックする
             {
-                _isKnockback = true;
-                await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
-                _isKnockback = false;
+                Nockback();
             }
         }
 
@@ -109,6 +106,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _target.HitAttack(new AttackData(1));
                 _particleSystem?.Play();
             }
+        }
+
+        private async void Nockback()
+        {
+            _isKnockback = true;
+            _animeManager?.KnockBack();
+            await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
+            _isKnockback = false;
         }
     }
 }
