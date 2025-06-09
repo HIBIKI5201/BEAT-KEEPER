@@ -1,8 +1,9 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+ï»¿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -10,10 +11,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         private InputBuffer _inputBuffer;
         private EnemyManager _registeredEnemy;
+        private PlayableDirector _playableDirector;
+
+        private void Awake()
+        {
+            _playableDirector = GetComponent<PlayableDirector>();
+            if (_playableDirector == null)
+            {
+                Debug.LogWarning("PlayableDirector component is missing on FinisherSequence.");
+            }
+        }
 
         private void Start()
         {
-            FinisherEventRegister(); //Å‰‚Ì“G‚ğ“o˜^
+            FinisherEventRegister(); //æœ€åˆã®æ•µã‚’ç™»éŒ²
 
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
         }
@@ -30,7 +41,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
         /// <summary>
-        ///     Finisher‰Â”\‚ÌƒCƒxƒ“ƒg‚ğw”ƒ‚·‚é
+        ///     Finisherå¯èƒ½æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’è³¼è²·ã™ã‚‹
         /// </summary>
         public async void FinisherEventRegister()
         {
@@ -41,7 +52,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
         /// <summary>
-        ///     Finisher‰Â”\‚É‚È‚Á‚½‚çƒtƒBƒjƒbƒVƒƒ[“ü—Í‚ğó‚¯•t‚¯‚é
+        ///     Finisherå¯èƒ½ã«ãªã£ãŸã‚‰ãƒ•ã‚£ãƒ‹ãƒƒã‚·ãƒ£ãƒ¼å…¥åŠ›ã‚’å—ã‘ä»˜ã‘ã‚‹
         /// </summary>
         private void OnFinisherable()
         {
@@ -50,12 +61,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var player = ServiceLocator.GetInstance<PlayerManager>();
             if (player)
             {
-                player.InputUnregister(); // ƒvƒŒƒCƒ„[‚Ì“ü—Í‚ğˆê“I‚É–³Œø‰»
+                player.InputUnregister(); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å…¥åŠ›ã‚’ä¸€æ™‚çš„ã«ç„¡åŠ¹åŒ–
             }
         }
 
         /// <summary>
-        ///     Finisher“ü—Í‚ğó‚¯æ‚Á‚½Û‚Ìˆ—
+        ///     Finisherå…¥åŠ›ã‚’å—ã‘å–ã£ãŸéš›ã®å‡¦ç†
         /// </summary>
         /// <param name="context"></param>
         private void Finisher(InputAction.CallbackContext context)
@@ -63,6 +74,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             Debug.Log("Finisher Sequence Start");
 
             _inputBuffer.Finishier.started -= Finisher;
+
+            _playableDirector.Play();
         }
     }
 }
