@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    public class FinisherSequence : MonoBehaviour
+    public class FinisherSequenceManager : MonoBehaviour
     {
         private InputBuffer _inputBuffer;
         private EnemyManager _registeredEnemy;
