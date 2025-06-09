@@ -227,9 +227,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLog.AddText($"{_data.Name} is attacking");
 
-            OnShootComboAttack?.Invoke();
-            _comboSystem.Attack();
-
             //攻撃が成功したか
             bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
             bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
@@ -239,6 +236,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
             {
+                OnShootComboAttack?.Invoke();
+                _comboSystem.Attack();
+
                 if (isPerfectHit)
                 {
                     if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
