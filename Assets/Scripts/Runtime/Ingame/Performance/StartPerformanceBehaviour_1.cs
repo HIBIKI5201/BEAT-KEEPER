@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.UI;
+﻿using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -30,10 +30,10 @@ namespace BeatKeeper
                 }
             }
 
-            var uiManager = ServiceLocator.GetInstance<InGameUIManager>();
-            if (uiManager)
+            var text = _owner.GetComponentInChildren<UIElement_EncounterText>();
+            if (text)
             {
-                uiManager.ShowEncounterText(1);
+                text.ShowEncounterText(1);
             }
 
             Debug.Log("StartPerformanceBehaviour_1");
