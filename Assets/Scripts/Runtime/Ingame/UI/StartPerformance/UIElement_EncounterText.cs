@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,13 +14,18 @@ namespace BeatKeeper
         private Text _text;
         private float _defaultTextPosY;
 
-        public void Initialize()
+        private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
             _text = GetComponent<Text>();
             _defaultTextPosY = transform.localPosition.y; // 初期のY座標を保存しておく
         }
-        
+
+        private void Start()
+        {
+            _canvasGroup.alpha = 0;
+        }
+
         /// <summary>
         /// 遭遇時のテキストを表示する
         /// </summary>
