@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+ï»¿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -12,11 +12,11 @@ using UnityEngine.Pool;
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    ///     •ˆ–Ê‚ÌƒŠƒ“ƒO•\¦‚ğ‚·‚éƒ}ƒl[ƒWƒƒ[
+    ///     è­œé¢ã®ãƒªãƒ³ã‚°è¡¨ç¤ºã‚’ã™ã‚‹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
     /// </summary>
     public class UIElement_ChartRingManager : MonoBehaviour
     {
-        [SerializeField, Tooltip("ƒŠƒ“ƒO‚Ìƒf[ƒ^ŒQ")] private RingData[] _ringDatas;
+        [SerializeField, Tooltip("ãƒªãƒ³ã‚°ã®ãƒ‡ãƒ¼ã‚¿ç¾¤")] private RingData[] _ringDatas;
 
         private StageEnemyAdmin _enemies;
         private MusicEngineHelper _musicEngineHelper;
@@ -32,7 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
 
-            #region ŠeƒŠƒ“ƒO‚ÌƒIƒuƒWƒFƒNƒgƒv[ƒ‹‚ğ‰Šú‰»
+            #region å„ãƒªãƒ³ã‚°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ—ãƒ¼ãƒ«ã‚’åˆæœŸåŒ–
             for (int i = 0; i < _ringDatas.Length; i++)
             {
                 var index = i;
@@ -58,7 +58,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             }
                             else
                             {
-                                SymphonyDebugLog.DirectLog("‚±‚ÌƒvƒŒƒnƒu‚ÍƒŠƒ“ƒOƒCƒ“ƒWƒP[ƒ^[‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", SymphonyDebugLog.LogKind.Warning);
+                                SymphonyDebugLog.DirectLog("ã“ã®ãƒ—ãƒ¬ãƒãƒ–ã¯ãƒªãƒ³ã‚°ã‚¤ãƒ³ã‚¸ã‚±ãƒ¼ã‚¿ãƒ¼ãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã¾ã›ã‚“", SymphonyDebugLog.LogKind.Warning);
                                 return null;
                             }
                         },
@@ -84,25 +84,47 @@ namespace BeatKeeper.Runtime.Ingame.UI
             #endregion
         }
 
+        /// <summary>
+        ///     ãƒ•ã‚§ãƒ¼ã‚ºãŒå¤‰ã‚ã£ãŸã¨ãã®å‡¦ç†
+        /// </summary>
+        /// <param name="phase"></param>
         private void OnChangePhase(PhaseEnum phase)
         {
-            if (phase == PhaseEnum.Battle)
+            if (phase == PhaseEnum.Battle) //è­œé¢ã‚’å–å¾—ã—ã¦ãƒ“ãƒ¼ãƒˆã®è³¼è²·ã‚’é–‹å§‹
+
             {
                 _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
-                _targetData = _enemies.GetActiveEnemy().Data;
+                var enemy = _enemies.GetActiveEnemy();
+                _targetData = enemy.Data;
+
                 _musicEngineHelper.OnJustChangedBeat += OnBeat;
+                enemy.OnFinisherable += UnregisterOnBeat;
             }
         }
 
+        /// <summary>
+        ///     ãƒ“ãƒ¼ãƒˆã®è³¼è²·ã‚’è§£é™¤ã™ã‚‹
+        /// </summary>
+        private void UnregisterOnBeat()
+        {
+            if (_musicEngineHelper)
+            {
+                _musicEngineHelper.OnJustChangedBeat -= OnBeat;
+            }
+        }
+
+        /// <summary>
+        ///     ãƒ“ãƒ¼ãƒˆãŒå¤‰ã‚ã£ãŸã¨ãã®å‡¦ç†
+        /// </summary>
         private void OnBeat()
         {
             if (_enemies == null) return;
 
             var timing = MusicEngineHelper.GetBeatsSinceStart();
 
-            _onBeat?.Invoke(); //ƒŠƒ“ƒO‚ÌƒJƒEƒ“ƒg‚ğXV 
+            _onBeat?.Invoke(); //ãƒªãƒ³ã‚°ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–° 
 
-            //V‚µ‚¢ƒŠƒ“ƒO‚ğŠÄ‹
+            //æ–°ã—ã„ãƒªãƒ³ã‚°ã‚’ç›£è¦–
             foreach (var data in _ringDatas)
             {
                 var element = _targetData.ChartData.Chart[(timing + data.ApearTiming) % 32];
@@ -110,11 +132,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 if (element.AttackKind != data.AttackKind)
                     continue;
 
-                //ƒŠƒ“ƒO‚ğ¶¬
+                //ãƒªãƒ³ã‚°ã‚’ç”Ÿæˆ
                 if (_ringPools.TryGetValue(data.AttackKind, out var op))
                 {
-                    var ring = op.Get(); //ƒŠƒ“ƒO‚ğæ“¾
-                    ring.OnGet(() => op.Release(ring), //I—¹‚ÌƒCƒxƒ“ƒg‚ğİ’è
+                    var ring = op.Get(); //ãƒªãƒ³ã‚°ã‚’å–å¾—
+                    ring.OnGet(() => op.Release(ring), //çµ‚äº†æ™‚ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
                         element.Position);
                 }
             }
@@ -142,7 +164,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private GameObject _ringPrefab;
         public GameObject RingPrefab => _ringPrefab;
 
-        [SerializeField, Tooltip("ƒŠƒ“ƒO‚Ì–‘O—pˆÓ”i‚ ‚é’ö“x‚Ì“¯oŒ»”‚ğ“ü—Íj")] private int _defaultCapacity = 3;
+        [SerializeField, Tooltip("ãƒªãƒ³ã‚°ã®äº‹å‰ç”¨æ„æ•°ï¼ˆã‚ã‚‹ç¨‹åº¦ã®åŒæ™‚å‡ºç¾æ•°ã‚’å…¥åŠ›ï¼‰")] private int _defaultCapacity = 3;
         public int DefaultCapacity => _defaultCapacity;
     }
 }
