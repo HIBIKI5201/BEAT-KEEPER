@@ -1,6 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -10,6 +11,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     public class FinisherSequenceManager : MonoBehaviour
     {
+        public event Action OnFinisherSequenceEnd;
+
+        public int FinisherScore => _finisherScore;
+
+        [SerializeField, Tooltip("フィニッシャー時の加算スコア")]
+        private int _finisherScore = 2000;
+
         private InputBuffer _inputBuffer;
         private EnemyManager _registeredEnemy;
         private PlayableDirector _playableDirector;
@@ -27,6 +35,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             FinisherEventRegister(); //最初の敵を登録
 
+            if (_playableDirector)
+            {
+                _playableDirector.stopped += OnPlayableDirectorStopped;
+            }
+
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
         }
 
@@ -39,6 +52,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             if (_inputBuffer)
                 _inputBuffer.Finishier.started -= Finisher;
+
+            if (_playableDirector)
+                _playableDirector.stopped -= OnPlayableDirectorStopped;
         }
 
         /// <summary>
@@ -82,5 +98,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             _playableDirector.Play();
         }
+
+        /// <summary>
+        ///     PlayableDirectorが停止した際の処理
+        /// </summary>
+        /// <param name="director"></param>
+        private void OnPlayableDirectorStopped(PlayableDirector director) =>
+            OnFinisherSequenceEnd?.Invoke();
     }
 }

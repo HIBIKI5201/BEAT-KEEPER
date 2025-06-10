@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -386,6 +386,10 @@ PrefabInstance:
     - target: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
       propertyPath: m_Name
       value: MusicEngineCore
+      objectReference: {fileID: 0}
+    - target: {fileID: 6305378352285518296, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8984457344891974924, guid: a9d51a431cee07648b815ceaa736cd38, type: 3}
       propertyPath: m_LocalPosition.x
@@ -791,6 +795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb2b09bf82e821419b6ac763a4c2084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _finisherScore: 2000
 --- !u!320 &1091961455
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -960,7 +965,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1323604298
 Transform:

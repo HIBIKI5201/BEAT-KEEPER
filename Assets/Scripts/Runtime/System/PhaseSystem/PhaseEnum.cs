@@ -1,4 +1,4 @@
-namespace BeatKeeper
+﻿namespace BeatKeeper
 {
     /// <summary>
     /// フェーズの種類の列挙型
@@ -7,6 +7,5 @@ namespace BeatKeeper
     {
         Movie,
         Battle,
-        Clear,
     }
 }
