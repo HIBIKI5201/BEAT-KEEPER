@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
@@ -6,6 +7,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     [RequireComponent(typeof(PlayableDirector))]
     public class BreakMovieSequenceManager : MonoBehaviour
     {
+        public event Action OnBreakMovieSequenceEnd;
+
         private PlayableDirector _playableDirector;
 
         private void Awake()
@@ -26,11 +29,23 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
         }
 
+        /// <summary>
+        ///     フィニッシャーシーケンス終了時にブレイクムービーシーケンスを開始する
+        /// </summary>
         private void OnFinisherSequenceEnd()
         {
             if (!_playableDirector) return;
 
             _playableDirector.Play();
+
+            _playableDirector.stopped += OnPlayableDirectorStopped;
         }
+
+        /// <summary>
+        ///     Timelineの再生が終了したときに呼ばれる
+        /// </summary>
+        /// <param name="director"></param>
+        private void OnPlayableDirectorStopped(PlayableDirector director) =>
+            OnBreakMovieSequenceEnd?.Invoke();
     }
 }
