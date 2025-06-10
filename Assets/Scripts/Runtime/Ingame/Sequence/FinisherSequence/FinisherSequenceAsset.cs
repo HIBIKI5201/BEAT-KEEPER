@@ -19,6 +19,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 case 2:
                     var playable2 = ScriptPlayable<FinisherSequenceBehaviour_2>.Create(graph);
+                    var behaviour2 = playable2.GetBehaviour();
+                    behaviour2.OnCreate(owner);
 
                     return playable2;
             }
