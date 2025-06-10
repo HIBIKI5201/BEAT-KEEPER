@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
+    [RequireComponent(typeof(PlayableDirector))]
     public class FinisherSequenceManager : MonoBehaviour
     {
         public event Action OnFinisherSequenceEnd;
@@ -25,7 +26,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void Awake()
         {
             _playableDirector = GetComponent<PlayableDirector>();
-            if (_playableDirector == null)
+            if (!_playableDirector)
             {
                 Debug.LogWarning("PlayableDirector component is missing on FinisherSequence.");
             }
