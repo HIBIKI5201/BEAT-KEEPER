@@ -658,6 +658,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 634489668}
+  - component: {fileID: 634489669}
+  - component: {fileID: 634489670}
   m_Layer: 0
   m_Name: BreakMovieSequence
   m_TagString: Untagged
@@ -680,6 +682,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1175477591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &634489669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634489667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362af0181beb58c45885801c94742671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!320 &634489670
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634489667}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1001 &654063667
 PrefabInstance:
   m_ObjectHideFlags: 0
