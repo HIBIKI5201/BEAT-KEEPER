@@ -101,7 +101,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
         /// <summary>
-        ///     PlayableDirectorが停止した際の処理
+        ///     Timelineの再生が停止した際の処理
         /// </summary>
         /// <param name="director"></param>
         private void OnPlayableDirectorStopped(PlayableDirector director) =>
