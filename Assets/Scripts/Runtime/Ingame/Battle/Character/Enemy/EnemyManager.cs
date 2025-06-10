@@ -96,12 +96,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
-            if (_healthSystem.Health / _healthSystem.MaxHealth <= _data.FinisherThreshold / 100)
+            //フィニッシャー可能範囲の処理
+            if (_healthSystem.Health / _healthSystem.MaxHealth 
+                <= _data.FinisherThreshold / 100) //フィニッシャー可能割合の判定
             {
-                if (!_canFinisher)
+                if (!_canFinisher) //初回時のみ
                 {
                     Debug.Log("Finisherable event triggered for " + _data.name);
 
+                    InputUnregister(); // 入力の登録を解除
                     _canFinisher = true;
                     OnFinisherable?.Invoke();
                 }
@@ -118,15 +121,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void OnPhaseChange(PhaseEnum phase)
         {
-            switch(phase)
+            if (phase == PhaseEnum.Battle) //戦闘フェーズが始まったら動き始める
             {
-                case PhaseEnum.Battle:
-                    InputRegister(); //バトルフェーズになったら入力を登録する
-                    break;
-
-                case PhaseEnum.Movie:
-                    InputUnregister(); //ムービーフェーズになったら入力を解除する
-                    break;
+                InputRegister();
             }
         }
 
