@@ -85,10 +85,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            if (_musicEngine)
-            {
-                _musicEngine.OnJustChangedBeat -= OnAttack;
-            }
+            InputUnregister();
         }
 
         public override void HitAttack(AttackData data)
