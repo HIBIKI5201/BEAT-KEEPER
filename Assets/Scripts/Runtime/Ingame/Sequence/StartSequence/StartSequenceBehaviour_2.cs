@@ -7,15 +7,8 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    public class StartSequenceBehaviour_2 : PlayableBehaviour
+    public class StartSequenceBehaviour_2 : SequenceBehaviourBase
     {
-        private GameObject _owner;
-
-        public void OnCreate(GameObject owner)
-        {
-            _owner = owner;
-        }
-
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
             base.OnBehaviourPlay(playable, info);
