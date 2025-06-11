@@ -5,7 +5,7 @@ namespace BeatKeeper.Runtime.Ingame.System
     /// <summary>
     /// フェーズ情報を元にBGMを変更するためのクラス
     /// </summary>
-    public class BGMChanger : MonoBehaviour
+    public class BGMManager : MonoBehaviour
     {
         /* 旧BGM変更処理
         /// <summary>
@@ -35,7 +35,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         public void ChangeBGM(string name)
         {
             Music.SetHorizontalSequence(name);
-            Debug.Log($"{nameof(BGMChanger)} BGMを変更しました");
+            Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
         }
     }
 }
