@@ -690,6 +690,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05571e519c794754e913bd4de7eea948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &788083909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3308093386745655845, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
+  m_PrefabInstance: {fileID: 1928093918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &788083915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788083909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74d11554a76de54dac70d2375d49c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1042500688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,10 +1217,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: MusicEngineHelper
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6862399396053557512, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 788083915}
+    m_RemovedComponents:
+    - {fileID: 15378519586768199, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
+    - {fileID: 6993498637315325054, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3308093386745655845, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 788083915}
   m_SourcePrefab: {fileID: 100100000, guid: 97a17425ccb2086439dd6a70960c2844, type: 3}
 --- !u!225 &1931119634 stripped
 CanvasGroup:
