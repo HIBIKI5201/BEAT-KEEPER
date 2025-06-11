@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using R3;
 using UnityEngine;
 
@@ -9,11 +9,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
-        private readonly MusicEngineHelper _musicEngineHelper;
-        private int _count;
-        private const int DURATION = 16; // フローゾーンの継続拍数
-
-        public FlowZoneSystem(MusicEngineHelper musicEngineHelper)
+        public FlowZoneSystem(MusicEngineHelper musicEngineHelper, int duration)
         {
             if (musicEngineHelper)
             {
@@ -23,8 +19,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("FlowZoneSystem: musicEngineHelper is null");
             }
+
+            _duration = duration; // フローゾーンの継続時間を拍数で指定
         }
-        
+
+        private readonly int _duration;
+        private readonly MusicEngineHelper _musicEngineHelper;
+
         /// <summary>
         /// リズム共鳴回数
         /// </summary>
@@ -37,8 +38,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public ReadOnlyReactiveProperty<bool> IsFlowZone => _isFlowZone;
         private readonly ReactiveProperty<bool> _isFlowZone = new();
 
+        private int _count;
+
+        public void Dispose()
+        {
+            _musicEngineHelper.OnJustChangedBeat -= OnBeat;
+        }
+
         /// <summary>
-        /// リズム共鳴に成功
+        ///     拍数が変更されるタイミングで呼び出されるメソッド
+        /// </summary>
+        private void OnBeat()
+        {
+            _count++;
+
+            if (_count >= _duration) // フローゾーン継続時間が終了したら
+            {
+                FlowZoneEnd(); // フローゾーンを終了する
+            }
+        }
+
+        /// <summary>
+        ///     リズム共鳴に成功
         /// </summary>
         public void SuccessResonance()
         {
@@ -50,29 +71,30 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_resonanceCount.Value >= 7)
             {
                 _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
-                _musicEngineHelper.OnJustChangedBeat += Count; // 継続時間を確認するために拍数を取得する
+                _musicEngineHelper.OnJustChangedBeat += OnBeat; // 継続時間を確認するために拍数を取得する
             }
         }
 
         /// <summary>
-        /// 拍数が変更されるタイミングで呼び出されるメソッド
+        ///     フローゾーンの継続時間をリセット
         /// </summary>
-        private void Count()
+        public void ResetFlowZone()
         {
-            _count++;
-            
-            if (_count >= DURATION) // フローゾーン継続時間が終了したら
+            if(_isFlowZone.Value) // フローゾーン中であれば終了する
             {
-                _isFlowZone.Value = false;
-                _count = 0; // 使いまわせるようにリセット
-                _resonanceCount.Value = 0; // 共鳴回数をリセット
-                _musicEngineHelper.OnJustChangedBeat -= Count; // 購読をやめる
+                FlowZoneEnd();
             }
         }
 
-        public void Dispose()
+        /// <summary>
+        ///     フローゾーンを終了するメソッド
+        /// </summary>
+        private void FlowZoneEnd()
         {
-            _musicEngineHelper.OnJustChangedBeat -= Count;
+            _isFlowZone.Value = false;
+            _count = 0;
+            _resonanceCount.Value = 0;
+            _musicEngineHelper.OnJustChangedBeat -= OnBeat; // 購読をやめる
         }
     }
 }
