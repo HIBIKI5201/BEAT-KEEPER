@@ -120,7 +120,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (_enemies == null) return;
 
-            var timing = MusicEngineHelper.GetBeatsSinceStart();
+            var timing = MusicEngineHelper.GetBeatSinceStart();
 
             _onBeat?.Invoke(); //リングのカウントを更新 
 
@@ -146,7 +146,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (_musicEngineHelper)
             {
-                var currentBeat = MusicEngineHelper.GetBeatsSinceStart();
+                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
 
                 GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
             }

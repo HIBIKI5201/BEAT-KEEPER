@@ -135,7 +135,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnNormalAttack?.Invoke();
 
-            var timing = MusicEngineHelper.GetBeatsSinceStart();
+            var timing = MusicEngineHelper.GetBeatSinceStart();
 
             if (_data.ChartData.IsEnemyAttack(timing))
             {

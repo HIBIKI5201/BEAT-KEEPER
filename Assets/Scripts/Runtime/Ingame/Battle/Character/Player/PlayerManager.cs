@@ -22,10 +22,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnShootChargeAttack;
         public event Action OnFullChargeAttack;
-
         public event Action OnNonFullChargeAttack;
-        public event Action OnNormalAvoid;
-        public event Action OnJustAvoid;
+
+        public event Action OnFailedAvoid;
+        public event Action OnSuccessAvoid;
         #endregion
 
         #region プロパティ
@@ -339,32 +339,38 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (!_isBattle) return;
 
-            OnNormalAvoid?.Invoke();
+            SymphonyDebugLog.AddText(
+                $"[{nameof(PlayerManager)}]" +
+                $"{_data.Name} is avoiding");
+
+            if (!IsAvoidSuccess())
+            {
+                //失敗時の処理
+                OnFailedAvoid?.Invoke();
+                SymphonyDebugLog.TextLog();
+                return;
+            }
+
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
+            var enemyAttackKind = _target.EnemyData.ChartData.Chart[timing].AttackKind;
+
+            //SuperとCharge攻撃は回避できない
+            if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
+            {
+                SymphonyDebugLog.AddText($"Enemy's attack of {enemyAttackKind} can't be avoided");
+                SymphonyDebugLog.TextLog();
+                return;
+            }
+
+            SymphonyDebugLog.AddText($"Success Avoid");
+
+            OnSuccessAvoid?.Invoke();
 
             _animeManager.Avoid();
+            _flowZoneSystem.SuccessResonance();
+            _avoidSuccessTiming = Time.time;
 
-            Debug.Log($"{_data.Name} is avoiding");
-
-            var timing = MusicEngineHelper.GetBeatsSinceStart() % 32;
-
-            //nターン後までに攻撃があるかどうか
-            (bool willAttack, ChartKindEnum enemyAttackKind) = IsSuccessAvoid(timing);
-
-            if (willAttack)
-            {
-                //SuperとCharge攻撃は回避できない
-                if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
-                {
-                    Debug.Log($"Enemy's attack of {enemyAttackKind} can't be avoided");
-                    return;
-                }
-
-                Debug.Log($"Success Avoid");
-                OnJustAvoid?.Invoke();
-
-                _flowZoneSystem.SuccessResonance();
-                _avoidSuccessTiming = Time.time;
-            }
+            SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
@@ -422,7 +428,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 var buffData = _battleBuffData.Data;
 
-                var timing = MusicEngineHelper.GetBeatsSinceStart();
+                var timing = MusicEngineHelper.GetBeatSinceStart();
 
                 for (int i = buffData.Length - 1; i >= 0; i--)
                 {
@@ -448,22 +454,27 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     回避が成功したかどうかを判定する
         /// </summary>
-        /// <param name="timing"></param>
-        /// <returns></returns>
-        public (bool, ChartKindEnum) IsSuccessAvoid(int timing)
+        /// <returns>成功しているかどうか</returns>
+        private bool IsAvoidSuccess()
         {
-            bool willAttack = false;
-            for (int i = timing; i < timing + 3; i++)
-            {
-                willAttack |= _target.EnemyData.ChartData.IsEnemyAttack(i);
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
 
-                if (willAttack)
-                {
-                    return (true, _target.EnemyData.ChartData.Chart[i].AttackKind);
-                }
+            //敵が攻撃しないならミス
+            if (!_target.EnemyData.ChartData.IsEnemyAttack(timing))
+            {
+                SymphonyDebugLog.AddText($"Enemy not attack at timing {timing}");
+                return false;
             }
 
-            return (false, ChartKindEnum.None);
+            //避ける範囲内かどうか判定
+            if (!MusicEngineHelper
+                .IsTimingWithinAcceptableRange(_data.AvoidRange)) //回避可能タイミングの範囲外ならミス
+            {
+                SymphonyDebugLog.AddText($"Miss Avoid at timing {timing}");
+                return false;
+            }
+
+            return true;
         }
 
 # if UNITY_EDITOR

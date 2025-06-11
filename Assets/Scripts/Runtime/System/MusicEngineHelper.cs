@@ -71,11 +71,29 @@ namespace BeatKeeper
         /// <summary>現在の音楽タイミングを取得する</summary>
         public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
+        /// <summary>
+        ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
+        /// </summary>
         //TODO 音楽がループした際に合計拍数がリセットされないようにする
-        public static int GetBeatsSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
+        public static int GetBeatSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
 
         /// <summary>
-        /// 入力タイミングが許容範囲内にあるかどうかを判定します
+        ///     現在の音楽タイミングから、開始時点からの近い方の拍数を取得します。
+        /// </summary>
+        public static int GetBeatNearerSinceStart()
+        {
+            var timing = GetBeatSinceStart();
+
+            if (0.5f < Music.UnitFromJust) //もしタイミングが後半なら次の拍にする
+            {
+                timing++;
+            }
+
+            return timing;
+        }
+
+        /// <summary>
+        ///     入力タイミングが許容範囲内にあるかどうかを判定します
         /// </summary>
         public static bool IsTimingWithinAcceptableRange(float range)
         {
@@ -87,13 +105,16 @@ namespace BeatKeeper
             }
 
             var normalizedTimingFromJust = (float)Music.UnitFromJust;
+
+            #region デバッグログ
             SymphonyDebugLog.DirectLog(
                 "[MusicEngineHelper]\n"
                 + $"{(Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2 ? "Success" : "Failed")}\n"
                 + $"timing : {Mathf.Abs(normalizedTimingFromJust - 0.5f) * 2}\n"
                 + $"range : {range}");
+            #endregion
 
-            // Justタイミング後の判定・Justタイミング前の判定
+            // Justタイミング付近か判定
             return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2;
         }
 
@@ -365,7 +386,7 @@ namespace BeatKeeper
         #endregion
 
         /// <summary>
-        /// タイミングアクションの情報を格納する構造体
+        ///     タイミングアクションの情報を格納する構造体
         /// </summary>
         private readonly struct TimingActionInfo
         {
