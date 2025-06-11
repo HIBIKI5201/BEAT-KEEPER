@@ -71,18 +71,18 @@ namespace BeatKeeper
         /// <summary>現在の音楽タイミングを取得する</summary>
         public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
-        //TODO 音楽がループした際に合計拍数がリセットされないようにする
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
         /// </summary>
-        public static int GetBeatsSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
+        //TODO 音楽がループした際に合計拍数がリセットされないようにする
+        public static int GetBeatSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
 
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの近い方の拍数を取得します。
         /// </summary>
-        public static int GetNearerSinceStart()
+        public static int GetBeatNearerSinceStart()
         {
-            var timing = GetBeatsSinceStart();
+            var timing = GetBeatSinceStart();
 
             if (0.5f < Music.UnitFromJust) //もしタイミングが後半なら次の拍にする
             {
