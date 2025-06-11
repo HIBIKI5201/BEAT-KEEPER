@@ -5,15 +5,8 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    public class FinisherSequenceBehaviour_2 : PlayableBehaviour
+    public class FinisherSequenceBehaviour_2 : SequenceBehaviourBase
     {
-        private GameObject _owner;
-
-        public void OnCreate(GameObject owner)
-        {
-            _owner = owner;
-        }
-
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
             var enemy = ServiceLocator.GetInstance<BattleSceneManager>()
