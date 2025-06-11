@@ -9,10 +9,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 {
     public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
-        EnemyData IEnemy.EnemyData => _data;
-
         public event Action OnFinisherable;
         public event Action OnNormalAttack;
+
+        public CharacterHealthSystem HealthSystem => _healthSystem;
+
+        EnemyData IEnemy.EnemyData => _data;
 
         private MusicEngineHelper _musicEngine;
 
@@ -23,7 +25,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
-        public CharacterHealthSystem HealthSystem => _healthSystem;
 
         #region モック用の機能
 
@@ -61,28 +62,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .AddTo(destroyCancellationToken);
         }
 
-        /// <summary>
-        ///     入力の登録を行う
-        /// </summary>
-        public void InputRegister()
-        {
-            if (_musicEngine)
-            {
-                _musicEngine.OnJustChangedBeat += OnAttack;
-            }
-        }
-
-        /// <summary>
-        ///     入力の登録を解除する
-        /// </summary>
-        public void InputUnregister()
-        {
-            if (_musicEngine)
-            {
-                _musicEngine.OnJustChangedBeat -= OnAttack;
-            }
-        }
-
         public void Dispose()
         {
             InputUnregister();
@@ -117,6 +96,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         /// <summary>
+        ///     入力の登録を行う
+        /// </summary>
+        public void InputRegister()
+        {
+            if (_musicEngine)
+            {
+                _musicEngine.OnJustChangedBeat += OnAttack;
+            }
+        }
+
+        /// <summary>
+        ///     入力の登録を解除する
+        /// </summary>
+        public void InputUnregister()
+        {
+            if (_musicEngine)
+            {
+                _musicEngine.OnJustChangedBeat -= OnAttack;
+            }
+        }
+
+        /// <summary>
         ///     フェーズが変わったときの処理
         /// </summary>
         private void OnPhaseChange(PhaseEnum phase)
@@ -138,7 +139,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_data.ChartData.IsEnemyAttack(timing.Bar * 4 + timing.Beat))
             {
-                Debug.Log($"{_data.name} {_data.ChartData.Chart[(timing.Bar * 4 + timing.Beat) % 32]} attack\ntiming : {timing}");
+                Debug.Log($"{_data.name} " +
+                    $"{_data.ChartData.Chart[(timing.Bar * 4 + timing.Beat) % 32].AttackKind} attack\n" +
+                    $"timing : {timing}");
 
                 _target.HitAttack(new AttackData(1));
                 _particleSystem?.Play();
