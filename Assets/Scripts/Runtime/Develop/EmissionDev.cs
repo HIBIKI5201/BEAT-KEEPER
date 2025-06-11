@@ -1,3 +1,5 @@
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -10,7 +12,7 @@ namespace BeatKeeper.Runtime.Develop
 
         private void Start()
         {
-            var musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+            var musicEngine = ServiceLocator.GetInstance<BGMManager>();
 
             musicEngine.OnJustChangedBeat += OnBeat;
 

@@ -13,7 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PhaseEnum _nextPhase;
         private PhaseManager _phaseManager;
 
-        private MusicEngineHelper _musicEngineHelper;
+        private BGMManager _bgmManager;
         private int _count;
 
         private async void Start()

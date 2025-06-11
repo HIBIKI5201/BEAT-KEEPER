@@ -1,4 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
@@ -38,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
         private InputBuffer _inputBuffer;
-        private MusicEngineHelper _musicEngine;
+        private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
         private CinemachineCamera _playerCamera;
 
@@ -87,14 +89,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
-            _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
 
-            _musicEngine.OnJustChangedBeat += OnBeat;
-            _musicEngine.OnNearChangedBeat += OnNearBeat;
+            _bgmManager.OnJustChangedBeat += OnBeat;
+            _bgmManager.OnNearChangedBeat += OnNearBeat;
 
             InputRegister();
 
-            if (!_musicEngine)
+            if (!_bgmManager)
                 Debug.LogWarning("Music engine is null");
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
@@ -117,8 +119,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _musicEngine.OnJustChangedBeat -= OnBeat;
-            _musicEngine.OnNearChangedBeat -= OnNearBeat;
+            _bgmManager.OnJustChangedBeat -= OnBeat;
+            _bgmManager.OnNearChangedBeat -= OnNearBeat;
 
             InputUnregister();
         }
@@ -398,7 +400,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _specialSystem = new SpecialSystem();
             _flowZoneSystem =
                 new FlowZoneSystem(
-                    await ServiceLocator.GetInstanceAsync<MusicEngineHelper>(),
+                    await ServiceLocator.GetInstanceAsync<BGMManager>(),
                     _data.FlowZoneDuration);
         }
 

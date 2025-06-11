@@ -1,5 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
@@ -19,7 +21,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField, Tooltip("リングのデータ群")] private RingData[] _ringDatas;
 
         private StageEnemyAdmin _enemies;
-        private MusicEngineHelper _musicEngineHelper;
+        private BGMManager _bgmManager;
 
         private EnemyData _targetData;
         private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
@@ -27,7 +29,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Action _onBeat;
         private void Start()
         {
-            _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
@@ -97,7 +99,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
 
-                _musicEngineHelper.OnJustChangedBeat += OnBeat;
+                _bgmManager.OnJustChangedBeat += OnBeat;
                 enemy.OnFinisherable += UnregisterOnBeat;
             }
         }
@@ -107,9 +109,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void UnregisterOnBeat()
         {
-            if (_musicEngineHelper)
+            if (_bgmManager)
             {
-                _musicEngineHelper.OnJustChangedBeat -= OnBeat;
+                _bgmManager.OnJustChangedBeat -= OnBeat;
             }
         }
 
@@ -144,7 +146,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void OnGUI()
         {
-            if (_musicEngineHelper)
+            if (_bgmManager)
             {
                 var currentBeat = MusicEngineHelper.GetBeatSinceStart();
 
