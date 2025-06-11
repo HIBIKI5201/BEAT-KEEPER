@@ -1,15 +1,15 @@
-using BeatKeeper.Runtime.Ingame.UI;
+ï»¿using BeatKeeper.Runtime.Ingame.UI;
 using DG.Tweening;
 using UnityEngine;
 
 namespace BeatKeeper
 {
     /// <summary>
-    /// “G‚ÌUŒ‚ŒxUI
+    /// æ•µã®æ”»æ’ƒè­¦å‘ŠUI
     /// </summary>
     public class EnemyIndicator : UIElement_RingIndicator
     {
-        [Header("Fİ’è")]
+        [Header("è‰²è¨­å®š")]
         [SerializeField] private Color _warningColor = Color.red;
         [SerializeField] private Color _successColor = Color.yellow;
         [SerializeField] private Color _defaultColor = Color.white;
@@ -21,7 +21,7 @@ namespace BeatKeeper
 
 
         /// <summary>
-        /// ƒr[ƒg‚²‚Æ‚ÉÀs‚³‚ê‚éˆ—
+        /// ãƒ“ãƒ¼ãƒˆã”ã¨ã«å®Ÿè¡Œã•ã‚Œã‚‹å‡¦ç†
         /// </summary>
         /// <param name="count"></param>
         public override void Effect(int count)
@@ -43,7 +43,7 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// “_–ÅƒV[ƒNƒGƒ“ƒX
+        /// ç‚¹æ»…ã‚·ãƒ¼ã‚¯ã‚¨ãƒ³ã‚¹
         /// </summary>
         private void Effect1()
         {
@@ -61,7 +61,7 @@ namespace BeatKeeper
         }
         
         /// <summary>
-        /// ƒŠƒ“ƒO‚Ìk¬
+        /// ãƒªãƒ³ã‚°ã®ç¸®å°
         /// </summary>
         private void Effect2()
         {
@@ -69,7 +69,7 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// “–‚½‚èƒGƒtƒFƒNƒg
+        /// å½“ãŸã‚Šã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
         /// </summary>
         private void Effect3()
         {

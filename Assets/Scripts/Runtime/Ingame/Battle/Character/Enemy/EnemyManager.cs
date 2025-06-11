@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
@@ -16,7 +17,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         EnemyData IEnemy.EnemyData => _data;
 
-        private MusicEngineHelper _musicEngine;
+        private BGMManager _musicEngine;
 
         private IHitable _target;
 
@@ -48,7 +49,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void Start()
         {
-            _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _musicEngine = ServiceLocator.GetInstance<BGMManager>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
             if (!_musicEngine)

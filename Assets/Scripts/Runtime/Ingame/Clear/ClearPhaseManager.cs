@@ -1,4 +1,5 @@
-﻿using BeatKeeper.Runtime.Ingame.UI;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
@@ -18,14 +19,14 @@ namespace BeatKeeper
         [SerializeField] private GameObject[] _objects;
         [SerializeField] private Vector3[] _positions;
         private PhaseManager _phaseManager;
-        private MusicEngineHelper _musicEngineHelper;
+        private BGMManager _musicEngineHelper;
         private int _count;
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         
         private void Start()
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _musicEngineHelper = ServiceLocator.GetInstance<BGMManager>();
             _battleResultController.Hide(); // 最初は表示しないようにする
 
             //クリアフェーズを廃止する可能性があるため、以下のコードはコメントアウトしておく

@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
@@ -19,7 +20,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField, Tooltip("リングのデータ群")] private RingData[] _ringDatas;
 
         private StageEnemyAdmin _enemies;
-        private MusicEngineHelper _musicEngineHelper;
+        private BGMManager _musicEngineHelper;
 
         private EnemyData _targetData;
         private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
@@ -27,7 +28,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Action _onBeat;
         private void Start()
         {
-            _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
+            _musicEngineHelper = ServiceLocator.GetInstance<BGMManager>();
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
