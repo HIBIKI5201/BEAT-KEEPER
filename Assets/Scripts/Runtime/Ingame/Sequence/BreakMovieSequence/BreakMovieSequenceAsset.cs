@@ -3,6 +3,9 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
+    /// <summary>
+    ///   ブレイクムービーシークエンスのPlayableAssetクラス
+    /// </summary>
     public class BreakMovieSequenceAsset : PlayableAsset
     {
         [SerializeField, Range(1, 1)] private int _behaviour;

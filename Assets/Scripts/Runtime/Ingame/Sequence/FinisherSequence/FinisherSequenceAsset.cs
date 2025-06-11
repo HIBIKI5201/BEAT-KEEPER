@@ -3,6 +3,9 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
+    /// <summary>
+    ///   フィニッシャーシークエンスのPlayableAssetクラス
+    /// </summary>
     public class FinisherSequenceAsset : PlayableAsset
     {
         [SerializeField, Range(1, 2)] private int _behaviour;
