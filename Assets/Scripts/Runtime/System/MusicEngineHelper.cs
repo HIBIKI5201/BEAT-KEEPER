@@ -1,7 +1,4 @@
-﻿using R3;
-using SymphonyFrameWork.Debugger;
-using System;
-using System.Collections.Generic;
+﻿using SymphonyFrameWork.Debugger;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -9,10 +6,8 @@ namespace BeatKeeper
     /// <summary>
     /// MusicEngineの補助クラス
     /// </summary>
-    public class MusicEngineHelper : MonoBehaviour
+    public static class MusicEngineHelper
     {
-        #region 音楽タイミングの取得
-
         /// <summary>1拍の秒数</summary>
         public static double DurationOfBeat => 60 / Music.CurrentTempo;
 
@@ -74,7 +69,5 @@ namespace BeatKeeper
             // Justタイミング付近か判定
             return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2;
         }
-
-        #endregion
     }
 }
