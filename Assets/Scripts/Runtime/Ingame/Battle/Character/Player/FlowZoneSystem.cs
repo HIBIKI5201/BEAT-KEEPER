@@ -1,4 +1,5 @@
 ﻿using System;
+using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
-        public FlowZoneSystem(MusicEngineHelper musicEngineHelper, int duration)
+        public FlowZoneSystem(BGMManager bgmManager, int duration)
         {
-            if (musicEngineHelper)
+            if (bgmManager)
             {
-                _musicEngineHelper = musicEngineHelper;
+                _musicEngineHelper = bgmManager;
             }
             else
             {
@@ -24,7 +25,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private readonly int _duration;
-        private readonly MusicEngineHelper _musicEngineHelper;
+        private readonly BGMManager _musicEngineHelper;
 
         /// <summary>
         /// リズム共鳴回数
