@@ -36,7 +36,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             //BGMをバトルに変更
-            var bgmChanger = ServiceLocator.GetInstance<BGMManager>();
+            var bgmChanger = ServiceLocator.GetInstance<BGMChanger>();
             if (bgmChanger)
             {
                 bgmChanger.ChangeBGM("Battle1");

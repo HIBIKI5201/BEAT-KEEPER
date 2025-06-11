@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isActiveLoadScene: 0
   _loadScene: 
-  _initializeSceneList: []
+  _initializeSceneList:
+  - System

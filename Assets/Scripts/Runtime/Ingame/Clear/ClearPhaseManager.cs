@@ -1,5 +1,4 @@
-﻿using BeatKeeper.Runtime.Ingame.System;
-using BeatKeeper.Runtime.Ingame.UI;
+﻿using BeatKeeper.Runtime.Ingame.UI;
 using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
@@ -19,14 +18,14 @@ namespace BeatKeeper
         [SerializeField] private GameObject[] _objects;
         [SerializeField] private Vector3[] _positions;
         private PhaseManager _phaseManager;
-        private BGMManager _bgmManager;
+        private MusicEngineHelper _musicEngineHelper;
         private int _count;
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         
         private void Start()
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
+            _musicEngineHelper = ServiceLocator.GetInstance<MusicEngineHelper>();
             _battleResultController.Hide(); // 最初は表示しないようにする
 
             //クリアフェーズを廃止する可能性があるため、以下のコードはコメントアウトしておく
@@ -38,7 +37,7 @@ namespace BeatKeeper
         /// </summary>
         public void ClearPhaseStart()
         {
-            _bgmManager.OnJustChangedBar += Counter;
+            _musicEngineHelper.OnJustChangedBar += Counter;
             _objects[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
         
@@ -106,12 +105,12 @@ namespace BeatKeeper
         private void ActivateBattlePhase()
         {
             _phaseManager.NextPhase(); // TODO: PhaseManager側に、次のシーンを再生する仕組みを追加する
-            _bgmManager.OnJustChangedBar -= Counter; // 購読を解除する
+            _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
         
         private void OnDestroy()
         {
-            _bgmManager.OnJustChangedBar -= Counter;
+            _musicEngineHelper.OnJustChangedBar -= Counter;
             _disposables?.Dispose();
         }
     }

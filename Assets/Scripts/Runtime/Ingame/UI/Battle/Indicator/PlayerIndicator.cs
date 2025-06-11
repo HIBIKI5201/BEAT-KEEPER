@@ -1,5 +1,4 @@
-ï»¿using BeatKeeper.Runtime.Ingame.UI;
-using BeatKeeper.Runtime.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace BeatKeeper
 {
     public class PlayerIndicator : UIElement_RingIndicator
     {
-        [Header("è‰²è¨­å®š")]
+        [Header("Fİ’è")]
         [SerializeField] private Color _successColor = Color.yellow;
         [SerializeField] private Color _defaultColor = Color.white;
 
@@ -30,7 +29,7 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// ãƒªãƒ³ã‚°ã®ç¸®å°
+        /// ƒŠƒ“ƒO‚Ìk¬
         /// </summary>
         private void Effect1()
         {
@@ -43,7 +42,7 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// å½“ãŸã‚Šã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+        /// “–‚½‚èƒGƒtƒFƒNƒg
         /// </summary>
         private void Effect2()
         {

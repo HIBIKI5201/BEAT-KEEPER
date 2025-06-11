@@ -1,6 +1,4 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
-using BeatKeeper.Runtime.Ingame.System;
-using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
@@ -18,7 +16,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         EnemyData IEnemy.EnemyData => _data;
 
-        private BGMManager _bgmManager;
+        private MusicEngineHelper _musicEngine;
 
         private IHitable _target;
 
@@ -50,10 +48,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void Start()
         {
-            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
+            _musicEngine = ServiceLocator.GetInstance<MusicEngineHelper>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
-            if (!_bgmManager)
+            if (!_musicEngine)
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
             }
@@ -102,9 +100,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void InputRegister()
         {
-            if (_bgmManager)
+            if (_musicEngine)
             {
-                _bgmManager.OnJustChangedBeat += OnAttack;
+                _musicEngine.OnJustChangedBeat += OnAttack;
             }
         }
 
@@ -113,9 +111,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void InputUnregister()
         {
-            if (_bgmManager)
+            if (_musicEngine)
             {
-                _bgmManager.OnJustChangedBeat -= OnAttack;
+                _musicEngine.OnJustChangedBeat -= OnAttack;
             }
         }
 
@@ -132,7 +130,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnAttack()
         {
-            if (!_bgmManager) return;
+            if (!_musicEngine) return;
             if (_isKnockback) return; //ノックバック中は攻撃しない
 
             OnNormalAttack?.Invoke();
