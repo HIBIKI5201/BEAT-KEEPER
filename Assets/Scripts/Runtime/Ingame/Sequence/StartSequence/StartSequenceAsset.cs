@@ -4,6 +4,9 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
+    /// <summary>
+    ///     スタートシークエンスのPlayableAssetクラス
+    /// </summary>
     public class StartSequenceAsset : PlayableAsset
     {
         [SerializeField, Range(1, 3)] private int _behaviourKind;
