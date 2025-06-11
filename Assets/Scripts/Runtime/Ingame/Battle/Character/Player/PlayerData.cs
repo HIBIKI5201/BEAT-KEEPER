@@ -59,8 +59,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Min(1), Tooltip("フローゾーン突入の敷居")]
         private float _flowZoneThreshold = 10;
 
-        [SerializeField, Tooltip("フローゾーンの")]
+        [SerializeField, Tooltip("フローゾーンの持続時間")]
         private int _flowZoneDuration = 16;
+
+        [Space]
 
         [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
         private float _avoidRange = 0.5f;
