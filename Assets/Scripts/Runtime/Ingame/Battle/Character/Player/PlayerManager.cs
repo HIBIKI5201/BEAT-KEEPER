@@ -68,7 +68,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _comboSystem = new ComboSystem(_data);
             _specialSystem = new SpecialSystem();
             _flowZoneSystem =
-                new FlowZoneSystem(await ServiceLocator.GetInstanceAsync<MusicEngineHelper>());
+                new FlowZoneSystem(
+                    await ServiceLocator.GetInstanceAsync<MusicEngineHelper>(),
+                    16);
 
             //コンポーネント取得
             if (TryGetComponent(out Animator animator))
@@ -202,8 +204,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _isBattle = phase == PhaseEnum.Battle;
 
             //ターゲットを探す
-            var stage = ServiceLocator.GetInstance<BattleSceneManager>();
-            _target = stage.EnemyAdmin.GetActiveEnemy();
+            if (_isBattle)
+            {
+                var stage = ServiceLocator.GetInstance<BattleSceneManager>();
+                _target = stage.EnemyAdmin.GetActiveEnemy();
+            }
+            else
+            {
+                _flowZoneSystem.ResetFlowZone();
+            }
         }
 
         /// <summary>
