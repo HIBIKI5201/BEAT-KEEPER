@@ -15,10 +15,25 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
+        #region イベント
+        public event Action OnShootComboAttack;
+        public event Action OnPerfectAttack;
+        public event Action OnGoodAttack;
+
+        public event Action OnShootChargeAttack;
+        public event Action OnFullChargeAttack;
+
+        public event Action OnNonFullChargeAttack;
+        public event Action OnNormalAvoid;
+        public event Action OnJustAvoid;
+        #endregion
+
+        #region プロパティ
         public CinemachineCamera PlayerCamera => _playerCamera;
         public ComboSystem ComboSystem => _comboSystem;
         public SpecialSystem SpecialSystem => _specialSystem;
         public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
+        #endregion
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
@@ -38,19 +53,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private SpecialSystem _specialSystem;
         private FlowZoneSystem _flowZoneSystem;
 
-        #region イベント
-        public event Action OnShootComboAttack;
-        public event Action OnPerfectAttack;
-        public event Action OnGoodAttack;
-
-        public event Action OnShootChargeAttack;
-        public event Action OnFullChargeAttack;
-
-        public event Action OnNonFullChargeAttack;
-        public event Action OnNormalAvoid;
-        public event Action OnJustAvoid;
-        #endregion
-
         #region モック用の機能
 
         [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)]
@@ -64,13 +66,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected override async void Awake()
         {
-            //システムの初期化
-            _comboSystem = new ComboSystem(_data);
-            _specialSystem = new SpecialSystem();
-            _flowZoneSystem =
-                new FlowZoneSystem(
-                    await ServiceLocator.GetInstanceAsync<MusicEngineHelper>(),
-                    16);
+            SystemInit(); //システムの初期化
 
             //コンポーネント取得
             if (TryGetComponent(out Animator animator))
@@ -385,6 +381,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private void OnNearBeat() => _willPerfectAttack = false;
+
+        /// <summary>
+        ///     システムの初期化処理
+        /// </summary>
+        private async void SystemInit()
+        {
+            //システムの初期化
+            _comboSystem = new ComboSystem(_data);
+            _specialSystem = new SpecialSystem();
+            _flowZoneSystem =
+                new FlowZoneSystem(
+                    await ServiceLocator.GetInstanceAsync<MusicEngineHelper>(),
+                    16);
+        }
 
         /// <summary>
         ///     パーフェクト攻撃を行う
