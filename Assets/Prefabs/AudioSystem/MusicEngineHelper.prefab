@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1395610771496967193}
-  - component: {fileID: 15378519586768199}
-  - component: {fileID: 6993498637315325054}
+  - component: {fileID: 6659309216576162033}
   - component: {fileID: 6862399396053557512}
   - component: {fileID: 8639965246951376376}
   m_Layer: 0
@@ -35,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &15378519586768199
+--- !u!114 &6659309216576162033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,19 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3308093386745655845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5634a11d49a871a4f8c38e5909d18d86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6993498637315325054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3308093386745655845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4bb86e076849874ea8120a5d536f49d, type: 3}
+  m_Script: {fileID: 11500000, guid: e74d11554a76de54dac70d2375d49c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6862399396053557512
@@ -71,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2c69bb427f88f408b097383b690c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 15378519586768199}
+  _target: {fileID: 6659309216576162033}
   _locateType: 0
   _autoSet: 1
   _autoDestroy: 1
@@ -134,7 +121,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
     Meters:
     - StartBar: 0
-      Tempo: 210
+      Tempo: 105
       UnitPerBeat: 4
       UnitPerBar: 16
       Numerator: 4
@@ -147,7 +134,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 131
+      Bar: 65
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -155,7 +142,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 131
+      Bar: 65
       Beat: 0
       Unit: 0
     Transition:
