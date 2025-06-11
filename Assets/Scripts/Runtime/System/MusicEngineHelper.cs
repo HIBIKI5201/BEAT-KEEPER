@@ -34,12 +34,12 @@ namespace BeatKeeper
 
         #region リアクティブプロパティ
 
-        /// <summary>小節の切り替わりタイミングが近いかどうか</summary>
         public ReadOnlyReactiveProperty<bool> IsNearBarChange => _isNearBarChange;
-        private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
-
-        /// <summary>拍の切り替わりタイミングが近いかどうか</summary>
         public ReadOnlyReactiveProperty<bool> IsNearBeatChange => _isNearBeatChange;
+
+        [Tooltip("小節の切り替わりタイミングが近いかどうか")]
+        private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
+        [Tooltip("拍の切り替わりタイミングが近いかどうか")]
         private readonly ReactiveProperty<bool> _isNearBeatChange = new(false);
 
         #endregion
