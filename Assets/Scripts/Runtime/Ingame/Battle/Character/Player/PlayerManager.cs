@@ -374,7 +374,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_willPerfectAttack) //もしパーフェクト攻撃が予約されていれば実行
             {
-                SymphonyDebugLog.DirectLog("Perfect attack executed");
+                SymphonyDebugLog.DirectLog("Quantize perfect attack executed");
 
                 PerfectAttack();
             }
@@ -393,7 +393,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _flowZoneSystem =
                 new FlowZoneSystem(
                     await ServiceLocator.GetInstanceAsync<MusicEngineHelper>(),
-                    16);
+                    _data.FlowZoneDuration);
         }
 
         /// <summary>
