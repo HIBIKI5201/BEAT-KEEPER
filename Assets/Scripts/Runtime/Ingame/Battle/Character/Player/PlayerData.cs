@@ -26,6 +26,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float AvoidInvincibilityTime => _avoidInvincibilityTime;
 
         public float HitStunTime => _hitStunTime;
+        public float ChargeHitStunTime => _chargeHitStunTime;
         #endregion
 
         [Header("攻撃 パラメータ")]
@@ -74,5 +75,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         
         [SerializeField, Tooltip("ヒット時のスタン時間")]
         private float _hitStunTime = 1f;
+        [SerializeField, Tooltip("チャージヒット時のスタン時間")]
+        private float _chargeHitStunTime = 2f;
     }
 }
