@@ -1,12 +1,12 @@
-﻿using BeatKeeper.Runtime.Ingame.Battle;
+﻿using System;
+using System.Collections.Generic;
+using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,24 +17,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class UIElement_ChartRingManager : MonoBehaviour
     {
-        [SerializeField, Tooltip("リングのデータ群")] private RingData[] _ringDatas;
-
+        [SerializeField] [Tooltip("リングのデータ群")] private RingData[] _ringDatas;
         private StageEnemyAdmin _enemies;
         private BGMManager _musicEngineHelper;
 
-        private EnemyData _targetData;
-        private Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
-
         private Action _onBeat;
-        private void Start()
+
+        private PlayerManager _player;
+        private readonly Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
+
+        private EnemyData _targetData;
+
+        private async void Start()
         {
+            _player = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             _musicEngineHelper = ServiceLocator.GetInstance<BGMManager>();
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp.Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
 
 
             #region 各リングのオブジェクトプールを初期化
-            for (int i = 0; i < _ringDatas.Length; i++)
+
+            for (var i = 0; i < _ringDatas.Length; i++)
             {
                 var index = i;
                 var data = _ringDatas[i];
@@ -46,8 +50,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
                 _ringPools.Add(
                     data.AttackKind,
-                    new(
-                        createFunc: () =>
+                    new ObjectPool<UIElement_RingIndicator>(
+                        () =>
                         {
                             var go = Instantiate(data.RingPrefab);
                             go.transform.SetParent(transform);
@@ -55,34 +59,40 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
                             {
                                 manager.gameObject.SetActive(false);
+                                manager.OnInit(_player);
                                 return manager;
                             }
-                            else
-                            {
-                                SymphonyDebugLog.DirectLog("このプレハブはリングインジケーターがアタッチされていません", SymphonyDebugLog.LogKind.Warning);
-                                return null;
-                            }
+
+                            SymphonyDebugLog.DirectLog("このプレハブはリングインジケーターがアタッチされていません",
+                                SymphonyDebugLog.LogKind.Warning);
+                            return null;
                         },
-                        actionOnGet: go =>
+                        manager =>
                         {
-                            go.gameObject.SetActive(true);
-                            if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
-                            {
-                                _onBeat += manager.AddCount;
-                            }
+                            manager.gameObject.SetActive(true);
+                            _onBeat += manager.AddCount;
                         },
-                        actionOnRelease: go =>
+                        manager =>
                         {
-                            if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
-                            {
-                                _onBeat -= manager.AddCount;
-                            }
+                            manager.gameObject.SetActive(false);
+                            _onBeat -= manager.AddCount;
                         },
-                        actionOnDestroy: go => Destroy(go),
+                        go => Destroy(go),
                         defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }
+
             #endregion
+        }
+
+        private void OnGUI()
+        {
+            if (_musicEngineHelper)
+            {
+                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
+
+                GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
+            }
         }
 
         /// <summary>
@@ -108,10 +118,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void UnregisterOnBeat()
         {
-            if (_musicEngineHelper)
-            {
-                _musicEngineHelper.OnJustChangedBeat -= OnBeat;
-            }
+            if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnBeat;
         }
 
         /// <summary>
@@ -142,16 +149,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 }
             }
         }
-
-        private void OnGUI()
-        {
-            if (_musicEngineHelper)
-            {
-                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-
-                GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
-            }
-        }
     }
 
     [Serializable]
@@ -160,12 +157,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [HideInInspector] public int ApearTiming;
 
         [SerializeField] private ChartKindEnum _attackKind;
-        public ChartKindEnum AttackKind => _attackKind;
 
         [SerializeField] private GameObject _ringPrefab;
-        public GameObject RingPrefab => _ringPrefab;
 
-        [SerializeField, Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")] private int _defaultCapacity = 3;
+        [SerializeField] [Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")]
+        private int _defaultCapacity = 3;
+
+        public ChartKindEnum AttackKind => _attackKind;
+        public GameObject RingPrefab => _ringPrefab;
         public int DefaultCapacity => _defaultCapacity;
     }
 }
