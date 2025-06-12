@@ -17,9 +17,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         EnemyData IEnemy.EnemyData => _data;
 
-        private BGMManager _musicEngine;
+        private BGMManager _bgmManager;
 
-        private IHitable _target;
+        private PlayerManager _target;
 
         private bool _canFinisher;
         private bool _isKnockback;
@@ -49,10 +49,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void Start()
         {
-            _musicEngine = ServiceLocator.GetInstance<BGMManager>();
+            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
-            if (!_musicEngine)
+            if (!_bgmManager)
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
             }
@@ -68,6 +68,62 @@ namespace BeatKeeper.Runtime.Ingame.Character
             InputUnregister();
         }
 
+        /// <summary>
+        ///     フェーズが変わったときの処理
+        /// </summary>
+        private void OnPhaseChange(PhaseEnum phase)
+        {
+            if (phase == PhaseEnum.Battle) //戦闘フェーズが始まったら動き始める
+            {
+                InputRegister();
+            }
+        }
+
+        private void OnAttack()
+        {
+            if (!_bgmManager) return;
+            if (_isKnockback) return; //ノックバック中は攻撃しない
+            
+            if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない
+            
+            var timing = MusicEngineHelper.GetBeatSinceStart();
+
+            if (_data.ChartData.IsEnemyAttack(timing)) //攻撃タイミングかどうかを確認
+            {
+                # region デバッグログ
+                Debug.Log($"{_data.name} " +
+                    $"{_data.ChartData.Chart[(timing) % _data.ChartData.Chart.Length].AttackKind} attack\n" +
+                    $"timing : {timing}");
+                #endregion
+                
+                _target.HitAttack(new AttackData(1));
+                OnNormalAttack?.Invoke();
+                _particleSystem?.Play();
+            }
+        }
+        
+        /// <summary>
+        ///     入力の登録を行う
+        /// </summary>
+        public void InputRegister()
+        {
+            if (_bgmManager)
+            {
+                _bgmManager.OnJustChangedBeat += OnAttack;
+            }
+        }
+
+        /// <summary>
+        ///     入力の登録を解除する
+        /// </summary>
+        public void InputUnregister()
+        {
+            if (_bgmManager)
+            {
+                _bgmManager.OnJustChangedBeat -= OnAttack;
+            }
+        }
+        
         public override void HitAttack(AttackData data)
         {
             base.HitAttack(data);
@@ -93,59 +149,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (data.IsNockback) //ノックバックする
             {
                 Nockback();
-            }
-        }
-
-        /// <summary>
-        ///     入力の登録を行う
-        /// </summary>
-        public void InputRegister()
-        {
-            if (_musicEngine)
-            {
-                _musicEngine.OnJustChangedBeat += OnAttack;
-            }
-        }
-
-        /// <summary>
-        ///     入力の登録を解除する
-        /// </summary>
-        public void InputUnregister()
-        {
-            if (_musicEngine)
-            {
-                _musicEngine.OnJustChangedBeat -= OnAttack;
-            }
-        }
-
-        /// <summary>
-        ///     フェーズが変わったときの処理
-        /// </summary>
-        private void OnPhaseChange(PhaseEnum phase)
-        {
-            if (phase == PhaseEnum.Battle) //戦闘フェーズが始まったら動き始める
-            {
-                InputRegister();
-            }
-        }
-
-        private void OnAttack()
-        {
-            if (!_musicEngine) return;
-            if (_isKnockback) return; //ノックバック中は攻撃しない
-
-            OnNormalAttack?.Invoke();
-
-            var timing = MusicEngineHelper.GetBeatSinceStart();
-
-            if (_data.ChartData.IsEnemyAttack(timing))
-            {
-                Debug.Log($"{_data.name} " +
-                    $"{_data.ChartData.Chart[(timing) % _data.ChartData.Chart.Length].AttackKind} attack\n" +
-                    $"timing : {timing}");
-
-                _target.HitAttack(new AttackData(1));
-                _particleSystem?.Play();
             }
         }
 
