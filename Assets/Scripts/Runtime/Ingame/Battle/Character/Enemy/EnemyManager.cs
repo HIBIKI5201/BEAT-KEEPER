@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -11,7 +12,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
         public event Action OnFinisherable;
-        public event Action OnNormalAttack;
+
+        public event Action OnShootAttack;
+        public event Action OnShootNormalAttack;
+        public event Action OnShootChargeAttack;
 
         public CharacterHealthSystem HealthSystem => _healthSystem;
 
@@ -95,9 +99,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     $"{_data.ChartData.Chart[(timing) % _data.ChartData.Chart.Length].AttackKind} attack\n" +
                     $"timing : {timing}");
                 #endregion
+
+                OnShootAttack?.Invoke();
                 
-                _target.HitAttack(new AttackData(1));
-                OnNormalAttack?.Invoke();
+                var attackKind = _data.ChartData.Chart[timing % _data.ChartData.Chart.Length].AttackKind;
+                
+                if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
+                {
+                    _target.HitAttack(new AttackData(1));
+                    OnShootNormalAttack?.Invoke();
+                }
+                else if (attackKind == ChartKindEnum.Charge) //チャージアタック
+                {
+                    _target.HitAttack(new AttackData(1, true));
+                    OnShootChargeAttack?.Invoke();
+                }
+                
                 _particleSystem?.Play();
             }
         }
@@ -131,24 +148,31 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _healthSystem?.HealthChange(-data.Damage);
 
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
-
-            //フィニッシャー可能範囲の処理
-            if (_healthSystem.Health / _healthSystem.MaxHealth 
-                <= _data.FinisherThreshold / 100) //フィニッシャー可能割合の判定
-            {
-                if (!_canFinisher) //初回時のみ
-                {
-                    Debug.Log("Finisherable event triggered for " + _data.name);
-
-                    InputUnregister(); // 入力の登録を解除
-                    _canFinisher = true;
-                    OnFinisherable?.Invoke();
-                }
-            }
+            
+            FinisherableCheck(); //フィニッシャー可能かどうかを確認
 
             if (data.IsNockback) //ノックバックする
             {
                 Nockback();
+            }
+        }
+
+        /// <summary>
+        ///     フィニッシャー可能かどうかを確認する
+        /// </summary>
+        private void FinisherableCheck()
+        {
+            if (_canFinisher) return; //初回時のみ
+            
+            //フィニッシャー可能範囲の処理
+            if (_healthSystem.Health / _healthSystem.MaxHealth 
+                <= _data.FinisherThreshold / 100) //フィニッシャー可能割合の判定
+            {
+                Debug.Log("Finisherable event triggered for " + _data.name);
+
+                InputUnregister(); // 入力の登録を解除
+                _canFinisher = true;
+                OnFinisherable?.Invoke();
             }
         }
 
