@@ -10,7 +10,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
-        public FlowZoneSystem(BGMManager bgmManager, int duration)
+        public FlowZoneSystem(BGMManager bgmManager, PlayerData data)
         {
             if (bgmManager)
             {
@@ -21,10 +21,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("FlowZoneSystem: musicEngineHelper is null");
             }
 
-            _duration = duration; // フローゾーンの継続時間を拍数で指定
+            _data = data; // フローゾーンの継続時間を拍数で指定
         }
 
-        private readonly int _duration;
+        private readonly PlayerData _data;
         private readonly BGMManager _musicEngineHelper;
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _count++;
 
-            if (_count >= _duration) // フローゾーン継続時間が終了したら
+            if (_count >= _data.FlowZoneDuration) // フローゾーン継続時間が終了したら
             {
                 FlowZoneEnd(); // フローゾーンを終了する
             }
