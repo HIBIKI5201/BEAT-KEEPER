@@ -47,7 +47,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private IEnemy _target;
         private bool _isBattle;
-        private float  _lastStunTiming; //最後のスタンしたタイミング
+        private float  _stunEndTiming; //スタンが終了するタイミング
         private float _chargeAttackTimer;
         private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
         private bool _willPerfectAttack; //パーフェクト攻撃の予約
@@ -395,7 +395,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns></returns>
         public bool IsStunning(float timing)
         { 
-            return _lastStunTiming + _data.HitStunTime * MusicEngineHelper.DurationOfBeat > timing;
+            return _stunEndTiming > timing;
         }
         #endregion
         
@@ -407,7 +407,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="data"></param>
         public override void HitAttack(AttackData data)
         {
-            //無敵時間判定
+            //無敵時間なら受けない
             if (_lastAvoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
             {
                 Debug.Log("During Avoid Invincibility Time");
@@ -417,7 +417,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.HitAttack(data);
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
-            _lastStunTiming = Time.time;
+            float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
+            _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
+
             _comboSystem.ComboReset();
         }
         
