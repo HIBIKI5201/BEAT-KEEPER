@@ -17,9 +17,12 @@ namespace BeatKeeper
 
         public override void Effect(int count)
         {
+            base.Effect(count);
+            
             switch(count)
             {
                 case 1:
+                    _tweens = new Tween[2];
                     Effect1();
                     break;
                 case 3:
@@ -27,7 +30,7 @@ namespace BeatKeeper
                     break;
             }
         }
-
+        
         /// <summary>
         /// リングの縮小
         /// </summary>
@@ -38,7 +41,7 @@ namespace BeatKeeper
             _ringImage.color = _defaultColor;
             _selfImage.color = _defaultColor;
 
-            _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
+            _tweens[0] = _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
         }
 
         /// <summary>
@@ -56,7 +59,9 @@ namespace BeatKeeper
 
             successSequence.Play();
 
-            successSequence.OnComplete(_onEndAction.Invoke);
+            successSequence.OnComplete(End);
+            
+            _tweens[1] = successSequence;
         }
     }
 }

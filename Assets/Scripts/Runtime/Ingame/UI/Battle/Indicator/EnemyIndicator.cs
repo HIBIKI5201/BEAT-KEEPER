@@ -19,16 +19,18 @@ namespace BeatKeeper
 
         public override int EffectLength => 5;
 
-
         /// <summary>
         /// ビートごとに実行される処理
         /// </summary>
         /// <param name="count"></param>
         public override void Effect(int count)
         {
+            base.Effect(count);
+            
             switch (count)
             {
                 case 1:
+                    _tweens = new Tween[3];
                     Effect1();
                     break;
 
@@ -58,6 +60,8 @@ namespace BeatKeeper
             blinkSequence.Join(_selfImage.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
 
             blinkSequence.Play();
+
+            _tweens[0] = blinkSequence;
         }
         
         /// <summary>
@@ -65,7 +69,9 @@ namespace BeatKeeper
         /// </summary>
         private void Effect2()
         {
-            _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
+            _tweens[1] = _ringImage.rectTransform
+                .DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f)
+                .SetEase(Ease.Linear);
         }
 
         /// <summary>
@@ -83,7 +89,9 @@ namespace BeatKeeper
 
             successSequence.Play();
 
-            successSequence.OnComplete(_onEndAction.Invoke);
+            successSequence.OnComplete(End);
+            
+            _tweens[2] = successSequence;
         }
     }
 }
