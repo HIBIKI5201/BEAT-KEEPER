@@ -21,14 +21,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public int FlowZoneDuration => _flowZoneDuration;
         #endregion
 
-        #region その他
+        #region 回避パラメータ
         public float AvoidRange => _avoidRange;
         public float AvoidInvincibilityTime => _avoidInvincibilityTime;
+
+        public float HitStunTime => _hitStunTime;
         #endregion
 
         [Header("攻撃 パラメータ")]
 
-        [DisplayText("コンボ攻撃")]
+        [Space(5), DisplayText("コンボ攻撃")]
 
         [SerializeField, Tooltip("コンボの攻撃力")]
         private float _comboAttackPower = 100f;
@@ -44,7 +46,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Min(0), Tooltip("コンボ維持時間")]
         private float _comboRisetTime = 3;
 
-        [DisplayText("チャージ攻撃")]
+        [Space(5), DisplayText("チャージ攻撃")]
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
 
@@ -62,12 +64,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("フローゾーンの持続時間")]
         private int _flowZoneDuration = 16;
 
-        [Space]
+        [Header("回避 パラメータ")]
 
         [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
         private float _avoidRange = 0.5f;
 
         [SerializeField, Tooltip("無敵時間の拍数")]
         private float _avoidInvincibilityTime = 2;
+        
+        [SerializeField, Tooltip("ヒット時のスタン時間")]
+        private float _hitStunTime = 1f;
     }
 }
