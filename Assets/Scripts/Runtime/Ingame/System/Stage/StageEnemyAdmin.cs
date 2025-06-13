@@ -23,7 +23,10 @@ namespace BeatKeeper.Runtime.Ingame.Battle
         {
             var ui = ServiceLocator.GetInstance<InGameUIManager>();
 
-            Array.ForEach(_enemies, ui.HealthBarInitialize);
+            Array.ForEach(_enemies, ui.HealthBarInitialize); //ヘルスバーを初期化
+            
+            // 最初の敵をアクティブにする
+            _enemies.First()?.SetActive();
         }
 
         /// <summary>
