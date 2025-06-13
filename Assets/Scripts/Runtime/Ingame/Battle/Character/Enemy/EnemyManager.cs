@@ -59,6 +59,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
              SetActiveModel(false);
         }
 
+        private void OnDestroy()
+        {
+            InputRegister();
+        }
+
         public void Dispose()
         {
             InputUnregister();
@@ -79,6 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             SetActiveModel(true);
 
+            //フェーズ変更時のイベント登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
                 .Subscribe(OnPhaseChange)
