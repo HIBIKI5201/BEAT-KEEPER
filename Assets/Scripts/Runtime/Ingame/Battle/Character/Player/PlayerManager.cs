@@ -83,7 +83,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_playerCamera)
             {
                 //カメラを敵に向ける
-                _playerCamera.LookAt = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>()).EnemyAdmin.GetActiveEnemy().transform;
+                _playerCamera.LookAt =
+                    (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())
+                    .EnemyAdmin.GetActiveEnemy().transform;
             }
 
             OnShootComboAttack += _particleSystem.Play;
@@ -97,8 +99,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _bgmManager.OnJustChangedBeat += OnBeat;
             _bgmManager.OnNearChangedBeat += OnNearBeat;
-
-            InputRegister();
 
             if (!_bgmManager)
                 Debug.LogWarning("Music engine is null");
@@ -144,8 +144,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //ターゲットを探す
             if (_isBattle)
             {
+                InputRegister();
+                
                 var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                 _target = stage.EnemyAdmin.GetActiveEnemy();
+                
+                _playerCamera.LookAt = 
+                    ServiceLocator.GetInstance<BattleSceneManager>()
+                        .EnemyAdmin.GetActiveEnemy().transform;
             }
             else
             {
