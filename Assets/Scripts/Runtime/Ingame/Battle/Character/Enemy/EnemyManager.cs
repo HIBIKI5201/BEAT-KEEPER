@@ -138,8 +138,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _target.HitAttack(new AttackData(1, true));
                     OnShootChargeAttack?.Invoke();
                 }
-                
-                _particleSystem?.Play();
+
+                if (_particleSystem)
+                {
+                    _particleSystem?.Play();
+                }
             }
         }
         
