@@ -77,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             manager.gameObject.SetActive(false);
                             _onBeat -= manager.AddCount;
                         },
-                        go => Destroy(go),
+                        Destroy,
                         defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }
