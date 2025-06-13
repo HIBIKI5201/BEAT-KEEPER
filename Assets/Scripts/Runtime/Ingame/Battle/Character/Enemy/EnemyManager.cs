@@ -21,6 +21,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         EnemyData IEnemy.EnemyData => _data;
 
+        [SerializeField, Tooltip("モデルの親オブジェクト")] 
+        private GameObject _modelParent;
+        
         private BGMManager _bgmManager;
 
         private PlayerManager _target;
@@ -37,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
-        private void OnEnable()
+        protected override void Awake()
         {
             if (TryGetComponent(out Animator animator))
             {
@@ -53,6 +56,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void Start()
         {
+             SetActiveModel(false);
+        }
+
+        public void Dispose()
+        {
+            InputUnregister();
+        }
+        
+        /// <summary>
+        ///     戦闘を有効化する
+        /// </summary>
+        public void SetActive()
+        {
             _bgmManager = ServiceLocator.GetInstance<BGMManager>();
             _target = ServiceLocator.GetInstance<PlayerManager>();
 
@@ -60,6 +76,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
             }
+            
+            SetActiveModel(true);
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
@@ -67,9 +85,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .AddTo(destroyCancellationToken);
         }
 
-        public void Dispose()
+        public void SetActiveModel(bool active)
         {
-            InputUnregister();
+            _modelParent.SetActive(active);
         }
 
         /// <summary>
