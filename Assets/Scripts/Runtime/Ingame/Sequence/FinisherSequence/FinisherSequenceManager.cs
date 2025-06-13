@@ -2,6 +2,8 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using System;
+using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -34,22 +36,27 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private void Start()
         {
-            FinisherEventRegister(); //最初の敵を登録
-
             if (_playableDirector)
             {
                 _playableDirector.stopped += OnPlayableDirectorStopped;
             }
 
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            
+            //フェーズ変更時のイベントを登録
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            if (phaseManager)
+            {
+                phaseManager.CurrentPhaseProp
+                    .Subscribe(OnPhaseChanged)
+                    .AddTo(destroyCancellationToken);
+            }
         }
 
         private void OnDestroy()
         {
             if (_registeredEnemy != null)
-            {
                 _registeredEnemy.OnFinisherable -= OnFinisherable;
-            }
 
             if (_inputBuffer)
                 _inputBuffer.Finishier.started -= Finisher;
@@ -59,12 +66,26 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
         /// <summary>
+        ///     フェーズが変わった時のイベント
+        /// </summary>
+        /// <param name="phase"></param>
+        private void OnPhaseChanged(PhaseEnum phase)
+        {
+            FinisherEventRegister();
+        }
+
+        /// <summary>
         ///     Finisher可能時のイベントを購買する
         /// </summary>
         public async void FinisherEventRegister()
         {
+            if (_registeredEnemy) //既に登録されていたら解除
+            {
+                _registeredEnemy.OnFinisherable -= OnFinisherable;
+            }
+            
+            //アクティブな敵を登録
             var battleScene = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
-
             _registeredEnemy = battleScene.EnemyAdmin.GetActiveEnemy();
             _registeredEnemy.OnFinisherable += OnFinisherable;
         }
