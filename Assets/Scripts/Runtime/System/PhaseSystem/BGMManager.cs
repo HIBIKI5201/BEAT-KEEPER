@@ -312,7 +312,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming}, ID:{actionId}]: {ex}");
+                        Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
                         actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
                     }
                 }

@@ -11454,6 +11454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 0230a11b47ea54b4d9fc48c5d22bd13a, type: 2}
+  _modelParent: {fileID: 3914750233683809333}
   _particleSystem: {fileID: 3270306859132638148}
 --- !u!95 &8781298014033360628
 Animator:

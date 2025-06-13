@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.UI;
+using Cysharp.Threading.Tasks;
+using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -12,7 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.Battle
         private EnemyManager[] _enemies;
         public EnemyManager[] Enemies => _enemies;
 
-        private int _activeEnemyIndex;
+        private int _activeEnemyIndex; //最初の敵を出すために-1から始める
 
         private void Awake()
         {
@@ -23,7 +25,10 @@ namespace BeatKeeper.Runtime.Ingame.Battle
         {
             var ui = ServiceLocator.GetInstance<InGameUIManager>();
 
-            Array.ForEach(_enemies, ui.HealthBarInitialize);
+            Array.ForEach(_enemies, ui.HealthBarInitialize); //ヘルスバーを初期化
+            
+            // 最初の敵をアクティブにする
+            _enemies.First()?.SetActive();
         }
 
         /// <summary>
@@ -37,10 +42,26 @@ namespace BeatKeeper.Runtime.Ingame.Battle
         }
 
         /// <summary>
-        /// /     アクティブな敵を設定する
+        ///     次の敵をアクティブ化する
+        /// </summary>
+        public void NextEnemyActive()
+        {
+            // 次の敵のインデックスを計算
+            int nextIndex = (_activeEnemyIndex + 1);
+            
+            if (nextIndex >= _enemies.Length) return;
+
+            // 次の敵をアクティブに設定
+            SetActiveEnemy(nextIndex);
+            
+            _activeEnemyIndex = nextIndex;
+        }
+
+        /// <summary>
+        ///     アクティブな敵を設定する
         /// </summary>
         /// <param name="index"></param>
-        public void SetActiveEnemy(int index)
+        private void SetActiveEnemy(int index)
         {
             if (index < 0 || index >= _enemies.Length)
             {
@@ -49,11 +70,11 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             }
 
             // 既存のアクティブな敵を非アクティブにする
-            _enemies[_activeEnemyIndex].gameObject.SetActive(false);
+            Destroy(_enemies[_activeEnemyIndex].gameObject);
 
             // 新しい敵をアクティブにする
             _activeEnemyIndex = index;
-            _enemies[index].gameObject.SetActive(true);
+            _enemies[index].SetActive();
         }
     }
 }

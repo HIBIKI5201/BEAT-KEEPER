@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using SymphonyFrameWork.System;
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
@@ -7,7 +9,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
-            Debug.Log("BreakMovieSequenceBehaviour_1 OnBehaviourPlay");
+            //次の敵をアクティブ化する
+            var enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
+            if (enemyAdmin)
+            {
+                enemyAdmin.NextEnemyActive();
+            }
+            
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            if (phaseManager)
+            {
+                phaseManager.NextPhase();
+            }
         }
     }
 }
