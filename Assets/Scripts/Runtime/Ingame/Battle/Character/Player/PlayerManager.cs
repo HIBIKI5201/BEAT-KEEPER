@@ -170,7 +170,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
-            if (_data) return;
+            if (!_data) return;
             if (_target == null) return;
             
 
@@ -352,6 +352,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Special.started += OnSpecial;
                 _inputBuffer.Finishier.started += OnFinisher;
                 _inputBuffer.Avoid.started += OnAvoid;
+                
+                SymphonyDebugLog.DirectLog("player input registered");
             }
             else
             {
@@ -374,6 +376,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _inputBuffer.Special.started -= OnSpecial;
                 _inputBuffer.Finishier.started -= OnFinisher;
                 _inputBuffer.Avoid.started -= OnAvoid;
+                
+                SymphonyDebugLog.DirectLog("player input unregistered");
             }
             else
             {
