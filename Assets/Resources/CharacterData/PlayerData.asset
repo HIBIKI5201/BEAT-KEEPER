@@ -25,6 +25,7 @@ MonoBehaviour:
   _goodRange: 0.5
   _flowZoneThreshold: 10
   _flowZoneDuration: 16
-  _avoidRange: 0.5
+  _avoidRange: 1
   _avoidInvincibilityTime: 1
   _hitStunTime: 5
+  _chargeHitStunTime: 2
