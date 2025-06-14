@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,7 +17,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class UIElement_ChartRingManager : MonoBehaviour
     {
-        [SerializeField] [Tooltip("リングのデータ群")] private RingData[] _ringDatas;
+        [SerializeField][Tooltip("リングのデータ群")] private RingData[] _ringDatas;
         private StageEnemyAdmin _enemies;
         private BGMManager _musicEngineHelper;
 
@@ -25,6 +25,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private PlayerManager _player;
         private readonly Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
+        private readonly HashSet<UIElement_RingIndicator> _activeRingIndicator = new();
 
         private EnemyData _targetData;
 
@@ -83,6 +84,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             #endregion
+        }
+
+        private void OnDestroy()
+        {
+            foreach(var data in _activeRingIndicator)
+            {
+                Destroy(data.gameObject);
+            }
         }
 
         private void OnGUI()
@@ -144,7 +153,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 if (_ringPools.TryGetValue(data.AttackKind, out var op))
                 {
                     var ring = op.Get(); //リングを取得
-                    ring.OnGet(() => op.Release(ring), //終了時のイベントを設定
+                    _activeRingIndicator.Add(ring);
+                    ring.OnGet(() => //終了時のイベントを設定
+                    {
+                        op.Release(ring); //オブジェクトを非アクティブに
+                        _activeRingIndicator.Remove(ring); //アクティブリストから除外
+                    },
                         element.Position);
                 }
             }
@@ -160,7 +174,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [SerializeField] private GameObject _ringPrefab;
 
-        [SerializeField] [Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")]
+        [SerializeField]
+        [Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")]
         private int _defaultCapacity = 3;
 
         public ChartKindEnum AttackKind => _attackKind;
