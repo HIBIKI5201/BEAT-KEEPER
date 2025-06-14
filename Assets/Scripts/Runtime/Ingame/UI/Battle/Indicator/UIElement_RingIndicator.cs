@@ -47,6 +47,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _count = 0;
         }
 
+        /// <summary>
+        ///     リングの実行を終了する
+        /// </summary>
+        public void End()
+        {
+            if (_tweens != null) //実行中のTweenを停止
+            {
+                foreach (var teen in _tweens)
+                    teen?.Kill();
+            }
+
+            _onEndAction?.Invoke();
+        }
+
         public void AddCount()
         {
             _count++;
@@ -65,17 +79,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 End();
                 return;
             }
-        }
-
-        protected void End()
-        {
-            if (_tweens != null) //実行中のTweenを停止
-            {
-                foreach (var teen in _tweens)
-                    teen?.Kill(); 
-            }
-            
-            _onEndAction?.Invoke();
         }
     }
 }
