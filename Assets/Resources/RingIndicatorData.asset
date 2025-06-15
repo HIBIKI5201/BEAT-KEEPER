@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be81968d5c161fe49a01b205b7d6f797, type: 3}
+  m_Name: RingIndicatorData
+  m_EditorClassIdentifier: 
+  _ringDatas:
+  - _attackKind: 1
+    _ringPrefab: {fileID: 1751697491445142840, guid: 4f5c7ad10248b044bbfa9a319d966e87, type: 3}
+    _defaultCapacity: 5
+  - _attackKind: 2
+    _ringPrefab: {fileID: 1751697491445142840, guid: f889c14c193eb524e83511f75d293b45, type: 3}
+    _defaultCapacity: 5
+  - _attackKind: 4
+    _ringPrefab: {fileID: 379011709620990451, guid: 2938a4271accb274984d9b053a81d4e0, type: 3}
+    _defaultCapacity: 3
+  - _attackKind: 8
+    _ringPrefab: {fileID: 8664619242752134054, guid: 30da86b5684a70b4289fde36b76ca7ca, type: 3}
+    _defaultCapacity: 2
