@@ -9,19 +9,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
     public class SpecialIndicator : RingIndicatorBase
     {
         [Header("色設定")]
-        [SerializeField] private Color _warningColor = Color.red;
         [SerializeField] private Color _successColor = Color.yellow;
         [SerializeField] private Color _defaultColor = Color.white;
 
         [SerializeField] private float _blinkDuration = 0.2f;
         [SerializeField] private float _fadeDuration = 0.3f;
 
-        public override int EffectLength => 5;
+        public override int EffectLength => 3;
 
-        /// <summary>
-        /// ビートごとに実行される処理
-        /// </summary>
-        /// <param name="count"></param>
         public override void Effect(int count)
         {
             base.Effect(count);
@@ -29,54 +24,32 @@ namespace BeatKeeper.Runtime.Ingame.UI
             switch (count)
             {
                 case 1:
-                    _tweens = new Tween[3];
+                    _tweens = new Tween[2];
                     Effect1();
                     break;
-
                 case 3:
                     Effect2();
-                    break;
-
-                case 5:
-                    Effect3();
                     break;
             }
         }
 
         /// <summary>
-        /// 点滅シークエンス
+        /// リングの縮小
         /// </summary>
         private void Effect1()
         {
             _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
 
-            var blinkSequence = DOTween.Sequence().SetAutoKill(false);
+            _ringImage.color = _defaultColor;
+            _selfImage.color = _defaultColor;
 
-            blinkSequence.Append(_ringImage.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo));
-            blinkSequence.Join(_selfImage.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo));
-
-            blinkSequence.Append(_ringImage.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-            blinkSequence.Join(_selfImage.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-
-            blinkSequence.Play();
-
-            _tweens[0] = blinkSequence;
-        }
-
-        /// <summary>
-        /// リングの縮小
-        /// </summary>
-        private void Effect2()
-        {
-            _tweens[1] = _ringImage.rectTransform
-                .DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f)
-                .SetEase(Ease.Linear);
+            _tweens[0] = _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
         }
 
         /// <summary>
         /// 当たりエフェクト
         /// </summary>
-        private void Effect3()
+        private void Effect2()
         {
             var successSequence = DOTween.Sequence();
 
@@ -90,7 +63,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             successSequence.OnComplete(End);
 
-            _tweens[2] = successSequence;
+            _tweens[1] = successSequence;
         }
     }
 }
