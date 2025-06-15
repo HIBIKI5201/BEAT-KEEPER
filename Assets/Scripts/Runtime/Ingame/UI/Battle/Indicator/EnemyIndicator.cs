@@ -1,8 +1,7 @@
-﻿using BeatKeeper.Runtime.Ingame.UI;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
     /// 敵の攻撃警告UI
@@ -26,7 +25,7 @@ namespace BeatKeeper
         public override void Effect(int count)
         {
             base.Effect(count);
-            
+
             switch (count)
             {
                 case 1:
@@ -63,7 +62,7 @@ namespace BeatKeeper
 
             _tweens[0] = blinkSequence;
         }
-        
+
         /// <summary>
         /// リングの縮小
         /// </summary>
@@ -90,7 +89,7 @@ namespace BeatKeeper
             successSequence.Play();
 
             successSequence.OnComplete(End);
-            
+
             _tweens[2] = successSequence;
         }
     }

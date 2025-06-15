@@ -1,8 +1,7 @@
-﻿using BeatKeeper.Runtime.Ingame.UI;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     public class PlayerIndicator : UIElement_RingIndicator
     {
@@ -18,8 +17,8 @@ namespace BeatKeeper
         public override void Effect(int count)
         {
             base.Effect(count);
-            
-            switch(count)
+
+            switch (count)
             {
                 case 1:
                     _tweens = new Tween[2];
@@ -30,14 +29,14 @@ namespace BeatKeeper
                     break;
             }
         }
-        
+
         /// <summary>
         /// リングの縮小
         /// </summary>
         private void Effect1()
         {
             _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-            
+
             _ringImage.color = _defaultColor;
             _selfImage.color = _defaultColor;
 
@@ -60,7 +59,7 @@ namespace BeatKeeper
             successSequence.Play();
 
             successSequence.OnComplete(End);
-            
+
             _tweens[1] = successSequence;
         }
     }
