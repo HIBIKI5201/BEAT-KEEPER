@@ -335,11 +335,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 174.29602
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 206.63708
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e8058389e0f48468489c8435f1a06f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ringSprite: {fileID: 0}
   _initialScale: 2
   _warningColor: {r: 0.59607846, g: 0, b: 1, a: 1}
   _successColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
