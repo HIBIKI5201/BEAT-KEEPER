@@ -16,6 +16,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private RingData[] _ringDatas;
     }
 
+    /// <summary>
+    ///     リングインジケーターの情報
+    /// </summary>
     [Serializable]
     public class RingData
     {
