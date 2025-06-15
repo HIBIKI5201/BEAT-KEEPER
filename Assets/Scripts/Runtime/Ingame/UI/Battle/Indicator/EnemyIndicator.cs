@@ -4,7 +4,7 @@ using UnityEngine;
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    /// 敵の攻撃警告UI
+    ///     敵の攻撃警告UI
     /// </summary>
     public class EnemyIndicator : UIElement_RingIndicator
     {

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
+    /// <summary>
+    ///     プレイヤー攻撃のインジケーターUI
+    /// </summary>
     public class PlayerIndicator : UIElement_RingIndicator
     {
         [Header("色設定")]

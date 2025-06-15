@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    /// 敵の攻撃警告UI
+    ///     インジケーターのベースクラス
     /// </summary>
     [RequireComponent(typeof(Image))]
     public abstract class UIElement_RingIndicator : MonoBehaviour
