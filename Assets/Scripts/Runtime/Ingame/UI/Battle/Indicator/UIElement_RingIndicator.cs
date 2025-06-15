@@ -15,7 +15,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         public abstract int EffectLength { get; }
 
         [Header("基本設定")]
-        [SerializeField] protected Sprite _ringSprite;
         [SerializeField] protected float _initialScale = 3.5f;
 
         protected PlayerManager _player;
