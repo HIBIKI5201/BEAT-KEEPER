@@ -6,7 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// <summary>
     ///     プレイヤー攻撃のインジケーターUI
     /// </summary>
-    public class PlayerIndicator : UIElement_RingIndicator
+    public class PlayerIndicator : RingIndicatorBase
     {
         [Header("色設定")]
         [SerializeField] private Color _successColor = Color.yellow;

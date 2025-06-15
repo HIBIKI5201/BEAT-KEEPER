@@ -6,7 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// <summary>
     ///     敵の攻撃警告UI
     /// </summary>
-    public class EnemyIndicator : UIElement_RingIndicator
+    public class EnemyIndicator : RingIndicatorBase
     {
         [Header("色設定")]
         [SerializeField] private Color _warningColor = Color.red;

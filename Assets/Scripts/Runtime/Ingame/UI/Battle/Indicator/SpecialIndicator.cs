@@ -6,7 +6,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// <summary>
     ///     スキルとフィニッシャーのインジケーターUI
     /// </summary>
-    public class SpecialIndicator : UIElement_RingIndicator
+    public class SpecialIndicator : RingIndicatorBase
     {
         [Header("色設定")]
         [SerializeField] private Color _warningColor = Color.red;

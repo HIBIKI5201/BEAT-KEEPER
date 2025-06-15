@@ -24,8 +24,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Action _onBeat;
 
         private PlayerManager _player;
-        private readonly Dictionary<ChartKindEnum, ObjectPool<UIElement_RingIndicator>> _ringPools = new();
-        private readonly HashSet<UIElement_RingIndicator> _activeRingIndicator = new();
+        private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
+        private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
 
         private EnemyData _targetData;
 
@@ -47,17 +47,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 if (!data.RingPrefab)
                     return;
 
-                data.ApearTiming = data.RingPrefab.GetComponent<UIElement_RingIndicator>()?.EffectLength ?? 5;
+                data.ApearTiming = data.RingPrefab.GetComponent<RingIndicatorBase>()?.EffectLength ?? 5;
 
                 _ringPools.Add(
                     data.AttackKind,
-                    new ObjectPool<UIElement_RingIndicator>(
+                    new ObjectPool<RingIndicatorBase>(
                         () =>
                         {
                             var go = Instantiate(data.RingPrefab);
                             go.transform.SetParent(transform);
 
-                            if (go.TryGetComponent<UIElement_RingIndicator>(out var manager))
+                            if (go.TryGetComponent<RingIndicatorBase>(out var manager))
                             {
                                 manager.gameObject.SetActive(false);
                                 manager.OnInit(_player);

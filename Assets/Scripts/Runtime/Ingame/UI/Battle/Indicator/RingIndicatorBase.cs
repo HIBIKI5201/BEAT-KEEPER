@@ -10,7 +10,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     ///     インジケーターのベースクラス
     /// </summary>
     [RequireComponent(typeof(Image))]
-    public abstract class UIElement_RingIndicator : MonoBehaviour
+    public abstract class RingIndicatorBase : MonoBehaviour
     {
         public abstract int EffectLength { get; }
 
