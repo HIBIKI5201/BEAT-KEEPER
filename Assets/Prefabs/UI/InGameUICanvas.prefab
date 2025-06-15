@@ -415,7 +415,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1116584958319909152
 RectTransform:
@@ -462,17 +462,17 @@ MonoBehaviour:
     _ringPrefab: {fileID: 1751697491445142840, guid: 4f5c7ad10248b044bbfa9a319d966e87, type: 3}
     _defaultCapacity: 5
   - ApearTiming: 0
-    _attackKind: 2
+    _attackKind: 4
     _ringPrefab: {fileID: 379011709620990451, guid: 2938a4271accb274984d9b053a81d4e0, type: 3}
     _defaultCapacity: 5
   - ApearTiming: 0
-    _attackKind: 4
-    _ringPrefab: {fileID: 8664619242752134054, guid: 30da86b5684a70b4289fde36b76ca7ca, type: 3}
-    _defaultCapacity: 5
-  - ApearTiming: 0
     _attackKind: 8
-    _ringPrefab: {fileID: 1751697491445142840, guid: f889c14c193eb524e83511f75d293b45, type: 3}
-    _defaultCapacity: 5
+    _ringPrefab: {fileID: 8664619242752134054, guid: 30da86b5684a70b4289fde36b76ca7ca, type: 3}
+    _defaultCapacity: 3
+  - ApearTiming: 0
+    _attackKind: 2
+    _ringPrefab: {fileID: 2601154954356717719, guid: f4f1c3248e905e340afacd7aeb4077d2, type: 3}
+    _defaultCapacity: 2
 --- !u!1 &2313999795422903739
 GameObject:
   m_ObjectHideFlags: 0
