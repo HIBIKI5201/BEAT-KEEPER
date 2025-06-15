@@ -1554,6 +1554,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1316319912688006519, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1517865131295371548, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1744,19 +1748,35 @@ PrefabInstance:
       objectReference: {fileID: 719706917}
     - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: _ringDatas.Array.size
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _ringDatas.Array.data[1]._attackKind
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: _ringDatas.Array.data[2]._attackKind
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: _ringDatas.Array.data[2]._ringPrefab
       value: 
       objectReference: {fileID: 8664619242752134054, guid: 30da86b5684a70b4289fde36b76ca7ca, type: 3}
     - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _ringDatas.Array.data[3]._attackKind
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _ringDatas.Array.data[3]._ringPrefab
+      value: 
+      objectReference: {fileID: 2601154954356717719, guid: f4f1c3248e905e340afacd7aeb4077d2, type: 3}
+    - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: _ringDatas.Array.data[2]._defaultCapacity
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _ringDatas.Array.data[3]._defaultCapacity
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9100631615109704522, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
