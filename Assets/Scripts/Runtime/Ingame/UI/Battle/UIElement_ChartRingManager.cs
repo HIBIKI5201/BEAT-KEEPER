@@ -77,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
 
-                _musicEngineHelper.OnJustChangedBeat += OnBeat;
+                _musicEngineHelper.OnJustChangedBeat += OnJustBeat;
                 enemy.OnFinisherable += UnregisterOnBeat;
             }
         }
@@ -86,7 +86,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         ///     ビートが変わったときの処理
         /// </summary>
-        private void OnBeat()
+        private void OnJustBeat()
         {
             if (_enemies == null) return;
 
@@ -127,7 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void UnregisterOnBeat()
         {
-            if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnBeat;
+            if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
         }
 
         /// <summary>
