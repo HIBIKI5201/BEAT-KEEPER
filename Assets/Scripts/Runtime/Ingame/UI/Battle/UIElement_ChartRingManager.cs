@@ -71,17 +71,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnChangePhase(PhaseEnum phase)
         {
             if (phase == PhaseEnum.Battle) //譜面を取得してビートの購買を開始
-
             {
                 _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
 
                 _musicEngineHelper.OnJustChangedBeat += OnJustBeat;
-                enemy.OnFinisherable += UnregisterOnJustBeat;
+                enemy.OnFinisherable += OnFinisherable;
             }
         }
-
 
         /// <summary>
         ///     ビートが変わったときの処理
@@ -122,6 +120,29 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 }
             }
         }
+
+        /// <summary>
+        ///     フィニッシャー待機状態になった時の処理
+        /// </summary>
+        private void OnFinisherable()
+        {
+            UnregisterOnJustBeat();
+            ReleaseAllActiveIndicator();
+        }
+
+        /// <summary>
+        ///     全てのアクティブなインジケーターを非アクティブ化する
+        /// </summary>
+        public void ReleaseAllActiveIndicator()
+        {
+            foreach (var ring in _activeRingIndicator)
+            {
+                ring.End();
+            }
+
+            _activeRingIndicator.Clear();
+        }
+
         /// <summary>
         ///     ビートの購買を解除する
         /// </summary>
