@@ -4,9 +4,9 @@ using UnityEngine;
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    ///     プレイヤー攻撃のインジケーターUI
+    ///     スキルとフィニッシャーのインジケーターUI
     /// </summary>
-    public class PlayerIndicator : RingIndicatorBase
+    public class SpecialIndicator : RingIndicatorBase
     {
         [Header("色設定")]
         [SerializeField] private Color _successColor = Color.yellow;

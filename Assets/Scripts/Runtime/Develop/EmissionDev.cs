@@ -13,7 +13,7 @@ namespace BeatKeeper.Runtime.Develop
         {
             var musicEngine = ServiceLocator.GetInstance<BGMManager>();
 
-            musicEngine.OnJustChangedBeat += OnBeat;
+            musicEngine.OnJustChangedBeat += OnJustBeat;
 
             var renderer = GetComponent<Renderer>();
             _material = renderer.material;
@@ -22,7 +22,7 @@ namespace BeatKeeper.Runtime.Develop
             _color = _material.GetColor("_Color");
         }
 
-        private async void OnBeat()
+        private async void OnJustBeat()
         {
             int count = 10;
 

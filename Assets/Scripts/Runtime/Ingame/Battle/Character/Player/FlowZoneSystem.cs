@@ -43,13 +43,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _musicEngineHelper.OnJustChangedBeat -= OnBeat;
+            _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
         }
 
         /// <summary>
         ///     拍数が変更されるタイミングで呼び出されるメソッド
         /// </summary>
-        private void OnBeat()
+        private void OnJustBeat()
         {
             _count++;
 
@@ -72,7 +72,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_resonanceCount.Value >= 7)
             {
                 _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
-                _musicEngineHelper.OnJustChangedBeat += OnBeat; // 継続時間を確認するために拍数を取得する
+                _musicEngineHelper.OnJustChangedBeat += OnJustBeat; // 継続時間を確認するために拍数を取得する
             }
         }
 
@@ -95,7 +95,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _isFlowZone.Value = false;
             _count = 0;
             _resonanceCount.Value = 0;
-            _musicEngineHelper.OnJustChangedBeat -= OnBeat; // 購読をやめる
+            _musicEngineHelper.OnJustChangedBeat -= OnJustBeat; // 購読をやめる
         }
     }
 }

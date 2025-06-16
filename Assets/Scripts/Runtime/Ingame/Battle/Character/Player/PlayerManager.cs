@@ -5,6 +5,7 @@ using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +28,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid;
+
+        public event Action OnFinisher;
         #endregion
 
         #region プロパティ
@@ -37,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region プライベートフィールド
-        
+
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
         private InputBuffer _inputBuffer;
@@ -47,7 +50,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private IEnemy _target;
         private bool _isBattle;
-        private float  _stunEndTiming; //スタンが終了するタイミング
+        private float _stunEndTiming; //スタンが終了するタイミング
         private float _chargeAttackTimer;
         private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
         private bool _willPerfectAttack; //パーフェクト攻撃の予約
@@ -56,7 +59,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private ComboSystem _comboSystem;
         private SpecialSystem _specialSystem;
         private FlowZoneSystem _flowZoneSystem;
-        
+
         #endregion
 
         #region モック用の機能
@@ -72,7 +75,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected override async void Awake()
         {
-            SystemInit(); //システムの初期化
+            await SystemInit(); //システムの初期化
 
             //コンポーネント取得
             if (TryGetComponent(out Animator animator))
@@ -97,7 +100,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _bgmManager = ServiceLocator.GetInstance<BGMManager>();
 
-            _bgmManager.OnJustChangedBeat += OnBeat;
+            _bgmManager.OnJustChangedBeat += OnJustBeat;
             _bgmManager.OnNearChangedBeat += OnNearBeat;
 
             if (!_bgmManager)
@@ -123,7 +126,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _bgmManager.OnJustChangedBeat -= OnBeat;
+            _bgmManager.OnJustChangedBeat -= OnJustBeat;
             _bgmManager.OnNearChangedBeat -= OnNearBeat;
 
             InputUnregister();
@@ -132,7 +135,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region  オブザーバー系メソッド
-        
+
         /// <summary>
         ///     フェーズが変わった際の処理
         /// </summary>
@@ -145,11 +148,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isBattle)
             {
                 InputRegister();
-                
+
                 var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                 _target = stage.EnemyAdmin.GetActiveEnemy();
-                
-                _playerCamera.LookAt = 
+
+                _playerCamera.LookAt =
                     ServiceLocator.GetInstance<BattleSceneManager>()
                         .EnemyAdmin.GetActiveEnemy().transform;
             }
@@ -163,7 +166,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     移動入力を受け取った際の処理
         /// </summary>
         /// <param name="context"></param>
-        private void OnMove(InputAction.CallbackContext context)
+        private void OnMoveInput(InputAction.CallbackContext context)
         {
             var dir = context.ReadValue<Vector2>();
             _animeManager.MoveVector(dir);
@@ -173,57 +176,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     コンボ攻撃を行う
         /// </summary>
         /// <param name="context"></param>
-        private void OnAttack(InputAction.CallbackContext context)
+        private void OnAttackInput(InputAction.CallbackContext context)
         {
-            if (!_isBattle) return;
-            if (!_data) return;
-            if (_target == null) return;
-            
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart();
+            var chart = _target.EnemyData.ChartData.Chart;
 
-            SymphonyDebugLog.AddText($"{_data.Name} is attacking");
+            var kind = chart[timing].AttackKind;
 
-            //攻撃が成功したか
-            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
-            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
-
-            //評価のログ
-            SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
-
-            if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
+            if (kind == ChartKindEnum.Attack)
             {
-                OnShootComboAttack?.Invoke();
-                _comboSystem.Attack();
-
-                if (isPerfectHit)
-                {
-                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
-                    {
-                        _willPerfectAttack = true;
-                    }
-                    else //ビート後なら即座に実行
-                    {
-                        PerfectAttack();
-                    }
-                }
-                else //Goodなら即座に実行する
-                {
-                    OnGoodAttack?.Invoke();
-                    AttackEnemy();
-                }
+                AttackFlow();
             }
-            else
+            else if (kind == ChartKindEnum.Skill)
             {
-                _comboSystem?.ComboReset();
+                SKillFlow();
             }
-
-            SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
         ///     溜め攻撃を行う
         /// </summary>
         /// <param name="context"></param>
-        private void OnChargeAttack(InputAction.CallbackContext context)
+        private void OnChargeAttackInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
 
@@ -231,17 +205,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 case InputActionPhase.Started: //チャージ開始
                     Debug.Log($"{_data.Name} start charge attack");
-                    _chargeAttackTimer = Time.time;
+                    _chargeAttackTimer = Time.time; //チャージ開始時間を記録
                     break;
 
                 case InputActionPhase.Canceled: //発動
                     OnShootChargeAttack?.Invoke();
 
                     //フルチャージかどうか
-                    if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime < Time.time) 
+                    if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime < Time.time)
                     {
-                        OnFullChargeAttack?.Invoke();
                         Debug.Log($"{_data.Name} is full charge attacking");
+                        OnFullChargeAttack?.Invoke();
                     }
                     else
                     {
@@ -253,11 +227,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        //TODO 必殺技は廃止予定
         /// <summary>
         ///     必殺技
         /// </summary>
         /// <param name="context"></param>
-        private void OnSpecial(InputAction.CallbackContext context)
+        private void OnSpecialInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
             if (_target == null) return;
@@ -269,11 +244,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        //TODO フィニッシャーは廃止予定
         /// <summary>
         ///     フィニッシャー
         /// </summary>
         /// <param name="context"></param>
-        private void OnFinisher(InputAction.CallbackContext context)
+        private void OnFinisherInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
 
@@ -325,7 +301,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     ビートが変わった際の処理
         /// </summary>
-        private void OnBeat()
+        private void OnJustBeat()
         {
             if (_willPerfectAttack) //もしパーフェクト攻撃が予約されていれば実行
             {
@@ -336,11 +312,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private void OnNearBeat() => _willPerfectAttack = false;
-        
+
         #endregion
 
         #region  公開メソッド
-        
+
         #region 入力の購買
 
         /// <summary>
@@ -350,15 +326,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_inputBuffer)
             {
-                _inputBuffer.Move.performed += OnMove;
-                _inputBuffer.Move.canceled += OnMove;
-                _inputBuffer.Interact.started += OnChargeAttack;
-                _inputBuffer.Interact.canceled += OnChargeAttack;
-                _inputBuffer.Attack.started += OnAttack;
-                _inputBuffer.Special.started += OnSpecial;
-                _inputBuffer.Finishier.started += OnFinisher;
+                _inputBuffer.Move.performed += OnMoveInput;
+                _inputBuffer.Move.canceled += OnMoveInput;
+                _inputBuffer.Interact.started += OnChargeAttackInput;
+                _inputBuffer.Interact.canceled += OnChargeAttackInput;
+                _inputBuffer.Attack.started += OnAttackInput;
+                _inputBuffer.Special.started += OnSpecialInput;
+                _inputBuffer.Finishier.started += OnFinisherInput;
                 _inputBuffer.Avoid.started += OnAvoid;
-                
+
                 SymphonyDebugLog.DirectLog("player input registered");
             }
             else
@@ -374,15 +350,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_inputBuffer)
             {
-                _inputBuffer.Move.performed -= OnMove;
-                _inputBuffer.Move.canceled -= OnMove;
-                _inputBuffer.Interact.started -= OnChargeAttack;
-                _inputBuffer.Interact.canceled -= OnChargeAttack;
-                _inputBuffer.Attack.started -= OnAttack;
-                _inputBuffer.Special.started -= OnSpecial;
-                _inputBuffer.Finishier.started -= OnFinisher;
+                _inputBuffer.Move.performed -= OnMoveInput;
+                _inputBuffer.Move.canceled -= OnMoveInput;
+                _inputBuffer.Interact.started -= OnChargeAttackInput;
+                _inputBuffer.Interact.canceled -= OnChargeAttackInput;
+                _inputBuffer.Attack.started -= OnAttackInput;
+                _inputBuffer.Special.started -= OnSpecialInput;
+                _inputBuffer.Finishier.started -= OnFinisherInput;
                 _inputBuffer.Avoid.started -= OnAvoid;
-                
+
                 SymphonyDebugLog.DirectLog("player input unregistered");
             }
             else
@@ -397,20 +373,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         /// <returns></returns>
         public bool IsStunning() => IsStunning(Time.time);
-        
+
         /// <summary>
         ///     指定時間がスタン中かを判定する
         /// </summary>
         /// <param name="timing">判定する時間</param>
         /// <returns></returns>
         public bool IsStunning(float timing)
-        { 
+        {
             return _stunEndTiming > timing;
         }
         #endregion
-        
+
         #region  インターフェースメソッド
-        
+
         /// <summary>
         ///     攻撃を受けた際の処理
         /// </summary>
@@ -432,13 +408,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _comboSystem.ComboReset();
         }
-        
+
         #endregion
-        
+
         /// <summary>
         ///     システムの初期化処理
         /// </summary>
-        private async void SystemInit()
+        private async Task SystemInit()
         {
             //システムの初期化
             _comboSystem = new ComboSystem(_data);
@@ -447,6 +423,62 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 new FlowZoneSystem(
                     await ServiceLocator.GetInstanceAsync<BGMManager>(),
                     _data);
+        }
+
+        /// <summary>
+        ///     攻撃入力の一連のフロー
+        /// </summary>
+        private void AttackFlow()
+        {
+            if (!_isBattle) return;
+            if (!_data) return;
+            if (_target == null) return;
+
+
+            SymphonyDebugLog.AddText($"{_data.Name} do attack");
+
+            //攻撃が成功したか
+            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
+            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
+
+            //評価のログ
+            SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
+
+            if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
+            {
+                OnShootComboAttack?.Invoke();
+                _comboSystem.Attack();
+
+                if (isPerfectHit)
+                {
+                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
+                    {
+                        _willPerfectAttack = true;
+                    }
+                    else //ビート後なら即座に実行
+                    {
+                        PerfectAttack();
+                    }
+                }
+                else //Goodなら即座に実行する
+                {
+                    GoodAttack();
+                }
+            }
+            else
+            {
+                _comboSystem?.ComboReset();
+            }
+
+            SymphonyDebugLog.TextLog();
+        }
+
+        /// <summary>
+        ///     スキルの一連のフロー
+        /// </summary>
+        private void SKillFlow()
+        {
+
         }
 
         /// <summary>
@@ -459,6 +491,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             AttackEnemy(_data.PerfectCriticalDamage);
         }
+
+        /// <summary>
+        ///     グッド攻撃を行う
+        /// </summary>
+        private void GoodAttack()
+        {
+            OnGoodAttack?.Invoke();
+            AttackEnemy();
+        }
+
+
 
         /// <summary>
         ///     敵に攻撃を行う

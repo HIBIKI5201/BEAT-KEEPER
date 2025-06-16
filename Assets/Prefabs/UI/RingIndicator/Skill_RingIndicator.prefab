@@ -303,11 +303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 174.29602
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 206.63708
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -403,7 +403,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8863679517503484876}
+      addedObject: {fileID: -2390126246297334455}
   m_SourcePrefab: {fileID: 100100000, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
 --- !u!224 &989207443497645692 stripped
 RectTransform:
@@ -415,7 +415,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
   m_PrefabInstance: {fileID: 4063496247295527510}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8863679517503484876
+--- !u!114 &-2390126246297334455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -424,12 +424,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1751697491445142840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebd52fc2b80177f42ba8d283debd45ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 912d4ed547299d54bb8f5988e3d64996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ringSprite: {fileID: 0}
   _initialScale: 2
   _successColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _defaultColor: {r: 0.94180703, g: 1, b: 0, a: 1}
+  _defaultColor: {r: 0.9411765, g: 1, b: 0, a: 1}
   _blinkDuration: 0.2
   _fadeDuration: 0.3

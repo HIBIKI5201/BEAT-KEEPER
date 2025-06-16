@@ -7,15 +7,14 @@ using UnityEngine.UI;
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    /// 敵の攻撃警告UI
+    ///     インジケーターのベースクラス
     /// </summary>
     [RequireComponent(typeof(Image))]
-    public abstract class UIElement_RingIndicator : MonoBehaviour
+    public abstract class RingIndicatorBase : MonoBehaviour
     {
         public abstract int EffectLength { get; }
 
         [Header("基本設定")]
-        [SerializeField] protected Sprite _ringSprite;
         [SerializeField] protected float _initialScale = 3.5f;
 
         protected PlayerManager _player;
@@ -47,6 +46,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _count = 0;
         }
 
+        /// <summary>
+        ///     リングの実行を終了する
+        /// </summary>
+        public void End()
+        {
+            if (_tweens != null) //実行中のTweenを停止
+            {
+                foreach (var teen in _tweens)
+                    teen?.Kill();
+            }
+
+            _onEndAction?.Invoke();
+        }
+
         public void AddCount()
         {
             _count++;
@@ -65,17 +78,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 End();
                 return;
             }
-        }
-
-        protected void End()
-        {
-            if (_tweens != null) //実行中のTweenを停止
-            {
-                foreach (var teen in _tweens)
-                    teen?.Kill(); 
-            }
-            
-            _onEndAction?.Invoke();
         }
     }
 }
