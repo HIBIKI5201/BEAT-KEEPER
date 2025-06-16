@@ -78,7 +78,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _targetData = enemy.Data;
 
                 _musicEngineHelper.OnJustChangedBeat += OnJustBeat;
-                enemy.OnFinisherable += UnregisterOnBeat;
+                enemy.OnFinisherable += UnregisterOnJustBeat;
             }
         }
 
@@ -125,7 +125,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         ///     ビートの購買を解除する
         /// </summary>
-        private void UnregisterOnBeat()
+        private void UnregisterOnJustBeat()
         {
             if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
         }
