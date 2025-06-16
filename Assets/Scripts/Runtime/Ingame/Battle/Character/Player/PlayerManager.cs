@@ -27,6 +27,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid;
+
+        public event Action OnFinisher;
         #endregion
 
         #region プロパティ
@@ -163,7 +165,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     移動入力を受け取った際の処理
         /// </summary>
         /// <param name="context"></param>
-        private void OnMove(InputAction.CallbackContext context)
+        private void OnMoveInput(InputAction.CallbackContext context)
         {
             var dir = context.ReadValue<Vector2>();
             _animeManager.MoveVector(dir);
@@ -173,7 +175,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     コンボ攻撃を行う
         /// </summary>
         /// <param name="context"></param>
-        private void OnAttack(InputAction.CallbackContext context)
+        private void OnAttackInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
             if (!_data) return;
@@ -223,7 +225,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     溜め攻撃を行う
         /// </summary>
         /// <param name="context"></param>
-        private void OnChargeAttack(InputAction.CallbackContext context)
+        private void OnChargeAttackInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
 
@@ -257,7 +259,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     必殺技
         /// </summary>
         /// <param name="context"></param>
-        private void OnSpecial(InputAction.CallbackContext context)
+        private void OnSpecialInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
             if (_target == null) return;
@@ -273,7 +275,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     フィニッシャー
         /// </summary>
         /// <param name="context"></param>
-        private void OnFinisher(InputAction.CallbackContext context)
+        private void OnFinisherInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
 
@@ -350,13 +352,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_inputBuffer)
             {
-                _inputBuffer.Move.performed += OnMove;
-                _inputBuffer.Move.canceled += OnMove;
-                _inputBuffer.Interact.started += OnChargeAttack;
-                _inputBuffer.Interact.canceled += OnChargeAttack;
-                _inputBuffer.Attack.started += OnAttack;
-                _inputBuffer.Special.started += OnSpecial;
-                _inputBuffer.Finishier.started += OnFinisher;
+                _inputBuffer.Move.performed += OnMoveInput;
+                _inputBuffer.Move.canceled += OnMoveInput;
+                _inputBuffer.Interact.started += OnChargeAttackInput;
+                _inputBuffer.Interact.canceled += OnChargeAttackInput;
+                _inputBuffer.Attack.started += OnAttackInput;
+                _inputBuffer.Special.started += OnSpecialInput;
+                _inputBuffer.Finishier.started += OnFinisherInput;
                 _inputBuffer.Avoid.started += OnAvoid;
                 
                 SymphonyDebugLog.DirectLog("player input registered");
@@ -374,13 +376,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_inputBuffer)
             {
-                _inputBuffer.Move.performed -= OnMove;
-                _inputBuffer.Move.canceled -= OnMove;
-                _inputBuffer.Interact.started -= OnChargeAttack;
-                _inputBuffer.Interact.canceled -= OnChargeAttack;
-                _inputBuffer.Attack.started -= OnAttack;
-                _inputBuffer.Special.started -= OnSpecial;
-                _inputBuffer.Finishier.started -= OnFinisher;
+                _inputBuffer.Move.performed -= OnMoveInput;
+                _inputBuffer.Move.canceled -= OnMoveInput;
+                _inputBuffer.Interact.started -= OnChargeAttackInput;
+                _inputBuffer.Interact.canceled -= OnChargeAttackInput;
+                _inputBuffer.Attack.started -= OnAttackInput;
+                _inputBuffer.Special.started -= OnSpecialInput;
+                _inputBuffer.Finishier.started -= OnFinisherInput;
                 _inputBuffer.Avoid.started -= OnAvoid;
                 
                 SymphonyDebugLog.DirectLog("player input unregistered");
