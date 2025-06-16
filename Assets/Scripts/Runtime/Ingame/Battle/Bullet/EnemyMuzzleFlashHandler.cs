@@ -21,12 +21,12 @@ namespace BeatKeeper.Runtime.Ingame
             
             // 敵が攻撃したタイミングでマズルフラッシュのエフェクトが再生されるようにする
             // TODO: 仕様次第で銃口の数が変わったらその処理を足す必要がある
-            _enemyManager.OnNormalAttack += _muzzleFlash.Fire;
+            _enemyManager.OnShootNormalAttack += _muzzleFlash.Fire;
         }
 
         private void OnDestroy()
         {
-            if(_enemyManager) _enemyManager.OnNormalAttack -= _muzzleFlash.Fire;
+            if(_enemyManager) _enemyManager.OnShootNormalAttack -= _muzzleFlash.Fire;
         }
     }
 }

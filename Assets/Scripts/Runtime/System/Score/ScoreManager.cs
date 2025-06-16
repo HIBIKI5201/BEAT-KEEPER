@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using BeatKeeper.Runtime.Ingame.Character;
 using R3;
+using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -34,9 +35,9 @@ namespace BeatKeeper
             }
         }
 
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
         }
 
         /// <summary>
@@ -52,6 +53,8 @@ namespace BeatKeeper
                 addedScore = Mathf.RoundToInt(score * EvaluateComboBonus()) + Score; // 小数点以下は切り捨ててint型に変換
             }
             _scoreProp.Value = Mathf.Max(addedScore, 0); // スコアはゼロ以下にはしない
+
+            SymphonyDebugLog.DirectLog($"[ScoreManager]\nスコアを更新 現在: {_scoreProp.Value} (追加: {score})");
         }
 
         /// <summary>

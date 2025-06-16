@@ -20,28 +20,23 @@ namespace BeatKeeper
         [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
         private CompositeDisposable _disposable = new CompositeDisposable();
 
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
-            Initialize();
-            
             AllReset();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
-            async void Initialize()
+            await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
+
+            _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
+            _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
             {
-                await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
+                _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
 
-                _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
-                _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
+                if (!value)
                 {
-                    _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
-
-                    if (!value)
-                    {
-                        AllReset();
-                    }
-                }).AddTo(_disposable);
-            }
+                    AllReset();
+                }
+            }).AddTo(_disposable);
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace BeatKeeper
         private void IconColorChanged(int count)
         {
             count--; // カウントが1オリジンで渡ってくるので、1減らす処理を挟む
-            
+
             if (count < -1 || count >= _icons.Length) // 0-6の範囲に収めたい
             {
                 Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");

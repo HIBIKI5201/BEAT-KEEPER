@@ -27,7 +27,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     コンボをリセットする
         /// </summary>
-        public void ComboReset(int value = 0) => _comboCount.Value = 0;
+        public void ComboReset() => _comboCount.Value = 0;
 
         public void Update()
         {

@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.Battle;
 using System;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         where TDataType : CharacterData
     {
         [SerializeField] protected TDataType _data;
+
+
         public TDataType Data => _data;
 
         public Action<int> OnHitAttack { get; set; }
@@ -23,7 +26,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} initialized");
         }
 
-        public virtual void HitAttack(float damage)
+        public virtual void HitAttack(AttackData data)
         {
              
         }

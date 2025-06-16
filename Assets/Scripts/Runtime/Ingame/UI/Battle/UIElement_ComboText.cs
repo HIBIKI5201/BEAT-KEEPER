@@ -17,9 +17,9 @@ namespace BeatKeeper
         private CanvasGroup _canvasGroup;
         private CompositeDisposable _disposables = new CompositeDisposable();
         
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             
             _text = GetComponent<Text>();
             _canvasGroup = GetComponent<CanvasGroup>();

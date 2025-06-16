@@ -1,9 +1,8 @@
 ﻿public enum SceneListEnum : int
 {
     None = 0,
-    SampleScene = 1,
-    System = 2,
-    InGame = 3,
-    Stage = 4,
-    Battle = 5,
+    InGame = 1,
+    Stage = 2,
+    Battle = 3,
+    System = 4,
 }

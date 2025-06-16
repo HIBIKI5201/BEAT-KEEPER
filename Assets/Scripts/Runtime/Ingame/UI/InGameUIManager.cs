@@ -1,60 +1,39 @@
-using BeatKeeper.Runtime.Ingame.UI;
+﻿using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
     /// インゲームのUIを管理するマネージャークラス
     /// </summary>
     public class InGameUIManager : MonoBehaviour
     {
-        [Header("開始演出")]
-        [SerializeField] private UIElement_EncounterText _encounterText;
-
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
         [SerializeField] private UIElement_ScoreText _scoreText;
         [SerializeField] private UIElement_SeekBar _seekBar;
         [SerializeField] private UIElement_FinisherGuide _finisherGuide;
-        [SerializeField] private UIElement_AttackWarningIndicator _warningIndicator;
-        
+        [SerializeField] private UIElement_ChartRingManager _chartRingManager;
+        [SerializeField] private UIElement_HealthBar _healthBar;
         private void Start()
         {
             ValidateComponents();
-            Initialize();
         }
-        
+
+        public void HealthBarInitialize(EnemyManager enemy) =>
+            _healthBar.RegisterEnemyEvent(enemy);
+
         /// <summary>
         /// コンポーネントの検証を行う
         /// </summary>
         private void ValidateComponents()
         {
-            Debug.Assert(_encounterText != null, "encounterText が設定されていません");
             Debug.Assert(_canvasControllers != null && _canvasControllers.Length > 0, "canvasControllers が設定されていません");
             Debug.Assert(_scoreText != null, "scoreText が設定されていません");
             Debug.Assert(_seekBar != null, "seekBar が設定されていません");
             Debug.Assert(_finisherGuide != null, "finisherGuide が設定されていません");
-            Debug.Assert(_warningIndicator != null, "warningIndicatorが設定されていません");
+            Debug.Assert(_chartRingManager != null, "warningIndicatorが設定されていません");
         }
-
-        private void Initialize()
-        {
-            _encounterText.Initialize();
-        }
-
-        #region 開始演出関連のUI
-        
-        /// <summary>
-        /// 遭遇時のテキストを表示する
-        /// </summary>
-        public void ShowEncounterText(int battleNumber) => _encounterText.ShowEncounterText(battleNumber);
-
-        /// <summary>
-        /// 遭遇時のテキストを非表示にする
-        /// </summary>
-        public void HideEncounterText() => _encounterText.HideEncounterText();
-        
-        #endregion
 
         #region バトル中のUI
 
@@ -91,12 +70,12 @@ namespace BeatKeeper
                 canvasController.Hide();
             }
         }
-        
+
         /// <summary>
         /// フィニッシャーガイドを表示
         /// </summary>
         public void ShowFinisherGuide() => _finisherGuide.Show();
-        
+
         /// <summary>
         /// フィニッシャーガイドを非表示
         /// </summary>

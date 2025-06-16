@@ -1,3 +1,4 @@
+using BeatKeeper.Runtime.Ingame.Battle;
 using UnityEngine;
 
 namespace BeatKeeper
