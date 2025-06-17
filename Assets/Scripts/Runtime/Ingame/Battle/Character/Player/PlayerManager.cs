@@ -92,6 +92,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private ComboSystem _comboSystem;
         private SpecialSystem _specialSystem;
         private FlowZoneSystem _flowZoneSystem;
+        private SkillSystem _skillSystem;
 
         #endregion
 
@@ -214,7 +215,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttackInput(InputAction.CallbackContext context)
         {
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart();
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
             var chart = _target.EnemyData.ChartData.Chart;
 
             var kind = chart[timing].AttackKind;
@@ -458,6 +459,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 new FlowZoneSystem(
                     await ServiceLocator.GetInstanceAsync<BGMManager>(),
                     _data);
+            _skillSystem = new SkillSystem(_data);
         }
 
         /// <summary>
@@ -515,7 +517,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
-
+            _skillSystem.StartSkill();
         }
 
         /// <summary>
@@ -609,6 +611,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                         break;
                     }
                 }
+            }
+
+            if (_skillSystem.IsActive) //スキルがアクティブ中ならバフを適用
+            {
+                power *= _data.SkillStrangth;
             }
 
             power *= _damageScale;
