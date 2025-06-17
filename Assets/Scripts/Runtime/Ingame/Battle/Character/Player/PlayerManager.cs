@@ -517,7 +517,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
+            SymphonyDebugLog.AddText($"{_data.Name} do skill");
             _skillSystem.StartSkill();
+
+            SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
