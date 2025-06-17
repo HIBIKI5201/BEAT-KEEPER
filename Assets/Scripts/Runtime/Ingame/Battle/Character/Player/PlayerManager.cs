@@ -5,6 +5,7 @@ using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -43,15 +44,41 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
+        #region サウンドクリップ
+        [Header("サウンド")]
+        [SerializeField, Tooltip("汎用的な発砲音（通常攻撃の1段目の発砲音）")]
+        private AudioClip _comboAttackSound;
+        
+        [SerializeField, Tooltip("チャージ中")]
+        private AudioClip _chargeAttackStartSound;
+
+        [SerializeField, Tooltip("チャージ完了")]
+        private AudioClip _chargeAttackEndSound;
+
+        [SerializeField, Tooltip("強攻撃")]
+        private AudioClip _chargeAttackSound;
+
+        [SerializeField, Tooltip("回避")]
+        private AudioClip _avoidSound;
+
+        [SerializeField, Tooltip("被弾")]
+        private AudioClip _hitSound;
+
+        [SerializeField, Tooltip("Perfect判定時（攻撃・回避兼用）")]
+        private AudioClip _perfectSound;
+        #endregion
+
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
         private CinemachineCamera _playerCamera;
+        private AudioSource _soundEffectSource;
 
         private IEnemy _target;
         private bool _isBattle;
         private float _stunEndTiming; //スタンが終了するタイミング
         private float _chargeAttackTimer;
+        private CancellationTokenSource _chargeAttackChargingTokenSource;
         private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
         private bool _willPerfectAttack; //パーフェクト攻撃の予約
 
@@ -117,6 +144,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Phase manager is null");
             }
+
+            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
         }
 
         private void Update()
@@ -204,25 +233,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
-                    Debug.Log($"{_data.Name} start charge attack");
-                    _chargeAttackTimer = Time.time; //チャージ開始時間を記録
+                    ChargeAttackCharging();
                     break;
 
                 case InputActionPhase.Canceled: //発動
-                    OnShootChargeAttack?.Invoke();
-
-                    //フルチャージかどうか
-                    if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime < Time.time)
-                    {
-                        Debug.Log($"{_data.Name} is full charge attacking");
-                        OnFullChargeAttack?.Invoke();
-                    }
-                    else
-                    {
-                        Debug.Log($"{_data.Name} is non full charge attacking");
-                        OnNonFullChargeAttack?.Invoke();
-                    }
-
+                    ChargeAttackActivation();
                     break;
             }
         }
@@ -290,6 +305,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SymphonyDebugLog.AddText($"Success Avoid");
 
             OnSuccessAvoid?.Invoke();
+            _soundEffectSource?.PlayOneShot(_avoidSound);
 
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
@@ -402,6 +418,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             base.HitAttack(data);
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _soundEffectSource?.PlayOneShot(_hitSound);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
@@ -449,6 +466,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnShootComboAttack?.Invoke();
                 _comboSystem.Attack();
 
+                _soundEffectSource?.PlayOneShot(_comboAttackSound);
+
                 if (isPerfectHit)
                 {
                     if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
@@ -488,6 +507,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             OnPerfectAttack?.Invoke();
             _specialSystem.AddSpecialEnergy(0.05f);
+            _soundEffectSource?.PlayOneShot(_perfectSound);
 
             AttackEnemy(_data.PerfectCriticalDamage);
         }
@@ -501,6 +521,48 @@ namespace BeatKeeper.Runtime.Ingame.Character
             AttackEnemy();
         }
 
+        /// <summary>
+        ///     チャージ攻撃の溜め
+        /// </summary>
+        private async void ChargeAttackCharging()
+        {
+            Debug.Log($"{_data.Name} start charge attack");
+            _chargeAttackChargingTokenSource = new();
+
+            _chargeAttackTimer = Time.time; //チャージ開始時間を記録
+            _soundEffectSource?.PlayOneShot(_chargeAttackStartSound);
+
+            //チャージが完了するまで待機
+            await Awaitable.WaitForSecondsAsync(
+                _data.ChargeAttackTime * (float)MusicEngineHelper.DurationOfBeat,
+                _chargeAttackChargingTokenSource.Token);
+
+            _soundEffectSource?.PlayOneShot(_chargeAttackEndSound);
+        }
+
+        /// <summary>
+        ///     チャージ攻撃を発動する
+        /// </summary>
+        private void ChargeAttackActivation()
+        {
+            _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
+
+            OnShootChargeAttack?.Invoke();
+            _soundEffectSource?.PlayOneShot(_chargeAttackSound);
+
+            //フルチャージかどうか
+            if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
+                < Time.time)
+            {
+                Debug.Log($"{_data.Name} is full charge attacking");
+                OnFullChargeAttack?.Invoke();
+            }
+            else
+            {
+                Debug.Log($"{_data.Name} is non full charge attacking");
+                OnNonFullChargeAttack?.Invoke();
+            }
+        }
 
 
         /// <summary>
