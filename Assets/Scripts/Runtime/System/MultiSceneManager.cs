@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -7,26 +8,44 @@ namespace BeatKeeper.Runtime.Ingame.System
 {
     public class MultiSceneManager : MonoBehaviour
     {
-        private Dictionary<SceneListEnum, bool> _sceneLoadProgress = new();
+        private Dictionary<SceneListEnum, bool> _loadedScenes = new();
 
-        public async void SceneLoad(SceneListEnum scene)
+        public async void SceneLoad(SceneListEnum sceneEnum)
         {
-            var task = SceneLoader.LoadScene(scene.ToString());
+            var task = SceneLoader.LoadScene(sceneEnum.ToString());
 
-            if (!_sceneLoadProgress.TryAdd(scene, false))
+            if (!_loadedScenes.TryAdd(sceneEnum, false))
             {
-                Debug.LogWarning($"failed to load scene : {scene}");
+                Debug.LogWarning($"failed to load scene : {sceneEnum}");
                 return;
             }
             
             await PauseManager.PausableWaitUntil(() => task.IsCompleted, destroyCancellationToken);
             
-            _sceneLoadProgress[scene] = true;
+            if (SceneLoader.GetExistScene(sceneEnum.ToString(), out var scene))
+            {
+                //シーンのルートオブジェクトの非同期初期化を行う
+                var rootObjects = scene.GetRootGameObjects();
+                Task[] tasks = new Task[rootObjects.Length];
+
+                for(int i = 0; i < rootObjects.Length; i++)
+                {
+                    if (rootObjects[i]
+                        .TryGetComponent<IInitializeAsync>(out var initializeAsync))
+                    {
+                         tasks[i] = initializeAsync.DoInitialize();
+                    }
+                }
+
+                await Task.WhenAll(tasks);
+            }
+
+            _loadedScenes[sceneEnum] = true;
         }
 
         public bool GetSceneLoadProgress(SceneListEnum scene)
         {
-            if (_sceneLoadProgress.TryGetValue(scene, out var result))
+            if (_loadedScenes.TryGetValue(scene, out var result))
                 return result; 
             
             return true;
@@ -38,7 +57,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="scene"></param>
         public async Task WaitForSceneLoad(SceneListEnum scene)
         {
-            if (!_sceneLoadProgress.ContainsKey(scene))
+            if (!_loadedScenes.ContainsKey(scene))
             {
                 Debug.LogWarning($"{scene} is not loaded");
             }
