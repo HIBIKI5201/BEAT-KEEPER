@@ -66,6 +66,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField, Tooltip("Perfect判定時（攻撃・回避兼用）")]
         private AudioClip _perfectSound;
+
+        [SerializeField, Tooltip("フローゾーン突入")]
+        private AudioClip _flowZoneStartSound;
+
+        [SerializeField, Tooltip("フローゾーン終了")]
+        private AudioClip _flowZoneEndSound;
         #endregion
 
         private InputBuffer _inputBuffer;
@@ -89,8 +95,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
-        #region モック用の機能
+        #region 開発用の機能
 
+        [Header("開発用")]
         [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)]
         private float _damageScale = 1;
 
@@ -328,6 +335,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private void OnNearBeat() => _willPerfectAttack = false;
+
+        /// <summary>
+        ///     フローゾーンが開始した時のイベント
+        /// </summary>
+        private void StartFlowZone() => _soundEffectSource?.PlayOneShot(_flowZoneStartSound);
+
+        /// <summary>
+        ///     フローゾーンが終了した時のイベント
+        /// </summary>
+        private void EndFlowZone() => _soundEffectSource?.PlayOneShot(_flowZoneEndSound);
+
 
         #endregion
 
