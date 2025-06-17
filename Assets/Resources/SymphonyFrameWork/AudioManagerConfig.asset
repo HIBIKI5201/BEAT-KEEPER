@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbc9c553bdfa6c47a74e1fae81b87f0, type: 3}
   m_Name: AudioManagerConfig
   m_EditorClassIdentifier: 
-  _audioMixer: {fileID: 0}
+  _audioMixer: {fileID: 24100000, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
   _audioGroupSettingList:
   - _audioGroupName: SE
     _exposedParameterName: 
