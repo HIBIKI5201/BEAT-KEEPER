@@ -40,6 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _data.SkillDuration,
                     _cancellationTokenSource.Token);
             }
+            catch (OperationCanceledException) { }
             finally
             {
                 _isActive = false; //キャンセルされても非アクティブにする
