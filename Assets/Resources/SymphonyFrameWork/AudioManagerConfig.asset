@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: AudioManagerConfig
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 0}
-  _audioGroupSettingList: []
+  _audioGroupSettingList:
+  - _audioGroupName: SE
+    _exposedParameterName: 
+    _isLoop: 0
