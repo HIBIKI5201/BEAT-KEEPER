@@ -77,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         private BGMLayerEnum GetLayerEnum(int value)
         {
             // 共鳴カウントを最大値で正規化し、レイヤー数（0-5の6段階）にスケーリング
-            int layerIndex = value * 5 / _flowZoneSystem.MAX_COUNT;
+            int layerIndex = value * 5 /　FlowZoneSystem.MAX_COUNT;
             return (BGMLayerEnum)layerIndex;
         }
         
