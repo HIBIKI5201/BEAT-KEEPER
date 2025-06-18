@@ -1,13 +1,12 @@
-﻿using BeatKeeper.Runtime.Ingame.UI;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
-    /// 敵の攻撃警告UI
+    ///     敵の攻撃警告UI
     /// </summary>
-    public class EnemyIndicator : UIElement_RingIndicator
+    public class EnemyIndicator : RingIndicatorBase
     {
         [Header("色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -26,7 +25,7 @@ namespace BeatKeeper
         public override void Effect(int count)
         {
             base.Effect(count);
-            
+
             switch (count)
             {
                 case 1:
@@ -42,6 +41,14 @@ namespace BeatKeeper
                     Effect3();
                     break;
             }
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            //敵攻撃はノックバックを与えるので確認
+            _chartRingManager.CheckAllRingIndicatorRemainTime(); 
         }
 
         /// <summary>
@@ -63,7 +70,7 @@ namespace BeatKeeper
 
             _tweens[0] = blinkSequence;
         }
-        
+
         /// <summary>
         /// リングの縮小
         /// </summary>
@@ -90,7 +97,7 @@ namespace BeatKeeper
             successSequence.Play();
 
             successSequence.OnComplete(End);
-            
+
             _tweens[2] = successSequence;
         }
     }

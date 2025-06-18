@@ -969,6 +969,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 034e1718345e6ce499269842d26fd46c, type: 3}
 --- !u!1001 &459658137
 PrefabInstance:
+
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
