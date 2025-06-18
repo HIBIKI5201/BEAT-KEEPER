@@ -24,6 +24,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _data = data; // フローゾーンの継続時間を拍数で指定
         }
 
+        public const int MAX_COUNT = 7;
+
         public event Action OnStartFlowZone;
         public event Action OnEndFlowZone;
 
@@ -72,7 +74,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             _resonanceCount.Value++;
             
-            if (_resonanceCount.Value >= 7)
+            if (_resonanceCount.Value >= MAX_COUNT)
             {
                 StartFlowZone();
             }
