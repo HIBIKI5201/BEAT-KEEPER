@@ -215,8 +215,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttackInput(InputAction.CallbackContext context)
         {
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
             var chart = _target.EnemyData.ChartData.Chart;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
 
             var kind = chart[timing].AttackKind;
 
@@ -299,8 +299,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
 
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
-            var enemyAttackKind = _target.EnemyData.ChartData.Chart[timing].AttackKind;
+            var chart = _target.EnemyData.ChartData.Chart;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
+            var enemyAttackKind = chart[timing].AttackKind;
 
             //SuperとCharge攻撃は回避できない
             if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
@@ -637,10 +638,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns>成功しているかどうか</returns>
         private bool IsAvoidSuccess()
         {
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
+            var chartData = _target.EnemyData.ChartData;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
 
             //敵が攻撃しないならミス
-            if (!_target.EnemyData.ChartData.IsEnemyAttack(timing))
+            if (!chartData.IsEnemyAttack(timing))
             {
                 SymphonyDebugLog.AddText($"Enemy not attack at timing {timing}");
                 return false;

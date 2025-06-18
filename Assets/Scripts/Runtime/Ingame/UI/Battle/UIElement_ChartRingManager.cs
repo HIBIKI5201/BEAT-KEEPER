@@ -105,11 +105,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             for(int i = 0; i < _ringIndicatorData.RingDatas.Length; i++)
             {
                 //インジケーターのデータを取得
-                var data = _ringIndicatorData.RingDatas[i]; 
+                var data = _ringIndicatorData.RingDatas[i];
 
+                var chart = _targetData.ChartData.Chart;
                 //インジケーターに対応する譜面を取得
-                var element = _targetData.ChartData
-                    .Chart[(timing + _appearTiming[i]) % 32];
+                var element = chart[(timing + _appearTiming[i]) % chart.Length];
 
                 //譜面がインジケーターと同じか判定
                 if (element.AttackKind != data.AttackKind)
