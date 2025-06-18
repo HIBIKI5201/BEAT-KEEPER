@@ -52,11 +52,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             _healthSystem = new(_data);
-        }
 
-        private void Start()
-        {
-             SetActiveModel(false);
+            SetActiveModel(false); //初期はモデル表示を無くす
         }
 
         private void OnDestroy()
