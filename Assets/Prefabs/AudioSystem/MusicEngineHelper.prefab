@@ -75,12 +75,189 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayOnStart: 1
-  Volume: 0.204
+  Volume: 0.057
   OutputMixerGroup: {fileID: 1630776837128064713, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
   Sections:
-  - Name: Approach
+  - Name: Phase1_Intro
     Clips:
-    - {fileID: 8300000, guid: f06649a6b6c7b1c40affd823f0678ae1, type: 3}
+    - {fileID: 8300000, guid: 64511516e552ed8448cbbe1642f06ee0, type: 3}
+    - {fileID: 8300000, guid: 7801f611f7ca7dd4b93976543710f918, type: 3}
+    - {fileID: 8300000, guid: 06360d25a9cbf6d4f94765d62c93110a, type: 3}
+    - {fileID: 8300000, guid: 343269801f91d724793c80d72d152717, type: 3}
+    - {fileID: 8300000, guid: ea8eac979ebb41a48adb6c19084325de, type: 3}
+    - {fileID: 8300000, guid: 0b60f0664879fce4f812fbc465839aae, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 130
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 4
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 1
+    TransitionDestinationIndex: 1
+  - Name: Phase1_Loop
+    Clips:
+    - {fileID: 8300000, guid: d3739358607d96c4fa3c6cc5403b0e13, type: 3}
+    - {fileID: 8300000, guid: 9523a7f308110ce49a2005cf3db4f53d, type: 3}
+    - {fileID: 8300000, guid: 1e7714e2b18c7814c86561a09b99411d, type: 3}
+    - {fileID: 8300000, guid: a8119eccab454ff4db9d721000e6c326, type: 3}
+    - {fileID: 8300000, guid: a2e31cff3f4863d4baccf841cfab2097, type: 3}
+    - {fileID: 8300000, guid: 6ced1bd382db7b34dacda03ec0000124, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 130
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 16
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 16
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Phase2_Intro
+    Clips:
+    - {fileID: 8300000, guid: 59be99cc44bfd5a4b80f38dd69a66f5b, type: 3}
+    - {fileID: 8300000, guid: bc51fac830bc3544d87c218a859be6fd, type: 3}
+    - {fileID: 8300000, guid: fc1146c9c20506e4f9528b64a9f872d4, type: 3}
+    - {fileID: 8300000, guid: a46645a840b6e484f8ac5acf50554229, type: 3}
+    - {fileID: 8300000, guid: 7f84f86f6a4c11c479cb1919b315fe2c, type: 3}
+    - {fileID: 8300000, guid: 78f1a682fa5a4d94eb63aef9316afb7d, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 140
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 4
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 1
+    TransitionDestinationIndex: 3
+  - Name: Phase2_Loop
+    Clips:
+    - {fileID: 8300000, guid: 6bc833d196735704c93636a6563e207f, type: 3}
+    - {fileID: 8300000, guid: 14a08209f9056e94bb5cd34afe5c1724, type: 3}
+    - {fileID: 8300000, guid: b3813f8dceba4db4d8961788aecb49c1, type: 3}
+    - {fileID: 8300000, guid: 4c6d10d8d8a41e040a224d7213f213dc, type: 3}
+    - {fileID: 8300000, guid: 28f89d413cb688346a8e7bafb996d7db, type: 3}
+    - {fileID: 8300000, guid: 8105f9ec2e68e4e47bc5cad4bdf7bd61, type: 3}
+    Meters:
+    - StartBar: 0
+      Tempo: 140
+      UnitPerBeat: 4
+      UnitPerBar: 16
+      Numerator: 4
+      Denominator: 4
+    SyncType: 3
+    SyncFactor: 1
+    Markers: []
+    EntryPointTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    ExitPointTiming:
+      Bar: 16
+      Beat: 0
+      Unit: 0
+    LoopStartTiming:
+      Bar: 0
+      Beat: 0
+      Unit: 0
+    LoopEndTiming:
+      Bar: 16
+      Beat: 0
+      Unit: 0
+    Transition:
+      UseFadeOut: 0
+      FadeOutTime: 0
+      FadeOutOffset: 0
+      UseFadeIn: 0
+      FadeInTime: 0
+      FadeInOffset: 0
+    TransitionType: 0
+    TransitionDestinationIndex: 0
+  - Name: Phase3_Intro
+    Clips:
+    - {fileID: 8300000, guid: e2a36f8b71825bd4da0ef65f35af4cab, type: 3}
+    - {fileID: 8300000, guid: 322e71c6440bafa42a371c6d41c70a4f, type: 3}
+    - {fileID: 8300000, guid: 6517135ddcd78c44389a8513eca1135d, type: 3}
+    - {fileID: 8300000, guid: 77c1147e942c04e4995c50b39f2d03c5, type: 3}
+    - {fileID: 8300000, guid: bebb5903f27e368409c69856a9322d4e, type: 3}
+    - {fileID: 8300000, guid: d95db6ea0ea58f240ac0934f348cd55a, type: 3}
     Meters:
     - StartBar: 0
       Tempo: 160
@@ -96,7 +273,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 79
+      Bar: 4
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -104,7 +281,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 79
+      Bar: 0
       Beat: 0
       Unit: 0
     Transition:
@@ -114,14 +291,19 @@ MonoBehaviour:
       UseFadeIn: 0
       FadeInTime: 0
       FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle1
+    TransitionType: 1
+    TransitionDestinationIndex: 5
+  - Name: Phase3_Loop
     Clips:
-    - {fileID: 8300000, guid: 4047e8bf526285748a122b89de1a863c, type: 3}
+    - {fileID: 8300000, guid: ef5f85fdbea727a4284943abf9626def, type: 3}
+    - {fileID: 8300000, guid: 7903f0878b27b204c991575e23f81339, type: 3}
+    - {fileID: 8300000, guid: 5618965fb40e80549b0268371c1ece22, type: 3}
+    - {fileID: 8300000, guid: afbb5e646514b9b45bc93d61a77ed1b4, type: 3}
+    - {fileID: 8300000, guid: c02b2c9bd20d70146b59d82e8a0a87fb, type: 3}
+    - {fileID: 8300000, guid: 90815cdd1a56bb542bbd6198d7d8eebd, type: 3}
     Meters:
     - StartBar: 0
-      Tempo: 105
+      Tempo: 160
       UnitPerBeat: 4
       UnitPerBar: 16
       Numerator: 4
@@ -134,7 +316,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     ExitPointTiming:
-      Bar: 65
+      Bar: 16
       Beat: 0
       Unit: 0
     LoopStartTiming:
@@ -142,83 +324,7 @@ MonoBehaviour:
       Beat: 0
       Unit: 0
     LoopEndTiming:
-      Bar: 65
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle2
-    Clips:
-    - {fileID: 8300000, guid: 256c718541058bc42aa92f7bb57fa8cd, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 157
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 105
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 105
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Battle3
-    Clips:
-    - {fileID: 8300000, guid: beada51392d6120499f86664e799d037, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 180
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 114
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 114
+      Bar: 16
       Beat: 0
       Unit: 0
     Transition:
@@ -231,28 +337,71 @@ MonoBehaviour:
     TransitionType: 0
     TransitionDestinationIndex: 0
   Modes:
-  - Name: Base
+  - Name: Max
     TotalVolume: 1
     LayerVolumes:
-    - 0.4
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+  - Name: Layer0
+    TotalVolume: 1
+    LayerVolumes:
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
   - Name: Layer1
     TotalVolume: 1
     LayerVolumes:
-    - 0.55
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
+    - 0
   - Name: Layer2
     TotalVolume: 1
     LayerVolumes:
-    - 0.7
+    - 1
+    - 1
+    - 1
+    - 0
+    - 0
+    - 0
   - Name: Layer3
     TotalVolume: 1
     LayerVolumes:
-    - 0.85
+    - 1
+    - 1
+    - 1
+    - 1
+    - 0
+    - 0
   - Name: Layer4
     TotalVolume: 1
     LayerVolumes:
     - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 0
+  - Name: Layer5
+    TotalVolume: 1
+    LayerVolumes:
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
+    - 1
   ModeTransitionParam:
-    FadeTime: 1
+    FadeTime: 0.5
     FadeOffset: 0
     TimeUnitType: 0
     SyncType: 0
@@ -264,13 +413,13 @@ MonoBehaviour:
     SyncFactor: 0
     Transition:
       UseFadeOut: 1
-      FadeOutTime: 5
+      FadeOutTime: 1
       FadeOutOffset: 0
       UseFadeIn: 1
-      FadeInTime: 5
+      FadeInTime: 1
       FadeInOffset: 0
   ModeTransitionOverrides: []
-  NumTracks: 1
+  NumTracks: 6
   SeekBar: -1
   PreviewSectionIndex: 0
   PreviewModeIndex: 0
