@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using UnityEditor.XR;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
