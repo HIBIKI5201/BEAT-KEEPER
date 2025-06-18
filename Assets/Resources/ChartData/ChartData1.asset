@@ -18,31 +18,15 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 1485, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 810}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 495, y: 540}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 1485, y: 810}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
@@ -50,30 +34,46 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 1485, y: 810}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 495, y: 810}
+    Position: {x: 495, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 810}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 1485, y: 540}
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 990, y: 540}
+    Position: {x: 960, y: 540}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 495, y: 540}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 960, y: 540}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 960, y: 540}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 960, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}

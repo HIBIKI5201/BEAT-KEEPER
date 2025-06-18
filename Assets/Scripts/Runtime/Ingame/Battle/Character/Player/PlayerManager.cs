@@ -5,6 +5,7 @@ using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -43,15 +44,47 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
 
+        #region サウンドクリップ
+        [Header("サウンド")]
+        [SerializeField, Tooltip("汎用的な発砲音（通常攻撃の1段目の発砲音）")]
+        private AudioClip _comboAttackSound;
+        
+        [SerializeField, Tooltip("チャージ中")]
+        private AudioClip _chargeAttackStartSound;
+
+        [SerializeField, Tooltip("チャージ完了")]
+        private AudioClip _chargeAttackEndSound;
+
+        [SerializeField, Tooltip("強攻撃")]
+        private AudioClip _chargeAttackSound;
+
+        [SerializeField, Tooltip("回避")]
+        private AudioClip _avoidSound;
+
+        [SerializeField, Tooltip("被弾")]
+        private AudioClip _hitSound;
+
+        [SerializeField, Tooltip("Perfect判定時（攻撃・回避兼用）")]
+        private AudioClip _perfectSound;
+
+        [SerializeField, Tooltip("フローゾーン突入")]
+        private AudioClip _flowZoneStartSound;
+
+        [SerializeField, Tooltip("フローゾーン終了")]
+        private AudioClip _flowZoneEndSound;
+        #endregion
+
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
         private CinemachineCamera _playerCamera;
+        private AudioSource _soundEffectSource;
 
         private IEnemy _target;
         private bool _isBattle;
         private float _stunEndTiming; //スタンが終了するタイミング
         private float _chargeAttackTimer;
+        private CancellationTokenSource _chargeAttackChargingTokenSource;
         private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
         private bool _willPerfectAttack; //パーフェクト攻撃の予約
 
@@ -59,11 +92,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private ComboSystem _comboSystem;
         private SpecialSystem _specialSystem;
         private FlowZoneSystem _flowZoneSystem;
+        private SkillSystem _skillSystem;
 
         #endregion
 
-        #region モック用の機能
+        #region 開発用の機能
 
+        [Header("開発用")]
         [Obsolete("モック用"), SerializeField, Tooltip("攻撃のダメージ倍率"), Min(0.1f)]
         private float _damageScale = 1;
 
@@ -117,6 +152,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Phase manager is null");
             }
+
+            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
         }
 
         private void Update()
@@ -178,8 +215,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttackInput(InputAction.CallbackContext context)
         {
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart();
             var chart = _target.EnemyData.ChartData.Chart;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
 
             var kind = chart[timing].AttackKind;
 
@@ -204,25 +241,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
-                    Debug.Log($"{_data.Name} start charge attack");
-                    _chargeAttackTimer = Time.time; //チャージ開始時間を記録
+                    ChargeAttackCharging();
                     break;
 
                 case InputActionPhase.Canceled: //発動
-                    OnShootChargeAttack?.Invoke();
-
-                    //フルチャージかどうか
-                    if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime < Time.time)
-                    {
-                        Debug.Log($"{_data.Name} is full charge attacking");
-                        OnFullChargeAttack?.Invoke();
-                    }
-                    else
-                    {
-                        Debug.Log($"{_data.Name} is non full charge attacking");
-                        OnNonFullChargeAttack?.Invoke();
-                    }
-
+                    ChargeAttackActivation();
                     break;
             }
         }
@@ -276,8 +299,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
 
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
-            var enemyAttackKind = _target.EnemyData.ChartData.Chart[timing].AttackKind;
+            var chart = _target.EnemyData.ChartData.Chart;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
+            var enemyAttackKind = chart[timing].AttackKind;
 
             //SuperとCharge攻撃は回避できない
             if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
@@ -290,6 +314,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SymphonyDebugLog.AddText($"Success Avoid");
 
             OnSuccessAvoid?.Invoke();
+            _soundEffectSource?.PlayOneShot(_avoidSound);
 
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
@@ -312,6 +337,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private void OnNearBeat() => _willPerfectAttack = false;
+
+        /// <summary>
+        ///     フローゾーンが開始した時のイベント
+        /// </summary>
+        private void StartFlowZone() => _soundEffectSource?.PlayOneShot(_flowZoneStartSound);
+
+        /// <summary>
+        ///     フローゾーンが終了した時のイベント
+        /// </summary>
+        private void EndFlowZone() => _soundEffectSource?.PlayOneShot(_flowZoneEndSound);
+
 
         #endregion
 
@@ -402,6 +438,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             base.HitAttack(data);
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _soundEffectSource?.PlayOneShot(_hitSound);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
@@ -423,6 +460,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 new FlowZoneSystem(
                     await ServiceLocator.GetInstanceAsync<BGMManager>(),
                     _data);
+            _skillSystem = new SkillSystem(_data);
         }
 
         /// <summary>
@@ -448,6 +486,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 OnShootComboAttack?.Invoke();
                 _comboSystem.Attack();
+
+                _soundEffectSource?.PlayOneShot(_comboAttackSound);
 
                 if (isPerfectHit)
                 {
@@ -478,7 +518,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
+            SymphonyDebugLog.AddText($"{_data.Name} do skill");
+            _skillSystem.StartSkill();
 
+            SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
@@ -488,6 +531,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             OnPerfectAttack?.Invoke();
             _specialSystem.AddSpecialEnergy(0.05f);
+            _soundEffectSource?.PlayOneShot(_perfectSound);
 
             AttackEnemy(_data.PerfectCriticalDamage);
         }
@@ -501,6 +545,48 @@ namespace BeatKeeper.Runtime.Ingame.Character
             AttackEnemy();
         }
 
+        /// <summary>
+        ///     チャージ攻撃の溜め
+        /// </summary>
+        private async void ChargeAttackCharging()
+        {
+            Debug.Log($"{_data.Name} start charge attack");
+            _chargeAttackChargingTokenSource = new();
+
+            _chargeAttackTimer = Time.time; //チャージ開始時間を記録
+            _soundEffectSource?.PlayOneShot(_chargeAttackStartSound);
+
+            //チャージが完了するまで待機
+            await Awaitable.WaitForSecondsAsync(
+                _data.ChargeAttackTime * (float)MusicEngineHelper.DurationOfBeat,
+                _chargeAttackChargingTokenSource.Token);
+
+            _soundEffectSource?.PlayOneShot(_chargeAttackEndSound);
+        }
+
+        /// <summary>
+        ///     チャージ攻撃を発動する
+        /// </summary>
+        private void ChargeAttackActivation()
+        {
+            _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
+
+            OnShootChargeAttack?.Invoke();
+            _soundEffectSource?.PlayOneShot(_chargeAttackSound);
+
+            //フルチャージかどうか
+            if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
+                < Time.time)
+            {
+                Debug.Log($"{_data.Name} is full charge attacking");
+                OnFullChargeAttack?.Invoke();
+            }
+            else
+            {
+                Debug.Log($"{_data.Name} is non full charge attacking");
+                OnNonFullChargeAttack?.Invoke();
+            }
+        }
 
 
         /// <summary>
@@ -531,6 +617,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 }
             }
 
+            if (_skillSystem.IsActive) //スキルがアクティブ中ならバフを適用
+            {
+                power *= _data.SkillStrangth;
+            }
+
             power *= _damageScale;
 
             _target.HitAttack(new(power));
@@ -547,10 +638,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns>成功しているかどうか</returns>
         private bool IsAvoidSuccess()
         {
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % 32;
+            var chartData = _target.EnemyData.ChartData;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
 
             //敵が攻撃しないならミス
-            if (!_target.EnemyData.ChartData.IsEnemyAttack(timing))
+            if (!chartData.IsEnemyAttack(timing))
             {
                 SymphonyDebugLog.AddText($"Enemy not attack at timing {timing}");
                 return false;

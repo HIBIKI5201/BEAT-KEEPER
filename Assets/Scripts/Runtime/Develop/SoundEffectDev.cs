@@ -10,8 +10,6 @@ namespace BeatKeeper
 
         void Start()
         {
-            Debug.Assert( _clip != null, "clipがアサインされていません" );
-
             SoundEffectPlay();
         }
 

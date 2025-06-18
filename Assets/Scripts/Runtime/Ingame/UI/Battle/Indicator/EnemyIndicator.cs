@@ -43,6 +43,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
+        public override void End()
+        {
+            base.End();
+
+            //敵攻撃はノックバックを与えるので確認
+            _chartRingManager.CheckAllRingIndicatorRemainTime(); 
+        }
+
         /// <summary>
         /// 点滅シークエンス
         /// </summary>

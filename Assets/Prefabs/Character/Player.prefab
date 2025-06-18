@@ -10226,6 +10226,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: b02e335feeb586f4ca543a64070ad17f, type: 2}
   _battleBuffData: {fileID: 11400000, guid: c6122e1c9553b36458f86d2b23be5d29, type: 2}
+  _comboAttackSound: {fileID: 8300000, guid: a4c926b267ea9e443a6f1bcb9851b4fb, type: 3}
+  _chargeAttackStartSound: {fileID: 8300000, guid: 5d5c0cffb772dbe4c934d6888bf026de, type: 3}
+  _chargeAttackEndSound: {fileID: 8300000, guid: 0c84de651e5d2f342959c24e457fd3a1, type: 3}
+  _chargeAttackSound: {fileID: 8300000, guid: 5864181f59b6dca46ad8edb08893c800, type: 3}
+  _avoidSound: {fileID: 8300000, guid: dfaca972ebfbc3a4f8daae6772939815, type: 3}
+  _hitSound: {fileID: 8300000, guid: 999f9d3ed0e1e5542b45c6eac638a6f5, type: 3}
+  _perfectSound: {fileID: 8300000, guid: cb56d1d244b415b488cc342246ad33d5, type: 3}
+  _flowZoneStartSound: {fileID: 8300000, guid: 46a503e73729ebd469dad9f7f88a4370, type: 3}
+  _flowZoneEndSound: {fileID: 8300000, guid: 9cfaf8f90f70d544fa9fba57afe40af7, type: 3}
   _damageScale: 1
   _particleSystem: {fileID: 5368706015596788293}
 --- !u!95 &3184296290978092416

@@ -24,6 +24,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _data = data; // フローゾーンの継続時間を拍数で指定
         }
 
+        public const int MAX_COUNT = 5;
+
+        public event Action OnStartFlowZone;
+        public event Action OnEndFlowZone;
+
         private readonly PlayerData _data;
         private readonly BGMManager _musicEngineHelper;
 
@@ -55,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_count >= _data.FlowZoneDuration) // フローゾーン継続時間が終了したら
             {
-                FlowZoneEnd(); // フローゾーンを終了する
+                EndFlowZone(); // フローゾーンを終了する
             }
         }
 
@@ -69,10 +74,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             _resonanceCount.Value++;
             
-            if (_resonanceCount.Value >= 7)
+            if (_resonanceCount.Value >= MAX_COUNT)
             {
-                _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
-                _musicEngineHelper.OnJustChangedBeat += OnJustBeat; // 継続時間を確認するために拍数を取得する
+                StartFlowZone();
             }
         }
 
@@ -83,19 +87,30 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if(_isFlowZone.Value) // フローゾーン中であれば終了する
             {
-                FlowZoneEnd();
+                EndFlowZone();
             }
         }
 
         /// <summary>
-        ///     フローゾーンを終了するメソッド
+        ///     フローゾーンを開始する
         /// </summary>
-        private void FlowZoneEnd()
+        private void StartFlowZone()
+        {
+            _isFlowZone.Value = true; // 5回リズム共鳴に成功したらフローゾーン突入
+            _musicEngineHelper.OnJustChangedBeat += OnJustBeat; // 継続時間を確認するために拍数を取得する
+            OnStartFlowZone?.Invoke();
+        }
+
+        /// <summary>
+        ///     フローゾーンを終了する
+        /// </summary>
+        private void EndFlowZone()
         {
             _isFlowZone.Value = false;
             _count = 0;
             _resonanceCount.Value = 0;
             _musicEngineHelper.OnJustChangedBeat -= OnJustBeat; // 購読をやめる
+            OnEndFlowZone?.Invoke();
         }
     }
 }
