@@ -1,5 +1,6 @@
-using BeatKeeper.Runtime.Ingame.Character;
+﻿using BeatKeeper.Runtime.Ingame.Character;
 using DG.Tweening;
+using JetBrains.Annotations;
 using R3;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
@@ -13,20 +14,28 @@ namespace BeatKeeper
     /// </summary>
     public class UIElement_ResonanceMeter : MonoBehaviour
     {
-        [SerializeField] private PlayerManager _playerManager;
+        [SerializeField] private GameObject _meterPrefab;
         [SerializeField] private Color _defaultColor = Color.black;
         [SerializeField] private Color _resonanceColor = Color.yellow;
         [SerializeField] private Image[] _icons;
         [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
+
+        private PlayerManager _playerManager;
         private CompositeDisposable _disposable = new CompositeDisposable();
 
         private async void Start()
         {
-            AllReset();
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
             await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
 
+            Initialize();
+            GenerateMetar();
+            AllReset();
+        }
+
+        private void Initialize()
+        {
             _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
             _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
             {
@@ -37,6 +46,27 @@ namespace BeatKeeper
                     AllReset();
                 }
             }).AddTo(_disposable);
+        }
+
+        private void GenerateMetar()
+        {
+            if (_playerManager == null) return;
+            if (_meterPrefab == null) return;
+
+            _icons = new Image[FlowZoneSystem.MAX_COUNT];
+
+            for (int i = 0; i < FlowZoneSystem.MAX_COUNT; i++)
+            {
+                GameObject go = Instantiate(_meterPrefab, transform);
+                if (go.TryGetComponent(out Image image)) //生成したオブジェクトからイメージを取得
+                {
+                    _icons[i] = image;
+                }
+                else
+                {
+                    _icons[i] = go.AddComponent<Image>();
+                }
+            }
         }
 
         /// <summary>
