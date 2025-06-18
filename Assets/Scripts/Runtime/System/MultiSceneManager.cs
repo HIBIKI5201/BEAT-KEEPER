@@ -26,14 +26,14 @@ namespace BeatKeeper.Runtime.Ingame.System
             {
                 //シーンのルートオブジェクトの非同期初期化を行う
                 var rootObjects = scene.GetRootGameObjects();
-                Task[] tasks = new Task[rootObjects.Length];
+                List<Task> tasks = new();
 
                 for(int i = 0; i < rootObjects.Length; i++)
                 {
                     if (rootObjects[i]
                         .TryGetComponent<IInitializeAsync>(out var initializeAsync))
                     {
-                         tasks[i] = initializeAsync.DoInitialize();
+                         tasks.Add(initializeAsync.DoInitialize());
                     }
                 }
 
