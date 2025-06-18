@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.UI;
@@ -21,9 +21,9 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             _enemies = GetComponentsInChildren<EnemyManager>();
         }
 
-        private void Start()
+        private async void Start()
         {
-            var ui = ServiceLocator.GetInstance<InGameUIManager>();
+            var ui = await ServiceLocator.GetInstanceAsync<InGameUIManager>();
 
             Array.ForEach(_enemies, ui.HealthBarInitialize); //ヘルスバーを初期化
             
