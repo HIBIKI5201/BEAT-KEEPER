@@ -7,6 +7,7 @@ using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,6 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class UIElement_ChartRingManager : MonoBehaviour
     {
+        public HashSet<RingIndicatorBase> ActiveRingIndicators => _activeRingIndicator;
+
         [SerializeField]
         private RingIndicatorData _ringIndicatorData;
 
@@ -152,11 +155,26 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
+        ///     全てのインジケーターの残り時間をチェックする
+        /// </summary>
+        public void CheckAllRingIndicatorRemainTime()
+        {
+            for(int i = 0; i < _activeRingIndicator.Count; i++)
+            {
+                var ring = _activeRingIndicator.ToArray()[i];
+                ring.CheckRemainTime();
+            }
+        }
+
+        /// <summary>
         ///     ビートの購買を解除する
         /// </summary>
         private void UnregisterOnJustBeat()
         {
-            if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
+            if (_musicEngineHelper)
+            {
+                _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
+            }
         }
 
         /// <summary>
@@ -188,7 +206,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             if (go.TryGetComponent<RingIndicatorBase>(out var manager))
                             {
                                 manager.gameObject.SetActive(false);
-                                manager.OnInit(_player);
+                                manager.OnInit(_player, this);
                                 return manager;
                             }
 
