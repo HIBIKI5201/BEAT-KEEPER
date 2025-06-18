@@ -24,6 +24,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _data = data; // フローゾーンの継続時間を拍数で指定
         }
 
+        public const int MAX_COUNT = 5;
+
         public event Action OnStartFlowZone;
         public event Action OnEndFlowZone;
 
@@ -72,7 +74,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             
             _resonanceCount.Value++;
             
-            if (_resonanceCount.Value >= 7)
+            if (_resonanceCount.Value >= MAX_COUNT)
             {
                 StartFlowZone();
             }
@@ -94,7 +96,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void StartFlowZone()
         {
-            _isFlowZone.Value = true; // 7回リズム共鳴に成功したらフローゾーン突入
+            _isFlowZone.Value = true; // 5回リズム共鳴に成功したらフローゾーン突入
             _musicEngineHelper.OnJustChangedBeat += OnJustBeat; // 継続時間を確認するために拍数を取得する
             OnStartFlowZone?.Invoke();
         }
