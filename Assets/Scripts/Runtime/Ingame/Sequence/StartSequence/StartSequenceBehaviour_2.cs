@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
@@ -17,8 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var cameraManager = ServiceLocator.GetInstance<CameraManager>();
             if (cameraManager)
             {
-                var player = ServiceLocator.GetInstance<PlayerManager>();
-                cameraManager.ChangeCamera(player.PlayerCamera);
+                var stageManager = ServiceLocator.GetInstance<StageSceneManager>();
+                cameraManager.ChangeCamera(stageManager.PlayerCamera);
             }
 
             //スタートテキストを隠す
