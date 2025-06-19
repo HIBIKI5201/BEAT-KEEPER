@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using Unity.Cinemachine;
@@ -21,11 +22,9 @@ namespace BeatKeeper
 
         private async void Start()
         {
-            var player = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            var stageManager = await ServiceLocator.GetInstanceAsync<StageSceneManager>();
 
-            await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
-
-            ChangeCamera(player.PlayerCamera);
+            ChangeCamera(stageManager.PlayerCamera);
         }
 
         /// <summary>
