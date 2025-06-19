@@ -12,7 +12,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         private void Awake()
         {
             if (_chart.Length != ChartLength)
-                Debug.LogWarning("譜面データの長さが不適切です。");
+                Debug.LogWarning($"{name}の譜面データの長さが不適切です。");
         }
 
         private void Reset()
