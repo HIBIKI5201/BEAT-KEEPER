@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BeatKeeper.Runtime.System;
+﻿using SymphonyFrameWork;
 using SymphonyFrameWork.System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -19,21 +19,21 @@ namespace BeatKeeper.Runtime.Ingame.System
                 Debug.LogWarning($"failed to load scene : {sceneEnum}");
                 return;
             }
-            
+
             await PauseManager.PausableWaitUntil(() => task.IsCompleted, destroyCancellationToken);
-            
+
             if (SceneLoader.GetExistScene(sceneEnum.ToString(), out var scene))
             {
                 //シーンのルートオブジェクトの非同期初期化を行う
                 var rootObjects = scene.GetRootGameObjects();
                 List<Task> tasks = new();
 
-                for(int i = 0; i < rootObjects.Length; i++)
+                for (int i = 0; i < rootObjects.Length; i++)
                 {
                     if (rootObjects[i]
                         .TryGetComponent<IInitializeAsync>(out var initializeAsync))
                     {
-                         tasks.Add(initializeAsync.DoInitialize());
+                        tasks.Add(initializeAsync.DoInitialize());
                     }
                 }
 
@@ -46,8 +46,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         public bool GetSceneLoadProgress(SceneListEnum scene)
         {
             if (_loadedScenes.TryGetValue(scene, out var result))
-                return result; 
-            
+                return result;
+
             return true;
         }
 
@@ -61,7 +61,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             {
                 Debug.LogWarning($"{scene} is not loaded");
             }
-            
+
             while (!GetSceneLoadProgress(scene)) //シーンのロードが終わるまで待機
             {
                 await PauseManager.PausableNextFrameAsync(destroyCancellationToken);
