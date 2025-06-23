@@ -1,4 +1,5 @@
-﻿using SymphonyFrameWork.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
