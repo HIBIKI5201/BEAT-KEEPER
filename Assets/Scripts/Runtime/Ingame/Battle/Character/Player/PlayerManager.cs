@@ -34,7 +34,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region プロパティ
-        public CinemachineCamera PlayerCamera => _playerCamera;
         public ComboSystem ComboSystem => _comboSystem;
         public SpecialSystem SpecialSystem => _specialSystem;
         public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
@@ -77,7 +76,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
-        private CinemachineCamera _playerCamera;
         private AudioSource _soundEffectSource;
 
         private IEnemy _target;
@@ -116,15 +114,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (TryGetComponent(out Animator animator))
                 _animeManager = new(animator);
             else Debug.LogWarning("Character animator component not found");
-
-            _playerCamera = GetComponentInChildren<CinemachineCamera>();
-            if (_playerCamera)
-            {
-                //カメラを敵に向ける
-                _playerCamera.LookAt =
-                    (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())
-                    .EnemyAdmin.GetActiveEnemy().transform;
-            }
 
             OnShootComboAttack += _particleSystem.Play;
         }
@@ -188,10 +177,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                 _target = stage.EnemyAdmin.GetActiveEnemy();
-
-                _playerCamera.LookAt =
-                    ServiceLocator.GetInstance<BattleSceneManager>()
-                        .EnemyAdmin.GetActiveEnemy().transform;
             }
             else
             {
