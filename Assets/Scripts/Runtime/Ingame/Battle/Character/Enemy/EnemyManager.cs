@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
-using TMPro;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -21,9 +20,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         EnemyData IEnemy.EnemyData => _data;
 
-        [SerializeField, Tooltip("モデルの親オブジェクト")] 
+        [SerializeField, Tooltip("モデルの親オブジェクト")]
         private GameObject _modelParent;
-        
+
         private BGMManager _bgmManager;
 
         private PlayerManager _target;
@@ -65,7 +64,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             InputUnregister();
         }
-        
+
         /// <summary>
         ///     戦闘を有効化する
         /// </summary>
@@ -78,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning($"{_data.name} has no music engine");
             }
-            
+
             SetActiveModel(true);
 
             //フェーズ変更時のイベント登録
@@ -108,9 +107,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (!_bgmManager) return;
             if (_isKnockback) return; //ノックバック中は攻撃しない
-            
+
             if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない
-            
+
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
             if (_data.ChartData.IsEnemyAttack(timing)) //攻撃タイミングかどうかを確認
@@ -122,9 +121,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 #endregion
 
                 OnShootAttack?.Invoke();
-                
+
                 var attackKind = _data.ChartData.Chart[timing % _data.ChartData.Chart.Length].AttackKind;
-                
+
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
                     _target.HitAttack(new AttackData(1));
@@ -142,7 +141,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 }
             }
         }
-        
+
         /// <summary>
         ///     入力の登録を行う
         /// </summary>
@@ -164,7 +163,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _bgmManager.OnJustChangedBeat -= OnAttack;
             }
         }
-        
+
         public override void HitAttack(AttackData data)
         {
             base.HitAttack(data);
@@ -172,7 +171,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _healthSystem?.HealthChange(-data.Damage);
 
             OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
-            
+
             FinisherableCheck(); //フィニッシャー可能かどうかを確認
 
             if (data.IsNockback) //ノックバックする
@@ -187,9 +186,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void FinisherableCheck()
         {
             if (_canFinisher) return; //初回時のみ
-            
+
             //フィニッシャー可能範囲の処理
-            if (_healthSystem.Health / _healthSystem.MaxHealth 
+            if (_healthSystem.Health / _healthSystem.MaxHealth
                 <= _data.FinisherThreshold / 100) //フィニッシャー可能割合の判定
             {
                 Debug.Log("Finisherable event triggered for " + _data.name);

@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     ///     インゲームのフェーズを管理するクラス

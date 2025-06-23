@@ -7,7 +7,6 @@ using SymphonyFrameWork.System;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,7 +46,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [Header("サウンド")]
         [SerializeField, Tooltip("汎用的な発砲音（通常攻撃の1段目の発砲音）")]
         private AudioClip _comboAttackSound;
-        
+
         [SerializeField, Tooltip("チャージ中")]
         private AudioClip _chargeAttackStartSound;
 
