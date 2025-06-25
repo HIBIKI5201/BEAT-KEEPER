@@ -1,9 +1,9 @@
-﻿using R3;
+﻿using BeatKeeper.Runtime.Ingame.Character;
+using R3;
+using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
-using BeatKeeper.Runtime.Ingame.Character;
 using UnityEngine;
-using SymphonyFrameWork.System;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
@@ -47,19 +47,19 @@ namespace BeatKeeper.Runtime.Ingame.System
         #endregion
 
         // TODO: リファクタリング
-        
+
         /// <summary>
         /// BGMレイヤーを管理するためのFlowZoneSystemの参照
         /// </summary>
         private FlowZoneSystem _flowZoneSystem;
-        
+
         private CompositeDisposable _disposable = new();
 
         private async void Start()
         {
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             _flowZoneSystem = playerManager.FlowZoneSystem;
-            
+
             // リズム共鳴のリアクティブプロパティを購読
             _flowZoneSystem.ResonanceCount
                 .Subscribe(OnChangeResonanceCount)
@@ -70,17 +70,17 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             ChangeBGMLayer(GetLayerEnum(value).ToString());
         }
-        
+
         /// <summary>
         /// 受け取ったValueを変換し変更するBGMレイヤーを決定する
         /// </summary>
         private BGMLayerEnum GetLayerEnum(int value)
         {
             // 共鳴カウントを最大値で正規化し、レイヤー数（0-5の6段階）にスケーリング
-            int layerIndex = value * 5 /　FlowZoneSystem.MAX_COUNT;
+            int layerIndex = value * 5 / FlowZoneSystem.MAX_COUNT;
             return (BGMLayerEnum)layerIndex;
         }
-        
+
         #region ライフサイクル
 
         private void Update()
@@ -107,7 +107,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             Music.SetHorizontalSequence(name);
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
         }
-        
+
         /// <summary>
         ///     BGMのレイヤーを変更する
         /// </summary>

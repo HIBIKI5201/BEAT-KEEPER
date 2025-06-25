@@ -63,16 +63,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
-        private void OnGUI()
-        {
-            if (_musicEngineHelper)
-            {
-                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-
-                GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
-            }
-        }
-
         /// <summary>
         ///     フェーズが変わったときの処理
         /// </summary>
