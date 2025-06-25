@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -40,6 +40,9 @@ namespace BeatKeeper
                 
         public InputAction Finishier => _finisher;
         private InputAction _finisher;
+
+        public InputAction Quit => _quit;
+        private InputAction _quit;
         
         #endregion
 
@@ -60,10 +63,16 @@ namespace BeatKeeper
                 _skill = _playerInput.actions["Skill"];
                 _special = _playerInput.actions["Special"];
                 _finisher = _playerInput.actions["Finisher"];
+                _quit = _playerInput.actions["Quit"];
             }
             else
             {
                 Debug.LogWarning("PlayerInput is null");
+            }
+
+            if (_quit != null)
+            {
+                _quit.started += n => Application.Quit();
             }
         }
 
