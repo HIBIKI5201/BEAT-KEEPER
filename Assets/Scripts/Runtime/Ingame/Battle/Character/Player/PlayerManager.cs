@@ -84,6 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private CancellationTokenSource _chargeAttackChargingTokenSource;
         private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
         private bool _willPerfectAttack; //パーフェクト攻撃の予約
+        private bool _isThisBeatInputed; //連打防止のための、拍内で一度しか押せないフラグ
 
         private PlayerAnimeManager _animeManager;
         private ComboSystem _comboSystem;
@@ -270,6 +271,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAvoid(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
+            if (_isThisBeatInputed) return; //連打防止
 
             SymphonyDebugLog.AddText(
                 $"[{nameof(PlayerManager)}]" +
@@ -320,7 +322,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
-        private void OnNearBeat() => _willPerfectAttack = false;
+        private void OnNearBeat()
+        {
+            _willPerfectAttack = false;
+            _isThisBeatInputed = false;
+        }
 
         /// <summary>
         ///     フローゾーンが開始した時のイベント
@@ -453,6 +459,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void AttackFlow()
         {
             if (!_isBattle) return;
+            if (_isThisBeatInputed) return; //連打防止
             if (!_data) return;
             if (_target == null) return;
 
@@ -502,6 +509,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
+            if (_isThisBeatInputed) return; //連打防止
+
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
             _skillSystem.StartSkill();
 
