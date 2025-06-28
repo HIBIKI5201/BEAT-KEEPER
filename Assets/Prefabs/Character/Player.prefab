@@ -9887,7 +9887,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6271943180603376666}
   - component: {fileID: 6630069945058443533}
-  - component: {fileID: 3184296290978092416}
   - component: {fileID: 8265417069668042560}
   - component: {fileID: 5183150484617519683}
   - component: {fileID: 8630270129729611657}
@@ -9944,28 +9943,6 @@ MonoBehaviour:
   _flowZoneEndSound: {fileID: 8300000, guid: 9cfaf8f90f70d544fa9fba57afe40af7, type: 3}
   _damageScale: 1
   _particleSystem: {fileID: 5368706015596788293}
---- !u!95 &3184296290978092416
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8472192571253439788}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 38f1061b42e3d5b4782287831b778585, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8265417069668042560
 MonoBehaviour:
   m_ObjectHideFlags: 0
