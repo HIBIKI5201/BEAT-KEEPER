@@ -110,11 +110,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             await SystemInit(); //システムの初期化
 
-            //コンポーネント取得
-            if (TryGetComponent(out Animator animator))
-                _animeManager = new(animator);
-            else Debug.LogWarning("Character animator component not found");
-
             OnShootComboAttack += _particleSystem.Play;
         }
 
@@ -195,7 +190,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         /// <summary>
-        ///     コンボ攻撃を行う
+        ///     ノーツの処理を行う
         /// </summary>
         /// <param name="context"></param>
         private void OnAttackInput(InputAction.CallbackContext context)
@@ -434,6 +429,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
 
             _comboSystem.ComboReset();
+            _animeManager.Hit();
         }
 
         #endregion
@@ -451,6 +447,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     await ServiceLocator.GetInstanceAsync<BGMManager>(),
                     _data);
             _skillSystem = new SkillSystem(_data);
+
+            Animator animator = GetComponentInChildren<Animator>();
+            if (animator != null)
+            {
+                _animeManager = new(animator);
+            }
+            else
+            {
+                Debug.LogWarning("Character animator component not found");
+            }
+
+            //コンボとアニメーターを同期
+            if (_comboSystem != null && _animeManager != null)
+            {
+                _comboSystem.ComboCount
+                    .Subscribe(n => _animeManager.Combo(n))
+                    .AddTo(destroyCancellationToken);
+            }
         }
 
         /// <summary>
@@ -476,7 +490,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
             {
                 OnShootComboAttack?.Invoke();
-                _comboSystem.Attack();
+                _comboSystem.Attack(); //コンボを更新
 
                 _soundEffectSource?.PlayOneShot(_comboAttackSound);
 
@@ -512,6 +526,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isThisBeatInputed) return; //連打防止
 
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
+
+            _animeManager.Skill();
             _skillSystem.StartSkill();
 
             SymphonyDebugLog.TextLog();
@@ -525,7 +541,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnPerfectAttack?.Invoke();
             _specialSystem.AddSpecialEnergy(0.05f);
             _soundEffectSource?.PlayOneShot(_perfectSound);
-
+            _animeManager.Shoot();
             AttackEnemy(_data.PerfectCriticalDamage);
         }
 
@@ -535,6 +551,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void GoodAttack()
         {
             OnGoodAttack?.Invoke();
+            _animeManager.Shoot();
             AttackEnemy();
         }
 
