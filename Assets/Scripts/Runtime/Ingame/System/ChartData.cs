@@ -1,23 +1,34 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+ï»¿using BeatKeeper.Runtime.Ingame.Battle;
 using System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
     [CreateAssetMenu(fileName = "ChartData", menuName = "BeatKeeper/ChartData", order = 1)]
-    public class ChartData : ScriptableObject
+    public partial class ChartData : ScriptableObject
     {
+        private const int CHART_LENGTH = 64;
+
         private void Awake()
         {
-            if (_chart.Length != 32)
-                Debug.LogWarning("•ˆ–Êƒf[ƒ^‚Ì’·‚³‚ª•s“KØ‚Å‚·B");
+            if (_chart.Length != CHART_LENGTH)
+                Debug.LogWarning($"{name}ã®è­œé¢ãƒ‡ãƒ¼ã‚¿ã®é•·ã•ãŒä¸é©åˆ‡ã§ã™ã€‚");
+        }
+
+        private void Reset()
+        {
+            _chart = new ChartDataElement[CHART_LENGTH];
+#if UNITY_EDITOR
+            _visible = new bool[CHART_LENGTH];
+#endif
         }
 
         public ChartDataElement[] Chart => _chart;
-        [SerializeField, Tooltip("ƒr[ƒg‚Ì”q")] private ChartDataElement[] _chart = new ChartDataElement[32];
+        [SerializeField, Tooltip("ãƒ“ãƒ¼ãƒˆã®æ‹å­")]
+        private ChartDataElement[] _chart = new ChartDataElement[CHART_LENGTH];
 
         /// <summary>
-        /// w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ªUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
+        /// æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒæ”»æ’ƒã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -25,7 +36,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             index %= _chart.Length;
 
-            var attackKind = ChartKindEnum.Normal | ChartKindEnum.Charge | ChartKindEnum.Super; //“G‚ÌUŒ‚
+            var attackKind =
+                ChartKindEnum.Normal | ChartKindEnum.Charge | ChartKindEnum.Super; //æ•µã®æ”»æ’ƒ
 
             return (_chart[index].AttackKind & attackKind) != 0;
         }
@@ -42,5 +54,11 @@ namespace BeatKeeper.Runtime.Ingame.System
             public ChartKindEnum AttackKind;
             public Vector2 Position;
         }
+
+        //ã‚¨ãƒ‡ã‚£ã‚¿ç”¨ãƒ‡ãƒ¼ã‚¿
+#if UNITY_EDITOR
+        [SerializeField, HideInInspector]
+        private bool[] _visible = new bool[CHART_LENGTH];
+#endif
     }
 }

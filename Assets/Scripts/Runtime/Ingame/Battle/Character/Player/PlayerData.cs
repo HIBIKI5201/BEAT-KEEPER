@@ -29,6 +29,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float ChargeHitStunTime => _chargeHitStunTime;
         #endregion
 
+        #region スキルパラメータ
+        public float SkillDuration => _skillDuration;
+        public float SkillStrangth => _skillStrangth;
+        #endregion
+
         [Header("攻撃 パラメータ")]
 
         [Space(5), DisplayText("コンボ攻撃")]
@@ -77,5 +82,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _hitStunTime = 1f;
         [SerializeField, Tooltip("チャージヒット時のスタン時間")]
         private float _chargeHitStunTime = 2f;
+
+        [Header("スキル パラメータ")]
+
+        [SerializeField, Tooltip("スキルの効果時間")]
+        private float _skillDuration = 5f;
+
+        [SerializeField, Tooltip("スキルの効果量"), Min(1)]
+        private float _skillStrangth = 1.5f;
     }
 }

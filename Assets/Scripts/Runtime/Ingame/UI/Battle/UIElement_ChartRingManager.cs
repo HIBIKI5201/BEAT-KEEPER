@@ -7,6 +7,7 @@ using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -17,8 +18,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class UIElement_ChartRingManager : MonoBehaviour
     {
+        public HashSet<RingIndicatorBase> ActiveRingIndicators => _activeRingIndicator;
+
         [SerializeField]
         private RingIndicatorData _ringIndicatorData;
+
+        [SerializeField, Tooltip("攻撃予告")]
+        private AudioClip _apearSound;
 
         private StageEnemyAdmin _enemies;
         private BGMManager _musicEngineHelper;
@@ -29,6 +35,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
         private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
         private int[] _appearTiming;
+        private AudioSource _soundEffectSource;
 
         private EnemyData _targetData;
 
@@ -43,6 +50,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
             }
 
+            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
+
             ObjectPoolInitialize();
         }
 
@@ -51,16 +60,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             foreach(var data in _activeRingIndicator)
             {
                 Destroy(data.gameObject);
-            }
-        }
-
-        private void OnGUI()
-        {
-            if (_musicEngineHelper)
-            {
-                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-
-                GUI.Label(new Rect(10, 10, 200, 20), $"Current Beat: {currentBeat}");
             }
         }
 
@@ -96,11 +95,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             for(int i = 0; i < _ringIndicatorData.RingDatas.Length; i++)
             {
                 //インジケーターのデータを取得
-                var data = _ringIndicatorData.RingDatas[i]; 
+                var data = _ringIndicatorData.RingDatas[i];
 
+                var chart = _targetData.ChartData.Chart;
                 //インジケーターに対応する譜面を取得
-                var element = _targetData.ChartData
-                    .Chart[(timing + _appearTiming[i]) % 32];
+                var element = chart[(timing + _appearTiming[i]) % chart.Length];
 
                 //譜面がインジケーターと同じか判定
                 if (element.AttackKind != data.AttackKind)
@@ -117,6 +116,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         _activeRingIndicator.Remove(ring); //アクティブリストから除外
                     },
                         element.Position);
+
+                    _soundEffectSource?.PlayOneShot(_apearSound);
                 }
             }
         }
@@ -144,11 +145,26 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
+        ///     全てのインジケーターの残り時間をチェックする
+        /// </summary>
+        public void CheckAllRingIndicatorRemainTime()
+        {
+            for(int i = 0; i < _activeRingIndicator.Count; i++)
+            {
+                var ring = _activeRingIndicator.ToArray()[i];
+                ring.CheckRemainTime();
+            }
+        }
+
+        /// <summary>
         ///     ビートの購買を解除する
         /// </summary>
         private void UnregisterOnJustBeat()
         {
-            if (_musicEngineHelper) _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
+            if (_musicEngineHelper)
+            {
+                _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
+            }
         }
 
         /// <summary>
@@ -180,7 +196,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             if (go.TryGetComponent<RingIndicatorBase>(out var manager))
                             {
                                 manager.gameObject.SetActive(false);
-                                manager.OnInit(_player);
+                                manager.OnInit(_player, this);
                                 return manager;
                             }
 

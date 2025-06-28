@@ -1,9 +1,10 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
-using SymphonyFrameWork.System;
-using System;
+using BeatKeeper.Runtime.Ingame.System;
 using Cysharp.Threading.Tasks;
 using R3;
+using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -42,7 +43,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-            
+
             //フェーズ変更時のイベントを登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
@@ -83,7 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 _registeredEnemy.OnFinisherable -= OnFinisherable;
             }
-            
+
             //アクティブな敵を登録
             var battleScene = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
             _registeredEnemy = battleScene.EnemyAdmin.GetActiveEnemy();

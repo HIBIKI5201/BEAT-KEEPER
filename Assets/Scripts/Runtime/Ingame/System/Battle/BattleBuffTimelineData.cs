@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Battle
@@ -19,5 +19,8 @@ namespace BeatKeeper.Runtime.Ingame.Battle
 
         [SerializeField] private BuffData[] _data;
         public BuffData[] Data => _data;
+
+        [ContextMenu("データのソート")]
+        private void Sort() => Array.Sort(_data, (a, b) => a.Timing - b.Timing);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
-using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
@@ -15,7 +15,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 enemyAdmin.NextEnemyActive();
             }
-            
+
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
             {

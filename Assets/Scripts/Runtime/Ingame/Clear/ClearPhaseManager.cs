@@ -1,11 +1,10 @@
-﻿using BeatKeeper.Runtime.Ingame.System;
-using BeatKeeper.Runtime.Ingame.UI;
+﻿using BeatKeeper.Runtime.Ingame.UI;
 using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     /// クリアフェーズ全体の流れを管理するマネージャークラス
@@ -22,7 +21,7 @@ namespace BeatKeeper
         private BGMManager _musicEngineHelper;
         private int _count;
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        
+
         private void Start()
         {
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
@@ -41,7 +40,7 @@ namespace BeatKeeper
             _musicEngineHelper.OnJustChangedBar += Counter;
             _objects[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
-        
+
         /// <summary>
         /// 拍数を元に遷移処理を行う
         /// </summary>
@@ -63,7 +62,7 @@ namespace BeatKeeper
             else if (_count == 9)
             {
                 _objects[1].gameObject.SetActive(true); // 次の敵が出現
-                _objects[2].gameObject.SetActive(true); 
+                _objects[2].gameObject.SetActive(true);
                 _encounterText.ShowEncounterText(2);
                 _objects[2].transform.DOMove(_positions[0], 4f); // NPCを追いかけている状態
                 //_cameraManager.ChangeCamera(); // カメラを向ける
@@ -83,7 +82,7 @@ namespace BeatKeeper
                 ActivateBattlePhase();
             }
         }
-        
+
         /// <summary>
         /// バトルリザルトを表示する
         /// </summary>
@@ -99,7 +98,7 @@ namespace BeatKeeper
         {
             _battleResultController.Hide();
         }
-        
+
         /// <summary>
         /// バトルフェーズに移行する
         /// </summary>
@@ -108,7 +107,7 @@ namespace BeatKeeper
             _phaseManager.NextPhase(); // TODO: PhaseManager側に、次のシーンを再生する仕組みを追加する
             _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
-        
+
         private void OnDestroy()
         {
             _musicEngineHelper.OnJustChangedBar -= Counter;

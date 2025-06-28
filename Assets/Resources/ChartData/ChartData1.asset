@@ -13,67 +13,132 @@ MonoBehaviour:
   m_Name: ChartData1
   m_EditorClassIdentifier: 
   _chart:
-  - AttackKind: 1
-    Position: {x: 495, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 1485, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 810}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 495, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 1485, y: 810}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 495, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 1485, y: 810}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 495, y: 810}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 810}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 1485, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 990, y: 540}
   - AttackKind: 0
     Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  _visible: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
