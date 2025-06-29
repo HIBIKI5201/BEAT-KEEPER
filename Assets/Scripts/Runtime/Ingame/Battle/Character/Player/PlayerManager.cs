@@ -79,11 +79,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private IEnemy _target;
         private bool _isBattle;
-        private float _stunEndTiming; //スタンが終了するタイミング
+        [Tooltip("スタンが終了するタイミング")] private float _stunEndTiming;
         private float _chargeAttackTimer;
         private CancellationTokenSource _chargeAttackChargingTokenSource;
-        private float _lastAvoidSuccessTiming; //最後の回避成功のタイミング
-        private bool _willPerfectAttack; //パーフェクト攻撃の予約
+        [Tooltip("最後の回避成功のタイミング")] private float _lastAvoidSuccessTiming;
+        [Tooltip("パーフェクト攻撃の予約")] private bool _willPerfectAttack;
+        [Tooltip("連打防止のための、拍内で一度しか押せないフラグ")] private bool _isThisBeatInputed;
 
         private PlayerAnimeManager _animeManager;
         private ComboSystem _comboSystem;
@@ -194,6 +195,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnAttackInput(InputAction.CallbackContext context)
         {
+            if (!_isBattle) return;
+            if (!_data) return;
+            if (_isThisBeatInputed) return; //連打防止
+
             var chart = _target.EnemyData.ChartData.Chart;
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
 
@@ -265,18 +270,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAvoid(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
+            if (_isThisBeatInputed) return; //連打防止
 
             SymphonyDebugLog.AddText(
                 $"[{nameof(PlayerManager)}]" +
                 $"{_data.Name} is avoiding");
-
-            if (!IsAvoidSuccess())
-            {
-                //失敗時の処理
-                OnFailedAvoid?.Invoke();
-                SymphonyDebugLog.TextLog();
-                return;
-            }
 
             var chart = _target.EnemyData.ChartData.Chart;
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
@@ -285,25 +283,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //SuperとCharge攻撃は回避できない
             if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
             {
-                SymphonyDebugLog.AddText($"Enemy's attack of {enemyAttackKind} can't be avoided");
+                SymphonyDebugLog.AddText($"Enemy's attack of {enemyAttackKind}(timing:{timing}) can't be avoided");
                 SymphonyDebugLog.TextLog();
                 return;
             }
 
-            SymphonyDebugLog.AddText($"Success Avoid");
+            if (!IsAvoidSuccess())
+            {
+                //失敗時の処理
+                OnFailedAvoid?.Invoke();
 
-            OnSuccessAvoid?.Invoke();
-            _soundEffectSource?.PlayOneShot(_avoidSound);
+                SymphonyDebugLog.AddText("avoid result : failed");
+                    SymphonyDebugLog.TextLog();
+                return;
+            }
 
-            _animeManager.Avoid();
-            _flowZoneSystem.SuccessResonance();
-            _lastAvoidSuccessTiming = Time.time;
-
+            SymphonyDebugLog.AddText("avoid result : success");
+            AvoidFlow();
             SymphonyDebugLog.TextLog();
         }
 
         /// <summary>
-        ///     ビートが変わった際の処理
+        ///     表拍ビートの処理
         /// </summary>
         private void OnJustBeat()
         {
@@ -315,7 +316,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
-        private void OnNearBeat() => _willPerfectAttack = false;
+        /// <summary>
+        ///     裏拍ビートの処理
+        /// </summary>
+        private void OnNearBeat()
+        {
+            _willPerfectAttack = false;
+
+            if (_isThisBeatInputed) //拍内での連打防止フラグをリセット
+            {
+                _isThisBeatInputed = false;
+                Debug.LogWarning("Reset isThisBeatInputed flag");
+            }
+        }
 
         /// <summary>
         ///     フローゾーンが開始した時のイベント
@@ -466,10 +479,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void AttackFlow()
         {
-            if (!_isBattle) return;
-            if (!_data) return;
             if (_target == null) return;
-
 
             SymphonyDebugLog.AddText($"{_data.Name} do attack");
 
@@ -480,14 +490,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //評価のログ
             SymphonyDebugLog.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
 
-            if (isPerfectHit || isGoodHit) //missじゃない時は攻撃処理
+            if (isGoodHit) //最低でもGood以上ならヒット
             {
                 OnShootComboAttack?.Invoke();
                 _comboSystem.Attack(); //コンボを更新
 
                 _soundEffectSource?.PlayOneShot(_comboAttackSound);
+                _isThisBeatInputed = true;
 
-                if (isPerfectHit)
+                if (isGoodHit) //グッド以上なら攻撃する
                 {
                     if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
                     {
@@ -516,6 +527,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
+            if (_isThisBeatInputed) return; //連打防止
+
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
             _animeManager.Skill();
@@ -631,6 +644,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
             float score = power * _data.ComboScoreScale
                 [_comboSystem.ComboCount.CurrentValue % _data.ComboScoreScale.Length];
             _scoreManager?.AddScore(Mathf.FloorToInt(power)); // スコアを加算。小数点以下は切り捨てる
+        }
+
+        /// <summary>
+        ///     回避の一連のフロー
+        /// </summary>
+        private void AvoidFlow()
+        {
+            _isThisBeatInputed = true; //連打防止フラグを立てる
+
+            OnSuccessAvoid?.Invoke();
+            _soundEffectSource?.PlayOneShot(_avoidSound);
+
+            _animeManager.Avoid();
+            _flowZoneSystem.SuccessResonance();
+            _lastAvoidSuccessTiming = Time.time;
         }
 
         /// <summary>
