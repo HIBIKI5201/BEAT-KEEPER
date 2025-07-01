@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -8,6 +10,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     public class BreakMovieSequenceManager : MonoBehaviour
     {
         public event Action OnBreakMovieSequenceEnd;
+
+        [SerializeField]
+        private PlayableAsset[] playables;
 
         private PlayableDirector _playableDirector;
 
@@ -36,6 +41,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (!_playableDirector) return;
 
+            StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
+            int index = enemyAdmin.ActiveEnemyIndex;
+
+            _playableDirector.playableAsset = playables[index];
             _playableDirector.Play();
 
             _playableDirector.stopped += OnPlayableDirectorStopped;

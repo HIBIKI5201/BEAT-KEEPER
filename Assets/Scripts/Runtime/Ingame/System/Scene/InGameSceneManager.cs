@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
@@ -13,6 +13,15 @@ namespace BeatKeeper
             var multiScene = ServiceLocator.GetInstance<MultiSceneManager>();
             multiScene.SceneLoad(SceneListEnum.Stage);
             multiScene.SceneLoad(SceneListEnum.Battle);
+
+            SceneLoader.RegisterAfterSceneLoad(SceneListEnum.Stage.ToString(),
+                                ActiveStageScene);
+
+            async void ActiveStageScene()
+            {
+                await Awaitable.EndOfFrameAsync();
+                SceneLoader.SetActiveScene(SceneListEnum.Stage.ToString());
+            }
         }
     }
 }
