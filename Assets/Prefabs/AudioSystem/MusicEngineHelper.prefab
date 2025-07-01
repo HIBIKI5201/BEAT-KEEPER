@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1395610771496967193}
   - component: {fileID: 6659309216576162033}
   - component: {fileID: 6862399396053557512}
+  - component: {fileID: 6267276816583322860}
+  - component: {fileID: -4616719677439660317}
   - component: {fileID: 8639965246951376376}
   m_Layer: 0
   m_Name: MusicEngineHelper
@@ -62,7 +64,7 @@ MonoBehaviour:
   _locateType: 0
   _autoSet: 1
   _autoDestroy: 1
---- !u!114 &8639965246951376376
+--- !u!114 &6267276816583322860
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,6 +72,68 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3308093386745655845}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00aea26d3e9922c4fb6e963c9c89731a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayOnStart: 0
+  Meter:
+    StartBar: 0
+    Tempo: 120
+    UnitPerBeat: 4
+    UnitPerBar: 16
+    Numerator: 4
+    Denominator: 4
+  ResetTimingOnEachBlock: 0
+  BlockInfos:
+  - BlockName: 
+    NumBar: 0
+    StartBar: 0
+  AisacControlID: 0
+  AisacStateCount: 2
+  AisacInitialValue: 0
+  AisacFadeTime: 1
+--- !u!114 &-4616719677439660317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3308093386745655845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 0
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _freezeOrientation: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: 
+  _cueSheet: 
+--- !u!114 &8639965246951376376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3308093386745655845}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b53b71847506d7040b215cba81282db0, type: 3}
   m_Name: 
