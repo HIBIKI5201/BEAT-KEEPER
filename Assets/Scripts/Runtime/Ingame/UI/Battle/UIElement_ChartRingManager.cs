@@ -136,7 +136,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void ReleaseAllActiveIndicator()
         {
-            foreach (var ring in _activeRingIndicator)
+            List<RingIndicatorBase> rings = _activeRingIndicator.ToList();
+            foreach (var ring in rings)
             {
                 ring.End();
             }
