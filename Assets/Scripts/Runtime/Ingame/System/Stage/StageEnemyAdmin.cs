@@ -11,8 +11,10 @@ namespace BeatKeeper.Runtime.Ingame.Battle
 {
     public class StageEnemyAdmin : MonoBehaviour
     {
-        private EnemyManager[] _enemies;
         public EnemyManager[] Enemies => _enemies;
+        public int ActiveEnemyIndex => _activeEnemyIndex;
+
+        private EnemyManager[] _enemies;
 
         private int _activeEnemyIndex; //最初の敵を出すために-1から始める
 
