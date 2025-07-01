@@ -659,6 +659,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 362af0181beb58c45885801c94742671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playables:
+  - {fileID: 11400000, guid: 6b95d50c8848a794f840cbf13fead130, type: 2}
+  - {fileID: 11400000, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+  - {fileID: 11400000, guid: 022b810a266d07740ae185532b386823, type: 2}
 --- !u!320 &634489670
 PlayableDirector:
   m_ObjectHideFlags: 0
