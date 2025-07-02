@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///   プレイヤーのスキルを管理するシステム
+    /// </summary>
     public class SkillSystem
     {
         public SkillSystem(PlayerData data)
@@ -15,11 +18,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnStartSkill;
         public event Action OnEndSkill;
-
-        private readonly PlayerData _data;
-
-        private bool _isActive;
-        private CancellationTokenSource _cancellationTokenSource;
 
         /// <summary>
         ///     スキルを開始する
@@ -48,5 +46,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //キャンセルされなかった場合の処理
             OnEndSkill?.Invoke();
         }
+
+        private readonly PlayerData _data;
+
+        private bool _isActive;
+        private CancellationTokenSource _cancellationTokenSource;
     }
 }
