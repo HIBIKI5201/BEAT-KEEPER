@@ -396,7 +396,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnFailedAvoid?.Invoke();
 
                 SymphonyDebugLog.AddText("avoid result : failed");
-                    SymphonyDebugLog.TextLog();
+                SymphonyDebugLog.TextLog();
                 return;
             }
 
