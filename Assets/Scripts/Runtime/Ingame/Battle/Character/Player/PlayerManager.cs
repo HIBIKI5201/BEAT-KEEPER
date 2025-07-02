@@ -119,11 +119,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _bgmManager = ServiceLocator.GetInstance<BGMManager>();
 
-            _bgmManager.OnJustChangedBeat += OnJustBeat;
-            _bgmManager.OnNearChangedBeat += OnNearBeat;
-
-            if (!_bgmManager)
+            if (_bgmManager)
+            {
+                _bgmManager.OnJustChangedBeat += OnJustBeat;
+                _bgmManager.OnNearChangedBeat += OnNearBeat;
+            }
+            else
+            {
                 Debug.LogWarning("Music engine is null");
+            }
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
