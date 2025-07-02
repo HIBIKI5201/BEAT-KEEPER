@@ -38,6 +38,104 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public FlowZoneSystem FlowZoneSystem => _flowZoneSystem;
         #endregion
 
+        #region  公開メソッド
+
+        #region 入力の購買
+
+        /// <summary>
+        ///     入力を購買する
+        /// </summary>
+        public void InputRegister()
+        {
+            if (_inputBuffer)
+            {
+                _inputBuffer.Move.performed += OnMoveInput;
+                _inputBuffer.Move.canceled += OnMoveInput;
+                _inputBuffer.Interact.started += OnChargeAttackInput;
+                _inputBuffer.Interact.canceled += OnChargeAttackInput;
+                _inputBuffer.Attack.started += OnAttackInput;
+                _inputBuffer.Special.started += OnSpecialInput;
+                _inputBuffer.Finishier.started += OnFinisherInput;
+                _inputBuffer.Avoid.started += OnAvoid;
+
+                SymphonyDebugLog.DirectLog("player input registered");
+            }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
+            }
+        }
+
+        /// <summary>
+        ///     入力の購買を終わる
+        /// </summary>
+        public void InputUnregister()
+        {
+            if (_inputBuffer)
+            {
+                _inputBuffer.Move.performed -= OnMoveInput;
+                _inputBuffer.Move.canceled -= OnMoveInput;
+                _inputBuffer.Interact.started -= OnChargeAttackInput;
+                _inputBuffer.Interact.canceled -= OnChargeAttackInput;
+                _inputBuffer.Attack.started -= OnAttackInput;
+                _inputBuffer.Special.started -= OnSpecialInput;
+                _inputBuffer.Finishier.started -= OnFinisherInput;
+                _inputBuffer.Avoid.started -= OnAvoid;
+
+                SymphonyDebugLog.DirectLog("player input unregistered");
+            }
+            else
+            {
+                Debug.LogWarning("Input buffer is null");
+            }
+        }
+        #endregion
+
+        /// <summary>
+        ///     現在スタン中かを判定する
+        /// </summary>
+        /// <returns></returns>
+        public bool IsStunning() => IsStunning(Time.time);
+
+        /// <summary>
+        ///     指定時間がスタン中かを判定する
+        /// </summary>
+        /// <param name="timing">判定する時間</param>
+        /// <returns></returns>
+        public bool IsStunning(float timing)
+        {
+            return _stunEndTiming > timing;
+        }
+        #endregion
+
+        #region  インターフェースメソッド
+
+        /// <summary>
+        ///     攻撃を受けた際の処理
+        /// </summary>
+        /// <param name="data"></param>
+        public override void HitAttack(AttackData data)
+        {
+            //無敵時間なら受けない
+            if (_lastAvoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
+            {
+                Debug.Log("During Avoid Invincibility Time");
+                return;
+            }
+
+            base.HitAttack(data);
+            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _soundEffectSource?.PlayOneShot(_hitSound);
+
+            float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
+            _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
+
+            _comboSystem.ComboReset();
+            _animeManager.Hit();
+        }
+
+        #endregion
+
         #region プライベートフィールド
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
@@ -344,104 +442,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void EndFlowZone() => _soundEffectSource?.PlayOneShot(_flowZoneEndSound);
 
-
-        #endregion
-
-        #region  公開メソッド
-
-        #region 入力の購買
-
-        /// <summary>
-        ///     入力を購買する
-        /// </summary>
-        public void InputRegister()
-        {
-            if (_inputBuffer)
-            {
-                _inputBuffer.Move.performed += OnMoveInput;
-                _inputBuffer.Move.canceled += OnMoveInput;
-                _inputBuffer.Interact.started += OnChargeAttackInput;
-                _inputBuffer.Interact.canceled += OnChargeAttackInput;
-                _inputBuffer.Attack.started += OnAttackInput;
-                _inputBuffer.Special.started += OnSpecialInput;
-                _inputBuffer.Finishier.started += OnFinisherInput;
-                _inputBuffer.Avoid.started += OnAvoid;
-
-                SymphonyDebugLog.DirectLog("player input registered");
-            }
-            else
-            {
-                Debug.LogWarning("Input buffer is null");
-            }
-        }
-
-        /// <summary>
-        ///     入力の購買を終わる
-        /// </summary>
-        public void InputUnregister()
-        {
-            if (_inputBuffer)
-            {
-                _inputBuffer.Move.performed -= OnMoveInput;
-                _inputBuffer.Move.canceled -= OnMoveInput;
-                _inputBuffer.Interact.started -= OnChargeAttackInput;
-                _inputBuffer.Interact.canceled -= OnChargeAttackInput;
-                _inputBuffer.Attack.started -= OnAttackInput;
-                _inputBuffer.Special.started -= OnSpecialInput;
-                _inputBuffer.Finishier.started -= OnFinisherInput;
-                _inputBuffer.Avoid.started -= OnAvoid;
-
-                SymphonyDebugLog.DirectLog("player input unregistered");
-            }
-            else
-            {
-                Debug.LogWarning("Input buffer is null");
-            }
-        }
-        #endregion
-
-        /// <summary>
-        ///     現在スタン中かを判定する
-        /// </summary>
-        /// <returns></returns>
-        public bool IsStunning() => IsStunning(Time.time);
-
-        /// <summary>
-        ///     指定時間がスタン中かを判定する
-        /// </summary>
-        /// <param name="timing">判定する時間</param>
-        /// <returns></returns>
-        public bool IsStunning(float timing)
-        {
-            return _stunEndTiming > timing;
-        }
-        #endregion
-
-        #region  インターフェースメソッド
-
-        /// <summary>
-        ///     攻撃を受けた際の処理
-        /// </summary>
-        /// <param name="data"></param>
-        public override void HitAttack(AttackData data)
-        {
-            //無敵時間なら受けない
-            if (_lastAvoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
-            {
-                Debug.Log("During Avoid Invincibility Time");
-                return;
-            }
-
-            base.HitAttack(data);
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
-            _soundEffectSource?.PlayOneShot(_hitSound);
-
-            float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
-            _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
-
-            _comboSystem.ComboReset();
-            _animeManager.Hit();
-        }
 
         #endregion
 
