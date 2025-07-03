@@ -90,14 +90,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
             _onBeat?.Invoke(); //リングのカウントを更新 
+            var chart = _targetData.ChartData.Chart;
 
             //新しいリングを監視
-            for(int i = 0; i < _ringIndicatorData.RingDatas.Length; i++)
+            for (int i = 0; i < _ringIndicatorData.RingDatas.Length; i++)
             {
                 //インジケーターのデータを取得
                 var data = _ringIndicatorData.RingDatas[i];
-
-                var chart = _targetData.ChartData.Chart;
                 //インジケーターに対応する譜面を取得
                 var element = chart[(timing + _appearTiming[i]) % chart.Length];
 
