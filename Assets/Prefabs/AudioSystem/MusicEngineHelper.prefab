@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6862399396053557512}
   - component: {fileID: 6267276816583322860}
   - component: {fileID: -4616719677439660317}
-  - component: {fileID: 8639965246951376376}
+  - component: {fileID: 3878882548923747817}
   m_Layer: 0
   m_Name: MusicEngineHelper
   m_TagString: Untagged
@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8955406428883846231}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6659309216576162033
@@ -62,7 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 6659309216576162033}
   _locateType: 0
-  _autoSet: 1
+  _autoSet: 0
   _autoDestroy: 1
 --- !u!114 &6267276816583322860
 MonoBehaviour:
@@ -76,17 +77,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00aea26d3e9922c4fb6e963c9c89731a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayOnStart: 0
+  PlayOnStart: 1
   Meter:
     StartBar: 0
-    Tempo: 120
+    Tempo: 130
     UnitPerBeat: 4
     UnitPerBar: 16
     Numerator: 4
     Denominator: 4
   ResetTimingOnEachBlock: 0
   BlockInfos:
-  - BlockName: 
+  - BlockName: BGM_Phase1_Layer5_Loop
     NumBar: 0
     StartBar: 0
   AisacControlID: 0
@@ -100,6 +101,92 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3308093386745655845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playOnStart: 1
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 1
+  _freezeOrientation: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: BGM_Phase1_Layer5_Loop
+  _cueSheet: CueSheet_0
+--- !u!114 &3878882548923747817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3308093386745655845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f529aa944b914449d62b8c40f188fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acfFile: BeatKeepr.acf
+  cueSheets:
+  - name: CueSheet_0
+    acbFile: CueSheet_0.acb
+    awbFile: 
+    loaderStatus: 0
+  dspBusSetting: 
+  dontDestroyOnLoad: 0
+  dontRemoveExistsCueSheet: 0
+--- !u!1 &4356066145380061619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8955406428883846231}
+  - component: {fileID: 2762629220484214675}
+  m_Layer: 0
+  m_Name: BGM_Phase1_Layer5_Loop(CriAtomSource)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8955406428883846231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356066145380061619}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1395610771496967193}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2762629220484214675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4356066145380061619}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
@@ -124,366 +211,5 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: 
-  _cueSheet: 
---- !u!114 &8639965246951376376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3308093386745655845}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53b71847506d7040b215cba81282db0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayOnStart: 1
-  Volume: 0.057
-  OutputMixerGroup: {fileID: 1630776837128064713, guid: bc736cb098203c2419dfd282ecc7da9a, type: 2}
-  Sections:
-  - Name: Phase1_Intro
-    Clips:
-    - {fileID: 8300000, guid: 64511516e552ed8448cbbe1642f06ee0, type: 3}
-    - {fileID: 8300000, guid: 7801f611f7ca7dd4b93976543710f918, type: 3}
-    - {fileID: 8300000, guid: 06360d25a9cbf6d4f94765d62c93110a, type: 3}
-    - {fileID: 8300000, guid: 343269801f91d724793c80d72d152717, type: 3}
-    - {fileID: 8300000, guid: ea8eac979ebb41a48adb6c19084325de, type: 3}
-    - {fileID: 8300000, guid: 0b60f0664879fce4f812fbc465839aae, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 130
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 4
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 1
-    TransitionDestinationIndex: 1
-  - Name: Phase1_Loop
-    Clips:
-    - {fileID: 8300000, guid: d3739358607d96c4fa3c6cc5403b0e13, type: 3}
-    - {fileID: 8300000, guid: 9523a7f308110ce49a2005cf3db4f53d, type: 3}
-    - {fileID: 8300000, guid: 1e7714e2b18c7814c86561a09b99411d, type: 3}
-    - {fileID: 8300000, guid: a8119eccab454ff4db9d721000e6c326, type: 3}
-    - {fileID: 8300000, guid: a2e31cff3f4863d4baccf841cfab2097, type: 3}
-    - {fileID: 8300000, guid: 6ced1bd382db7b34dacda03ec0000124, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 130
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Phase2_Intro
-    Clips:
-    - {fileID: 8300000, guid: 59be99cc44bfd5a4b80f38dd69a66f5b, type: 3}
-    - {fileID: 8300000, guid: bc51fac830bc3544d87c218a859be6fd, type: 3}
-    - {fileID: 8300000, guid: fc1146c9c20506e4f9528b64a9f872d4, type: 3}
-    - {fileID: 8300000, guid: a46645a840b6e484f8ac5acf50554229, type: 3}
-    - {fileID: 8300000, guid: 7f84f86f6a4c11c479cb1919b315fe2c, type: 3}
-    - {fileID: 8300000, guid: 78f1a682fa5a4d94eb63aef9316afb7d, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 140
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 4
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 1
-    TransitionDestinationIndex: 3
-  - Name: Phase2_Loop
-    Clips:
-    - {fileID: 8300000, guid: 6bc833d196735704c93636a6563e207f, type: 3}
-    - {fileID: 8300000, guid: 14a08209f9056e94bb5cd34afe5c1724, type: 3}
-    - {fileID: 8300000, guid: b3813f8dceba4db4d8961788aecb49c1, type: 3}
-    - {fileID: 8300000, guid: 4c6d10d8d8a41e040a224d7213f213dc, type: 3}
-    - {fileID: 8300000, guid: 28f89d413cb688346a8e7bafb996d7db, type: 3}
-    - {fileID: 8300000, guid: 8105f9ec2e68e4e47bc5cad4bdf7bd61, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 140
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  - Name: Phase3_Intro
-    Clips:
-    - {fileID: 8300000, guid: e2a36f8b71825bd4da0ef65f35af4cab, type: 3}
-    - {fileID: 8300000, guid: 322e71c6440bafa42a371c6d41c70a4f, type: 3}
-    - {fileID: 8300000, guid: 6517135ddcd78c44389a8513eca1135d, type: 3}
-    - {fileID: 8300000, guid: 77c1147e942c04e4995c50b39f2d03c5, type: 3}
-    - {fileID: 8300000, guid: bebb5903f27e368409c69856a9322d4e, type: 3}
-    - {fileID: 8300000, guid: d95db6ea0ea58f240ac0934f348cd55a, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 160
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 4
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 1
-    TransitionDestinationIndex: 5
-  - Name: Phase3_Loop
-    Clips:
-    - {fileID: 8300000, guid: ef5f85fdbea727a4284943abf9626def, type: 3}
-    - {fileID: 8300000, guid: 7903f0878b27b204c991575e23f81339, type: 3}
-    - {fileID: 8300000, guid: 5618965fb40e80549b0268371c1ece22, type: 3}
-    - {fileID: 8300000, guid: afbb5e646514b9b45bc93d61a77ed1b4, type: 3}
-    - {fileID: 8300000, guid: c02b2c9bd20d70146b59d82e8a0a87fb, type: 3}
-    - {fileID: 8300000, guid: 90815cdd1a56bb542bbd6198d7d8eebd, type: 3}
-    Meters:
-    - StartBar: 0
-      Tempo: 160
-      UnitPerBeat: 4
-      UnitPerBar: 16
-      Numerator: 4
-      Denominator: 4
-    SyncType: 3
-    SyncFactor: 1
-    Markers: []
-    EntryPointTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    ExitPointTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    LoopStartTiming:
-      Bar: 0
-      Beat: 0
-      Unit: 0
-    LoopEndTiming:
-      Bar: 16
-      Beat: 0
-      Unit: 0
-    Transition:
-      UseFadeOut: 0
-      FadeOutTime: 0
-      FadeOutOffset: 0
-      UseFadeIn: 0
-      FadeInTime: 0
-      FadeInOffset: 0
-    TransitionType: 0
-    TransitionDestinationIndex: 0
-  Modes:
-  - Name: Max
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-  - Name: Layer0
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-  - Name: Layer1
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 0
-    - 0
-    - 0
-    - 0
-  - Name: Layer2
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 1
-    - 0
-    - 0
-    - 0
-  - Name: Layer3
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 1
-    - 1
-    - 0
-    - 0
-  - Name: Layer4
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 0
-  - Name: Layer5
-    TotalVolume: 1
-    LayerVolumes:
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-  ModeTransitionParam:
-    FadeTime: 0.5
-    FadeOffset: 0
-    TimeUnitType: 0
-    SyncType: 0
-    SyncFactor: 1
-  SectionTransitionOverrides:
-  - FromSectionIndex: -1
-    ToSectionIndex: -1
-    SyncType: 0
-    SyncFactor: 0
-    Transition:
-      UseFadeOut: 1
-      FadeOutTime: 1
-      FadeOutOffset: 0
-      UseFadeIn: 1
-      FadeInTime: 1
-      FadeInOffset: 0
-  ModeTransitionOverrides: []
-  NumTracks: 6
-  SeekBar: -1
-  PreviewSectionIndex: 0
-  PreviewModeIndex: 0
+  _cueName: BGM_Phase1_Layer5_Loop
+  _cueSheet: CueSheet_0
