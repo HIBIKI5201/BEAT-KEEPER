@@ -11,7 +11,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("バトル中")]
         [SerializeField] private CanvasController[] _canvasControllers;
         [SerializeField] private UIElement_ScoreText _scoreText;
-        [SerializeField] private UIElement_SeekBar _seekBar;
         [SerializeField] private UIElement_FinisherGuide _finisherGuide;
         [SerializeField] private UIElement_ChartRingManager _chartRingManager;
         [SerializeField] private UIElement_HealthBar _healthBar;
@@ -30,7 +29,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             Debug.Assert(_canvasControllers != null && _canvasControllers.Length > 0, "canvasControllers が設定されていません");
             Debug.Assert(_scoreText != null, "scoreText が設定されていません");
-            Debug.Assert(_seekBar != null, "seekBar が設定されていません");
             Debug.Assert(_finisherGuide != null, "finisherGuide が設定されていません");
             Debug.Assert(_chartRingManager != null, "warningIndicatorが設定されていません");
         }
@@ -56,7 +54,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void PrepareUIElements()
         {
             _scoreText.SavePreBattleScore(); // バトル前の時点のスコアを保存する
-            _seekBar.Initialize();
             _finisherGuide.CountReset();
         }
 
