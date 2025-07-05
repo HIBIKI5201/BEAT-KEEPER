@@ -66,8 +66,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private async void Start()
         {
-            SetLayerVolume(0);
-
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
             await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
@@ -117,7 +115,14 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeBGM(string name)
         {
-            Music.Play("Battle1");
+            Music.Play(name);
+
+            if (Music.Current.TryGetComponent<CriAtomSource>(out var source))
+            {
+                _atomSource = source;
+                SetLayerVolume(0);
+            }
+
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
         }
 
@@ -439,7 +444,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="volume"></param>
         private void ChangeTrackVolume(int truckIndex, float volume)
         {
-            _atomSource.SetAisacControl($"Layer{truckIndex}", volume);
+            _atomSource.SetAisacControl($"AisacControl_{truckIndex.ToString("00")}", volume);
         }
     }
 }
