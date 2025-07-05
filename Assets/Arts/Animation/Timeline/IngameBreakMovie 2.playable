@@ -277,4 +277,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4fe891c87c7e64fa1fd64276c0fa69, type: 3}
   m_Name: BGMChangeAsset
   m_EditorClassIdentifier: 
-  _bgmName: Battle1
+  _bgmName: Battle3
