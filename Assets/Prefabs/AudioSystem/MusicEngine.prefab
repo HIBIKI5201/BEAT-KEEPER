@@ -11,11 +11,9 @@ GameObject:
   - component: {fileID: 1395610771496967193}
   - component: {fileID: 6659309216576162033}
   - component: {fileID: 6862399396053557512}
-  - component: {fileID: 6267276816583322860}
-  - component: {fileID: -4616719677439660317}
   - component: {fileID: 3878882548923747817}
   m_Layer: 0
-  m_Name: MusicEngineHelper
+  m_Name: MusicEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8955406428883846231}
+  - {fileID: 6217551041429930733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6659309216576162033
@@ -62,71 +60,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 6659309216576162033}
-  _locateType: 0
-  _autoSet: 0
+  _locateType: 1
+  _autoSet: 1
   _autoDestroy: 1
---- !u!114 &6267276816583322860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3308093386745655845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00aea26d3e9922c4fb6e963c9c89731a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayOnStart: 1
-  Meter:
-    StartBar: 0
-    Tempo: 130
-    UnitPerBeat: 4
-    UnitPerBar: 16
-    Numerator: 4
-    Denominator: 4
-  ResetTimingOnEachBlock: 0
-  BlockInfos:
-  - BlockName: BGM_Phase1_Layer5_Loop
-    NumBar: 0
-    StartBar: 0
-  AisacControlID: 0
-  AisacStateCount: 2
-  AisacInitialValue: 0
-  AisacFadeTime: 1
---- !u!114 &-4616719677439660317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3308093386745655845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 1
-  _regionOnStart: {fileID: 0}
-  _listenerOnStart: {fileID: 0}
-  _use3dPositioning: 1
-  _freezeOrientation: 0
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
-  _use3dRandomization: 0
-  _randomPositionListMaxLength: 0
-  randomize3dConfig:
-    followsOriginalSource: 0
-    calculationType: 0
-    calculationParameters:
-    - 0
-    - 0
-    - 0
-  _cueName: BGM_Phase1_Layer5_Loop
-  _cueSheet: CueSheet_0
 --- !u!114 &3878882548923747817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,14 +77,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acfFile: BeatKeepr.acf
   cueSheets:
-  - name: CueSheet_0
-    acbFile: CueSheet_0.acb
+  - name: Battle
+    acbFile: Battle.acb
     awbFile: 
     loaderStatus: 0
   dspBusSetting: 
   dontDestroyOnLoad: 0
   dontRemoveExistsCueSheet: 0
---- !u!1 &4356066145380061619
+--- !u!1 &3395612963114535372
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,37 +92,70 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8955406428883846231}
-  - component: {fileID: 2762629220484214675}
+  - component: {fileID: 6217551041429930733}
+  - component: {fileID: 4582629090557068278}
+  - component: {fileID: 6286255084227128913}
   m_Layer: 0
-  m_Name: BGM_Phase1_Layer5_Loop(CriAtomSource)
+  m_Name: Battle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8955406428883846231
+--- !u!4 &6217551041429930733
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4356066145380061619}
+  m_GameObject: {fileID: 3395612963114535372}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1395610771496967193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2762629220484214675
+--- !u!114 &4582629090557068278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4356066145380061619}
+  m_GameObject: {fileID: 3395612963114535372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00aea26d3e9922c4fb6e963c9c89731a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayOnStart: 0
+  Meter:
+    StartBar: 0
+    Tempo: 130
+    UnitPerBeat: 4
+    UnitPerBar: 16
+    Numerator: 4
+    Denominator: 4
+  ResetTimingOnEachBlock: 0
+  BlockInfos:
+  - BlockName: Intro
+    NumBar: 4
+    StartBar: 0
+  - BlockName: Loop
+    NumBar: 4
+    StartBar: 4
+  AisacControlID: 0
+  AisacStateCount: 2
+  AisacInitialValue: 0
+  AisacFadeTime: 1
+--- !u!114 &6286255084227128913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3395612963114535372}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
@@ -198,7 +167,7 @@ MonoBehaviour:
   _use3dPositioning: 1
   _freezeOrientation: 0
   _loop: 0
-  _volume: 1
+  _volume: 0.3
   _pitch: 0
   _androidUseLowLatencyVoicePool: 0
   need_to_player_update_all: 1
@@ -211,5 +180,5 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: BGM_Phase1_Layer5_Loop
-  _cueSheet: CueSheet_0
+  _cueName: Battle1
+  _cueSheet: Battle
