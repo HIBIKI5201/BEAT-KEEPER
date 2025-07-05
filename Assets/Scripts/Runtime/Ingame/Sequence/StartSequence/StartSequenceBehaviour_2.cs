@@ -1,6 +1,4 @@
-﻿using BeatKeeper.Runtime.Ingame.Character;
-using BeatKeeper.Runtime.Ingame.Stsge;
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.Stsge;
 using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -34,13 +32,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (uiManager)
             {
                 uiManager.BattleStart();
-            }
-
-            //BGMをバトルに変更
-            var bgmChanger = ServiceLocator.GetInstance<BGMManager>();
-            if (bgmChanger)
-            {
-                bgmChanger.ChangeBGM("Battle1");
             }
 
             Debug.Log("StartPerformanceBehaviour_2");
