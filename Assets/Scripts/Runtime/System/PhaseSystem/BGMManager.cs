@@ -1,6 +1,8 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
+using CriWare;
 using R3;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +50,8 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         // TODO: リファクタリング
 
+        private CriAtomSource _atomSource;
+
         /// <summary>
         /// BGMレイヤーを管理するためのFlowZoneSystemの参照
         /// </summary>
@@ -55,9 +59,18 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private CompositeDisposable _disposable = new();
 
+        private void Awake()
+        {
+            _atomSource = GetComponent<CriAtomSource>();
+        }
+
         private async void Start()
         {
+            SetLayerVolume(0);
+
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
             _flowZoneSystem = playerManager.FlowZoneSystem;
 
             // リズム共鳴のリアクティブプロパティを購読
@@ -68,7 +81,7 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private void OnChangeResonanceCount(int value)
         {
-            ChangeBGMLayer(GetLayerEnum(value).ToString());
+            ChangeBGMLayer((int)GetLayerEnum(value));
         }
 
         /// <summary>
@@ -104,7 +117,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeBGM(string name)
         {
-            Music.SetHorizontalSequence(name);
+            Music.Play("Battle1");
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
         }
 
@@ -112,9 +125,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         ///     BGMのレイヤーを変更する
         /// </summary>
         /// <param name="name"></param>
-        public void ChangeBGMLayer(string name)
+        public void ChangeBGMLayer(int index)
         {
-            Music.SetVerticalMix(name);
+            SetLayerVolume(index);
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを変更しました");
         }
 
@@ -400,6 +413,33 @@ namespace BeatKeeper.Runtime.Ingame.System
                 Action = action;
                 IsRepeating = isRepeating;
             }
+        }
+
+        /// <summary>
+        ///     指定したレイヤーまでのトラックを有効化する
+        /// </summary>
+        /// <param name="layerIndex"></param>
+        private void SetLayerVolume(int layerIndex)
+        {
+            for (int i = 0; i <= layerIndex; i++)
+            {
+                ChangeTrackVolume(i, 1.0f); // レイヤーの音量を最大に設定
+            }
+
+            for (int i = layerIndex + 1; i <= (int)BGMLayerEnum.Layer5; i++)
+            {
+                ChangeTrackVolume(i, 0.0f); // レイヤーの音量を最小に設定
+            }
+        }
+
+        /// <summary>
+        ///     インデックス番号からトラックのボリュームを変更する
+        /// </summary>
+        /// <param name="truckIndex"></param>
+        /// <param name="volume"></param>
+        private void ChangeTrackVolume(int truckIndex, float volume)
+        {
+            _atomSource.SetAisacControl($"Layer{truckIndex}", volume);
         }
     }
 }
