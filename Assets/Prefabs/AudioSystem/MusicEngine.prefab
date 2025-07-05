@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 4582629090557068278}
   - component: {fileID: 6286255084227128913}
   m_Layer: 0
-  m_Name: Battle1
+  m_Name: Phase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: Battle1
+  _cueName: Phase1
   _cueSheet: Battle
 --- !u!1 &4533952230725193747
 GameObject:
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 469562654141541080}
   - component: {fileID: 2821200041416439151}
   m_Layer: 0
-  m_Name: Battle3
+  m_Name: Phase3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: Battle3
+  _cueName: Phase3
   _cueSheet: Battle
 --- !u!1 &7458331887055390619
 GameObject:
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 6482851905103169827}
   - component: {fileID: 2594750675918038543}
   m_Layer: 0
-  m_Name: Battle2
+  m_Name: Phase2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,5 +366,5 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: Battle2
+  _cueName: Phase2
   _cueSheet: Battle
