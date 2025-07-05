@@ -502,9 +502,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _soundEffectSource?.PlayOneShot(_comboAttackSound);
                 _isThisBeatInputed = true;
 
-                if (isGoodHit) //グッド以上なら攻撃する
+                if (isPerfectHit)
                 {
-                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
+                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
                     {
                         _willPerfectAttack = true;
                     }

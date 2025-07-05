@@ -21,11 +21,13 @@ MonoBehaviour:
   - 100
   _comboRisetTime: 3
   _chargeAttackTime: 3
-  _perfectRange: 0.1
-  _goodRange: 0.5
+  _perfectRange: 0.5
+  _goodRange: 0.8
   _flowZoneThreshold: 10
   _flowZoneDuration: 16
   _avoidRange: 1
   _avoidInvincibilityTime: 1
   _hitStunTime: 5
   _chargeHitStunTime: 2
+  _skillDuration: 5
+  _skillStrangth: 1.5

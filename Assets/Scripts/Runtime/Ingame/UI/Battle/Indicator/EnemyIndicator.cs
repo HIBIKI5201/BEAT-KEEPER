@@ -8,14 +8,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class EnemyIndicator : RingIndicatorBase
     {
-        [Header("色設定")]
-        [SerializeField] private Color _warningColor = Color.red;
-        [SerializeField] private Color _successColor = Color.yellow;
-        [SerializeField] private Color _defaultColor = Color.white;
-
-        [SerializeField] private float _blinkDuration = 0.2f;
-        [SerializeField] private float _fadeDuration = 0.3f;
-
         public override int EffectLength => 5;
 
         /// <summary>
@@ -48,8 +40,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             base.End();
 
             //敵攻撃はノックバックを与えるので確認
-            _chartRingManager.CheckAllRingIndicatorRemainTime(); 
+            _chartRingManager.CheckAllRingIndicatorRemainTime();
         }
+
+        private const float CONTRACTION_SPEED = 2;
+
+        [Header("色設定")]
+        [SerializeField] private Color _warningColor = Color.red;
+        [SerializeField] private Color _successColor = Color.yellow;
+        [SerializeField] private Color _defaultColor = Color.white;
+
+        [SerializeField] private float _blinkDuration = 0.2f;
+        [SerializeField] private float _fadeDuration = 0.3f;
 
         /// <summary>
         /// 点滅シークエンス
@@ -77,7 +79,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void Effect2()
         {
             _tweens[1] = _ringImage.rectTransform
-                .DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f)
+                .DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * CONTRACTION_SPEED)
                 .SetEase(Ease.Linear);
         }
 
