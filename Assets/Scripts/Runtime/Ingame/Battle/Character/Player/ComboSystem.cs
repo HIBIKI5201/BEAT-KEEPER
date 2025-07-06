@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///    プレイヤーのコンボシステムを管理するクラス
+    /// </summary>
     public class ComboSystem
     {
         public ComboSystem(PlayerData data) => _data = data;

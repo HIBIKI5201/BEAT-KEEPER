@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     敵キャラクターの管理クラス
+    /// </summary>
     public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
         public event Action OnFinisherable;

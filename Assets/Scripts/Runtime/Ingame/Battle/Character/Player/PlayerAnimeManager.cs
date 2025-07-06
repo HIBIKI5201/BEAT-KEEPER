@@ -2,6 +2,9 @@
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     Playerのアニメーション制御を請け負う
+    /// </summary>
     public class PlayerAnimeManager : CharacterAnimeManagerB
     {
         public PlayerAnimeManager(Animator animator) : base(animator) { }

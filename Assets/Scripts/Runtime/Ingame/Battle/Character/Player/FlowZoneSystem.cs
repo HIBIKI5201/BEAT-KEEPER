@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeatKeeper.Runtime.Ingame.Character
 {
     /// <summary>
-    /// フローゾーンを管理するシステム
+    ///     フローゾーンを管理するシステム
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
