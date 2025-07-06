@@ -1,13 +1,14 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
+    /// <summary>
+    ///     シーンの初期化を管理するクラス
+    /// </summary>
     [DefaultExecutionOrder(-1000)]
     public class SceneManagerB : MonoBehaviour
     {
-        private HashSet<int> _initializeComponentHash = new();
-        
         public void Register(Component self)
         {
             _initializeComponentHash.Add(self.GetInstanceID());
@@ -17,7 +18,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             _initializeComponentHash.Remove(self.GetInstanceID());
         }
-        
+
         public bool IsInitializeEnd() => _initializeComponentHash.Count == 0;
+
+        private HashSet<int> _initializeComponentHash = new();
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
+    /// <summary>
+    ///     譜面データを管理するクラス
+    /// </summary>
     [CreateAssetMenu(fileName = "ChartData", menuName = "BeatKeeper/ChartData", order = 1)]
     public partial class ChartData : ScriptableObject
     {
