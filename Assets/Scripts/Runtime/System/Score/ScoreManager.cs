@@ -1,5 +1,5 @@
-﻿using System;
-using BeatKeeper.Runtime.Ingame.Character;
+﻿using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
@@ -14,11 +14,11 @@ namespace BeatKeeper
     {
         private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
         [SerializeField] private ComboBonusSettingsSO _comboBonusData;
-        
+
         public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;
         private readonly ReactiveProperty<int> _scoreProp = new ReactiveProperty<int>(0);
         public int Score => _scoreProp.Value;
-        
+
         /// <summary>
         /// コンボによるスコアボーナス倍率
         /// </summary>
@@ -46,7 +46,7 @@ namespace BeatKeeper
         public void AddScore(int score)
         {
             int addedScore = score + Score;
-            
+
             // 正の数ならコンボボーナスも含めて計算する。負の数なら受け取ったスコアのまま
             if (score > 0)
             {
@@ -72,14 +72,14 @@ namespace BeatKeeper
             _bonusMultiply.Value = bonusMultiply; // スコア倍率のリアクティブプロパティを更新
             return bonusMultiply;
         }
-        
+
         /// <summary>
         /// バトル開始時にスコアを保存する
         /// </summary>
         public void SavePreBattleScore()
         {
             _preBattleScore = Score;
-            Debug.Log($"[ScoreManager] スコアを保存しました 保存: {_preBattleScore}"); 
+            Debug.Log($"[ScoreManager] スコアを保存しました 保存: {_preBattleScore}");
         }
 
         /// <summary>

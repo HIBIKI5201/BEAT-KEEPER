@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -7,11 +7,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public abstract class CharacterAnimeManagerB
     {
-        protected Animator _animator;
-        
         public CharacterAnimeManagerB(Animator animator)
         {
             _animator = animator;
         }
+        
+        protected Animator _animator;
     }
 }

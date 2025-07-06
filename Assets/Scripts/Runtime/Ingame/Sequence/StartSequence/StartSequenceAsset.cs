@@ -9,8 +9,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     /// </summary>
     public class StartSequenceAsset : PlayableAsset
     {
-        [SerializeField, Range(1, 3)] private int _behaviourKind;
-
         override public Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             switch (_behaviourKind)
@@ -27,5 +25,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             return Playable.Null;
         }
+
+        [SerializeField, Range(1, 3)] private int _behaviourKind;
     }
 }

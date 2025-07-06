@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.UI;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
@@ -11,6 +12,15 @@ namespace BeatKeeper.Runtime.Ingame.System
     /// </summary>
     public class ClearPhaseManager : MonoBehaviour
     {
+        /// <summary>
+        /// クリアフェーズが始まったら呼ばれる処理
+        /// </summary>
+        public void ClearPhaseStart()
+        {
+            _musicEngineHelper.OnJustChangedBar += Counter;
+            _objects[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
+        }
+
         [SerializeField] private CameraManager _cameraManager;
         [SerializeField] private BattleResultController _battleResultController;
         [SerializeField] private UIElement_EncounterText _encounterText;
@@ -30,15 +40,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             //クリアフェーズを廃止する可能性があるため、以下のコードはコメントアウトしておく
             //_phaseManager.CurrentPhaseProp.Subscribe(value => {if(value == PhaseEnum.Clear) ClearPhaseStart(); }).AddTo(_disposables);
-        }
-
-        /// <summary>
-        /// クリアフェーズが始まったら呼ばれる処理
-        /// </summary>
-        public void ClearPhaseStart()
-        {
-            _musicEngineHelper.OnJustChangedBar += Counter;
-            _objects[0].gameObject.SetActive(false); // 現在のバトルのEnemyを非表示に
         }
 
         /// <summary>

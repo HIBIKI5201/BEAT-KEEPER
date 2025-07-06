@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -9,21 +9,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
     [Serializable]
     public class CharacterHealthSystem
     {
-        private EnemyData _data;
-        
-        public float MaxHealth => _data.MaxHealth;
-
-        public float Health => _health;
-        private float _health;
-
-        public event Action<float> OnHealthChanged;
-        public event Action OnDeath;
-
         public CharacterHealthSystem(EnemyData data)
         {
             _data = data;
             _health = data.MaxHealth;
         }
+
+        public event Action<float> OnHealthChanged;
+        public event Action OnDeath;
+        
+        public float MaxHealth => _data.MaxHealth;
+        public float Health => _health;
+
+        private EnemyData _data;
+        private float _health;
 
         /// <summary>
         ///     体力を変更する

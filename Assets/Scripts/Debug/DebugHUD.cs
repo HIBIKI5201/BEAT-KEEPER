@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Develop
 {
     public class DebugHUD : MonoBehaviour
     {
@@ -48,6 +49,7 @@ namespace BeatKeeper
             {
                 var currentBeat = MusicEngineHelper.GetBeatSinceStart();
                 text += $"Current Beat: {currentBeat}";
+                text += $"\nBar:{Music.Just.Bar}, Just:{Music.Just.Beat}";
             }
 
             GUI.Label(rect, text, style);

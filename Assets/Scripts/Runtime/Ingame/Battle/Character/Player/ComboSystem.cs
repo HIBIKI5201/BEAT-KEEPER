@@ -1,21 +1,16 @@
-﻿using BeatKeeper.Runtime.Ingame.Character;
-using R3;
+﻿using R3;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///    プレイヤーのコンボシステムを管理するクラス
+    /// </summary>
     public class ComboSystem
     {
         public ComboSystem(PlayerData data) => _data = data;
 
         public ReadOnlyReactiveProperty<int> ComboCount => _comboCount;
-
-        
-        private readonly PlayerData _data;
-        private ReactiveProperty<int> _comboCount = new();
-        private float _lastAttackTime = Time.time;
-        
-
 
         /// <summary>
         ///     攻撃時にコンボカウントを増やす
@@ -39,5 +34,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 ComboReset();
             }
         }
+
+        private readonly PlayerData _data;
+        private ReactiveProperty<int> _comboCount = new();
+        private float _lastAttackTime = Time.time;
     }
 }
