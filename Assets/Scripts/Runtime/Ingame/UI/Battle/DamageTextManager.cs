@@ -87,7 +87,7 @@ public class DamageTextManager : MonoBehaviour
     {
         _damageText.transform.position = _initPosition;
         _damageText.text = $"+{damageAmount}";
-        _damageText.color = new Color(_textColor.r, _textColor.g, _textColor.b, 1);
+        _damageText.color = _textColor;
     }
 
     private void OnDestroy()
