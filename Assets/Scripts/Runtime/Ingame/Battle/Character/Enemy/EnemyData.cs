@@ -1,8 +1,6 @@
-﻿using System;
-using BeatKeeper.Runtime.Ingame.Battle;
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {

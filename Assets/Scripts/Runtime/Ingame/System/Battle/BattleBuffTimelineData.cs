@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Battle
 {
+    /// <summary>
+    ///     タイムアシストのデータ
+    /// </summary>
     [CreateAssetMenu(fileName = nameof(BattleBuffTimelineData),
         menuName = "BeatKeeper/" + nameof(BattleBuffTimelineData))]
     public class BattleBuffTimelineData : ScriptableObject
@@ -17,8 +20,9 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             public float Value => _value;
         }
 
-        [SerializeField] private BuffData[] _data;
         public BuffData[] Data => _data;
+
+        [SerializeField] private BuffData[] _data;
 
         [ContextMenu("データのソート")]
         private void Sort() => Array.Sort(_data, (a, b) => a.Timing - b.Timing);

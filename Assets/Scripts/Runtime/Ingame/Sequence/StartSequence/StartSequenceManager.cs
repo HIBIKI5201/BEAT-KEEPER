@@ -1,4 +1,4 @@
-﻿using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -21,7 +21,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             var director = GetComponent<PlayableDirector>();
             director.Play();
-            director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
+            //現在最初にBGMが再生されていないのでコメントアウト
+            //director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
         }
     }
 }

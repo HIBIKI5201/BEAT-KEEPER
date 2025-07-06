@@ -1,6 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
-using System;
+using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,25 +15,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
     {
         public abstract int EffectLength { get; }
 
-        [Header("基本設定")]
-        [SerializeField] protected float _initialScale = 3.5f;
-
-        protected PlayerManager _player;
-        protected UIElement_ChartRingManager _chartRingManager;
-        protected Action _onEndAction;
-
-        protected Image _selfImage;
-        protected Image _ringImage;
-
-        protected int _count;
-        protected Tween[] _tweens;
-
-        private void Awake()
-        {
-            _selfImage = GetComponent<Image>();
-            _ringImage = transform.GetChild(0).GetComponent<Image>();
-        }
-
         public void OnInit(PlayerManager player, UIElement_ChartRingManager ringManager)
         {
             _player = player;
@@ -41,7 +23,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public void OnGet(Action onEndAction, Vector2 rectPos)
         {
-            _selfImage.rectTransform.position = rectPos 
+            _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
             _onEndAction = onEndAction;
 
@@ -100,6 +82,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             return true;
+        }
+
+        [Header("基本設定")]
+        [SerializeField] protected float _initialScale = 3.5f;
+
+        protected PlayerManager _player;
+        protected UIElement_ChartRingManager _chartRingManager;
+        protected Action _onEndAction;
+
+        protected Image _selfImage;
+        protected Image _ringImage;
+
+        protected int _count;
+        protected Tween[] _tweens;
+
+        private void Awake()
+        {
+            _selfImage = GetComponent<Image>();
+            _ringImage = transform.GetChild(0).GetComponent<Image>();
         }
     }
 }

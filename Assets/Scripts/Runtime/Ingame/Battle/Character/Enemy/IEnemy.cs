@@ -1,8 +1,8 @@
-using BeatKeeper.Runtime.Ingame.Character;
-using UnityEngine;
-
-namespace BeatKeeper.Runtime.Ingame.Character
+﻿namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     敵キャラクターのインターフェース
+    /// </summary>
     public interface IEnemy : IHitable
     {
         public EnemyData EnemyData { get; }

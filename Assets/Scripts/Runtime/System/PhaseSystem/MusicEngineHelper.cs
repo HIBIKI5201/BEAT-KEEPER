@@ -1,7 +1,7 @@
 ﻿using SymphonyFrameWork.Debugger;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     /// MusicEngineの補助クラス
