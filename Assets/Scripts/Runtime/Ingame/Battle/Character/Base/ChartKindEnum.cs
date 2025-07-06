@@ -2,6 +2,9 @@
 
 namespace BeatKeeper.Runtime.Ingame.Battle
 {
+    /// <summary>
+    ///    戦闘で使用する譜面の種類を定義する列挙型
+    /// </summary>
     [Flags]
     public enum ChartKindEnum : int
     {
