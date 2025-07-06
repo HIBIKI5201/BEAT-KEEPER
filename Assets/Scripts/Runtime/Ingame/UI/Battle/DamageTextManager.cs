@@ -78,12 +78,6 @@ public class DamageTextManager : MonoBehaviour
         
         // スライドアニメーションと同時にフェードアウトも実行する
         _textSequence.Join(_damageText.DOFade(0, _displayTime).SetEase(_easeType));
-        
-        // アニメーション完了後にテキストを初期位置に戻しておく
-        _textSequence.OnComplete(() =>
-        {
-            _damageText.transform.position = _initPosition;
-        });
     }
 
     /// <summary>
@@ -101,8 +95,7 @@ public class DamageTextManager : MonoBehaviour
         // アニメーションの停止
         _textSequence?.Kill();
         
-        // NOTE: テキストコンポーネントがnullの場合アクション登録処理がスキップされているため、条件文をこのように書いている
-        if (_damageText != null && _enemy != null)
+        if (_enemy != null)
         {
             _enemy.OnHitAttack -= HandleDisplayDamage;
         }
