@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace BeatKeeper
@@ -18,7 +18,7 @@ namespace BeatKeeper
         private Vector3 _hiddenPosition;
         private Tweener _fadeTween;
         private Tweener _moveTween;
-        
+
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
@@ -26,7 +26,7 @@ namespace BeatKeeper
             _hiddenPosition = CalculateHiddenPosition(); // 非表示時の位置を計算
             SetHiddenState();
         }
-        
+
         /// <summary>
         /// UIを表示する
         /// </summary>
@@ -43,7 +43,7 @@ namespace BeatKeeper
             _fadeTween = _canvasGroup.DOFade(0f, _hideDuration);
             _moveTween = transform.DOLocalMove(_hiddenPosition, _hideDuration).SetEase(Ease.InQuad);
         }
-        
+
         /// <summary>
         /// アクティブなTweenを停止
         /// </summary>
@@ -52,14 +52,14 @@ namespace BeatKeeper
             _fadeTween?.Kill();
             _moveTween?.Kill();
         }
-        
+
         /// <summary>
         /// 非表示時の位置を計算
         /// </summary>
         private Vector3 CalculateHiddenPosition()
         {
             Vector3 hiddenPos = _defaultPosition;
-            
+
             switch (_movePattern)
             {
                 case MovePattern.TopToBottom:
@@ -72,10 +72,10 @@ namespace BeatKeeper
                     hiddenPos.x = _defaultPosition.x + _slideDistance;
                     break;
             }
-            
+
             return hiddenPos;
         }
-        
+
         /// <summary>
         /// 非表示状態に初期化
         /// </summary>
