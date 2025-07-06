@@ -25,8 +25,6 @@ namespace BeatKeeper
             style.fontSize = h * 1 / 50;
             style.normal.textColor = Color.white;
 
-            var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-
             float msec = deltaTime * 1000.0f;
             float fps = 1.0f / deltaTime;
 
@@ -46,7 +44,12 @@ namespace BeatKeeper
                 (totalReserved / (1024 * 1024))
                 );
 
-            text += $"Current Beat: {currentBeat}";
+            if (Music.Current != null)
+            {
+                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
+                text += $"Current Beat: {currentBeat}";
+                text += $"\nBar:{Music.Just.Bar}, Just:{Music.Just.Beat}";
+            }
 
             GUI.Label(rect, text, style);
         }
