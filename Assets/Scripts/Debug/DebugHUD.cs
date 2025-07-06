@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Develop
 {
     public class DebugHUD : MonoBehaviour
     {
