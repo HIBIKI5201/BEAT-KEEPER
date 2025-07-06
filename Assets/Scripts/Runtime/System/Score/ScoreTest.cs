@@ -1,6 +1,7 @@
+﻿using BeatKeeper.Runtime.Ingame.System;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using R3;
 
 namespace BeatKeeper
 {
@@ -13,7 +14,7 @@ namespace BeatKeeper
         [SerializeField] private BattleGradeEvaluator _battleGradeEvaluator;
         [SerializeField] private Text _scoreText;
         private CompositeDisposable _disposables = new CompositeDisposable();
-        
+
         private void Start()
         {
             _scoreManager.ScoreProp
