@@ -114,6 +114,12 @@ namespace BeatKeeper
         /// </summary>
         private void HandlePerfect()
         {
+            if (_perfect == null)
+            {
+                // 画像がnullの場合はreturn
+                return;
+            }
+            
             PlayJudgementAnimation(_perfect);
         }
 
@@ -122,6 +128,12 @@ namespace BeatKeeper
         /// </summary>
         private void HandleGood()
         {
+            if (_good == null)
+            {
+                // 画像がnullの場合はreturn
+                return;
+            }
+            
             // NOTE: ブラッシュアップでアニメーションの種類を分ける可能性があると思い分離
             PlayJudgementAnimation(_good);
         }
