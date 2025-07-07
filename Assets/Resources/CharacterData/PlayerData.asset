@@ -21,8 +21,8 @@ MonoBehaviour:
   - 100
   _comboRisetTime: 3
   _chargeAttackTime: 3
-  _perfectRange: 0.5
-  _goodRange: 0.8
+  _perfectRange: 0.7
+  _goodRange: 0.9
   _flowZoneThreshold: 10
   _flowZoneDuration: 16
   _avoidRange: 1
