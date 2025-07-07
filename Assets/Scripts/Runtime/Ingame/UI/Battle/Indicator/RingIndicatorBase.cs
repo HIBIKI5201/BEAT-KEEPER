@@ -21,11 +21,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _chartRingManager = ringManager;
         }
 
-        public void OnGet(Action onEndAction, Vector2 rectPos)
+        public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
         {
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
             _onEndAction = onEndAction;
+            _timing = timing;
 
             _count = 0;
 
@@ -94,6 +95,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Image _selfImage;
         protected Image _ringImage;
 
+        protected int _timing;
         protected int _count;
         protected Tween[] _tweens;
 
