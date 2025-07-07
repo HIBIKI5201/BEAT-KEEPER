@@ -114,7 +114,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         op.Release(ring); //オブジェクトを非アクティブに
                         _activeRingIndicator.Remove(ring); //アクティブリストから除外
                     },
-                        element.Position);
+                        element.Position, (timing + _appearTiming[i]) % chart.Length);
 
                     _soundEffectSource?.PlayOneShot(_apearSound);
                 }
