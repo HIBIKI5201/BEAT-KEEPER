@@ -1,9 +1,11 @@
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
-using UnityEngine;
-using DG.Tweening;
+using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
+using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using R3;
 
 /// <summary>
 /// スコアUIの近くのプレイヤーが与えたダメージ表記を管理するクラス
@@ -23,6 +25,8 @@ public class DamageTextManager : MonoBehaviour
     private Sequence _textSequence; // テキストアニメーションのシーケンス
     private Vector3 _initPosition; // テキストオブジェクトの初期位置
     
+    private CompositeDisposable _disposable = new CompositeDisposable();
+    
     private async void Start()
     {
         if (_damageText == null)
@@ -38,8 +42,41 @@ public class DamageTextManager : MonoBehaviour
         // 敵のクラスの参照を取りたいので、敵オブジェクトが存在するバトルシーンが読み込まれるまで待機する
         await SceneLoader.WaitForLoadSceneAsync("Battle");
 
-        // バトルシーンが読み込まれたら敵の参照を取得する
-        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0];
+        SubscribeToPhaseChange();
+    }
+
+    /// <summary>
+    /// フェーズ変更のリアクティブプロパティを購読する
+    /// </summary>
+    private void SubscribeToPhaseChange()
+    {
+        var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+        if (phaseManager)
+        {
+            // フェーズが変更されたタイミングで敵のHitイベントの登録をしなおす
+            phaseManager.CurrentPhaseProp
+                .Subscribe(OnPhaseChanged)
+                .AddTo(_disposable);
+        }
+        else
+        {
+            Debug.Log($"[{typeof(DamageTextManager)}] {typeof(PhaseManager)}が取得できませんでした");
+        }
+    }
+
+    /// <summary>
+    /// フェーズ変更時に敵がダメージを受けた時のアクション登録を行う
+    /// </summary>
+    private void OnPhaseChanged(PhaseEnum phase)
+    {
+        if (_enemy != null)
+        {
+            // 既存のアクション登録を解除
+            _enemy.OnHitAttack -= HandleDisplayDamage;
+        }
+        
+        // 新しい敵の参照を取得する
+        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.GetActiveEnemy();
 
         if (_enemy != null)
         {
@@ -94,6 +131,9 @@ public class DamageTextManager : MonoBehaviour
     {
         // アニメーションの停止
         _textSequence?.Kill();
+        
+        // フェーズ変更のリアクティブプロパティの購読解除
+        _disposable?.Dispose();
         
         if (_enemy != null)
         {
