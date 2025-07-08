@@ -55,10 +55,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             base.End();
             
             // 全てのTweenを停止
-            _blinkSequence?.Kill();
-            _contractionSequence?.Kill();
-            _successSequence?.Kill();
-            _failSequence?.Kill();
+            ResetAllSequence();
             
             // イベント購読解除
             _player.OnSuccessAvoid -= OnPlayerAvoidSuccess;
@@ -72,6 +69,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [SerializeField] private Image _blurImage; // ブラーリング
         [SerializeField] private CanvasGroup _textCanvasGroup; // テキストの親オブジェクトのCanvasGroup
+        [SerializeField] private Text[] _centerTexts; // リング中央のテキスト
         
         [Header("色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -90,7 +88,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void OnDestroy()
         {
-            End();
+            ResetAllSequence();
         }
         
         /// <summary>
@@ -240,6 +238,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (_ringImage != null) _ringImage.color = color;
             if (_selfImage != null) _selfImage.color = color;
             if (_blurImage != null) _blurImage.color = color;
+            if (_centerTexts[0] != null) _centerTexts[0].color = color;
+            if (_centerTexts[1] != null) _centerTexts[1].color = color;
         }
         
         /// <summary>
@@ -267,8 +267,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (_ringImage != null) colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             if (_selfImage != null) colorSequence.Join(_selfImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             if (_blurImage != null) colorSequence.Join(_blurImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_centerTexts[0] != null) colorSequence.Join(_centerTexts[0].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_centerTexts[1] != null) colorSequence.Join(_centerTexts[1].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             
             return colorSequence;
+        }
+
+        /// <summary>
+        /// すべてのTweenの再生を止める
+        /// </summary>
+        private void ResetAllSequence()
+        {
+            _blinkSequence?.Kill();
+            _contractionSequence?.Kill();
+            _successSequence?.Kill();
+            _failSequence?.Kill();
         }
     }
 }
