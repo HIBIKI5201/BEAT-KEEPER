@@ -39,6 +39,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
         private const float RECEPTION_TIME = 0.45f;
 
+		[SerializeField] private Vector3 _centerRingsScale = Vector3.one;
+
         [Header("色設定")]
         [SerializeField] private Color _successColor = Color.yellow;
         [SerializeField] private Color _defaultColor = Color.white;
@@ -56,6 +58,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void InitializeComponents()
         {
+			_timing = MusicEngineHelper.GetBeatSinceStart();
+
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
             
@@ -74,7 +78,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
             
             // 初期化
-            _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
+            ResetRingsScale();
             ResetRingsColor(_defaultColor);
         }
         
@@ -84,7 +88,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void StartContractionEffect()
         {
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
+
             var sequence = DOTween.Sequence()
                 
                 // Just判定まで縮小を行う
@@ -105,7 +109,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess()
         {
-            if (_timing < MusicEngineHelper.GetBeatSinceStart())
+            if (_timing > MusicEngineHelper.GetBeatSinceStart())
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
@@ -151,8 +155,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         public override void End()
         {
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
-            // 拡大状態から始めたいので、リングの拡大率をベースクラスで設定した拡大率に変更する
-            _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
+            ResetRingsScale();
             ResetRingsColor(_defaultColor);
             
             _player.OnShootComboAttack -= OnPlayerAttackSuccess;
@@ -168,6 +171,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             base.End();
         }
+
+		/// <summary>
+        /// 各リングの拡大率を変更する
+        /// </summary>
+		private void ResetRingsScale()
+		{
+			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
+			if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = _centerRingsScale;
+			if(_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;
+		}
         
         /// <summary>
         /// 各リングの色を変更する
