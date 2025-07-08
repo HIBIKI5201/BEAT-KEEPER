@@ -383,8 +383,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
             var enemyAttackKind = chart[timing].AttackKind;
 
-            //SuperとCharge攻撃は回避できない
-            if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
+            //Charge攻撃は回避できない
+            if ((enemyAttackKind & ChartKindEnum.Charge) != 0)
             {
                 SymphonyDebugLog.AddText($"Enemy's attack of {enemyAttackKind}(timing:{timing}) can't be avoided");
                 SymphonyDebugLog.TextLog();
