@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
+using DG.Tweening;
 using R3;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -32,17 +33,27 @@ namespace BeatKeeper.Runtime.Ingame.UI
             healthBar.GetComponent<RectTransform>().anchoredPosition = _initialPosition;
             
             // ゲージUIを取得して敵のHP変動イベントを購読
-            var bar = healthBar.transform.GetChild(0).GetComponent<Image>();
+            var bar = healthBar.transform.GetChild(2).GetComponent<Image>();
             enemy.HealthSystem.OnHealthChanged += h => OnEnemyHealthChange(h, bar, enemy);
         }
         
         [SerializeField] private GameObject _healthBarPrefab; // 敵のヘルスバーのPrefab
         [SerializeField] private Vector2 _initialPosition = new Vector2(0, 30); // ヘルスバーの初期位置
+        [SerializeField] private Vector3 _defaultScale = Vector3.one; // デフォルトのScale
 
+        [Header("アニメーションの設定")] 
+        [SerializeField, Tooltip("表示にかける時間")] private float _showDuration = 0.2f;
+        [SerializeField, Tooltip("非表示にかける時間")] private float _hideDuration = 0.15f;
+        [SerializeField, Tooltip("パルスの強さ")] private float _pulseIntensity = 1.1f;
+        [SerializeField, Tooltip("ゲージ減少アニメーションにかける時間")] private float _decreaseAnimationDuration = 0.15f;
+        [SerializeField, Tooltip("通常時の色")] private Color _normalColor = Color.white;
+        [SerializeField, Tooltip("フラッシュ時の色")] private Color _flashColor = Color.white;
+        
         private List<CanvasGroup> _barCanvasGroups = new List<CanvasGroup>(); // ヘルスバーの親オブジェクトにアタッチされているCanvasGroupのリスト 
         private CompositeDisposable _disposable = new CompositeDisposable();
+        private DG.Tweening.Sequence _decreaseSequence; // HP減少シーケンス
         private int _currentPhase = 0;
-        
+
         /// <summary>
         /// Start
         /// </summary>
@@ -69,6 +80,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // フェーズのリアクティブプロパティの購読解除
             _disposable?.Dispose();
+            _decreaseSequence?.Kill();
         }
         
         /// <summary>
@@ -79,7 +91,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <param name="enemy">イベントを発火したEnemy</param>
         private void OnEnemyHealthChange(float health, Image bar, EnemyManager enemy)
         {
-            bar.fillAmount = health / enemy.HealthSystem.MaxHealth;
+            PlayDecreaseSequence(health, bar, enemy);
 
             if (health <= 0)
             {
@@ -102,15 +114,51 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // NOTE: HPがゼロ以下になったときにヘルスバーを非表示にする処理を行うときにIndexを使用したいので
             // ここではフェーズの内部カウントは進めない
         }
+        
+        /// <summary>
+        /// ヘルスバーの減少アニメーション
+        /// </summary>
+        private void PlayDecreaseSequence(float health, Image bar, EnemyManager enemy)
+        {
+            // 既存の減少シーケンス中があればキル（自然に繋がるように引数は渡さない）
+            _decreaseSequence?.Kill();
+            
+            var rectTransform = bar.GetComponent<RectTransform>();
+            rectTransform.localScale = _defaultScale;
+            
+            // FillAmountを計算しておく
+            var targetFillAmount =  health / enemy.HealthSystem.MaxHealth;
+
+            _decreaseSequence = DOTween.Sequence()
+
+                // Y軸方向にパルス
+                .Append(rectTransform.DOScaleY(_defaultScale.y * (1f + _pulseIntensity * 0.3f), 0.05f).SetEase(Ease.OutQuart))
+                .Append(rectTransform.DOScaleY(_defaultScale.y, 0.1f).SetEase(Ease.OutQuart))
+
+                // ヘルスバーの減少
+                .Insert(0, bar.DOFillAmount(targetFillAmount, _decreaseAnimationDuration).SetEase(Ease.OutExpo))
+
+                // フラッシュ効果
+                .Insert(0, bar.DOColor(_flashColor, 0.05f).SetEase(Ease.OutQuart)
+                    .OnComplete(() => bar.DOColor(_normalColor, 0.15f).SetEase(Ease.OutQuart)));
+        }
+        
+        /// <summary>
+        /// ヘルスバーを表示する
+        /// </summary>
+        private void Show(CanvasGroup target)
+        {
+            target.alpha = 0;
+            target.transform.DOScale(1f, _showDuration).SetEase(Ease.OutBack, 1.5f);
+        }
 
         /// <summary>
         /// ヘルスバーを非表示にする
         /// </summary>
-        private void Hide(CanvasGroup target) => target.alpha = 0;
-
-        /// <summary>
-        /// ヘルスバーを表示する
-        /// </summary>
-        private void Show(CanvasGroup target) => target.alpha = 1; 
+        private void Hide(CanvasGroup target)
+        {
+            target.DOFade(0f, _hideDuration).SetEase(Ease.InQuart);
+            target.transform.DOScale(0.8f, _hideDuration).SetEase(Ease.InQuart);
+        }
     }
 }
