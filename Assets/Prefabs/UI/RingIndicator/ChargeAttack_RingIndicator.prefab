@@ -189,7 +189,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 380, y: 380}
+  m_SizeDelta: {x: 387.6005, y: 387.6005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1098135191696177268
 CanvasRenderer:
@@ -634,5 +634,4 @@ MonoBehaviour:
   - {fileID: 6708962584749803764}
   - {fileID: 5577439938347130221}
   _chargeColor: {r: 0, g: 1, b: 1, a: 1}
-  _translucentChargeColor: {r: 0, g: 1, b: 1, a: 0.19607843}
   _criticalColor: {r: 1, g: 0, b: 0, a: 1}
