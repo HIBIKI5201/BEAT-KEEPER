@@ -65,7 +65,7 @@ namespace BeatKeeper.Editor.Ingame.Character
 
                 GUILayout.BeginHorizontal();
 
-                GUILayout.Label($"{i + 1}", GUILayout.Width(30));
+                GUILayout.Label($"{i}", GUILayout.Width(30));
 
                 bool visible = visibleProp.boolValue;
                 visibleProp.boolValue = GUILayout.Toggle(visible, string.Empty, GUILayout.Width(20));

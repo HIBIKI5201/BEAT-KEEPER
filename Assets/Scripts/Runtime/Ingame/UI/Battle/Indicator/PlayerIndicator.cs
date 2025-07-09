@@ -8,13 +8,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class PlayerIndicator : RingIndicatorBase
     {
-        [Header("色設定")]
-        [SerializeField] private Color _successColor = Color.yellow;
-        [SerializeField] private Color _defaultColor = Color.white;
-
-        [SerializeField] private float _blinkDuration = 0.2f;
-        [SerializeField] private float _fadeDuration = 0.3f;
-
         public override int EffectLength => 3;
 
         public override void Effect(int count)
@@ -33,6 +26,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
+        private const float CONTRACTION_SPEED = 2;
+
+        [Header("色設定")]
+        [SerializeField] private Color _successColor = Color.yellow;
+        [SerializeField] private Color _defaultColor = Color.white;
+
+        [SerializeField] private float _blinkDuration = 0.2f;
+        [SerializeField] private float _fadeDuration = 0.3f;
+
         /// <summary>
         /// リングの縮小
         /// </summary>
@@ -43,7 +45,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _ringImage.color = _defaultColor;
             _selfImage.color = _defaultColor;
 
-            _tweens[0] = _ringImage.rectTransform.DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * 2 - 0.15f).SetEase(Ease.Linear);
+            _tweens[0] = _ringImage.rectTransform
+                .DOScale(Vector3.one, (float)MusicEngineHelper.DurationOfBeat * CONTRACTION_SPEED)
+                .SetEase(Ease.Linear);
         }
 
         /// <summary>
