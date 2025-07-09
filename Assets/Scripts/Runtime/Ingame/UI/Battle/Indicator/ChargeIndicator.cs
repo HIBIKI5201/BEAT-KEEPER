@@ -23,9 +23,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 case 1:
                     InitializeComponents();
-                    StartEntryEffect();
-                    break;
-                case 3:
                     StartContractionEffect();
                     break;
             }
@@ -43,21 +40,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 for (int i = 0; i < _tweens.Length; i++)
                 {
-                    _tweens[i] = null;
+                    _tweens[i]?.Kill();
                 }
             }
             
             ResetAllComponents();
             
-            // 全要素のアルファ値をリセット（透明状態から正常状態へ）
-            SetAllAlpha(0f);
-
             _isComplete = false;
             
             base.End();
         }
         
-        private const float CONTRACTION_SPEED = 2; // 縮小を始めてからJustタイミングは2拍後
+        private const float CONTRACTION_SPEED = 4; // 縮小を始めてからJustタイミングは4拍後
         private const float CHARGE_TIME = 2; // チャージにかかる拍
         private const float RECEPTION_TIME = 0.45f; // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
         
@@ -83,7 +77,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void Start()
         {
             ResetAllComponents();
-            SetAllAlpha(0f);
         }
         
         /// <summary>
@@ -91,6 +84,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void InitializeComponents()
         {
+            ResetAllComponents();
+            
             _timing = MusicEngineHelper.GetBeatSinceStart();
 
             _tweens = new Tween[5];
@@ -98,78 +93,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
             _player.OnFullChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
             _player.OnNonFullChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
-            
-            ResetAllComponents();
-            
-            // 全要素のアルファ値をリセット（透明状態から正常状態へ）
-            SetAllAlpha(0f);
         }
 
         #region ベースとなる演出
-
-        /// <summary>
-        /// 登場演出
-        /// </summary>
-        private void StartEntryEffect()
-        {
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
-            // 全要素を一旦透明・縮小状態に
-            SetAllAlpha(0f);
-            SetAllScale(Vector3.zero);
-            
-            var sequence = DOTween.Sequence()
-                
-                // 外側リング
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.3f, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_ringImage.DOFade(1f, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.3f, beatDuration * 0.15f).SetEase(Ease.OutBack))
-                .Join(_blurImage.DOFade(0.6f, beatDuration * 0.15f).SetEase(Ease.OutQuad))
-                
-                // 少し遅れて中央UI（中央の円・テキスト・ゲージを登場させる）
-                .Append(_selfImage.rectTransform.DOScale(_centerRingsScale * 1.1f, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_selfImage.DOFade(1f, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                .Join(_gaugeImage.rectTransform.DOScale(Vector3.one * _initialScale, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_gaugeImage.DOFade(1f, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                .Join(FadeInTexts(beatDuration * 0.1f))
-                
-                // 最終的なサイズに調整
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_selfImage.rectTransform.DOScale(_centerRingsScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_blurImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.1f))
-                
-                // 待機中のパルス開始
-                .AppendCallback(StartIdlePulse);
-            
-            _tweens[0] = sequence;
-        }
-        
-        /// <summary>
-        /// 待機中のパルス演出
-        /// </summary>
-        private void StartIdlePulse()
-        {
-            // 念のため最終値にジャンプさせて終了するように保証
-            _tweens[0]?.Kill(true);
-            
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
-            // メインリングの心拍パルス
-            var pulseSequence = DOTween.Sequence()
-                .Append(_selfImage.rectTransform.DOScale(_centerRingsScale * 1.1f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_selfImage.rectTransform.DOScale(_centerRingsScale, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .SetLoops(-1, LoopType.Restart);
-            
-            // ブラーリングのパルス
-            var blurPulseSequence = DOTween.Sequence()
-                .Append(_blurImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_blurImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .SetLoops(-1, LoopType.Restart);
-            
-            _tweens[1] = pulseSequence;
-            _tweens[2] = blurPulseSequence;
-        }
         
         /// <summary>
         /// リングの縮小
@@ -178,32 +104,30 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
-            // パルス演出を停止
-            _tweens[1]?.Kill(true);
-            _tweens[2]?.Kill(true);
+            // 表示
+            SetAllAlpha(1f);
+            
+            // ブラーリングのパルス
+            var blurPulseSequence = DOTween.Sequence()
+                .Append(_blurImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_blurImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .SetLoops(-1, LoopType.Restart);
+            
+            _tweens[2] = blurPulseSequence;
 
             var sequence = DOTween.Sequence()
-                // 一瞬静止
+                
+                // パンチアニメーション
                 .Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.2f, beatDuration * 0.2f, 3, 0.8f))
                 .Join(CreateTextPunch(beatDuration * 0.2f));
                 
-            // チャージが完了していない場合のみ色変更
-            if (!_isComplete)
-            {
-                sequence.Join(_ringImage.DOColor(_chargeColor, beatDuration * 0.2f).SetEase(Ease.OutFlash))
-                    .Join(_blurImage.DOColor(_chargeColor, beatDuration * 0.2f).SetEase(Ease.OutFlash))
-                    .Join(_selfImage.DOColor(_chargeColor, beatDuration * 0.2f).SetEase(Ease.OutFlash));
-            }
-                
             sequence
                 // 縮小開始
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.InQuart))
-                .Join(_gaugeImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.InQuart))
-                .Join(_blurImage.rectTransform.DOScale(_centerRingsScale * 1.1f, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.OutQuart))
-                .Join(_blurImage.DOFade(0.9f, beatDuration * CONTRACTION_SPEED * 0.3f).SetEase(Ease.OutQuart))
-                .Join(_blurImage.DOFade(0.2f, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.InQuart).SetDelay(beatDuration * CONTRACTION_SPEED * 0.3f))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_gaugeImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_blurImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.Linear))
                 
-                // Just判定後のクリティカル演出
+                // Just判定後も縮小を続ける
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateCriticalFlash(beatDuration * RECEPTION_TIME))
                 
@@ -220,29 +144,31 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnPlayerCharge()
         {
             // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
-            _tweens[1]?.Kill(true);
-            _tweens[2]?.Kill(true);
+            _tweens[0]?.Kill();
             
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
+            var totalDuration = beatDuration * CHARGE_TIME;
+    
             // マスクのスケールを外側リングの大きさに合わせる
             _maskImage.rectTransform.localScale = _ringImage.rectTransform.localScale;
+
+            var sequence = DOTween.Sequence();
             
-            var sequence = DOTween.Sequence()
+            sequence
+                // ゲージを確実に表示させる
+                .Append(_gaugeImage.DOFade(1f, totalDuration * 0.1f).SetEase(Ease.OutQuad))
+    
+                // 即座にゲージの色をチャージ中の色に変更（全体の10%）
+                .Join(_gaugeImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutQuad).SetDelay(totalDuration * 0.2f))
                 
-                // 一瞬マスクを中央の狭い範囲のみにする
-                .Append(_maskImage.rectTransform.DOPunchScale(Vector3.one * 0.2f, beatDuration * 0.2f, 2, 0.5f))
+                // 色変更
+                .Join(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
+                .Join(_blurImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
+                .Join(_selfImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
                 
-                // ゲージを確実に表示させる（Entryアニメーション中だと表示されていない可能性がある）
-                .Join(_gaugeImage.DOFade(1f, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                
-                // メインのマスクアニメーション
-                .Append(_maskImage.rectTransform.DOScale(_centerRingsScale * 0.7f, beatDuration * CHARGE_TIME * 0.6f).SetEase(Ease.OutQuart))
-                .Join(_maskImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CHARGE_TIME).SetEase(Ease.InBack).SetDelay(beatDuration * CHARGE_TIME * 0.6f))
-                
-                // 即座にゲージの色をチャージ中の色に変更
-                .Join(_gaugeImage.DOColor(_chargeColor, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                
+                // メインのマスクアニメーション（全体の60%で最初のスケール）
+                .Append(_maskImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
+        
                 .OnComplete(OnChargeComplete);
             
             _tweens[1] = sequence;
@@ -254,32 +180,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnChargeComplete()
         {
             _isComplete = true;
-            
-            ResetRingsColor(_successColor, _translucentSuccessColor);
-            ChangeText(COMPLEAT_TEXT, COMPLEAT_KEY_TEXT);
-            
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
-            var sequence = DOTween.Sequence()
-                
-                // 全体が光る
-                .Append(_selfImage.rectTransform.DOScale(_centerRingsScale * 1.4f, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.2f, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.5f, beatDuration * 0.1f).SetEase(Ease.OutBack))
-                .Join(_blurImage.DOFade(1f, beatDuration * 0.1f).SetEase(Ease.OutQuad))
-                
-                // 元のサイズに戻りつつ点滅
-                .Append(_selfImage.rectTransform.DOScale(_centerRingsScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale, beatDuration * 0.1f).SetEase(Ease.InBack))
-                .Join(_blurImage.DOFade(0.4f, beatDuration * 0.1f).SetEase(Ease.InQuad))
-                
-                // 連続点滅（3回）
-                .Append(_selfImage.DOFade(0.3f, 0.1f).SetLoops(6, LoopType.Yoyo))
-                .Join(_ringImage.DOFade(0.3f, 0.1f).SetLoops(6, LoopType.Yoyo))
-                .Join(CreateTextFlash(0.6f));
-            
-            _tweens[2] = sequence;
+            // 色とテキストを変更
+            ResetRingsColor(_successColor, _successColor);
+            ChangeText(COMPLEAT_TEXT, COMPLEAT_KEY_TEXT);
         }
         
         /// <summary>
@@ -298,19 +203,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[i]?.Kill();
             }
+            
+            // 色とテキストが変更されていない場合、念のためここで変えておく
+            ResetRingsColor(_successColor, _successColor);
+            ChangeText(COMPLEAT_TEXT, COMPLEAT_KEY_TEXT);
            
             var sequence = DOTween.Sequence()
                 
-                .Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.8f, _blinkDuration * 0.3f, 1, 0.8f))
-                .Join(_ringImage.rectTransform.DOPunchScale(Vector3.one * 0.6f, _blinkDuration * 0.3f, 1, 0.8f))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 2.5f, _blinkDuration * 0.15f).SetEase(Ease.OutQuart))
-                .Join(_blurImage.DOFade(1f, _blinkDuration * 0.1f).SetEase(Ease.OutQuart))
-                .Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _blinkDuration * 0.2f))
-                
                 // 拡大
                 .Append(_selfImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 2f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 2.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 2f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(CreateSuccessTextExplosion(_blinkDuration * 0.4f))
                 
                 // フェードアウト
@@ -352,7 +255,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 収縮する一番外側のリング
             if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-            if(_blurImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
+            if(_blurImage != null) _blurImage.rectTransform.localScale = Vector3.one * _initialScale;
             
             // チャージのゲージを管理しているもの
             if(_maskImage != null) _maskImage.rectTransform.localScale = Vector3.one * _initialScale;
@@ -375,18 +278,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_centerTexts[0] != null) _centerTexts[0].color = color;
             if(_centerTexts[1] != null) _centerTexts[1].color = color;
         }
-        
-        /// <summary>
-        /// 回転の初期化
-        /// </summary>
-        private void ResetRotation()
-        {
-            if (_ringImage != null) _ringImage.rectTransform.localRotation = Quaternion.identity; // メインリングの初期化
-            if (_selfImage != null) _selfImage.rectTransform.localRotation = Quaternion.identity; // 中央UIの初期化
-            if (_blurImage != null) _blurImage.rectTransform.localRotation = Quaternion.identity; // ブラーエフェクトの初期化
-            if (_maskImage != null) _maskImage.rectTransform.localRotation = Quaternion.identity; // マスクの初期化
-            if (_gaugeImage != null) _gaugeImage.rectTransform.localRotation = Quaternion.identity; // ゲージの初期化
-        }
 
         /// <summary>
         /// 全要素のアルファ値設定
@@ -407,7 +298,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
         
         /// <summary>
-        /// テキストを変更する
+        /// 表示する文字列を変更する
         /// </summary>
         private void ChangeText(string text, string inputText)
         {
@@ -417,16 +308,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 if(_centerTexts[1] != null) _centerTexts[1].text = inputText;
             }
         }
-        
+
         /// <summary>
-        /// 全要素のスケール設定
+        /// テキストオブジェクトのTransformをリセットする
         /// </summary>
-        private void SetAllScale(Vector3 scale)
+        private void ResetText()
         {
-            if(_ringImage != null) _ringImage.rectTransform.localScale = scale;
-            if(_gaugeImage != null) _gaugeImage.rectTransform.localScale = scale;
-            if(_selfImage != null) _selfImage.rectTransform.localScale = scale;
-            if(_blurImage != null) _blurImage.rectTransform.localScale = scale;
+            foreach (var text in _centerTexts)
+            {
+                text.rectTransform.localScale = _centerRingsScale;
+                text.rectTransform.localScale = _centerRingsScale;
+                text.rectTransform.localRotation = Quaternion.identity;
+            }
         }
         
         /// <summary>
@@ -434,19 +327,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void ResetAllComponents()
         {
-            Debug.Log("Reset All Components");
-            
             // スケールをリセット
             ResetRingsScale();
             
-            // 各UI要素の回転を初期化
-            ResetRotation();
-            
             // 色をデフォルトに設定
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
+
+            // テキストオブジェクトのTransformをリセットする
+            ResetText();
             
             // テキストをデフォルトに設定
             ChangeText(DEFAULT_TEXT, DEFAULT_KEY_TEXT);
+            
+            SetAllAlpha(0f);
         }
         
         #endregion
@@ -537,28 +430,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             return sequence;
         }
         
-        /// <summary>
-        /// テキスト点滅演出
-        /// </summary>
-        private Tween CreateTextFlash(float duration)
-        {
-            var sequence = DOTween.Sequence();
-            
-            if (_centerTexts != null)
-            {
-                foreach (var text in _centerTexts)
-                {
-                    if (text != null)
-                    {
-                        sequence.Join(text.DOFade(0.2f, 0.1f).SetLoops(Mathf.FloorToInt(duration / 0.1f), LoopType.Yoyo));
-                        sequence.Join(text.rectTransform.DOShakeScale(duration, 0.05f, 10, 90f, true));
-                    }
-                }
-            }
-            
-            return sequence;
-        }
-        
         // <summary>
         /// 成功時のテキスト爆発演出
         /// </summary>
@@ -575,29 +446,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         sequence.Join(text.rectTransform.DOScale(Vector3.one * 1.8f, duration * 0.3f).SetEase(Ease.OutBack));
                         sequence.Join(text.rectTransform.DOScale(Vector3.one * 1.2f, duration * 0.7f).SetEase(Ease.InBack).SetDelay(duration * 0.3f));
                         sequence.Join(text.rectTransform.DOShakeRotation(duration, 15f, 10, 90f, true));
-                    }
-                }
-            }
-            
-            return sequence;
-        }
-        
-        /// <summary>
-        /// テキストのフェードイン
-        /// </summary>
-        private Tween FadeInTexts(float duration)
-        {
-            var sequence = DOTween.Sequence();
-            
-            if (_centerTexts != null)
-            {
-                foreach (var text in _centerTexts)
-                {
-                    if (text != null)
-                    {
-                        sequence.Join(text.DOFade(1f, duration).SetEase(Ease.OutQuad));
-                        sequence.Join(text.rectTransform.DOScale(Vector3.one * 1.2f, duration * 0.5f).SetEase(Ease.OutBack));
-                        sequence.Join(text.rectTransform.DOScale(Vector3.one, duration * 0.5f).SetEase(Ease.InBack).SetDelay(duration * 0.5f));
                     }
                 }
             }
