@@ -149,7 +149,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void Show(CanvasGroup target)
         {
             target.alpha = 0;
-            target.transform.DOScale(1f, _showDuration).SetEase(Ease.OutBack, 1.5f);
+            target.DOFade(1f, _showDuration).SetEase(Ease.OutQuart);
         }
 
         /// <summary>
