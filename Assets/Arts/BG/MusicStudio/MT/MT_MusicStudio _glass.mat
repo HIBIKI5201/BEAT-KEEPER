@@ -255,7 +255,7 @@ Material:
     - _Scroll_EmissiveV: 0
     - _Set_SystemShadowsToBase: 1
     - _ShadeColor_Step: 0
-    - _Smoothness: 0.555
+    - _Smoothness: 0.873
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -287,7 +287,7 @@ Material:
     - _BaseColor: {r: 0.5585173, g: 0.7073048, b: 0.7264151, a: 1}
     - _Color: {r: 0.5585173, g: 0.7073048, b: 0.7264151, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColor: {r: 1.5157166, g: 1.5157166, b: 1.5157166, a: 1}
+    - _EmissionColor: {r: 1.0592737, g: 1.0592737, b: 1.0592737, a: 1}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}
     - _HighColor: {r: 0, g: 0, b: 0, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
