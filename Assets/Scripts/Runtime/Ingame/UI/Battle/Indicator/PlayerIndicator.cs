@@ -154,10 +154,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public override void End()
         {
-            // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor);
-            
             _player.OnShootComboAttack -= OnPlayerAttackSuccess;
             
             // 全てのTweenを停止
@@ -168,6 +164,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[1]?.Kill();
             }
+            
+            // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor);
             
             base.End();
         }
