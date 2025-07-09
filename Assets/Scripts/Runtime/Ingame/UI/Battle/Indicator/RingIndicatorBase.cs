@@ -87,6 +87,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
+        
+        [SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
+
+        [Header("色設定")]
+        [SerializeField] protected Color _successColor = Color.yellow;
+        [SerializeField] protected Color _translucentSuccessColor = Color.yellow; // 半透明の成功色
+        [SerializeField] protected Color _defaultColor = Color.white;
+        [SerializeField] protected Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
+
+        [SerializeField] protected float _blinkDuration = 0.2f;
+        [SerializeField] protected float _fadeDuration = 0.3f;
 
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
