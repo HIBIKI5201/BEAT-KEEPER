@@ -214,7 +214,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             manager.gameObject.SetActive(false);
                             _onBeat -= manager.AddCount;
                         },
-                        Destroy,
+                        manager => { if (Application.isPlaying) Destroy(manager); },
                         defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }
