@@ -70,15 +70,15 @@ MonoBehaviour:
       m_Values: []
     m_Asset: {fileID: 0}
   chunkSizeInBricks: 128
-  maxCellPosition: {x: 4, y: 4, z: 8}
-  minCellPosition: {x: -3, y: -1, z: 0}
+  maxCellPosition: {x: 49, y: 31, z: 63}
+  minCellPosition: {x: -50, y: -1, z: -50}
   globalBounds:
-    m_Center: {x: 6.75, y: 20.25, z: 54}
-    m_Extent: {x: 47.25, y: 33.75, z: 54}
+    m_Center: {x: -6.75, y: 202.5, z: 87.75}
+    m_Extent: {x: 668.25, y: 216, z: 762.75}
   bakedSimplificationLevels: 2
   bakedMinDistanceBetweenProbes: 0.5
   bakedProbeOcclusion: 1
-  bakedSkyOcclusionValue: 0
+  bakedSkyOcclusionValue: 1
   bakedSkyShadingDirectionValue: 0
   bakedProbeOffset: {x: 0, y: 0, z: 0}
   bakedMaskCount: 1
@@ -87,7 +87,7 @@ MonoBehaviour:
     y: 0
     z: 0
     w: 0
-  maxSHChunkCount: 3
+  maxSHChunkCount: 5
   L0ChunkSize: 65536
   L1ChunkSize: 32768
   L2TextureChunkSize: 32768
@@ -112,7 +112,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   minRendererVolumeSize: 0.1
-  skyOcclusion: 0
+  skyOcclusion: 1
   skyOcclusionBakingSamples: 2048
   skyOcclusionBakingBounces: 2
   skyOcclusionAverageAlbedo: 0.6
@@ -127,5 +127,5 @@ MonoBehaviour:
     - hasProbeVolume: 1
       bakeScene: 1
       bounds:
-        m_Center: {x: -6.75, y: 33.75, z: -6.75}
-        m_Extent: {x: 668.25, y: 47.25, z: 668.25}
+        m_Center: {x: -6.75, y: 202.5, z: 87.75}
+        m_Extent: {x: 668.25, y: 216, z: 762.75}
