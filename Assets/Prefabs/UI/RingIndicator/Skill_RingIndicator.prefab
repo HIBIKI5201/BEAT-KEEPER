@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &699431121840335863
 CanvasRenderer:
@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3248881932368144639
 CanvasRenderer:
@@ -185,7 +185,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 184.7585, y: 184.7585}
+  m_SizeDelta: {x: 257.1356, y: 257.1356}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2480466458568966936
 CanvasRenderer:
@@ -402,11 +402,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalScale.x
@@ -505,14 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912d4ed547299d54bb8f5988e3d64996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialScale: 2.5
-  _centerText: {fileID: 5711982954574632157}
-  _ringImages:
-  - {fileID: 6800337163817613581}
-  - {fileID: 1064944501665903157}
-  - {fileID: 1871314084557727050}
-  _translucentRingImages:
-  - {fileID: 8952608918352168238}
+  _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
   _successColor: {r: 0.015686274, g: 1, b: 0.9654295, a: 1}
   _translucentSuccessColor: {r: 0.015686275, g: 1, b: 0.96862745, a: 0.09803922}
@@ -520,6 +513,13 @@ MonoBehaviour:
   _translucentDefaultColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.09803922}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
+  _centerText: {fileID: 5711982954574632157}
+  _ringImages:
+  - {fileID: 6800337163817613581}
+  - {fileID: 1064944501665903157}
+  - {fileID: 1871314084557727050}
+  _translucentRingImages:
+  - {fileID: 8952608918352168238}
 --- !u!114 &6800337163817613581 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
