@@ -23,12 +23,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnPerfectAttack;
         public event Action OnGoodAttack;
 
+        public event Action OnStartChargeAttack;
         public event Action OnShootChargeAttack;
         public event Action OnFullChargeAttack;
         public event Action OnNonFullChargeAttack;
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid;
+        
+        public event Action OnSkill;
 
         public event Action OnFinisher;
         #endregion
@@ -536,6 +539,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
+            OnSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
 
@@ -570,6 +574,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private async void ChargeAttackCharging()
         {
             Debug.Log($"{_data.Name} start charge attack");
+            OnStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
