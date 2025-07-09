@@ -57,17 +57,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float RECEPTION_TIME = 0.45f;
 
         [SerializeField] private Image[] _ringImages = new Image[2];
-        
-		[SerializeField] private Vector3 _centerRingsScale = Vector3.one;
-
-        [Header("色設定")]
-        [SerializeField] private Color _successColor = Color.yellow;
-        [SerializeField] private Color _translucentSuccessColor = Color.yellow; // 半透明の成功色
-        [SerializeField] private Color _defaultColor = Color.white;
-        [SerializeField] private Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
-
-        [SerializeField] private float _blinkDuration = 0.2f;
-        [SerializeField] private float _fadeDuration = 0.3f;
 
         private void Start()
         {

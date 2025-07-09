@@ -67,8 +67,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const string COMPLEAT_TEXT = "FIRE!!!";
         private const string COMPLEAT_KEY_TEXT = "RELEASE";
         
-        [SerializeField] private Vector3 _centerRingsScale = Vector3.one; // 中央のリングの拡大率
-
         [Header("コンポーネントの参照")] 
         [SerializeField] private Image _blurImage; // 収縮を行う枠の発光演出用のリング
 
@@ -76,16 +74,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Image _gaugeImage;
         [SerializeField] private Text[] _centerTexts;
 
-        [Header("色設定")] 
-        [SerializeField] private Color _successColor = Color.yellow;
-        [SerializeField] private Color _translucentSuccessColor = Color.yellow; // 半透明の成功色
-        [SerializeField] private Color _defaultColor = Color.white;
-        [SerializeField] private Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
+        [Header("追加の色設定")] 
         [SerializeField] private Color _chargeColor = Color.cyan;
         [SerializeField] private Color _criticalColor = Color.red;
-
-        [SerializeField] private float _blinkDuration = 0.2f;
-        [SerializeField] private float _fadeDuration = 0.3f;
         
         private bool _isComplete = false; // チャージ完了 
 

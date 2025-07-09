@@ -71,13 +71,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private CanvasGroup _textCanvasGroup; // テキストの親オブジェクトのCanvasGroup
         [SerializeField] private Text[] _centerTexts; // リング中央のテキスト
         
-        [Header("色設定")]
+        [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
-        [SerializeField] private Color _successColor = Color.yellow;
-        [SerializeField] private Color _defaultColor = Color.white;
-
-        [SerializeField] private float _blinkDuration = 0.2f;
-        [SerializeField] private float _fadeDuration = 0.3f;
         
         private DG.Tweening.Sequence _blinkSequence; // 点滅アニメーションのシーケンス
         private DG.Tweening.Sequence _contractionSequence; // 縮小アニメーションのシーケンス
