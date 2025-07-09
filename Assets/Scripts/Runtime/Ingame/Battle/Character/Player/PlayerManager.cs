@@ -119,11 +119,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _bgmManager = ServiceLocator.GetInstance<BGMManager>();
 
-            _bgmManager.OnJustChangedBeat += OnJustBeat;
-            _bgmManager.OnNearChangedBeat += OnNearBeat;
-
-            if (!_bgmManager)
+            if (_bgmManager)
+            {
+                _bgmManager.OnJustChangedBeat += OnJustBeat;
+                _bgmManager.OnNearChangedBeat += OnNearBeat;
+            }
+            else
+            {
                 Debug.LogWarning("Music engine is null");
+            }
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
@@ -498,9 +502,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 _soundEffectSource?.PlayOneShot(_comboAttackSound);
                 _isThisBeatInputed = true;
 
-                if (isGoodHit) //グッド以上なら攻撃する
+                if (isPerfectHit)
                 {
-                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら予約
+                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
                     {
                         _willPerfectAttack = true;
                     }
