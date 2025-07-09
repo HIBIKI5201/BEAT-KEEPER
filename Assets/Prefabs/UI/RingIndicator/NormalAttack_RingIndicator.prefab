@@ -346,7 +346,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialScale: 3
+  _ringImages:
+  - {fileID: 1871314084557727050}
+  - {fileID: 1064944501665903157}
+  _centerRingsScale: {x: 1, y: 1, z: 1}
   _successColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _translucentSuccessColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.09803922}
   _defaultColor: {r: 0, g: 1, b: 0.94509804, a: 1}
+  _translucentDefaultColor: {r: 0, g: 1, b: 1, a: 0.09803922}
   _blinkDuration: 0.2
   _fadeDuration: 0.3
