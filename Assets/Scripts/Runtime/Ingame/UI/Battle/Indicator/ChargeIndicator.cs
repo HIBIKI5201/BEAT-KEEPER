@@ -46,8 +46,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             ResetAllComponents();
             
-            _isComplete = false;
-            
             base.End();
         }
         
@@ -71,8 +69,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("追加の色設定")] 
         [SerializeField] private Color _chargeColor = Color.cyan;
         [SerializeField] private Color _criticalColor = Color.red;
-        
-        private bool _isComplete = false; // チャージ完了 
 
         private void Start()
         {
@@ -119,17 +115,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // パンチアニメーション
                 .Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.2f, beatDuration * 0.2f, 3, 0.8f))
-                .Join(CreateTextPunch(beatDuration * 0.2f));
+                .Join(CreateTextPunch(beatDuration * 0.2f))
                 
-            sequence
-                // 縮小開始
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_gaugeImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_blurImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.Linear))
+                // 縮小開始（完全には収縮しきらないようにする）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_gaugeImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_blurImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.Linear))
                 
                 // Just判定後も縮小を続ける
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(CreateCriticalFlash(beatDuration * RECEPTION_TIME))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 
                 .OnComplete(() => PlayFailEffect());
             
@@ -152,9 +146,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // マスクのスケールを外側リングの大きさに合わせる
             _maskImage.rectTransform.localScale = _ringImage.rectTransform.localScale;
 
-            var sequence = DOTween.Sequence();
-            
-            sequence
+            var sequence = DOTween.Sequence()
+                
                 // ゲージを確実に表示させる
                 .Append(_gaugeImage.DOFade(1f, totalDuration * 0.1f).SetEase(Ease.OutQuad))
     
@@ -179,7 +172,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnChargeComplete()
         {
-            _isComplete = true;
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             // 色とテキストを変更
@@ -248,6 +240,26 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         #region Reset
 
+        /// <summary>
+        /// 全コンポーネントの完全初期化
+        /// </summary>
+        private void ResetAllComponents()
+        {
+            // スケールをリセット
+            ResetRingsScale();
+            
+            // 色をデフォルトに設定
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
+
+            // テキストオブジェクトのTransformをリセットする
+            ResetText();
+            
+            // テキストをデフォルトに設定
+            ChangeText(DEFAULT_TEXT, DEFAULT_KEY_TEXT);
+            
+            SetAllAlpha(0f);
+        }
+        
         /// <summary>
         /// 各リングの拡大率を変更する
         /// </summary>
@@ -322,26 +334,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
         
-        /// <summary>
-        /// 全コンポーネントの完全初期化
-        /// </summary>
-        private void ResetAllComponents()
-        {
-            // スケールをリセット
-            ResetRingsScale();
-            
-            // 色をデフォルトに設定
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-
-            // テキストオブジェクトのTransformをリセットする
-            ResetText();
-            
-            // テキストをデフォルトに設定
-            ChangeText(DEFAULT_TEXT, DEFAULT_KEY_TEXT);
-            
-            SetAllAlpha(0f);
-        }
-        
         #endregion
 
         #region Create Tween
@@ -394,38 +386,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     if (text != null)
                     {
                         sequence.Join(text.rectTransform.DOPunchScale(Vector3.one * 0.3f, duration, 2, 0.5f));
-                        
-                        // チャージが完了していない場合のみ色変更
-                        if (!_isComplete)
-                        {
-                            sequence.Join(text.DOColor(_chargeColor, duration * 0.5f).SetEase(Ease.OutFlash));
-                        }
+                        sequence.Join(text.DOColor(_defaultColor, duration * 0.5f).SetEase(Ease.OutFlash));
                     }
                 }
             }
-            
-            return sequence;
-        }
-        
-        /// <summary>
-        /// クリティカル点滅演出
-        /// </summary>
-        private Tween CreateCriticalFlash(float duration)
-        {
-            var sequence = DOTween.Sequence();
-            
-            // 全体を危険色に
-            sequence.Join(_ringImage.DOColor(_criticalColor, duration * 0.2f).SetEase(Ease.OutFlash));
-            sequence.Join(_selfImage.DOColor(_criticalColor, duration * 0.2f).SetEase(Ease.OutFlash));
-            
-            // 激しい点滅
-            var flashCount = Mathf.FloorToInt(duration / 0.1f);
-            sequence.Join(_ringImage.DOFade(0.2f, 0.05f).SetLoops(flashCount, LoopType.Yoyo));
-            sequence.Join(_selfImage.DOFade(0.3f, 0.05f).SetLoops(flashCount, LoopType.Yoyo));
-            
-            // ブラーで危険演出
-            sequence.Join(_blurImage.DOColor(_criticalColor, duration * 0.3f).SetEase(Ease.OutFlash));
-            sequence.Join(_blurImage.rectTransform.DOShakeScale(duration, 0.1f, 10, 90f, true));
             
             return sequence;
         }
