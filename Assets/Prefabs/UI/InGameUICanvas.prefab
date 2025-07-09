@@ -32,11 +32,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 302145706440026476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -346, y: 85}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 40}
   m_SizeDelta: {x: 647.35205, y: 90.1366}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &6830679155654491032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,7 +888,7 @@ GameObject:
   - component: {fileID: 558647567878389986}
   - component: {fileID: 3003543268734824129}
   m_Layer: 5
-  m_Name: JudgementImage
+  m_Name: IndicatorHitResultImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -910,8 +910,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 70, y: 210}
-  m_SizeDelta: {x: 538.1693, y: 184.829}
+  m_AnchoredPosition: {x: -22.323975, y: 240.27}
+  m_SizeDelta: {x: 327.0255, y: 85.0154}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5757031336248644326
 CanvasRenderer:
