@@ -1,4 +1,5 @@
 ﻿using SymphonyFrameWork.Debugger;
+using System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -27,21 +28,28 @@ namespace BeatKeeper.Runtime.Ingame.System
         ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
         /// </summary>
         //TODO 音楽がループした際に合計拍数がリセットされないようにする
-        public static int GetBeatSinceStart() => Music.Just.Beat + Music.Just.Bar * 4;
+        public static int GetBeatSinceStart()
+        {
+            // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
+            if (Music.CurrentMeter == null)
+            {
+                Debug.LogWarning("Music.CurrentMeter is null. Cannot get beat since start.");
+                return 0;
+            }
+            return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
+        }
 
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの近い方の拍数を取得します。
         /// </summary>
         public static int GetBeatNearerSinceStart()
         {
-            var timing = GetBeatSinceStart();
+            // 新しいメソッドを使用して最も近い拍のタイミングを取得
+            Timing closestBeatTiming = GetClosestBeatTiming();
 
-            if (0.5f < Music.UnitFromJust) //もしタイミングが後半なら次の拍にする
-            {
-                timing++;
-            }
-
-            return timing;
+            // Timingオブジェクトを開始時点からの総拍数に変換
+            // Music.CurrentMeterがnullでないことはGetClosestBeatTiming()でチェック済み
+            return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
         }
 
         /// <summary>
@@ -68,6 +76,82 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             // Justタイミング付近か判定
             return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= range / 2;
+        }
+
+        /// <summary>
+        /// 現在の音楽再生位置から最も近い拍のタイミングを取得します。
+        /// </summary>
+        /// <returns>最も近い拍のTimingオブジェクト</returns>
+        public static Timing GetClosestBeatTiming()
+        {
+            if (Music.CurrentMeter == null)
+            {
+                Debug.LogWarning("Music.CurrentMeter is null. Cannot get closest beat timing.");
+                return new Timing();
+            }
+
+            MusicMeter meter = Music.CurrentMeter;
+
+            // 現在の正確な総単位数を計算
+            double currentTotalUnits = Music.Just.GetTotalUnits(meter) + Music.UnitFromJust;
+
+            // 最も近い拍単位の総数を計算
+            double totalBeats = currentTotalUnits / meter.UnitPerBeat;
+            int closestTotalBeats = (int)Math.Round(totalBeats);
+
+            // 最も近い拍単位の総数を音楽単位に戻す
+            int closestTotalUnits = closestTotalBeats * meter.UnitPerBeat;
+
+            // この総単位数からTimingオブジェクトを生成
+            int bar = closestTotalUnits / meter.UnitPerBar;
+            int remainingUnits = closestTotalUnits % meter.UnitPerBar;
+            int beat = remainingUnits / meter.UnitPerBeat;
+            int unit = remainingUnits % meter.UnitPerBeat; // 拍上なのでunitは0になるはず
+
+            return new Timing(bar + meter.StartBar, beat, unit);
+        }
+
+        /// <summary>
+        /// 指定されたタイミング（秒）から最も近い拍のタイミングを取得します。
+        /// </summary>
+        /// <param name="sec">秒単位のタイミング</param>
+        /// <param name="meter">使用するMusicMeterインスタンス</param>
+        /// <returns>最も近い拍のTimingオブジェクト</returns>
+        public static Timing GetClosestBeatTimingFromSeconds(double sec, MusicMeter meter)
+        {
+            if (meter == null)
+            {
+                Debug.LogWarning("MusicMeter is null. Cannot get closest beat timing.");
+                return new Timing();
+            }
+
+            // StartSecからの総単位数を計算
+            double meterSec = sec - meter.StartSec;
+            double totalUnits = meterSec / meter.SecPerUnit;
+            
+            // 最も近い拍単位の総数を計算
+            double totalBeats = totalUnits / meter.UnitPerBeat;
+            int closestTotalBeats = (int)Math.Round(totalBeats);
+            int closestTotalUnits = closestTotalBeats * meter.UnitPerBeat;
+
+            // この総単位数からTimingオブジェクトを生成
+            int bar = closestTotalUnits / meter.UnitPerBar;
+            int remainingUnits = closestTotalUnits % meter.UnitPerBar;
+            int beat = remainingUnits / meter.UnitPerBeat;
+            int unit = remainingUnits % meter.UnitPerBeat;
+
+            return new Timing(bar + meter.StartBar, beat, unit);
+        }
+
+        /// <summary>
+        /// 指定されたタイミング（ミリ秒）から最も近い拍のタイミングを取得します。
+        /// </summary>
+        /// <param name="msec">ミリ秒単位のタイミング</param>
+        /// <param name="meter">使用するMusicMeterインスタンス</param>
+        /// <returns>最も近い拍のTimingオブジェクト</returns>
+        public static Timing GetClosestBeatTimingFromMilliSeconds(double msec, MusicMeter meter)
+        {
+            return GetClosestBeatTimingFromSeconds(msec / 1000.0, meter);
         }
     }
 }
