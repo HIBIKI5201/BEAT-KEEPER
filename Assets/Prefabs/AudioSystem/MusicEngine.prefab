@@ -33,8 +33,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6217551041429930733}
-  - {fileID: 3699731045363379843}
-  - {fileID: 6070978633520560763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6659309216576162033
@@ -79,8 +77,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acfFile: BeatKeepr.acf
   cueSheets:
-  - name: Battle
-    acbFile: Battle.acb
+  - name: BGM
+    acbFile: BGM.acb
     awbFile: 
     loaderStatus: 0
   dspBusSetting: 
@@ -98,7 +96,7 @@ GameObject:
   - component: {fileID: 4582629090557068278}
   - component: {fileID: 6286255084227128913}
   m_Layer: 0
-  m_Name: Phase1
+  m_Name: Battle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,7 +167,7 @@ MonoBehaviour:
   _use3dPositioning: 1
   _freezeOrientation: 0
   _loop: 0
-  _volume: 0.3
+  _volume: 1
   _pitch: 0
   _androidUseLowLatencyVoicePool: 0
   need_to_player_update_all: 1
@@ -182,8 +180,12 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: Phase1
+<<<<<<< Updated upstream
+  _cueName: Battle1
   _cueSheet: Battle
+=======
+  _cueName: Phase1
+  _cueSheet: BGM
 --- !u!1 &4533952230725193747
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +277,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: Phase3
-  _cueSheet: Battle
+  _cueSheet: BGM
 --- !u!1 &7458331887055390619
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,4 +369,5 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: Phase2
-  _cueSheet: Battle
+  _cueSheet: BGM
+>>>>>>> Stashed changes
