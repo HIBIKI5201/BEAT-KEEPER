@@ -692,8 +692,6 @@ Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
         Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_FUR_PRE"
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_FUR"
-        UsePass "Hidden/lilToonFurTwoPass/FORWARD_ADD_FUR_PRE"
-        UsePass "Hidden/lilToonFurTwoPass/FORWARD_ADD_FUR"
         Pass
         {
             Tags { "LightMode" = "Never" }
@@ -765,8 +763,7 @@ Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
             ENDHLSL
         }
     }
-    Fallback "Unlit/Texture"
+    Fallback "Universal Render Pipeline/Unlit"
 
     CustomEditor "lilToon.lilToonInspector"
 }
-
