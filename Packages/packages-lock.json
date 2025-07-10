@@ -14,6 +14,12 @@
       "dependencies": {},
       "hash": "06067cd4c83e372310d6f79d1c625f6870ff7a2a"
     },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.addressables": {
       "version": "2.4.4",
       "depth": 0,
@@ -385,6 +391,12 @@
       },
       "url": "https://packages.unity.com"
     },
+    "jp.lilxyzw.liltoon": {
+      "version": "file:jp.lilxyzw.liltoon",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "org.nuget.microsoft.bcl.asyncinterfaces": {
       "version": "6.0.0",
       "depth": 2,
@@ -475,13 +487,13 @@
       "url": "https://package.openupm.com"
     },
     "symphony.framework": {
-      "version": "https://github.com/HIBIKI5201/SymphonyTemplate.git?path=Assets/SymphonyFrameWork",
+      "version": "https://github.com/HIBIKI5201/SymphonyFramework.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "61917b55eb72df16d614504bfddc6249c3f45211"
+      "hash": "e7a1ab85955f5673fe7dd3a913f07fa753bc9f95"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

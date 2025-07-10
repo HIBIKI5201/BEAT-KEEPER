@@ -1,7 +1,7 @@
-﻿using SymphonyFrameWork.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
-using BeatKeeper.Runtime.Ingame.System;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {

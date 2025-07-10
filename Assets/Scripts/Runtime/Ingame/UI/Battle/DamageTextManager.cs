@@ -1,178 +1,143 @@
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
-using UnityEngine;
-using DG.Tweening;
+using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
-using UnityEngine.Pool;
+using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using R3;
 
+/// <summary>
+/// スコアUIの近くのプレイヤーが与えたダメージ表記を管理するクラス
+/// </summary>
 public class DamageTextManager : MonoBehaviour
 {
-    [Header("プールの設定")]
-    [SerializeField] private GameObject _prefab;
-    [SerializeField] private int _defaultPoolSize = 10;
-    [SerializeField] private int _maxPoolSize = 30;
-    [SerializeField] private Transform _parent;
-    [SerializeField] private Color _normalColor = Color.white;
-    [SerializeField] private Color _criticalColor = Color.yellow;
+    [Header("コンポーネントの参照")]
+    [SerializeField] private Text _damageText;
+    [SerializeField] private Color _textColor;
     
     [Header("アニメーションの設定")]
-    [SerializeField] private float _popupDuration = 0.3f;
-    [SerializeField] private float _holdDuration = 0.5f;
-    [SerializeField] private float _fadeDuration = 0.4f;
-    [SerializeField] private float _moveDistance = 1.5f;
-    [SerializeField] private Vector2 _randomOffset = new Vector2(0.5f, 0.3f);
-    [SerializeField] private float _scaleMultiplier = 1.5f;
+    [SerializeField, Tooltip("表示時間")] private float _displayTime = 0.2f;
+    [SerializeField, Tooltip("テキストのY軸上の移動距離")] private float _moveDistanceY = 1.5f;
+    [SerializeField, Tooltip("イージング")] private Ease _easeType = Ease.InExpo;
     
-    [Header("カメラ参照")]
-    private Camera _gameCamera;
-    [SerializeField] private Canvas _targetCanvas;
+    private EnemyManager _enemy; // 敵がダメージを受けた時のイベントを購読しているため、解除用のキャッシュを保持している
+    private Sequence _textSequence; // テキストアニメーションのシーケンス
+    private Vector3 _initPosition; // テキストオブジェクトの初期位置
     
-    private ObjectPool<GameObject> _textPool;
-    private RectTransform _canvasRectTransform;
-    private EnemyManager _enemy;
+    private CompositeDisposable _disposable = new CompositeDisposable();
     
-    private void Awake()
+    private async void Start()
     {
-        InitializePool();
-        
-        // キャンバスのRectTransformを取得
-        if (_targetCanvas != null)
+        if (_damageText == null)
         {
-            _canvasRectTransform = _targetCanvas.GetComponent<RectTransform>();
+            Debug.LogError($"[{typeof(DamageTextManager)}] テキストコンポーネントが設定されていません");
+            return;
+        }
+        
+        // テキストコンポーネントの初期位置を保存・α値は0にして見えないようにしておく
+        _initPosition = _damageText.transform.position;
+        _damageText.color = new Color(_textColor.r, _textColor.g, _textColor.b, 0);
+        
+        // 敵のクラスの参照を取りたいので、敵オブジェクトが存在するバトルシーンが読み込まれるまで待機する
+        await SceneLoader.WaitForLoadSceneAsync("Battle");
+
+        SubscribeToPhaseChange();
+    }
+
+    /// <summary>
+    /// フェーズ変更のリアクティブプロパティを購読する
+    /// </summary>
+    private void SubscribeToPhaseChange()
+    {
+        var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+        if (phaseManager)
+        {
+            // フェーズが変更されたタイミングで敵のHitイベントの登録をしなおす
+            phaseManager.CurrentPhaseProp
+                .Subscribe(OnPhaseChanged)
+                .AddTo(_disposable);
+        }
+        else
+        {
+            Debug.Log($"[{typeof(DamageTextManager)}] {typeof(PhaseManager)}が取得できませんでした");
         }
     }
 
-    private async void Start()
+    /// <summary>
+    /// フェーズ変更時に敵がダメージを受けた時のアクション登録を行う
+    /// </summary>
+    private void OnPhaseChanged(PhaseEnum phase)
     {
-        _gameCamera = Camera.main;
-
-        await SceneLoader.WaitForLoadSceneAsync("Battle"); // バトルシーンが読み込まれるまで待機する
-
-        // バトルシーンが読み込まれたら敵の参照を取得する
-        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.Enemies[0];
+        if (_enemy != null)
+        {
+            // 既存のアクション登録を解除
+            _enemy.OnHitAttack -= HandleDisplayDamage;
+        }
+        
+        // 新しい敵の参照を取得する
+        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.GetActiveEnemy();
 
         if (_enemy != null)
         {
             // 敵がダメージを受けた時のイベントにダメージ表記UIの処理を追加する
-            _enemy.OnHitAttack += OnEnemyOnHitAttack;
+            _enemy.OnHitAttack += HandleDisplayDamage;
         }
         else
         {
             Debug.Log($"[{typeof(DamageTextManager)}] {typeof(EnemyManager)}が取得できませんでした");
         }
     }
-
-    /// <summary>
-    /// ダメージ表記UIを表示する
-    /// </summary>
-    private void OnEnemyOnHitAttack(int value) => DisplayDamage(value, _enemy.transform.position);
-
-    #region オブジェクトプールとアニメーション
-
-    /// <summary>
-    /// オブジェクトプールの初期化
-    /// </summary>
-    private void InitializePool()
-    {
-        _textPool = new ObjectPool<GameObject>(
-            createFunc: CreateTextInstance,
-            actionOnGet: obj => obj.SetActive(true),
-            actionOnRelease: obj => obj.SetActive(false),
-            actionOnDestroy: Destroy,
-            collectionCheck: true,
-            defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-        );
-    }
-    
-    /// <summary>
-    /// ダメージテキストのオブジェクトを作成するときに呼ばれるメソッド
-    /// </summary>
-    private GameObject CreateTextInstance()
-    {
-        GameObject textInstance = Instantiate(_prefab, _parent);
-        textInstance.SetActive(false);
-        return textInstance;
-    }
     
     /// <summary>
     /// ダメージを表示する
     /// </summary>
-    private void DisplayDamage(int damage, Vector3 worldPosition, bool isCritical = false)
+    private void HandleDisplayDamage(int damageAmount)
     {
-        // ワールド座標をキャンバス座標に変換
-        Vector2 canvasPosition = WorldToCanvasPosition(worldPosition);
-        
-        // UIオブジェクトを取得して位置を設定
-        GameObject textObject = _textPool.Get();
-        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = canvasPosition;
-        
-        Text textComponent = textObject.GetComponent<Text>();
-        if (textComponent != null)
+        if (_damageText == null)
         {
-            textComponent.text = damage.ToString();
-            textComponent.color = isCritical ? _criticalColor : _normalColor;
-            
-            // スケールと色をリセットする
-            rectTransform.localScale = Vector3.one;
-            textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 1f);
-            
-            // ランダムな座標を作る
-            Vector2 randomPos = new Vector2(
-                Random.Range(-_randomOffset.x, _randomOffset.x),
-                Random.Range(0, _randomOffset.y)
-            );
-            
-            Sequence sequence = DOTween.Sequence();
-            
-            // 少し拡大して、上方向にスライドする
-            sequence.Append(rectTransform.DOScale(Vector3.one * _scaleMultiplier, _popupDuration).SetEase(Ease.OutBack));
-            sequence.Join(rectTransform.DOAnchorPos(
-                canvasPosition + randomPos + Vector2.up * _moveDistance, 
-                _popupDuration + _holdDuration)
-                .SetEase(Ease.OutCubic));
-            
-            // 待機
-            sequence.AppendInterval(_holdDuration);
-            
-            // 消える処理
-            sequence.Append(textComponent.DOColor(new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, 0f), 
-                _fadeDuration).SetEase(Ease.InQuad));
-            
-            // 手放す処理。テキストを非表示にする
-            sequence.OnComplete(() => _textPool.Release(textObject));
-        }
-    }
-    
-    /// <summary>
-    /// ワールド座標をUIキャンバス上の座標に変換
-    /// </summary>
-    private Vector2 WorldToCanvasPosition(Vector3 worldPosition)
-    {
-        if (_gameCamera == null || _canvasRectTransform == null)
-        {
-            Debug.LogError("カメラまたはキャンバスが設定されていません");
-            return Vector2.zero;
+            // コンポーネントが設定されていない場合はreturn
+            return;
         }
         
-        // ワールド座標をスクリーン座標に変換
-        Vector2 screenPoint = _gameCamera.WorldToScreenPoint(worldPosition);
+        // 既存シーケンスがあったらKill
+        _textSequence?.Kill();
+        _textSequence = DOTween.Sequence();
         
-        // スクリーン座標からキャンバス上の座標に変換
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _canvasRectTransform, screenPoint, _targetCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? 
-                null : _gameCamera, out Vector2 canvasPosition);
+        // テキストの初期化
+        SetupText(damageAmount);
         
-        return canvasPosition;
+        // 現在位置から相対的に移動する（絶対位置ではなく相対位置を指定）
+        var targetPosition = _initPosition + Vector3.up * _moveDistanceY;
+
+        // テキストがスライドするアニメーション
+        _textSequence.Append(_damageText.transform.DOMove(targetPosition, _displayTime).SetEase(_easeType));
+        
+        // スライドアニメーションと同時にフェードアウトも実行する
+        _textSequence.Join(_damageText.DOFade(0, _displayTime).SetEase(_easeType));
     }
 
-    #endregion
-    
+    /// <summary>
+    /// テキストアニメーション時の初期化処理
+    /// </summary>
+    private void SetupText(int damageAmount)
+    {
+        _damageText.transform.position = _initPosition;
+        _damageText.text = $"+{damageAmount}";
+        _damageText.color = _textColor;
+    }
+
     private void OnDestroy()
     {
-        _textPool.Clear();
-        if(_enemy != null) _enemy.OnHitAttack -= OnEnemyOnHitAttack;
+        // アニメーションの停止
+        _textSequence?.Kill();
+        
+        // フェーズ変更のリアクティブプロパティの購読解除
+        _disposable?.Dispose();
+        
+        if (_enemy != null)
+        {
+            _enemy.OnHitAttack -= HandleDisplayDamage;
+        }
     }
 }

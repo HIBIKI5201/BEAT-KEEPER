@@ -114,7 +114,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         op.Release(ring); //オブジェクトを非アクティブに
                         _activeRingIndicator.Remove(ring); //アクティブリストから除外
                     },
-                        element.Position);
+                        element.Position, (timing + _appearTiming[i]) % chart.Length);
 
                     _soundEffectSource?.PlayOneShot(_apearSound);
                 }
@@ -214,7 +214,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             manager.gameObject.SetActive(false);
                             _onBeat -= manager.AddCount;
                         },
-                        Destroy,
+                        manager => { if (Application.isPlaying) Destroy(manager); },
                         defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }

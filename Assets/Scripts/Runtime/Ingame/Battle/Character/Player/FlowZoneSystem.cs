@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BeatKeeper.Runtime.Ingame.Character
 {
     /// <summary>
-    /// フローゾーンを管理するシステム
+    ///     フローゾーンを管理するシステム
     /// </summary>
     public class FlowZoneSystem : IDisposable
     {
@@ -24,44 +24,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _data = data; // フローゾーンの継続時間を拍数で指定
         }
 
+        ~FlowZoneSystem()
+        {
+            Dispose();
+        }
+
         public const int MAX_COUNT = 5;
 
         public event Action OnStartFlowZone;
         public event Action OnEndFlowZone;
 
-        private readonly PlayerData _data;
-        private readonly BGMManager _musicEngineHelper;
-
-        /// <summary>
-        /// リズム共鳴回数
-        /// </summary>
         public ReadOnlyReactiveProperty<int> ResonanceCount => _resonanceCount;
-        private readonly ReactiveProperty<int> _resonanceCount = new();
-        
-        /// <summary>
-        /// フローゾーン中か
-        /// </summary>
         public ReadOnlyReactiveProperty<bool> IsFlowZone => _isFlowZone;
-        private readonly ReactiveProperty<bool> _isFlowZone = new();
-
-        private int _count;
 
         public void Dispose()
         {
             _musicEngineHelper.OnJustChangedBeat -= OnJustBeat;
-        }
-
-        /// <summary>
-        ///     拍数が変更されるタイミングで呼び出されるメソッド
-        /// </summary>
-        private void OnJustBeat()
-        {
-            _count++;
-
-            if (_count >= _data.FlowZoneDuration) // フローゾーン継続時間が終了したら
-            {
-                EndFlowZone(); // フローゾーンを終了する
-            }
         }
 
         /// <summary>
@@ -71,9 +49,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             // フローゾーン中であれば以下の処理はスキップする
             if (_isFlowZone.Value) return;
-            
+
             _resonanceCount.Value++;
-            
+
             if (_resonanceCount.Value >= MAX_COUNT)
             {
                 StartFlowZone();
@@ -85,9 +63,38 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void ResetFlowZone()
         {
-            if(_isFlowZone.Value) // フローゾーン中であれば終了する
+            if (_isFlowZone.Value) // フローゾーン中であれば終了する
             {
                 EndFlowZone();
+            }
+        }
+
+        private readonly PlayerData _data;
+        private readonly BGMManager _musicEngineHelper;
+
+        /// <summary>
+        /// リズム共鳴回数
+        /// </summary>
+        private readonly ReactiveProperty<int> _resonanceCount = new();
+        
+        /// <summary>
+        /// フローゾーン中か
+        /// </summary>
+        private readonly ReactiveProperty<bool> _isFlowZone = new();
+
+        private int _count;
+
+
+        /// <summary>
+        ///     拍数が変更されるタイミングで呼び出されるメソッド
+        /// </summary>
+        private void OnJustBeat()
+        {
+            _count++;
+
+            if (_count >= _data.FlowZoneDuration) // フローゾーン継続時間が終了したら
+            {
+                EndFlowZone(); // フローゾーンを終了する
             }
         }
 

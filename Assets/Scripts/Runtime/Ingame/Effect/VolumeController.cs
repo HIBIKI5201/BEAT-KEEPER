@@ -1,8 +1,8 @@
+﻿using DG.Tweening;
+using SymphonyFrameWork.System;
 using System;
-using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
-using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -24,15 +24,15 @@ namespace BeatKeeper
         [Header("ボリューム設定")]
         [SerializeField] private Volume _globalVolume; // グローバルボリュームへの参照
         private Dictionary<Type, VolumeComponent> _volumeComponents = new Dictionary<Type, VolumeComponent>(); // ボリュームコンポーネントのキャッシュ
-        
+
         [Header("プリセット設定")]
         [SerializeField] private VolumePresetSO[] _presetAssets;
         [SerializeField] private EffectPresetEnum _defaultPreset = EffectPresetEnum.Default;
         private Dictionary<EffectPresetEnum, EffectSettings> _presets = new Dictionary<EffectPresetEnum, EffectSettings>();
-        
+
         // 現在アクティブなTween（キャンセル用）
         private Dictionary<string, Sequence> _activeSequences = new Dictionary<string, Sequence>();
-        
+
         // カメラ
         private Camera _mainCamera;
 
@@ -43,7 +43,7 @@ namespace BeatKeeper
             ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton); // シングルトンに登録
             Initialize();
         }
-        
+
         /// <summary>
         /// 初期化処理のメインフロー
         /// </summary>
@@ -88,7 +88,7 @@ namespace BeatKeeper
             InitializeVolumeComponent<ChromaticAberration>();
             InitializeVolumeComponent<FilmGrain>();
         }
-        
+
         /// <summary>
         /// 型Tに対応するVolumeコンポーネントを初期化して辞書に登録
         /// </summary>
@@ -98,10 +98,10 @@ namespace BeatKeeper
             {
                 component = _globalVolume.profile.Add<T>();
             }
-            
+
             _volumeComponents[typeof(T)] = component;
         }
-        
+
         /// <summary>
         /// SerializeFieldに設定されたPresetの配列を元に辞書を作成する
         /// </summary>
@@ -113,79 +113,82 @@ namespace BeatKeeper
 
         private void Start()
         {
-             _mainCamera = Camera.main;
-             if (_mainCamera == null)
-             {
-                 Debug.LogWarning("[VolumeController] カメラが見つかりませんでした。");
-             }
+            _mainCamera = Camera.main;
+            if (_mainCamera == null)
+            {
+                Debug.LogWarning("[VolumeController] カメラが見つかりませんでした。");
+            }
         }
-        
+
         #endregion
-        
+
         #region エフェクト適用メソッド
-        
+
         /// <summary>
         /// エフェクト設定を適用する
         /// </summary>
         public Sequence ApplyEffectSettings(EffectSettings settings, float duration = 0.5f, Ease easeType = Ease.OutQuad)
         {
             StopAllTweens();
-            
+
             var sequence = DOTween.Sequence();
             _activeSequences["effectSettings"] = sequence;
-            
+
             // エフェクト設定の適用
             // エフェクト設定の適用
             ApplyEffect<Vignette>(settings.EnableVignette, sequence,
                 (comp) => ApplyParameter(comp, comp.intensity, settings.VignetteIntensity, sequence, duration, easeType));
-                
-            ApplyEffect<ColorAdjustments>(settings.EnableColorAdjustments, sequence, (comp) => {
+
+            ApplyEffect<ColorAdjustments>(settings.EnableColorAdjustments, sequence, (comp) =>
+            {
                 ApplyParameter(comp, comp.saturation, settings.Saturation, sequence, duration, easeType);
                 ApplyParameter(comp, comp.contrast, settings.Contrast, sequence, duration, easeType);
                 ApplyParameter(comp, comp.colorFilter, settings.ColorFilter, sequence, duration, easeType);
                 return sequence;
             });
-            
-            ApplyEffect<DepthOfField>(settings.EnableDepthOfField, sequence, (comp) => {
+
+            ApplyEffect<DepthOfField>(settings.EnableDepthOfField, sequence, (comp) =>
+            {
                 ApplyParameter(comp, comp.focusDistance, settings.FocusDistance, sequence, duration, easeType);
                 ApplyParameter(comp, comp.aperture, settings.Aperture, sequence, duration, easeType);
                 ApplyParameter(comp, comp.focalLength, settings.FocalLength, sequence, duration, easeType);
                 return sequence;
             });
-            
+
             ApplyEffect<LensDistortion>(settings.EnableLensDistortion, sequence,
                 (comp) => ApplyParameter(comp, comp.intensity, settings.LensDistortionIntensity, sequence, duration, easeType));
-                
-            ApplyEffect<Bloom>(true, sequence, (comp) => {
+
+            ApplyEffect<Bloom>(true, sequence, (comp) =>
+            {
                 ApplyParameter(comp, comp.intensity, settings.BloomIntensity, sequence, duration, easeType);
                 ApplyParameter(comp, comp.threshold, settings.BloomThreshold, sequence, duration, easeType);
                 return sequence;
             });
-            
+
             ApplyEffect<ChromaticAberration>(settings.EnableChromaticAberration, sequence,
                 (comp) => ApplyParameter(comp, comp.intensity, settings.ChromaticAberrationIntensity, sequence, duration, easeType));
-                
+
             ApplyEffect<FilmGrain>(settings.EnableFilmGrain, sequence,
                 (comp) => ApplyParameter(comp, comp.intensity, settings.FilmGrainIntensity, sequence, duration, easeType));
-            
+
             // カメラFOV設定
             if (_mainCamera != null && settings.AdjustCameraFov)
             {
-                sequence.Join(DOTween.To(() => _mainCamera.fieldOfView, 
+                sequence.Join(DOTween.To(() => _mainCamera.fieldOfView,
                     x => _mainCamera.fieldOfView = x, settings.CameraFov, duration)
                     .SetEase(easeType));
             }
-            
+
             return sequence;
         }
-        
+
         /// <summary>
         /// 個別のパラメータを調整
         /// </summary>
         public Tween AdjustEffect(EffectTypeEnum effectType, float value, float duration = 0.5f, Ease easeType = Ease.OutQuad)
         {
             Tween resultTween = null;
-            
+
             switch (effectType)
             {
                 case EffectTypeEnum.VignetteIntensity:
@@ -193,15 +196,15 @@ namespace BeatKeeper
                         (comp) => ApplyParameter(comp, comp.intensity, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.Saturation:
-                    resultTween = ApplyEffect<ColorAdjustments>(true, null, 
+                    resultTween = ApplyEffect<ColorAdjustments>(true, null,
                         (comp) => ApplyParameter(comp, comp.saturation, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.Contrast:
-                    resultTween = ApplyEffect<ColorAdjustments>(true, null, 
+                    resultTween = ApplyEffect<ColorAdjustments>(true, null,
                         (comp) => ApplyParameter(comp, comp.contrast, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.DepthOfFieldFocus:
-                    resultTween = ApplyEffect<DepthOfField>(true, null, 
+                    resultTween = ApplyEffect<DepthOfField>(true, null,
                         (comp) => ApplyParameter(comp, comp.focusDistance, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.LensDistortion:
@@ -209,15 +212,15 @@ namespace BeatKeeper
                         (comp) => ApplyParameter(comp, comp.intensity, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.BloomIntensity:
-                    resultTween = ApplyEffect<Bloom>(true, null, 
+                    resultTween = ApplyEffect<Bloom>(true, null,
                         (comp) => ApplyParameter(comp, comp.intensity, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.ChromaticAberration:
-                    resultTween = ApplyEffect<ChromaticAberration>(true, null, 
+                    resultTween = ApplyEffect<ChromaticAberration>(true, null,
                         (comp) => ApplyParameter(comp, comp.intensity, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.FilmGrain:
-                    resultTween = ApplyEffect<FilmGrain>(true, null, 
+                    resultTween = ApplyEffect<FilmGrain>(true, null,
                         (comp) => ApplyParameter(comp, comp.intensity, value, null, duration, easeType));
                     break;
                 case EffectTypeEnum.CameraFov:
@@ -231,7 +234,7 @@ namespace BeatKeeper
 
             return resultTween;
         }
-        
+
         /// <summary>
         /// エフェクトコンポーネントへの処理適用
         /// </summary>
@@ -239,46 +242,46 @@ namespace BeatKeeper
         {
             var component = GetVolumeComponent<T>();
             if (component == null) return null;
-            
+
             component.active = enabled;
             if (!enabled) return null;
-            
+
             return applyAction(component);
         }
-        
+
         /// <summary>
         /// パラメータに値を適用（ClampedFloatParameter用）
         /// </summary>
-        private Tween ApplyParameter<T>(T component, ClampedFloatParameter parameter, float targetValue, 
+        private Tween ApplyParameter<T>(T component, ClampedFloatParameter parameter, float targetValue,
             Sequence sequence, float duration, Ease easeType) where T : VolumeComponent
         {
             var tween = DOTween.To(() => parameter.value, x => parameter.value = x, targetValue, duration).SetEase(easeType);
             sequence?.Join(tween);
             return tween;
         }
-        
+
         /// <summary>
         /// パラメータに値を適用（MinFloatParameter用）
         /// </summary>
-        private Tween ApplyParameter<T>(T component, MinFloatParameter parameter, float targetValue, 
-            Sequence sequence, float duration, Ease easeType) where T : VolumeComponent 
-        {
-            var tween = DOTween.To(() => parameter.value, x => parameter.value = x, targetValue, duration).SetEase(easeType);
-            sequence?.Join(tween);
-            return tween;
-        }
-        
-        /// <summary>
-        /// パラメータに値を適用（Color用）
-        /// </summary>
-        private Tween ApplyParameter<T>(T component, ColorParameter parameter, Color targetValue, 
+        private Tween ApplyParameter<T>(T component, MinFloatParameter parameter, float targetValue,
             Sequence sequence, float duration, Ease easeType) where T : VolumeComponent
         {
             var tween = DOTween.To(() => parameter.value, x => parameter.value = x, targetValue, duration).SetEase(easeType);
             sequence?.Join(tween);
             return tween;
         }
-        
+
+        /// <summary>
+        /// パラメータに値を適用（Color用）
+        /// </summary>
+        private Tween ApplyParameter<T>(T component, ColorParameter parameter, Color targetValue,
+            Sequence sequence, float duration, Ease easeType) where T : VolumeComponent
+        {
+            var tween = DOTween.To(() => parameter.value, x => parameter.value = x, targetValue, duration).SetEase(easeType);
+            sequence?.Join(tween);
+            return tween;
+        }
+
         /// <summary>
         /// プリセットを適用
         /// </summary>
@@ -302,9 +305,9 @@ namespace BeatKeeper
         {
             return _mainCamera?.transform?.DOShakePosition(duration, intensity);
         }
-        
+
         #endregion
-        
+
         /// <summary>
         /// 指定した型のVolumeコンポーネントを取得
         /// </summary>
@@ -316,7 +319,7 @@ namespace BeatKeeper
             }
             return null;
         }
-        
+
         /// <summary>
         /// 特定の名前のTweenを停止
         /// </summary>
@@ -328,7 +331,7 @@ namespace BeatKeeper
                 _activeSequences.Remove(tweenName);
             }
         }
-        
+
         /// <summary>
         /// すべてのTweenを停止
         /// </summary>
@@ -340,7 +343,7 @@ namespace BeatKeeper
             }
             _activeSequences.Clear();
         }
-        
+
         private void OnDestroy()
         {
             StopAllTweens(); // すべてのTweenを停止

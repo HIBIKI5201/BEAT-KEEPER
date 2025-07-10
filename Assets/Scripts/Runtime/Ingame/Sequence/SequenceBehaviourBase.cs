@@ -8,8 +8,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     /// </summary>
     public abstract class SequenceBehaviourBase : PlayableBehaviour
     {
-        protected GameObject _owner;
-
         public void OnCreate(GameObject owner) => _owner = owner;
 
         /// <summary>
@@ -27,5 +25,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             behaviour.OnCreate(owner);
             return playable;
         }
+
+        protected GameObject _owner;
     }
 }
