@@ -1,4 +1,4 @@
-﻿using DG.Tweening; // DOTweenの名前空間を追加
+﻿using DG.Tweening;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +13,7 @@ namespace BeatKeeper
     {
         [SerializeField] private ScoreManager _scoreManager;
         [SerializeField] private float _animationDuration = 0.5f;
+        [SerializeField] private string _scoreFormat = "000000000000";
 
         private Text _text;
         private int _currentDisplayScore = 0; // 現在表示されているスコア
@@ -23,7 +24,7 @@ namespace BeatKeeper
         {
             _text = GetComponent<Text>();
             _scoreManager.ScoreProp.Subscribe(UpdateScore).AddTo(_disposable);
-            _text.text = "00000000"; // 初期スコア表示
+            _text.text = _scoreFormat; // 初期スコア表示
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace BeatKeeper
                 value =>
                 {
                     _currentDisplayScore = value;
-                    _text.text = value.ToString("00000000");
+                    _text.text = value.ToString(_scoreFormat);
                 },
                 targetScore, _animationDuration).SetEase(Ease.OutQuad)
                 .OnComplete(() => _currentDisplayScore = targetScore);  // アニメーション完了時に現在のスコアを確実に目標値に設定
