@@ -33,6 +33,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6217551041429930733}
+  - {fileID: 3699731045363379843}
+  - {fileID: 6070978633520560763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6659309216576162033
@@ -96,7 +98,7 @@ GameObject:
   - component: {fileID: 4582629090557068278}
   - component: {fileID: 6286255084227128913}
   m_Layer: 0
-  m_Name: Battle1
+  m_Name: Phase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,10 +182,6 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-<<<<<<< Updated upstream
-  _cueName: Battle1
-  _cueSheet: Battle
-=======
   _cueName: Phase1
   _cueSheet: BGM
 --- !u!1 &4533952230725193747
@@ -370,4 +368,3 @@ MonoBehaviour:
     - 0
   _cueName: Phase2
   _cueSheet: BGM
->>>>>>> Stashed changes
