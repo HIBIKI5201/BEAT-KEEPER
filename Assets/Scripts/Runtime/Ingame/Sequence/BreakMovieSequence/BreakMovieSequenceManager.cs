@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -32,12 +33,39 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 finisher.OnFinisherSequenceEnd += OnFinisherSequenceEnd;
             }
+
+            StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
+            if (enemyAdmin)
+            {
+                enemyAdmin.OnNextEnemyActive += OnNextEnemyActive;
+
+                EnemyManager firstEnemy = enemyAdmin.GetActiveEnemy();
+                firstEnemy.HealthSystem.OnDeath += OnEnemyDeath;
+            }
+        }
+
+        private void OnNextEnemyActive(EnemyManager enemy)
+        {
+            enemy.HealthSystem.OnDeath += OnEnemyDeath;
+        }
+
+        private void OnEnemyDeath()
+        {
+            PlayBreakMovie();
         }
 
         /// <summary>
         ///     フィニッシャーシーケンス終了時にブレイクムービーシーケンスを開始する
         /// </summary>
         private void OnFinisherSequenceEnd()
+        {
+            PlayBreakMovie();
+        }
+
+        /// <summary>
+        ///     ブレイクムービーを再生する
+        /// </summary>
+        private void PlayBreakMovie()
         {
             if (!_playableDirector) return;
 
