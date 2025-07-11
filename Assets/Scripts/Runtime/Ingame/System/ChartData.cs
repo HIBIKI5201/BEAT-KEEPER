@@ -40,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             index %= _chart.Length;
 
             var attackKind =
-                ChartKindEnum.Normal | ChartKindEnum.Charge | ChartKindEnum.Super; //敵の攻撃
+                ChartKindEnum.Normal | ChartKindEnum.Charge; //敵の攻撃
 
             return (_chart[index].AttackKind & attackKind) != 0;
         }

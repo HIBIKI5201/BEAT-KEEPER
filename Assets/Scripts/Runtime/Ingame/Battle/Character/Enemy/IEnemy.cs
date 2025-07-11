@@ -6,5 +6,6 @@
     public interface IEnemy : IHitable
     {
         public EnemyData EnemyData { get; }
+        public bool IsFinisherable { get; }
     }
 }

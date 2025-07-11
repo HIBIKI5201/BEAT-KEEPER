@@ -316,6 +316,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             else if (kind == ChartKindEnum.Skill)
             {
+                if (IsFinisherable()) //フィニッシャーが可能ならフィニッシャーする
+                {
+                    Debug.Log("<color=red>Finisher invoke</color>");
+                    FinisherFlow();
+                    return;
+                }
+
+                Debug.Log("<color=red>skill invoke</color>");
                 SKillFlow();
             }
         }
@@ -386,8 +394,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
             var enemyAttackKind = chart[timing].AttackKind;
 
-            //SuperとCharge攻撃は回避できない
-            if ((enemyAttackKind & (ChartKindEnum.Super | ChartKindEnum.Charge)) != 0)
+            //Charge攻撃は回避できない
+            if ((enemyAttackKind & ChartKindEnum.Charge) != 0)
             {
                 SymphonyDebugLog.AddText($"Enemy's attack of {enemyAttackKind}(timing:{timing}) can't be avoided");
                 SymphonyDebugLog.TextLog();
@@ -547,6 +555,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         /// <summary>
+        ///     フィニッシャーの一連のフロー
+        /// </summary>
+        private void FinisherFlow()
+        {
+            OnFinisher?.Invoke();
+            InputUnregister();
+        }
+
+        /// <summary>
         ///     パーフェクト攻撃を行う
         /// </summary>
         private void PerfectAttack()
@@ -696,6 +713,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             return true;
+        }
+
+        /// <summary>
+        ///     フィニッシャーが可能かどうかを判定する
+        /// </summary>
+        /// <returns></returns>
+        private bool IsFinisherable()
+        {
+            return _target.IsFinisherable;
         }
 
 # if UNITY_EDITOR
