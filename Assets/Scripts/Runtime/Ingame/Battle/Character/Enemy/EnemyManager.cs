@@ -20,6 +20,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnShootChargeAttack;
 
         public CharacterHealthSystem HealthSystem => _healthSystem;
+        public bool IsFinisherable => _canFinisher;
 
         public void Dispose()
         {
@@ -200,7 +201,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log("Finisherable event triggered for " + _data.name);
 
-                InputUnregister(); // 入力の登録を解除
                 _canFinisher = true;
                 OnFinisherable?.Invoke();
             }
