@@ -9,6 +9,10 @@ namespace BeatKeeper.Runtime.System
     [RequireComponent(typeof(CriAtomSource))]
     public class SoundEffectManager : MonoBehaviour
     {
+        /// <summary>
+        ///     指定されたキュー名のサウンドエフェクトを再生します。
+        /// </summary>
+        /// <param name="cueName"></param>
         public static void PlaySoundEffect(string cueName)
         {
             if (_instance == null)
