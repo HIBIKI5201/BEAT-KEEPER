@@ -19,6 +19,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Road_01
     second: {fileID: 2100000, guid: b6e49d4c6c9031747a723621430246e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 5561349426305759274, guid: 837084bf7d02c974e83813a287df985d, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

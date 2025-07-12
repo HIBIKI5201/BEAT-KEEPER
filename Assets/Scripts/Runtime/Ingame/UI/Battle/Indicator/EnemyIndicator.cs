@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -73,6 +74,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
 
+        [Header("SE")]
+        [SerializeField] private string _apperanceSoundCueName;
+
         private bool _isFailed; // 回避失敗フラグ
         
         /// <summary>
@@ -96,6 +100,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartBlinkEffect()
         {
+            SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName);
+
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             var blinkSequence = DOTween.Sequence()
