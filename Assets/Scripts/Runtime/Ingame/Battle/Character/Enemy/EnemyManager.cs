@@ -34,7 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_bgmManager)
             {
-                _bgmManager.OnJustChangedBeat += OnAttack;
+                _bgmManager.OnNearChangedBeat += OnAttack;
             }
         }
 
@@ -45,7 +45,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_bgmManager)
             {
-                _bgmManager.OnJustChangedBeat -= OnAttack;
+                _bgmManager.OnNearChangedBeat -= OnAttack;
             }
         }
 
