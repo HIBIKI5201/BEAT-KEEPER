@@ -697,6 +697,7 @@ MonoBehaviour:
   - {fileID: 5634149881092919488}
   - {fileID: 9177198301299860051}
   _warningColor: {r: 1, g: 0, b: 0, a: 1}
+  _apperanceSoundCueName: Ring_Avoid
 --- !u!224 &1204603360954716855 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}

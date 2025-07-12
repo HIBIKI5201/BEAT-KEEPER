@@ -23,9 +23,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField]
         private RingIndicatorData _ringIndicatorData;
 
-        [SerializeField, Tooltip("攻撃予告")]
-        private AudioClip _apearSound;
-
         private StageEnemyAdmin _enemies;
         private BGMManager _musicEngineHelper;
 
@@ -35,7 +32,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
         private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
         private int[] _appearTiming;
-        private AudioSource _soundEffectSource;
 
         private EnemyData _targetData;
 
@@ -51,7 +47,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
             }
             _enemies = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())?.EnemyAdmin;
-            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
 
             ObjectPoolInitialize();
         }
@@ -114,8 +109,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         _activeRingIndicator.Remove(ring); //アクティブリストから除外
                     },
                         element.Position, (timing + _appearTiming[i]) % chart.Length);
-
-                    _soundEffectSource?.PlayOneShot(_apearSound);
                 }
             }
         }
