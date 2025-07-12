@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1395610771496967193}
   - component: {fileID: 6659309216576162033}
   - component: {fileID: 6862399396053557512}
-  - component: {fileID: 3878882548923747817}
   m_Layer: 0
   m_Name: MusicEngine
   m_TagString: Untagged
@@ -65,27 +64,6 @@ MonoBehaviour:
   _locateType: 1
   _autoSet: 1
   _autoDestroy: 1
---- !u!114 &3878882548923747817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3308093386745655845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f529aa944b914449d62b8c40f188fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acfFile: BeatKeepr.acf
-  cueSheets:
-  - name: BGM
-    acbFile: BGM.acb
-    awbFile: 
-    loaderStatus: 0
-  dspBusSetting: 
-  dontDestroyOnLoad: 0
-  dontRemoveExistsCueSheet: 0
 --- !u!1 &3395612963114535372
 GameObject:
   m_ObjectHideFlags: 0
