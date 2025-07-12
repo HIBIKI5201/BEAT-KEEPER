@@ -121,7 +121,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(AttackData data)
         {
             //無敵時間なら受けない
-            if (_lastAvoidSuccessTiming + _data.AvoidInvincibilityTime * MusicEngineHelper.DurationOfBeat > Time.time)
+            if (_lastAvoidSuccessTiming 
+                + MusicEngineHelper.DurationOfBeat
+                 * (_data.AvoidInvincibilityTime + 0.5f) //敵の攻撃タイミングであるNearBeat分追加する
+                 > Time.time)
             {
                 Debug.Log("During Avoid Invincibility Time");
                 return;
