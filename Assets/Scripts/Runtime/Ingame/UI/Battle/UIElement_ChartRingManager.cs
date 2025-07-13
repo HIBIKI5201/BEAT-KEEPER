@@ -47,6 +47,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
             }
             _enemies = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())?.EnemyAdmin;
+            _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
             ObjectPoolInitialize();
         }
@@ -69,6 +70,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
+                _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
                 RegisterOnJustBeat();
             }
