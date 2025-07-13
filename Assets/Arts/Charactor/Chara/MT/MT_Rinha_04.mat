@@ -15,6 +15,7 @@ Material:
   - EFFECT_HUE_VARIATION
   - _EMISSION
   - _METALLICGLOSSMAP
+  - _REQUIRE_UV2
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -583,9 +584,9 @@ Material:
     - _RimIndirRange: 0
     - _RimMainStrength: 1
     - _RimNormalStrength: 1
-    - _RimShadeBlur: 1
-    - _RimShadeBorder: 0.5
-    - _RimShadeFresnelPower: 1
+    - _RimShadeBlur: 0.082
+    - _RimShadeBorder: 0.398
+    - _RimShadeFresnelPower: 0.9
     - _RimShadeNormalStrength: 1
     - _RimShadowMask: 0
     - _RimVRParallaxStrength: 1
@@ -597,9 +598,9 @@ Material:
     - _Shadow3rdBorder: 0.25
     - _Shadow3rdNormalStrength: 1
     - _Shadow3rdReceive: 0
-    - _ShadowBlur: 0.1
+    - _ShadowBlur: 0.3
     - _ShadowBlurMaskLOD: 0
-    - _ShadowBorder: 0.5
+    - _ShadowBorder: 0.618
     - _ShadowBorderMaskLOD: 0
     - _ShadowBorderRange: 0.08
     - _ShadowColorType: 0
@@ -678,7 +679,7 @@ Material:
     - _UseReflection: 0
     - _UseRim: 1
     - _UseRimShade: 0
-    - _UseShadow: 0
+    - _UseShadow: 1
     - _VertexLightStrength: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -758,13 +759,13 @@ Material:
     - _ReflectionCubeColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.5990566, g: 0.8056537, b: 1, a: 1}
     - _RimIndirColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimShadeColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _RimShadeColor: {r: 0.01886791, g: 0.017888915, b: 0.017888915, a: 1}
     - _Shadow2ndColor: {r: 0.4756141, g: 0.5709122, b: 0.6037736, a: 1}
     - _Shadow3rdColor: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowAOShift: {r: 1, g: 0, b: 1, a: 0}
     - _ShadowAOShift2: {r: 1, g: 0, b: 1, a: 0}
     - _ShadowBorderColor: {r: 1, g: 0.3066038, b: 0.3629536, a: 1}
-    - _ShadowColor: {r: 0.9031239, g: 0.92625266, b: 0.9339623, a: 1}
+    - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _e2ga0: {r: 1, g: 0, b: 0, a: 0}
     - _e2ga1: {r: 1, g: 0, b: 0, a: 1}
