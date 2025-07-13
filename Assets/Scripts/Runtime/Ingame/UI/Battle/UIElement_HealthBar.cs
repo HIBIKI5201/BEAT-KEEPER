@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
@@ -64,6 +64,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // フェーズが変更されたタイミングで次の敵のHPバーを表示する
                 phaseManager.CurrentPhaseProp
+                    .Where(phase => phase == PhaseEnum.Battle)
                     .Subscribe(OnPhaseChanged)
                     .AddTo(_disposable);
             }
@@ -96,10 +97,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (health <= 0)
             {
                 // HPがゼロ以下になったらHPバーを非表示にする
-                Hide(_barCanvasGroups[_currentPhase]);
- 
-                // 内部のフェーズ数のカウントを進める
-                _currentPhase++;
+                Hide(_barCanvasGroups[Mathf.Max(_currentPhase - 1, 0)]);
             }
         }
 
@@ -110,9 +108,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 対応する敵のヘルスバーを表示
             Show(_barCanvasGroups[_currentPhase]);
-            
-            // NOTE: HPがゼロ以下になったときにヘルスバーを非表示にする処理を行うときにIndexを使用したいので
-            // ここではフェーズの内部カウントは進めない
+            _currentPhase++;
         }
         
         /// <summary>
