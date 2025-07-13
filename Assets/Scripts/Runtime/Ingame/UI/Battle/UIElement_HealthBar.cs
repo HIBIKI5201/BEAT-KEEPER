@@ -97,7 +97,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (health <= 0)
             {
                 // HPがゼロ以下になったらHPバーを非表示にする
-                Hide(_barCanvasGroups[_currentPhase - 1]);
+                Hide(_barCanvasGroups[Mathf.Max(_currentPhase - 1, 0)]);
             }
         }
 
