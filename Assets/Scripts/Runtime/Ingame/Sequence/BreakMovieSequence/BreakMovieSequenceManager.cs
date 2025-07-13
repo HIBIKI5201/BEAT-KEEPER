@@ -1,5 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.Character;
+using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -16,6 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayableAsset[] playables;
 
         private PlayableDirector _playableDirector;
+        
+        private PhaseManager _phaseManager;
 
         private void Awake()
         {
@@ -26,7 +30,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
         }
 
-        private void Start()
+        private async void Start()
         {
             var finisher = transform.parent.GetComponentInChildren<FinisherSequenceManager>();
             if (finisher)
@@ -34,7 +38,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 finisher.OnFinisherSequenceEnd += OnFinisherSequenceEnd;
             }
 
-            StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            StageEnemyAdmin enemyAdmin = battleSceneManager.EnemyAdmin;
             if (enemyAdmin)
             {
                 enemyAdmin.OnNextEnemyActive += OnNextEnemyActive;
@@ -42,6 +47,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 EnemyManager firstEnemy = enemyAdmin.GetActiveEnemy();
                 firstEnemy.HealthSystem.OnDeath += OnEnemyDeath;
             }
+            
+            _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
         }
 
         private void OnNextEnemyActive(EnemyManager enemy)
@@ -69,6 +76,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (!_playableDirector) return;
 
+            if (_phaseManager)
+            {
+                _phaseManager.TransitionTo(PhaseEnum.Movie);
+            }
+            
             StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
             int index = enemyAdmin.ActiveEnemyIndex;
 
