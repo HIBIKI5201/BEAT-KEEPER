@@ -667,7 +667,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &102024131
@@ -3460,7 +3460,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.49646738, g: -0.86724776, b: -0.03743905, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &219326721
@@ -3733,6 +3733,14 @@ PrefabInstance:
       propertyPath: serializeData2.selectionData.positions.Array.data[52].y
       value: -0.07731032
       objectReference: {fileID: 0}
+    - target: {fileID: 5515065996318283575, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.45608997
+      objectReference: {fileID: 0}
+    - target: {fileID: 5515065996318283575, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6271943180603376666, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.658428
@@ -3771,6 +3779,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6271943180603376666, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8032510999414169934, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45609426
+      objectReference: {fileID: 0}
+    - target: {fileID: 8032510999414169934, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8472192571253439788, guid: 340a53f5b70487d41a0023ad770299fb, type: 3}
@@ -11781,7 +11797,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.16694878, g: -0.9852546, b: -0.037438996, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &686566395
@@ -13776,7 +13792,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.51641715, g: -0.85551834, b: -0.037439868, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1058726774
@@ -14678,7 +14694,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1124427600
@@ -15508,7 +15524,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 30.602686, g: 20.40167, b: 0, a: 198.38892}
+    - _WindDirection: {r: 0.2675246, g: 0.1783497, b: 0, a: 55.005028}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1134042164
@@ -16487,7 +16503,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 30.602686, g: 20.40167, b: 0, a: 198.38892}
+    - _WindDirection: {r: 0.2675246, g: 0.1783497, b: 0, a: 55.005028}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1188343279
@@ -16758,7 +16774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9b0a6b5828dcaa4449c84033dd0fc5d0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.68
+      value: 16.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9b0a6b5828dcaa4449c84033dd0fc5d0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16766,7 +16782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9b0a6b5828dcaa4449c84033dd0fc5d0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.02
+      value: 4.86
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9b0a6b5828dcaa4449c84033dd0fc5d0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22685,91 +22701,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b6af8b65c8d04e047a303b3d5e1e8b79, type: 3}
   m_PrefabInstance: {fileID: 1517856727}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1523239197
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 60.000004
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 60.000004
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 60.000004
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.74
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.069999695
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 7.14
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.06431647
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.9979296
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -172.625
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -1358930827005489737, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7138a1493f5c2e140ad2e6d7a2d3188f, type: 2}
-    - target: {fileID: 919132149155446097, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_Name
-      value: McMD_enemy_phase2
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5425792610070974488, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7138a1493f5c2e140ad2e6d7a2d3188f, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 01e986472fa2dc74baf3b62c23f9398b, type: 3}
 --- !u!1001 &1541294812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24019,7 +23950,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 30.602686, g: 20.40167, b: 0, a: 198.38892}
+    - _WindDirection: {r: 0.2675246, g: 0.1783497, b: 0, a: 55.005028}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1668917216
@@ -29585,7 +29516,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.28231385, g: -0.9585914, b: -0.03743856, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1898442219
@@ -31171,7 +31102,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.3618094, g: -0.9315001, b: -0.03743805, a: 0}
-    - _WindDirection: {r: 9.313073, g: 6.208666, b: 0, a: 51.914856}
+    - _WindDirection: {r: 3.086612, g: 2.0577433, b: 0, a: 144.61996}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1959768050
@@ -31324,7 +31255,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 30.602686, g: 20.40167, b: 0, a: 198.38892}
+    - _WindDirection: {r: 0.2675246, g: 0.1783497, b: 0, a: 55.005028}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1964458266
@@ -33451,5 +33382,4 @@ SceneRoots:
   - {fileID: 1459541096}
   - {fileID: 726246433}
   - {fileID: 1203856994}
-  - {fileID: 1523239197}
   - {fileID: 226478486}
