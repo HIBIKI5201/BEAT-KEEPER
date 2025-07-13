@@ -20,6 +20,23 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             TransitionTo((PhaseEnum)((int)(_currentPhaseProp.Value + 1) % Enum.GetValues(typeof(PhaseEnum)).Length));
         }
+        
+        /// <summary>
+        ///     フェーズを変更する
+        /// </summary>
+        public void TransitionTo(PhaseEnum nextPhase)
+        {
+            // 同じフェーズへの遷移をチェック
+            if (CurrentPhase == nextPhase)
+            {
+                Debug.Log($"[PhaseManager] 同じフェーズです: {nextPhase}");
+                return;
+            }
+
+            // フェーズの更新
+            _currentPhaseProp.Value = nextPhase;
+            Debug.Log($"[PhaseManager] フェーズが変更されました 現在：{CurrentPhase}");
+        }
 
         [SerializeField] private PhaseEnum _firstPhase = PhaseEnum.Movie;
         private readonly ReactiveProperty<PhaseEnum> _currentPhaseProp = new();
@@ -27,19 +44,6 @@ namespace BeatKeeper.Runtime.Ingame.System
         private void Awake()
         {
             TransitionTo(_firstPhase); // 指定したフェーズから始める
-        }
-
-        /// <summary>
-        ///     フェーズを変更する※InGameSystemから変更すること
-        /// </summary>
-        private void TransitionTo(PhaseEnum nextPhase)
-        {
-            // 同じフェーズへの遷移をチェック
-            if (CurrentPhase == nextPhase) Debug.Log($"[PhaseManager] 同じフェーズです: {nextPhase}");
-
-            // フェーズの更新
-            _currentPhaseProp.Value = nextPhase;
-            Debug.Log($"[PhaseManager] フェーズが変更されました 現在：{CurrentPhase}");
         }
     }
 }
