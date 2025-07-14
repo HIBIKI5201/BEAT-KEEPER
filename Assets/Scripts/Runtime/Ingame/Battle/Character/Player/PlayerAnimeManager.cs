@@ -21,6 +21,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Shoot() => _animator?.SetTrigger(_shoot);
         public void Combo(int count) => _animator?.SetInteger(_combo, count);
+        public void ChargeShoot() => _animator?.SetTrigger(_chargeShoot);
 
         public void Skill() => _animator?.SetTrigger(_skill);
 
@@ -32,6 +33,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private readonly int _shoot = Animator.StringToHash("Shoot");
         private readonly int _combo = Animator.StringToHash("Combo");
+        private readonly int _chargeShoot = Animator.StringToHash("ChargeShoot");
 
         private readonly int _skill = Animator.StringToHash("Skill");
     }
