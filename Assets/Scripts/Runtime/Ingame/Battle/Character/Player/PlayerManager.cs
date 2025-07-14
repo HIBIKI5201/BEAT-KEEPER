@@ -599,6 +599,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
+            _animeManager.ChargeShoot();
 
             //チャージが完了するまで待機
             await Awaitable.WaitForSecondsAsync(
