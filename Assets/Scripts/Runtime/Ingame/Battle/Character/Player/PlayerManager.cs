@@ -601,10 +601,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
             _animeManager.ChargeShoot();
 
-            //チャージが完了するまで待機
-            await Awaitable.WaitForSecondsAsync(
-                _data.ChargeAttackTime * (float)MusicEngineHelper.DurationOfBeat,
-                _chargeAttackChargingTokenSource.Token);
+            try
+            {
+                //チャージが完了するまで待機
+                await Awaitable.WaitForSecondsAsync(
+                    _data.ChargeAttackTime * (float)MusicEngineHelper.DurationOfBeat,
+                    _chargeAttackChargingTokenSource.Token);
+            }
+            catch (OperationCanceledException ex) { return; }
+            finally
+            {
+                _chargeAttackChargingTokenSource = null; //チャージ中のトークンを解放
+            }
 
             SoundEffectManager.PlaySoundEffect(_chargeAttackEndSound);
         }
