@@ -310,7 +310,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             var chart = _target.EnemyData.ChartData.Chart;
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-
             var kind = chart[timing].AttackKind;
 
             if (kind == ChartKindEnum.Attack)
@@ -338,6 +337,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnChargeAttackInput(InputAction.CallbackContext context)
         {
             if (!_isBattle) return;
+
+            var chart = _target.EnemyData.ChartData.Chart;
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart();
+
+            bool willChargeAttack = false;
+            int chargeAttackRange = Mathf.CeilToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
+            for (int i = 0; i <  chargeAttackRange; i++)
+            {
+                if (ChartKindEnum.Charge == chart[(timing + i) % chart.Length].AttackKind)
+                {
+                    willChargeAttack = true; //チャージ攻撃が可能ならフラグを立てる
+                    break;
+                }
+            }
+
+            if (!willChargeAttack) return; //直近がチャージ攻撃でなければ何もしない
 
             switch (context.phase)
             {
