@@ -17,6 +17,8 @@ namespace BeatKeeper
         [SerializeField] private Image[] _numberImages = new Image[3];
         [SerializeField] private SpriteAtlas _numberSpriteAtlas; // 数字のSpriteAtlas
         
+        [SerializeField] private int _showThreshold = 5; // コンボを表示するしきい値
+        
         private PlayerManager _playerManager; // ComboSystem取得用
         private CanvasGroup _canvasGroup;
         private CompositeDisposable _disposables = new CompositeDisposable();
@@ -63,9 +65,9 @@ namespace BeatKeeper
                 // コンボがゼロになったら非表示にする
                 Hide();
             }
-            else if (_canvasGroup.alpha == 0)
+            else if (_canvasGroup.alpha == 0 && comboCount >= _showThreshold)
             {
-                // コンボがゼロ以外で、かつ非表示状態だったら表示処理を行う
+                // コンボがしきい値以上で、かつ非表示状態だったら表示処理を行う
                 Show();
             }
         }
