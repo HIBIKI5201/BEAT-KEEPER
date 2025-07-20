@@ -654,10 +654,10 @@ MonoBehaviour:
   _defaultScale: {x: 1, y: 1, z: 1}
   _showDuration: 0.2
   _hideDuration: 0.15
-  _pulseIntensity: 1.1
+  _pulseIntensity: 4
   _decreaseAnimationDuration: 0.15
   _normalColor: {r: 1, g: 1, b: 1, a: 1}
-  _flashColor: {r: 1, g: 0.27058825, b: 0.27058825, a: 1}
+  _flashColor: {r: 0.5566038, g: 0, b: 0, a: 1}
 --- !u!1 &971120179346222940
 GameObject:
   m_ObjectHideFlags: 0
