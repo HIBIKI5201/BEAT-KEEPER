@@ -33,6 +33,8 @@ namespace BeatKeeper
         private static readonly int[] _digitDivisors = { 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 }; // 桁数分解計算の最適化用。事前計算済み配列
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
         
+        public Sprite[] NumberSprites => _numberSprites;
+        
         /// <summary>
         /// コンストラクタ
         /// </summary>
