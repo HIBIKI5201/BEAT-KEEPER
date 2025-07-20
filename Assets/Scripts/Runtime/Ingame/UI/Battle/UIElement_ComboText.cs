@@ -4,6 +4,7 @@ using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using System;
 
 namespace BeatKeeper
 {
@@ -13,10 +14,11 @@ namespace BeatKeeper
     [RequireComponent(typeof(CanvasGroup))]
     public class UIElement_ComboText : MonoBehaviour
     {
-        [Header("初期設定")]
-        [SerializeField] private Image[] _numberImages = new Image[3];
+        [Header("初期設定")] 
+        [SerializeField] private Image _scoreImage; // Scoreの文字のImageコンポーネント
+        [SerializeField] private Image[] _numberImages = new Image[3]; // 数字表記用のImageコンポーネント
         [SerializeField] private SpriteAtlas _numberSpriteAtlas; // 数字のSpriteAtlas
-        
+        [SerializeField] private ViewData[] _differenceViewData; // 差分設定データ
         [SerializeField] private int _showThreshold = 5; // コンボを表示するしきい値
         
         private PlayerManager _playerManager; // ComboSystem取得用
@@ -57,6 +59,9 @@ namespace BeatKeeper
         /// </summary>
         private void UpdateText(int comboCount)
         {
+            // 画像の更新処理
+            ChangeDifferenceImage(comboCount);
+            
             // 数字の更新処理
             UpdateNumberDisplay(comboCount);
             
@@ -70,6 +75,30 @@ namespace BeatKeeper
                 // コンボがしきい値以上で、かつ非表示状態だったら表示処理を行う
                 Show();
             }
+        }
+
+        /// <summary>
+        /// コンボ上昇による表記差分を適用する
+        /// </summary>
+        private void ChangeDifferenceImage(int comboCount)
+        {
+            if (_scoreImage == null || _differenceViewData == null || _differenceViewData.Length == 0)
+            {
+                return;
+            }
+            
+            // 最も適切な差分データを降順で検索（高いしきい値から確認）
+            for (int i = _differenceViewData.Length - 1; i >= 0; i--)
+            {
+                if (comboCount >= _differenceViewData[i].Threshold)
+                {
+                    _scoreImage.sprite = _differenceViewData[i].DifferenceImage;
+                    return;
+                }
+            }
+            
+            // どのしきい値にも満たない場合はnullを設定（デフォルト状態）
+            _scoreImage.sprite = null;
         }
 
         /// <summary>
@@ -130,5 +159,19 @@ namespace BeatKeeper
         {
             _disposables.Dispose();
         }
+    }
+
+    [Serializable]
+    public class ViewData
+    {
+        /// <summary>
+        /// しきい値
+        /// </summary>
+        public int Threshold;
+        
+        /// <summary>
+        /// 差分画像
+        /// </summary>
+        public Sprite DifferenceImage;
     }
 }
