@@ -112,12 +112,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess()
         {
-            if (_timing < MusicEngineHelper.GetBeatNearerSinceStart())
+            if (MusicEngineHelper.GetBeatNearerSinceStart() < _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
-            }
-            
+            }     
+
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0].Kill();
            
