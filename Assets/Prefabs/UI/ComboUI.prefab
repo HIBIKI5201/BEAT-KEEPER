@@ -184,11 +184,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ba7f266a38a354b89d2b432c9b11bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreImage: {fileID: 6388080087466819401}
   _numberImages:
   - {fileID: 2938494453303259653}
   - {fileID: 24834492061962826}
   - {fileID: 2066208859559959655}
   _numberSpriteAtlas: {fileID: 4343727234628468602, guid: ddae3b51e93722c4b992cc88f0cb4051, type: 2}
+  _differenceViewData:
+  - Threshold: 0
+    DifferenceImage: {fileID: 21300000, guid: b99749740fc433045940febbedc030d8, type: 3}
+  - Threshold: 50
+    DifferenceImage: {fileID: 21300000, guid: b99749740fc433045940febbedc030d8, type: 3}
+  - Threshold: 100
+    DifferenceImage: {fileID: 21300000, guid: b99749740fc433045940febbedc030d8, type: 3}
+  _showThreshold: 5
 --- !u!1 &3314165204801293368
 GameObject:
   m_ObjectHideFlags: 0
