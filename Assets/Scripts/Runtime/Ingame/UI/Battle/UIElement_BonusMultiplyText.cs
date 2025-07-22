@@ -15,10 +15,9 @@ namespace BeatKeeper
         [SerializeField] private SpriteAtlas _numberSpriteAtlas; // 数字のスプライトアトラスの参照
         [SerializeField] private Image _ones; // 1の位
         [SerializeField] private Image _decimalPlace; // 小数点の位
+        [SerializeField] private string _spritePrefix = "number_"; // スプライト名のプレフィックス
         private CanvasGroup _canvasGroup;
         private CompositeDisposable _disposable = new CompositeDisposable();
-        
-        private const string SPRITE_PREFIX = "number_"; // スプライト名のプレフィックス
         
         private void Start()
         {
@@ -45,7 +44,7 @@ namespace BeatKeeper
             
             // 各桁を計算
             int intPart = (int)value; // 1の位は小数点切り捨て
-            int floatPart = (int)((value - intPart) * 10); // 小数点部分。小数第一位まで対応
+            int floatPart = (int)(value * 10) % 10; // 小数点部分。小数第一位まで対応
             
             // 画像変更処理
             SetSprite(_ones, GetNumberSprite(intPart));
@@ -69,7 +68,7 @@ namespace BeatKeeper
             }
             
             // プレフィックスと受け取った値を連結してスプライト名を作成
-            string spriteName = SPRITE_PREFIX + number.ToString();
+            string spriteName = _spritePrefix + number.ToString();
             return _numberSpriteAtlas.GetSprite(spriteName);
         }
         
