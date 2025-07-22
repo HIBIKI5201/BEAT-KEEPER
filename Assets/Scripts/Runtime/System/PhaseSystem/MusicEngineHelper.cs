@@ -26,41 +26,17 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
-        ///     音楽がループしても、拍数は加算され続けます。
         /// </summary>
+        //TODO 音楽がループした際に合計拍数がリセットされないようにする
         public static int GetBeatSinceStart()
         {
-            var meter = Music.CurrentMeter;
-            // Music.CurrentMeterがnullの場合、音楽が停止しているとみなしリセット
-            if (meter == null)
+            // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
+            if (Music.CurrentMeter == null)
             {
-                Initialize();
+                Debug.LogWarning("Music.CurrentMeter is null. Cannot get beat since start.");
                 return 0;
             }
-
-            // 曲が変更されたかチェック（MusicMeterインスタンスが変わったら変更とみなす）
-            if (meter != _currentMusicMeter)
-            {
-                _beatOffset = 0;
-                _lastBeatInBlock = 0;
-                _currentMusicMeter = meter;
-            }
-
-            // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
-            var currentBeatInBlock = Music.Just.GetTotalUnits(meter) / meter.UnitPerBeat;
-
-            // ループを検出（現在のブロック内拍数が前のフレームより小さい）
-            if (currentBeatInBlock < _lastBeatInBlock)
-            {
-                // ループ前のブロックの最大拍数をオフセットに加算
-                // _lastBeatInBlockにはループ直前の拍数が入っている
-                // 拍数は0から始まるので、+1することでそのブロックの総拍数になる
-                _beatOffset += _lastBeatInBlock + 1;
-            }
-
-            _lastBeatInBlock = currentBeatInBlock;
-
-            return currentBeatInBlock + _beatOffset;
+            return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
         }
 
         /// <summary>
@@ -68,11 +44,6 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatNearerSinceStart()
         {
-            if(Music.CurrentMeter == null)
-            {
-                return 0;
-            }
-
             // 新しいメソッドを使用して最も近い拍のタイミングを取得
             Timing closestBeatTiming = GetClosestBeatTiming();
 
@@ -181,18 +152,6 @@ namespace BeatKeeper.Runtime.Ingame.System
         public static Timing GetClosestBeatTimingFromMilliSeconds(double msec, MusicMeter meter)
         {
             return GetClosestBeatTimingFromSeconds(msec / 1000.0, meter);
-        }
-
-        private static int _beatOffset;
-        private static int _lastBeatInBlock;
-        private static MusicMeter _currentMusicMeter; // 曲が変更されたことを検知するために、現在のMusicMeterを保持
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Initialize()
-        {
-            _beatOffset = 0;
-            _lastBeatInBlock = 0;
-            _currentMusicMeter = null;
         }
     }
 }
