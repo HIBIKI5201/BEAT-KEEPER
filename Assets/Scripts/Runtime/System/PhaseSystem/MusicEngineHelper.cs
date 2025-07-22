@@ -35,7 +35,6 @@ namespace BeatKeeper.Runtime.Ingame.System
             if (meter == null)
             {
                 Initialize();
-                Debug.LogWarning("Music.CurrentMeter is null. Cannot get beat since start.");
                 return 0;
             }
 
@@ -69,6 +68,11 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatNearerSinceStart()
         {
+            if(Music.CurrentMeter == null)
+            {
+                return 0;
+            }
+
             // 新しいメソッドを使用して最も近い拍のタイミングを取得
             Timing closestBeatTiming = GetClosestBeatTiming();
 
