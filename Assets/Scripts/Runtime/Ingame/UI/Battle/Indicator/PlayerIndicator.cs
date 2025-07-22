@@ -29,25 +29,27 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 2拍目　念のため判定が始まる2拍目のタイミングでアクション登録を行う
                 case 2:
-                    _player.OnShootComboAttack += OnPlayerAttackSuccess;
+                    _player.OnPerfectAttack += HandlePerfectAttack;
+                    _player.OnGoodAttack += HandleGoodAttack;
                     break;
             }
         }
-        
+
         public override void End()
         {
-            _player.OnShootComboAttack -= OnPlayerAttackSuccess;
-            
+            _player.OnPerfectAttack -= HandlePerfectAttack;
+            _player.OnGoodAttack -= HandleGoodAttack;
+
             // 全てのTweenを停止
             foreach (var tween in _tweens)
             {
                 tween?.Kill();
             }
-            
+
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-            
+
             base.End();
         }
 
@@ -110,25 +112,31 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 当たりエフェクト（プレイヤーが攻撃に成功したときに再生）
         /// </summary>
-        private void OnPlayerAttackSuccess()
+        private void OnPlayerAttackSuccess(bool isPerfect)
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() < _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() % 64 != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
-            }     
+            }
 
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0].Kill();
+            
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImage.rectTransform.localScale = Vector3.one;
+            }
            
             var successSequence = DOTween.Sequence();
 
-            // パンチスケール
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
-            
-            // 色変更とフェードアウト
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
             successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
-            successSequence.Join(CreateFadeSequence(_fadeDuration));
+            
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
 
             // エフェクトが完了したらEnd処理を実行
             successSequence.OnComplete(End);
@@ -201,5 +209,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
+        
+        private void HandlePerfectAttack() => OnPlayerAttackSuccess(true);
+        private void HandleGoodAttack() => OnPlayerAttackSuccess(false);
     }
 }
