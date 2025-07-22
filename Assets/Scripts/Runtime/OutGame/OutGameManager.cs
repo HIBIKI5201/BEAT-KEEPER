@@ -5,14 +5,18 @@ using UnityEngine;
 
 namespace BeatKeeper
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class OutGameManager : MonoBehaviour
     {
         private const string OutGameSceneName = "OutGame";
         private const string InGameSceneName = "InGame";
         private const string StageSceneName = "Stage";
-        public async void Awake()
+
+        private async void Awake()
         {
-            await LoadSceneAsync(StageSceneName);
+            await SceneLoader.LoadScene(StageSceneName);
             //await LoadInGameSceneAsync();
         }
 
@@ -20,22 +24,16 @@ namespace BeatKeeper
         /// インゲームシーンを読み込むメソッド
         /// </summary>
         /// <returns></returns>
-        async Task LoadInGameSceneAsync()
+        private async Task LoadInGameSceneAsync()
         {
             await SceneLoader.UnloadScene(OutGameSceneName);
             await SceneLoader.LoadScene(InGameSceneName);
             SceneLoader.SetActiveScene(InGameSceneName);
         }
-
-        /// <summary>
-        /// 文字列で指定したシーンを非同期で読み込むメソッド
-        /// </summary>
-        /// <param name="sceneName"></param>
-        /// <returns></returns>
-        async Task LoadSceneAsync(string sceneName)
+        
+        public async void LoadInGameScene()
         {
-            // シーンの非同期読み込み
-            await SceneLoader.LoadScene(sceneName);
+            await LoadInGameSceneAsync();
         }
     }
 }
