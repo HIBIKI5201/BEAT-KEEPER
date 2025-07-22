@@ -69,27 +69,6 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// コンボ倍率を設定する
-        /// </summary>
-        private void EvaluateComboBonus(int comboCount)
-        {
-            if (_playerManager == null || _comboBonusData == null)
-            {
-                return;
-            }
-
-            // コンボボーナスを設定しているScriptableObjectから現在のコンボに対応するコンボボーナスを取得
-            float bonusMultiply = _comboBonusData.GetBonusMultiplier(comboCount);
-            
-            // float型の比較になるため絶対値で管理する
-            if (Math.Abs(bonusMultiply - _bonusMultiply.Value) > 0.01f)
-            {
-                // 値が変動していた場合、スコア倍率のリアクティブプロパティを更新
-                _bonusMultiply.Value = bonusMultiply;
-            }
-        }
-
-        /// <summary>
         /// バトル開始時にスコアを保存する
         /// </summary>
         public void SavePreBattleScore()
@@ -114,6 +93,27 @@ namespace BeatKeeper
         {
             _scoreProp.Value = 0;
             Debug.Log($"[ScoreManager] スコアをリセットしました 現在: {Score}");
+        }
+        
+        /// <summary>
+        /// コンボ倍率を設定する
+        /// </summary>
+        private void EvaluateComboBonus(int comboCount)
+        {
+            if (_playerManager == null || _comboBonusData == null)
+            {
+                return;
+            }
+
+            // コンボボーナスを設定しているScriptableObjectから現在のコンボに対応するコンボボーナスを取得
+            float bonusMultiply = _comboBonusData.GetBonusMultiplier(comboCount);
+            
+            // float型の比較になるため「0に近くない時」で比較
+            if (Mathf.Approximately(bonusMultiply, _bonusMultiply.Value))
+            {
+                // 値が変動していた場合、スコア倍率のリアクティブプロパティを更新
+                _bonusMultiply.Value = bonusMultiply;
+            }
         }
     }
 }
