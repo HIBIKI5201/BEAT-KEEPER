@@ -47,8 +47,8 @@ namespace BeatKeeper.Runtime.Develop
 
             if (Music.Current != null)
             {
-                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-                text += $"Current Beat: {currentBeat}";
+                (int just, int near) beat = (MusicEngineHelper.GetBeatSinceStart(), MusicEngineHelper.GetBeatNearerSinceStart());
+                text += $"Beat: just {beat.just}, near {beat.near}";
                 text += $"\nBar:{Music.Just.Bar}, Just:{Music.Just.Beat}";
             }
 
