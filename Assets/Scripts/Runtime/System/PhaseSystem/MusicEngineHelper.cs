@@ -1,5 +1,6 @@
 ﻿using SymphonyFrameWork.Debugger;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -12,31 +13,30 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <summary>1拍の秒数</summary>
         public static double DurationOfBeat => 60 / Music.CurrentTempo;
 
-        /// <summary>現在の小節数を取得する</summary>
+        /// <summary>現在の小節数を取得する</n>
         public static int GetCurrentBarCount() => Music.Just.Bar;
 
-        /// <summary>現在の拍数を取得する</summary>
+        /// <summary>現在の拍数を取得する</n>
         public static int GetCurrentBeatCount() => Music.Just.Beat;
 
-        /// <summary>現在の16分音符位置を取得する</summary>
+        /// <summary>現在の16分音符位置を取得する</n>
         public static int GetCurrentUnitCount() => Music.Just.Unit;
 
-        /// <summary>現在の音楽タイミングを取得する</summary>
+        /// <summary>現在の音楽タイミングを取得する</n>
         public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
 
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
         /// </summary>
-        //TODO 音楽がループした際に合計拍数がリセットされないようにする
         public static int GetBeatSinceStart()
         {
             // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
             if (Music.CurrentMeter == null)
             {
-                Debug.LogWarning("Music.CurrentMeter is null. Cannot get beat since start.");
                 return 0;
             }
-            return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
+            return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
+                + _beatOffset;
         }
 
         /// <summary>
@@ -49,7 +49,8 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             // Timingオブジェクトを開始時点からの総拍数に変換
             // Music.CurrentMeterがnullでないことはGetClosestBeatTiming()でチェック済み
-            return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
+            return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
+                + _beatOffset;
         }
 
         /// <summary>
@@ -152,6 +153,39 @@ namespace BeatKeeper.Runtime.Ingame.System
         public static Timing GetClosestBeatTimingFromMilliSeconds(double msec, MusicMeter meter)
         {
             return GetClosestBeatTimingFromSeconds(msec / 1000.0, meter);
+        }
+
+        //ここより下にprivateの変数と関数を定義する
+        private static int _beatOffset = 0;
+        private static int _last;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initialize()
+        {
+            _beatOffset = 0;
+            _last = 0;
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static async void Update()
+        {
+            while (Application.isPlaying)
+            {
+                //ここからブロックのループとオフセットの設定の処理
+                if (Music.CurrentMeter != null)
+                {
+                    var currentBeat = Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat;
+                    if (currentBeat < _last)
+                    {
+                        // ループを検出した場合、前の拍数にオフセットを加算する
+                        // ループの長さは、ループ直前の拍数 + 1
+                        _beatOffset += _last + 1;
+                    }
+                    _last = currentBeat;
+                }
+
+                await Awaitable.NextFrameAsync();
+            }
         }
     }
 }
