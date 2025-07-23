@@ -52,12 +52,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間
         private const float RECEPTION_TIME = 0.45f;
-		// 譜面の長さ
-        private const int CHART_LENGTE = 64;
 
         [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
+
+		// 譜面の長さ
+        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
         /// <summary>
         /// コンポーネントの初期化
@@ -110,7 +111,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void PlaySkillEffect()
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % CHART_LENGTE != _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
