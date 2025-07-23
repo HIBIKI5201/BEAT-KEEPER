@@ -19,6 +19,7 @@ namespace BeatKeeper
         [SerializeField] private OutGameUIManager _outGameUIManager;
         private PlayerInput _playerInput;
         private InputAction _anyKey;
+        private SoundEffectManager _soundEffectManager;
 
 
         private async void Awake()
@@ -28,6 +29,7 @@ namespace BeatKeeper
 
         private void Start()
         {
+            _soundEffectManager = ServiceLocator.GetInstance<SoundEffectManager>();
             _playerInput = FindAnyObjectByType<PlayerInput>();
             _anyKey = _playerInput.actions["AnyKey"];
             _anyKey.started += OnAnyKeyInput;
