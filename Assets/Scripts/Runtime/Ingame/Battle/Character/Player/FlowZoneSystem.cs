@@ -1,8 +1,6 @@
 ﻿using System;
 using BeatKeeper.Runtime.Ingame.System;
-using Cysharp.Threading.Tasks;
 using R3;
-using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -24,8 +22,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             _data = data; // フローゾーンの継続時間を拍数で指定
-
-            SetupPhaseManagerAsync().Forget();
         }
 
         ~FlowZoneSystem()
@@ -72,6 +68,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 EndFlowZone();
             }
         }
+        
+        /// <summary>
+        ///     ゾーンカウントをリセットする
+        /// </summary>
+        public void ResetResonanceCount()
+        {
+            _resonanceCount.Value = 0;
+        }
 
         private readonly PlayerData _data;
         private readonly BGMManager _musicEngineHelper;
@@ -86,30 +90,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private readonly ReactiveProperty<bool> _isFlowZone = new();
 
-        private PhaseManager _phaseManager;
-        private CompositeDisposable _disposable = new();
         private int _count;
-
-        private async UniTask SetupPhaseManagerAsync()
-        {
-            _phaseManager = await ServiceLocator.GetInstanceAsync<PhaseManager>();
-
-            if (_phaseManager == null)
-            {
-                Debug.LogError($"[{typeof(FlowZoneSystem)}] PhaseManager が取得できませんでした");
-                return;
-            }
-            _phaseManager.CurrentPhaseProp.Subscribe(ResetResonanceCount).AddTo(_disposable);
-            
-        }
-
-        /// <summary>
-        ///     ゾーンカウントをリセットする
-        /// </summary>
-        private void ResetResonanceCount(PhaseEnum phase)
-        {
-            _resonanceCount.Value = 0;
-        }
         
         /// <summary>
         ///     拍数が変更されるタイミングで呼び出されるメソッド
