@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace BeatKeeper
@@ -10,6 +12,7 @@ namespace BeatKeeper
         [SerializeField, Tooltip("どのようにPressAnyButtonがフェードするかを設定")] private AnimationCurve _fadeCurve;
         [SerializeField, Tooltip("PressAnyButtonのフェードが一周する時間を設定")] private float _fadeDuration = 1f;
         [SerializeField, Tooltip("ボタンを押した際にPressAnyButtonがどのような色になるのか")] private Color _onStartColor;
+        [SerializeField, Tooltip("ゲーム開始時にフェードアウトにかかる時間")] private float _fadeOutDuration = 1f;
         private bool _isGameStarted = false;
 
         private void FixedUpdate()
@@ -30,7 +33,7 @@ namespace BeatKeeper
         /// <summary>
         /// スタートした際に呼び出されるメソッド。
         /// </summary>
-        public void GameStart()
+        public async Task GameStart()
         {
             _isGameStarted = true;
             if (_pressAnyButtonImage != null)
@@ -39,6 +42,7 @@ namespace BeatKeeper
                 color = _onStartColor;
                 _pressAnyButtonImage.color = color;
             }
+            await _curtainImage.DOFade(1f, _fadeOutDuration).AsyncWaitForCompletion();
         }
     }
 }

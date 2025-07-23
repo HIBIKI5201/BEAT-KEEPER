@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc95b48e3ab69d4e9b1d3688d031623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outGameUIManager: {fileID: 0}
+  _outGameUIManager: {fileID: 1982149415}
 --- !u!4 &789693826
 Transform:
   m_ObjectHideFlags: 0
@@ -732,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb30fc58c038fdf41a21fdec1cbc950c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curtainImage: {fileID: 0}
+  _curtainImage: {fileID: 826497252}
   _pressAnyButtonImage: {fileID: 2065141580}
   _fadeCurve:
     serializedVersion: 2
@@ -769,6 +769,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _fadeDuration: 1
   _onStartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+  _fadeOutDuration: 1
 --- !u!1 &2065141578
 GameObject:
   m_ObjectHideFlags: 0

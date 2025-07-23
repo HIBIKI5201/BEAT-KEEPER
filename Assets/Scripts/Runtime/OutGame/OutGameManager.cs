@@ -44,7 +44,7 @@ namespace BeatKeeper
         /// <param name="callbackContext"></param>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
-            _outGameUIManager.GameStart();
+            _ = LoadInGameSceneAsync();
         }
 
         /// <summary>
@@ -53,6 +53,7 @@ namespace BeatKeeper
         /// <returns></returns>
         private async Task LoadInGameSceneAsync()
         {
+            await _outGameUIManager.GameStart();
             await SceneLoader.UnloadScene(OutGameSceneName);
             await SceneLoader.LoadScene(InGameSceneName);
             SceneLoader.SetActiveScene(InGameSceneName);
