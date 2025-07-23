@@ -5,6 +5,7 @@ namespace BeatKeeper
 {
     public class OutGameUIManager : MonoBehaviour
     {
+        [SerializeField] private Image _curtainImage;
         [SerializeField] private Image _pressAnyButtonImage;
         [SerializeField, Tooltip("どのようにPressAnyButtonがフェードするかを設定")] private AnimationCurve _fadeCurve;
         [SerializeField, Tooltip("PressAnyButtonのフェードが一周する時間を設定")] private float _fadeDuration = 1f;

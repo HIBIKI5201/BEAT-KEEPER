@@ -16,6 +16,7 @@ namespace BeatKeeper
         private const string OutGameSceneName = "OutGame";
         private const string InGameSceneName = "InGame";
         private const string StageSceneName = "Stage";
+        [SerializeField] private OutGameUIManager _outGameUIManager;
         private PlayerInput _playerInput;
         private InputAction _anyKey;
 
@@ -43,7 +44,7 @@ namespace BeatKeeper
         /// <param name="callbackContext"></param>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
-
+            _outGameUIManager.GameStart();
         }
 
         /// <summary>
