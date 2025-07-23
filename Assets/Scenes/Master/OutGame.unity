@@ -690,6 +690,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _fadeDuration: 1
+  _onStartColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
 --- !u!1 &2065141578
 GameObject:
   m_ObjectHideFlags: 0
