@@ -178,8 +178,8 @@ namespace BeatKeeper.Runtime.Ingame.System
                     if (currentBeat < _last)
                     {
                         // ループを検出した場合、前の拍数にオフセットを加算する
-                        // ループの長さは、ループ直前の拍数 + 1
-                        _beatOffset += _last + 1;
+                        // ループの長さは、ループ直前の拍数 - ループ後の拍数 + 1
+                        _beatOffset += _last - currentBeat + 1;
                     }
                     _last = currentBeat;
                 }
