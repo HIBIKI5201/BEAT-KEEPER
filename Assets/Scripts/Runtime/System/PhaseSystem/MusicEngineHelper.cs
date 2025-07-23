@@ -30,11 +30,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatSinceStart()
         {
+            if (Music.CurrentMeter == null)return 0;
+            
             // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
-            if (Music.CurrentMeter == null)
-            {
-                return 0;
-            }
             return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
                 + _beatOffset;
         }
@@ -44,11 +42,12 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatNearerSinceStart()
         {
+            if (Music.CurrentMeter == null) return 0;
+
             // 新しいメソッドを使用して最も近い拍のタイミングを取得
             Timing closestBeatTiming = GetClosestBeatTiming();
 
             // Timingオブジェクトを開始時点からの総拍数に変換
-            // Music.CurrentMeterがnullでないことはGetClosestBeatTiming()でチェック済み
             return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
                 + _beatOffset;
         }
@@ -87,7 +86,6 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             if (Music.CurrentMeter == null)
             {
-                Debug.LogWarning("Music.CurrentMeter is null. Cannot get closest beat timing.");
                 return new Timing();
             }
 
