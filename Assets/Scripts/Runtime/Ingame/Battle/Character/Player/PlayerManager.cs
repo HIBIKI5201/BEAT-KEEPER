@@ -458,7 +458,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isThisBeatInputed) //拍内での連打防止フラグをリセット
             {
                 _isThisBeatInputed = false;
-                Debug.LogWarning("Reset isThisBeatInputed flag");
             }
         }
 
