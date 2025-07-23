@@ -109,7 +109,7 @@ namespace BeatKeeper
             float bonusMultiply = _comboBonusData.GetBonusMultiplier(comboCount);
             
             // float型の比較になるため「0に近くない時」で比較
-            if (Mathf.Approximately(bonusMultiply, _bonusMultiply.Value))
+            if (!Mathf.Approximately(bonusMultiply, _bonusMultiply.Value))
             {
                 // 値が変動していた場合、スコア倍率のリアクティブプロパティを更新
                 _bonusMultiply.Value = bonusMultiply;
