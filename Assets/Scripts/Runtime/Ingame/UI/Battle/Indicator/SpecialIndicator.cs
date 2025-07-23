@@ -56,15 +56,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
-        
+
+		// 譜面の長さ
+        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
         private void InitializeComponents()
         {
-            _timing = MusicEngineHelper.GetBeatSinceStart();
-
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
             
@@ -111,23 +111,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void PlaySkillEffect()
         {
-            if (_timing > MusicEngineHelper.GetBeatSinceStart())
+            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
-            }
+            }   
             
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0]?.Kill();
            
             var successSequence = DOTween.Sequence();
 
-            // パンチスケール
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
-            
-            // 色変更とフェードアウト
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
-            successSequence.Join(CreateFadeSequence(_fadeDuration));
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+			successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));            
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
 
             // エフェクトが完了したらEnd処理を実行
             successSequence.OnComplete(End);
