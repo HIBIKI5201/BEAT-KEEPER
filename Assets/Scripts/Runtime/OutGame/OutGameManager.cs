@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,7 @@ namespace BeatKeeper
 
         private void OnEnable()
         {
+            _playerInput = FindAnyObjectByType<PlayerInput>();
             _anyKey = _playerInput.actions["AnyKey"];
             _anyKey.started += OnAnyKeyInput;
         }
@@ -35,6 +37,10 @@ namespace BeatKeeper
             _anyKey.started -= OnAnyKeyInput;
         }
 
+        /// <summary>
+        /// 何らかの入力を受け取ったときに呼び出されるメソッド。
+        /// </summary>
+        /// <param name="callbackContext"></param>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
 
