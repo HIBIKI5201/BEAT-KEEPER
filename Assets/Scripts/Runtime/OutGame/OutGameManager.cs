@@ -25,7 +25,7 @@ namespace BeatKeeper
             await SceneLoader.LoadScene(StageSceneName);
         }
 
-        private void OnEnable()
+        private void Start()
         {
             _playerInput = FindAnyObjectByType<PlayerInput>();
             _anyKey = _playerInput.actions["AnyKey"];
