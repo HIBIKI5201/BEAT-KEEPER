@@ -34,6 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private int[] _appearTiming;
 
         private EnemyData _targetData;
+		public EnemyData TargetData => _targetData;
 
         private async void Start()
         {

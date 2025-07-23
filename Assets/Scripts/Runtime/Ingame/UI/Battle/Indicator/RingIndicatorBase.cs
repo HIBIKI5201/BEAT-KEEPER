@@ -87,8 +87,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
-        
-        [SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
+      　[SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
 
         [Header("色設定")]
         [SerializeField] protected Color _successColor = Color.yellow;
@@ -98,6 +97,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [SerializeField] protected float _blinkDuration = 0.2f;
         [SerializeField] protected float _fadeDuration = 0.3f;
+
+		[Header("中央の操作方法/判定UIの設定")]
+		[SerializeField] protected Image _centerImage; // 操作方法・評価を表示するImage
+		[SerializeField] protected HitResultSpriteSO _hitResult;
 
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
