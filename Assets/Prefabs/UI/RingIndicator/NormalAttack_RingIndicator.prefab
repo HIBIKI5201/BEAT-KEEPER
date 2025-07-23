@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2230983489298702948}
   - component: {fileID: 8444433897189030754}
   m_Layer: 5
-  m_Name: Ring (1)
+  m_Name: CenterImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030517, y: 0}
-  m_SizeDelta: {x: 277.679, y: 52.29}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 233.7105, y: 44.0103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2230983489298702948
 CanvasRenderer:
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118079386683046003}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -439,6 +439,8 @@ MonoBehaviour:
   _translucentDefaultColor: {r: 0, g: 1, b: 1, a: 0.09803922}
   _blinkDuration: 0.3
   _fadeDuration: 0.15
+  _centerImage: {fileID: 8444433897189030754}
+  _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _ringImages:
   - {fileID: 3762512124363481143}
   - {fileID: 1064944501665903157}
