@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +16,7 @@ namespace BeatKeeper
         private const string InGameSceneName = "InGame";
         private const string StageSceneName = "Stage";
         [SerializeField] private OutGameUIManager _outGameUIManager;
+        [SerializeField] private OutGameSoundManager _outGameSoundManager;
         private PlayerInput _playerInput;
         private InputAction _anyKey;
         private SoundEffectManager _soundEffectManager;
@@ -46,6 +46,7 @@ namespace BeatKeeper
         /// <param name="callbackContext"></param>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
+            Debug.Log("Any key pressed, starting game...");
             _ = LoadInGameSceneAsync();
         }
 
@@ -55,19 +56,11 @@ namespace BeatKeeper
         /// <returns></returns>
         private async Task LoadInGameSceneAsync()
         {
+            _outGameSoundManager.GameStart();
             await _outGameUIManager.GameStart();
             await SceneLoader.UnloadScene(OutGameSceneName);
             await SceneLoader.LoadScene(InGameSceneName);
             SceneLoader.SetActiveScene(InGameSceneName);
-        }
-
-        /// <summary>
-        /// インゲームシーンを読み込むための仮メソッド。
-        /// ボタンを押したときに呼び出される。
-        /// </summary>
-        public async void LoadInGameScene()
-        {
-            await LoadInGameSceneAsync();
         }
     }
 }
