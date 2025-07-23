@@ -590,7 +590,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _specialSystem.AddSpecialEnergy(0.05f);
             SoundEffectManager.PlaySoundEffect(_perfectSound);
             _animeManager.Shoot();
-            AttackEnemy(_data.PerfectCriticalDamage);
+            AttackEnemy(_data.ComboAttackPower, _data.PerfectCriticalDamage);
         }
 
         /// <summary>
@@ -600,7 +600,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             OnGoodAttack?.Invoke();
             _animeManager.Shoot();
-            AttackEnemy();
+            AttackEnemy(_data.ComboAttackPower);
         }
 
         /// <summary>
@@ -641,6 +641,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnShootChargeAttack?.Invoke();
             SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+            AttackEnemy(_data.ChargeAttackPower);
 
             //フルチャージかどうか
             if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
@@ -661,11 +662,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     敵に攻撃を行う
         /// </summary>
         /// <param name="damageScale"></param>
-        private void AttackEnemy(float damageScale = 1)
+        private void AttackEnemy(float power, float damageScale = 1)
         {
-            //コンボに応じたダメージ
-            var power = _data.ComboAttackPower;
-
             power *= damageScale;
 
             if (_battleBuffData) //タイムラインバフ
