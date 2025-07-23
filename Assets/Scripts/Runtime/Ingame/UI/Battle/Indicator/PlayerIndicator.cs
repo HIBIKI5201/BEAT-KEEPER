@@ -46,6 +46,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 tween?.Kill();
             }
 
+            _centerImage.enabled = false;
+            
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -73,6 +75,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
+            
+            _centerImage.enabled = false;
             
             // 初期化
             ResetRingsScale();
@@ -127,8 +131,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
                 _ringImage.rectTransform.localScale = Vector3.one;
+                
+                // Perfect判定のスプライトに差し替え
+                _centerImage.sprite = _hitResult.Perfect;
+            }
+            else
+            {
+                // Good判定のスプライトに差し替え
+                _centerImage.sprite = _hitResult.Good;
             }
            
+            _centerImage.enabled = true;
+            
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
@@ -150,6 +164,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void PlayFailEffect()
         {
             _tweens[0].Kill();
+            
+            // Miss判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Miss;
+            _centerImage.enabled = true;
             
             var failSequence = DOTween.Sequence();
             
