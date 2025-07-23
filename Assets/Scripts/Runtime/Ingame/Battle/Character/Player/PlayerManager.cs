@@ -285,6 +285,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else
             {
                 _flowZoneSystem.ResetFlowZone();
+                _flowZoneSystem.ResetResonanceCount();
             }
         }
 
