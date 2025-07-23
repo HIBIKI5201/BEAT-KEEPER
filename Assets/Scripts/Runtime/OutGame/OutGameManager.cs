@@ -1,23 +1,43 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using BeatKeeper.Runtime.System;
+using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BeatKeeper
 {
     /// <summary>
-    /// 
+    /// アウトゲームのシーン遷移を管理するクラス
     /// </summary>
     public class OutGameManager : MonoBehaviour
     {
         private const string OutGameSceneName = "OutGame";
         private const string InGameSceneName = "InGame";
         private const string StageSceneName = "Stage";
+        private PlayerInput _playerInput;
+        private InputAction _anyKey;
+
 
         private async void Awake()
         {
             await SceneLoader.LoadScene(StageSceneName);
-            //await LoadInGameSceneAsync();
+        }
+
+        private void OnEnable()
+        {
+            _anyKey = _playerInput.actions["AnyKey"];
+            _anyKey.started += OnAnyKeyInput;
+        }
+
+        private void OnDisable()
+        {
+            _anyKey.started -= OnAnyKeyInput;
+        }
+
+        private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
+        {
+
         }
 
         /// <summary>
@@ -30,7 +50,11 @@ namespace BeatKeeper
             await SceneLoader.LoadScene(InGameSceneName);
             SceneLoader.SetActiveScene(InGameSceneName);
         }
-        
+
+        /// <summary>
+        /// インゲームシーンを読み込むための仮メソッド。
+        /// ボタンを押したときに呼び出される。
+        /// </summary>
         public async void LoadInGameScene()
         {
             await LoadInGameSceneAsync();
