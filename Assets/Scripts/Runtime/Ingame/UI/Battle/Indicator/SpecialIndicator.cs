@@ -52,19 +52,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間
         private const float RECEPTION_TIME = 0.45f;
+		// 譜面の長さ
+        private const int CHART_LENGTE = 64;
 
         [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
-        
 
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
         private void InitializeComponents()
         {
-            _timing = MusicEngineHelper.GetBeatSinceStart();
-
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
             
@@ -111,7 +110,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void PlaySkillEffect()
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() < _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() % CHART_LENGTE != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
@@ -122,12 +121,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
            
             var successSequence = DOTween.Sequence();
 
-            // パンチスケール
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
-            
-            // 色変更とフェードアウト
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
-            successSequence.Join(CreateFadeSequence(_fadeDuration));
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+			successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));            
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
 
             // エフェクトが完了したらEnd処理を実行
             successSequence.OnComplete(End);
