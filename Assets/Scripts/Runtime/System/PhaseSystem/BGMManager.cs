@@ -51,6 +51,8 @@ namespace BeatKeeper.Runtime.Ingame.System
             if (Music.Current.TryGetComponent<CriAtomSource>(out var source))
             {
                 _atomSource = source;
+                _lastJustBeat = 0;
+                _lastNearBeat = 0;
                 SetLayerVolume(0);
             }
 
@@ -240,6 +242,8 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private CompositeDisposable _disposable = new();
 
+        private int _lastJustBeat;
+        private int _lastNearBeat;
         private void Awake()
         {
             _atomSource = GetComponent<CriAtomSource>();
@@ -317,9 +321,14 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         private void CheckAndNotifyBeatChanges()
         {
+            int just = MusicEngineHelper.GetBeatSinceStart();
+            int near = MusicEngineHelper.GetBeatNearerSinceStart();
+
+
             // 拍の切り替わりチェック
-            if (Music.IsJustChangedBeat())
+            if (_lastJustBeat != just)
             {
+                _lastJustBeat = just;
                 _isNearBeatChange.Value = false;
                 OnJustChangedBeat?.Invoke();
                 ProcessTimingActions(); // タイミングアクションの実行
@@ -327,9 +336,9 @@ namespace BeatKeeper.Runtime.Ingame.System
             }
 
             // 拍の切り替わりが近いかチェック
-            bool isNear = Music.IsNearChangedBeat();
-            if (isNear && !_isNearBeatChange.Value)
+            if (_lastNearBeat != near && !_isNearBeatChange.Value)
             {
+                _lastNearBeat = near;
                 _isNearBeatChange.Value = true;
                 OnNearChangedBeat?.Invoke();
             }
