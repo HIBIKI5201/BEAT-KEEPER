@@ -80,18 +80,18 @@ namespace BeatKeeper
         /// </summary>
         private void IconColorChanged(int count)
         {
-            count--; // カウントが1オリジンで渡ってくるので、1減らす処理を挟む
-
-            if (count >= _icons.Length) // 0-6の範囲に収めたい
-            {
-                Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");
-                return;
-            }
-
-            if (count == -1)
+            if (count == 0)
             {
                 // フローゾーンゲージのカウントがリセットされた場合、UIも全て暗い色に変更
                 AllReset();
+                return;
+            }
+            
+            count--; // カウントが1オリジンで渡ってくるので、1減らす処理を挟む
+
+            if (count < -1 || count >= _icons.Length) // 0-6の範囲に収めたい
+            {
+                Debug.LogError("[リズム共鳴メーター] 共鳴回数の範囲外です");
                 return;
             }
 
