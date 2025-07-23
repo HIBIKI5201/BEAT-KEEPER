@@ -14,6 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float PerfectCriticalDamage => _perfectCriticalDamage;
         public float[] ComboScoreScale => _comboScoreScale;
         public float ComboResetTime => _comboRisetTime;
+        public float ChargeAttackPower => _chargeAttackPower;
         public float ChargeAttackTime => _chargeAttackTime;
         #endregion
 
@@ -56,6 +57,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _comboRisetTime = 3;
 
         [Space(5), DisplayText("チャージ攻撃")]
+        [SerializeField, Tooltip("チャージの攻撃力")]
+        private float _chargeAttackPower = 500;
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
 
