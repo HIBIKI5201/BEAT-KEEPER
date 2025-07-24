@@ -72,11 +72,21 @@ namespace BeatKeeper.Runtime.Ingame.System
             }
             else
             {
-                int beat = MusicEngineHelper.GetBeatSinceStart();
-                beat = beat % 20 / 4;
+                float beat = MusicEngineHelper.GetBeatSinceStart();
 
-                _atomSource.player.SetSelectorLabel(_selectorName,
-                    _selectorFlowZoneLabelName + beat * 4 + 1);
+                //今の範囲を計算
+                int layer = 
+                    Mathf.CeilToInt(
+                        (beat - 16) //イントロの分を減らす
+                        % 64f //ループ分を削る
+                        / 16f) //拍から節に変換
+                    + 1 // 最低でも1以上になる
+                    * 4 + 1; //レイヤー値の4n+1に合わせる
+
+                //遷移先のレイヤー名を取得
+                string label = _selectorFlowZoneLabelName + layer;
+
+                _atomSource.player.SetSelectorLabel(_selectorName, label);
             }
             _atomSource.player.UpdateAll();
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました");
