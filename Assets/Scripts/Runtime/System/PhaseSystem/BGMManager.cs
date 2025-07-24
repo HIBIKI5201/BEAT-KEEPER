@@ -65,7 +65,19 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeSelectLayer(int index)
         {
-            _atomSource.player.SetSelectorLabel(_selectorName, _selectorLabelName + index);
+            if (index <= 4) //レイヤーを変更する
+            {
+                _atomSource.player.SetSelectorLabel(_selectorName,
+                    _selectorLabelName + index);
+            }
+            else
+            {
+                int beat = MusicEngineHelper.GetBeatSinceStart();
+                beat = beat % 20 / 4;
+
+                _atomSource.player.SetSelectorLabel(_selectorName,
+                    _selectorFlowZoneLabelName + beat * 4 + 1);
+            }
             _atomSource.player.UpdateAll();
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました");
         }
@@ -233,6 +245,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         private string _selectorName = "Selector_for_Battle";
         [SerializeField]
         private string _selectorLabelName = "SelectorLabel_Layer";
+        [SerializeField]
+        private string _selectorFlowZoneLabelName = "SelectorLabel_Flowzone_from";
 
         [Tooltip("小節の切り替わりタイミングが近いかどうか")]
         private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
