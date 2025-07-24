@@ -30,7 +30,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid;
-        
+        public event Action OnPerfectAvoid;
+        public event Action OnGoodAvoid;
+
         public event Action OnSkill;
 
         public event Action OnFinisher;
@@ -121,7 +123,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public override void HitAttack(AttackData data)
         {
             //無敵時間なら受けない
-            if (_lastAvoidSuccessTiming 
+            if (_lastAvoidSuccessTiming
                 + MusicEngineHelper.DurationOfBeat
                  * (_data.AvoidInvincibilityTime + 0.5f) //敵の攻撃タイミングであるNearBeat分追加する
                  > Time.time)
@@ -344,7 +346,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             bool willChargeAttack = false;
             int chargeAttackRange = Mathf.CeilToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
-            for (int i = 0; i <  chargeAttackRange; i++)
+            for (int i = 0; i < chargeAttackRange; i++)
             {
                 if (ChartKindEnum.Charge == chart[(timing + i) % chart.Length].AttackKind)
                 {
@@ -409,9 +411,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 $"[{nameof(PlayerManager)}]" +
                 $"{_data.Name} is avoiding");
 
-            var chart = _target.EnemyData.ChartData.Chart;
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-            var enemyAttackKind = chart[timing].AttackKind;
+            var chartData = _target.EnemyData.ChartData;
+            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
+            var enemyAttackKind = chartData.Chart[timing].AttackKind;
 
             //Charge攻撃は回避できない
             if ((enemyAttackKind & ChartKindEnum.Charge) != 0)
@@ -421,7 +423,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
 
-            if (!IsAvoidSuccess())
+            //敵が攻撃しないならミス
+            if (!chartData.IsEnemyAttack(timing))
+            {
+                SymphonyDebugLog.AddText($"Enemy not attack at timing {timing}");
+                SymphonyDebugLog.TextLog();
+                return;
+            }
+
+            bool isPerfect = MusicEngineHelper
+                .IsTimingWithinAcceptableRange(_data.PerfectAvoidRnage);
+            bool isGood = MusicEngineHelper
+                .IsTimingWithinAcceptableRange(_data.GoodAvoidRange);
+
+            if (!isGood && !isPerfect)
             {
                 //失敗時の処理
                 OnFailedAvoid?.Invoke();
@@ -432,6 +447,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             SymphonyDebugLog.AddText("avoid result : success");
+
+            if (isPerfect) { OnPerfectAvoid?.Invoke(); }
+            if (isGood) { OnGoodAvoid?.Invoke(); }
+
             AvoidFlow();
             SymphonyDebugLog.TextLog();
         }
@@ -717,33 +736,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
             _lastAvoidSuccessTiming = Time.time;
-        }
-
-        /// <summary>
-        ///     回避が成功したかどうかを判定する
-        /// </summary>
-        /// <returns>成功しているかどうか</returns>
-        private bool IsAvoidSuccess()
-        {
-            var chartData = _target.EnemyData.ChartData;
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
-
-            //敵が攻撃しないならミス
-            if (!chartData.IsEnemyAttack(timing))
-            {
-                SymphonyDebugLog.AddText($"Enemy not attack at timing {timing}");
-                return false;
-            }
-
-            //避ける範囲内かどうか判定
-            if (!MusicEngineHelper
-                .IsTimingWithinAcceptableRange(_data.AvoidRange)) //回避可能タイミングの範囲外ならミス
-            {
-                SymphonyDebugLog.AddText($"Miss Avoid at timing {timing}");
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>
