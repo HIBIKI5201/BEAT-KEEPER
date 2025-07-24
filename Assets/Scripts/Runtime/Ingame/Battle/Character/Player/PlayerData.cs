@@ -26,7 +26,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region 回避パラメータ
-        public float AvoidRange => _avoidRange;
+        public float PerfectAvoidRnage => _perfectAvoidRange;
+        public float GoodAvoidRange => _goodAvoidRange;
         public float AvoidInvincibilityTime => _avoidInvincibilityTime;
 
         public float HitStunTime => _hitStunTime;
@@ -79,7 +80,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [Header("回避 パラメータ")]
 
         [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
-        private float _avoidRange = 0.5f;
+        private float _perfectAvoidRange = 0.3f;
+
+        [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
+        private float _goodAvoidRange = 0.5f;
 
         [SerializeField, Tooltip("無敵時間の拍数")]
         private float _avoidInvincibilityTime = 2;
