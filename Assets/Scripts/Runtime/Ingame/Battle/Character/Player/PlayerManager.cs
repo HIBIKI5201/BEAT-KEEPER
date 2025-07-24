@@ -218,6 +218,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             await SystemInit(); //システムの初期化
 
             OnShootComboAttack += _particleSystem.Play;
+
+            OnPerfectAvoid += () => Debug.Log("perfect avoid");
+            OnGoodAvoid += () => Debug.Log("good avoid");
         }
 
         private void Start()
@@ -449,7 +452,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SymphonyDebugLog.AddText("avoid result : success");
 
             if (isPerfect) { OnPerfectAvoid?.Invoke(); }
-            if (isGood) { OnGoodAvoid?.Invoke(); }
+            else if (isGood) { OnGoodAvoid?.Invoke(); }
 
             AvoidFlow();
             SymphonyDebugLog.TextLog();
