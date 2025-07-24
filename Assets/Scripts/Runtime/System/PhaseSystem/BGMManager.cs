@@ -66,6 +66,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         public void ChangeSelectLayer(int index)
         {
             _atomSource.player.SetSelectorLabel(_selectorName, _selectorLabelName + index);
+            _atomSource.player.UpdateAll();
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました");
         }
 
