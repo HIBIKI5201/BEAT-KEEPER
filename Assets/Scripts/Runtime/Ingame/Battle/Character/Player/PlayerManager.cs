@@ -499,6 +499,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 Debug.LogWarning("Character animator component not found");
             }
 
+            if (_flowZoneSystem != null)
+            {
+                _flowZoneSystem.OnStartFlowZone += StartFlowZone;
+                _flowZoneSystem.OnEndFlowZone += EndFlowZone;
+            }
+
             //コンボとアニメーターを同期
             if (_comboSystem != null && _animeManager != null)
             {
