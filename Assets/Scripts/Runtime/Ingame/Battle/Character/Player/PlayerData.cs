@@ -35,6 +35,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region スキルパラメータ
+        public float PerfectSkillRange => _perfectSkillRange;
+        public float GoodSkillRange => _goodSkillRange;
+
         public float SkillDuration => _skillDuration;
         public float SkillStrangth => _skillStrangth;
         #endregion
@@ -87,13 +90,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField, Tooltip("無敵時間の拍数")]
         private float _avoidInvincibilityTime = 2;
-        
+
         [SerializeField, Tooltip("ヒット時のスタン時間")]
         private float _hitStunTime = 1f;
         [SerializeField, Tooltip("チャージヒット時のスタン時間")]
         private float _chargeHitStunTime = 2f;
 
         [Header("スキル パラメータ")]
+        [SerializeField, Range(0, 1)]
+        private float _perfectSkillRange = 0.5f;
+        [SerializeField, Range(0, 1)]
+        private float _goodSkillRange = 0.7f;
 
         [SerializeField, Tooltip("スキルの効果時間")]
         private float _skillDuration = 5f;
