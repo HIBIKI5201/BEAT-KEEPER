@@ -31,5 +31,7 @@ MonoBehaviour:
   _avoidInvincibilityTime: 1
   _hitStunTime: 5
   _chargeHitStunTime: 2
+  _perfectSkillRange: 0.7
+  _goodSkillRange: 0.9
   _skillDuration: 5
   _skillStrangth: 1.5
