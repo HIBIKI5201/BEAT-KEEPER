@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Outgame.UI
 {
     public class OutGameUIManager : MonoBehaviour
     {
@@ -14,6 +14,7 @@ namespace BeatKeeper
         [SerializeField, Tooltip("ボタンを押した際にPressAnyButtonがどのような色になるのか")] private Color _onStartColor;
         [SerializeField, Tooltip("シーン起動時にフェード院にかける時間")] private float _fadeInDuration = 1f;
         [SerializeField, Tooltip("ゲーム開始時にフェードアウトにかかる時間")] private float _fadeOutDuration = 3f;
+
         private bool _isGameStarted = false;
 
         private void Start()
@@ -24,7 +25,7 @@ namespace BeatKeeper
 
         private void FixedUpdate()
         {
-            if(!_isGameStarted)
+            if (!_isGameStarted)
             {
                 var time = Time.time % _fadeDuration;
                 var alpha = _fadeCurve.Evaluate(time / _fadeDuration);

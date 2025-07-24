@@ -368,9 +368,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 256245953}
-  - component: {fileID: 256245954}
   m_Layer: 0
-  m_Name: OutGameSoundManager
+  m_Name: OutGameSoundCRI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,22 +392,6 @@ Transform:
   - {fileID: 1102409120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &256245954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 256245952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90bf0d6fe5317904db8df1fd09b104f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bgmName: Phase1
-  _seName: NormalGunshot
-  _criAtomSourceBGM: {fileID: 1045055450}
-  _criAtomSourceSE: {fileID: 1102409121}
 --- !u!1 &697574500
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outGameUIManager: {fileID: 1982149415}
-  _outGameSoundManager: {fileID: 256245954}
+  _criAtomSourceSE: {fileID: 1102409121}
 --- !u!4 &789693826
 Transform:
   m_ObjectHideFlags: 0
@@ -653,7 +636,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: 
+  _cueName: Phase1
   _cueSheet: BGM
 --- !u!4 &1045055451
 Transform:
@@ -733,7 +716,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: 
+  _cueName: NormalGunshot
   _cueSheet: SE
 --- !u!1 &1982149412
 GameObject:

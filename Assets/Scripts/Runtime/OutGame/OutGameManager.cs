@@ -1,66 +1,61 @@
 ﻿using BeatKeeper.Runtime.System;
+using CriWare;
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Outgame.System
 {
     /// <summary>
-    /// アウトゲームのシーン遷移を管理するクラス
+    /// アウトゲームのシーン遷移および入力を管理するクラス
     /// </summary>
     public class OutGameManager : MonoBehaviour
     {
-        private const string OutGameSceneName = "OutGame";
-        private const string InGameSceneName = "InGame";
-        private const string StageSceneName = "Stage";
-        [SerializeField] private OutGameUIManager _outGameUIManager;
-        [SerializeField] private OutGameSoundManager _outGameSoundManager;
-        private PlayerInput _playerInput;
-        private InputAction _anyKey;
-        private SoundEffectManager _soundEffectManager;
+        private const string OutGameScene = "OutGame";
+        private const SceneListEnum InGameScene = SceneListEnum.InGame;
+        private const SceneListEnum StageScene = SceneListEnum.Stage;
 
+        [SerializeField] private OutGameUIManager _outGameUIManager;
+        [SerializeField]private CriAtomSource _criAtomSourceSE;
+
+        private InputBuffer _inputBuffer;
 
         private async void Awake()
         {
-            await SceneLoader.LoadScene(StageSceneName);
+            await SceneLoader.LoadScene(StageScene.ToString());
         }
 
         private void Start()
         {
-            _soundEffectManager = ServiceLocator.GetInstance<SoundEffectManager>();
-            _playerInput = FindAnyObjectByType<PlayerInput>();
-            _anyKey = _playerInput.actions["AnyKey"];
-            _anyKey.started += OnAnyKeyInput;
+            _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            _inputBuffer.AnyKey.started += OnAnyKeyInput;
         }
 
         private void OnDisable()
         {
-            _anyKey.started -= OnAnyKeyInput;
+            _inputBuffer.AnyKey.started -= OnAnyKeyInput;
         }
 
         /// <summary>
         /// 何らかの入力を受け取ったときに呼び出されるメソッド。
         /// </summary>
-        /// <param name="callbackContext"></param>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
-            Debug.Log("Any key pressed, starting game...");
             _ = LoadInGameSceneAsync();
         }
 
         /// <summary>
         /// インゲームシーンを読み込むメソッド
         /// </summary>
-        /// <returns></returns>
         private async Task LoadInGameSceneAsync()
         {
-            _outGameSoundManager.GameStart();
+            _criAtomSourceSE.Play();
             await _outGameUIManager.GameStart();
-            await SceneLoader.UnloadScene(OutGameSceneName);
-            await SceneLoader.LoadScene(InGameSceneName);
-            SceneLoader.SetActiveScene(InGameSceneName);
+            await SceneLoader.UnloadScene(OutGameScene);
+            await SceneLoader.LoadScene(InGameScene.ToString());
+            SceneLoader.SetActiveScene(InGameScene.ToString());
         }
     }
 }
