@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74d11554a76de54dac70d2375d49c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _selectorName: Selector_for_Battle
+  _selectorLabelName: SelectorLabel_Layer
 --- !u!114 &6862399396053557512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +163,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: Phase1
-  _cueSheet: BGM
+  _cueSheet: Battle
 --- !u!1 &4533952230725193747
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +255,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: Phase3
-  _cueSheet: BGM
+  _cueSheet: Battle
 --- !u!1 &7458331887055390619
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,4 +347,4 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: Phase2
-  _cueSheet: BGM
+  _cueSheet: Battle
