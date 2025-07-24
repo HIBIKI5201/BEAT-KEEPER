@@ -5,6 +5,7 @@ using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -65,10 +66,11 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeSelectLayer(int index)
         {
+            StringBuilder label = new(_selectorLabelName);
+
             if (index <= 4) //レイヤーを変更する
             {
-                _atomSource.player.SetSelectorLabel(_selectorName,
-                    _selectorLabelName + index);
+                label.Append(index.ToString("0"));
             }
             else
             {
@@ -76,20 +78,20 @@ namespace BeatKeeper.Runtime.Ingame.System
 
                 //今の範囲を計算
                 int layer = 
-                    Mathf.CeilToInt(
+                    (Mathf.CeilToInt(
                         (beat - 16) //イントロの分を減らす
                         % 64f //ループ分を削る
                         / 16f) //拍から節に変換
-                    + 1 // 最低でも1以上になる
+                    + 1) // 最低でも1以上になる
                     * 4 + 1; //レイヤー値の4n+1に合わせる
 
                 //遷移先のレイヤー名を取得
-                string label = _selectorFlowZoneLabelName + layer;
-
-                _atomSource.player.SetSelectorLabel(_selectorName, label);
+                label.Append(layer.ToString("0"));
             }
+
+            _atomSource.player.SetSelectorLabel(_selectorName, label.ToString());
             _atomSource.player.UpdateAll();
-            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました");
+            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました。\nセレクター名 {label.ToString()}");
         }
 
         #endregion
