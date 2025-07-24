@@ -514,8 +514,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acfFile: BeatKeepr.acf
   cueSheets:
-  - name: BGM
-    acbFile: BGM.acb
+  - name: Battle
+    acbFile: Battle.acb
     awbFile: 
     loaderStatus: 0
   - name: SE
