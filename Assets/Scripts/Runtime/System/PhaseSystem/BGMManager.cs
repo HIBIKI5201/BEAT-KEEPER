@@ -53,7 +53,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                 _atomSource = source;
                 _lastJustBeat = 0;
                 _lastNearBeat = 0;
-                SetLayerVolume(0);
+                ChangeSelectLayer(0);
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
@@ -63,10 +63,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         ///     BGMのレイヤーを変更する
         /// </summary>
         /// <param name="name"></param>
-        public void ChangeBGMLayer(int index)
+        public void ChangeSelectLayer(int index)
         {
-            SetLayerVolume(index);
-            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを変更しました");
+            _atomSource.player.SetSelectorLabel(_selectorName, _selectorLabelName + index);
+            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました");
         }
 
         #endregion
@@ -228,6 +228,11 @@ namespace BeatKeeper.Runtime.Ingame.System
         // タイミングを指定して実行するアクションのディクショナリ
         private readonly Dictionary<TimingKey, Dictionary<Guid, TimingActionInfo>> _timingActions = new();
 
+        [SerializeField]
+        private string _selectorName = "Selector_for_Battle";
+        [SerializeField]
+        private string _selectorLabelName = "SelectorLabel_Layer";
+
         [Tooltip("小節の切り替わりタイミングが近いかどうか")]
         private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
         [Tooltip("拍の切り替わりタイミングが近いかどうか")]
@@ -244,10 +249,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private int _lastJustBeat;
         private int _lastNearBeat;
-        private void Awake()
-        {
-            _atomSource = GetComponent<CriAtomSource>();
-        }
 
         private async void Start()
         {
@@ -264,7 +265,7 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private void OnChangeResonanceCount(int value)
         {
-            ChangeBGMLayer((int)GetLayerEnum(value));
+            ChangeSelectLayer((int)GetLayerEnum(value));
         }
 
         /// <summary>
@@ -273,6 +274,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         private BGMLayerEnum GetLayerEnum(int value)
         {
             // 共鳴カウントを最大値で正規化し、レイヤー数（0-5の6段階）にスケーリング
+            //int layerIndex = value * (Enum.GetValues(typeof(BGMLayerEnum)).Length - 1) / FlowZoneSystem.MAX_COUNT;
             int layerIndex = value * 5 / FlowZoneSystem.MAX_COUNT;
             return (BGMLayerEnum)layerIndex;
         }
@@ -426,33 +428,6 @@ namespace BeatKeeper.Runtime.Ingame.System
                 Action = action;
                 IsRepeating = isRepeating;
             }
-        }
-
-        /// <summary>
-        ///     指定したレイヤーまでのトラックを有効化する
-        /// </summary>
-        /// <param name="layerIndex"></param>
-        private void SetLayerVolume(int layerIndex)
-        {
-            for (int i = 0; i <= layerIndex; i++)
-            {
-                ChangeTrackVolume(i, 1.0f); // レイヤーの音量を最大に設定
-            }
-
-            for (int i = layerIndex + 1; i <= (int)BGMLayerEnum.Layer5; i++)
-            {
-                ChangeTrackVolume(i, 0.0f); // レイヤーの音量を最小に設定
-            }
-        }
-
-        /// <summary>
-        ///     インデックス番号からトラックのボリュームを変更する
-        /// </summary>
-        /// <param name="truckIndex"></param>
-        /// <param name="volume"></param>
-        private void ChangeTrackVolume(int truckIndex, float volume)
-        {
-            _atomSource.SetAisacControl($"AisacControl_{truckIndex.ToString("00")}", volume);
         }
     }
 }
