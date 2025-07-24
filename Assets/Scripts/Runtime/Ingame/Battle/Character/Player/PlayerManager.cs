@@ -604,13 +604,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 return;
             }
 
-
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
-            else if (isGood) { OnGoodSkill?.Invoke(); };
+            else if (isGood) { OnGoodSkill?.Invoke(); }
 
-                OnSkill?.Invoke();
+            OnSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
 
