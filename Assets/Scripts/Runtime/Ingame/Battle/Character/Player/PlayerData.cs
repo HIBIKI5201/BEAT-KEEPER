@@ -35,6 +35,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region スキルパラメータ
+        public float PerfectSkillRange => _perfectSkillRange;
+        public float GoodSkillRange => _goodSkillRange;
+
         public float SkillDuration => _skillDuration;
         public float SkillStrangth => _skillStrangth;
         #endregion
@@ -94,6 +97,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _chargeHitStunTime = 2f;
 
         [Header("スキル パラメータ")]
+        [SerializeField, Range(0, 1)]
+        private float _perfectSkillRange = 0.5f;
+        [SerializeField]
+        private float _goodSkillRange = 0.7f;
 
         [SerializeField, Tooltip("スキルの効果時間")]
         private float _skillDuration = 5f;
