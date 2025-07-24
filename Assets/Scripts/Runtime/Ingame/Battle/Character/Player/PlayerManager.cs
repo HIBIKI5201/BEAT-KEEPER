@@ -34,6 +34,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnGoodAvoid;
 
         public event Action OnSkill;
+        public event Action OnPerfectSkill;
+        public event Action OnGoodSkill;
 
         public event Action OnFinisher;
         #endregion
@@ -591,9 +593,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_isThisBeatInputed) return; //連打防止
 
+            bool isPerfect = MusicEngineHelper
+                .IsTimingWithinAcceptableRange(_data.PerfectSkillRange);
+            bool isGood = MusicEngineHelper
+                .IsTimingWithinAcceptableRange(_data.GoodSkillRange);
+
+            if (!isGood && !isPerfect)
+            {
+                Debug.Log("skill is failed");
+                return;
+            }
+
+
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
-            OnSkill?.Invoke();
+            if (isPerfect) { OnPerfectSkill?.Invoke(); }
+            else if (isGood) { OnGoodSkill?.Invoke(); };
+
+                OnSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
 
