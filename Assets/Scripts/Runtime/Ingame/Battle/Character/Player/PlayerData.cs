@@ -16,11 +16,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float ComboResetTime => _comboRisetTime;
         public float ChargeAttackPower => _chargeAttackPower;
         public float ChargeAttackTime => _chargeAttackTime;
+
+        public float PerfectRange => _perfectRange;
+        public float GoodRange => _goodRange;
         #endregion
 
         #region リズムパラメータ
-        public float PerfectRange => _perfectRange;
-        public float GoodRange => _goodRange;
         public float FlowZoneThreshold => _flowZoneThreshold;
         public int FlowZoneDuration => _flowZoneDuration;
         #endregion
@@ -32,6 +33,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public float HitStunTime => _hitStunTime;
         public float ChargeHitStunTime => _chargeHitStunTime;
+
+        public int AvoidScore => _avoidScore;
+        public float AvoidPerfectScoreScale => _avoidPerfectScoreScale;
         #endregion
 
         #region スキルパラメータ
@@ -66,13 +70,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
 
-        [Header("リズム パラメータ")]
-
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
         private float _perfectRange = 0.1f;
-
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
         private float _goodRange = 0.5f;
+
+        [Header("リズム パラメータ")]
 
         [SerializeField, Min(1), Tooltip("フローゾーン突入の敷居")]
         private float _flowZoneThreshold = 10;
@@ -95,6 +98,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _hitStunTime = 1f;
         [SerializeField, Tooltip("チャージヒット時のスタン時間")]
         private float _chargeHitStunTime = 2f;
+
+        [SerializeField, Tooltip("回避時のスコア")]
+        private int _avoidScore = 100;
+        [SerializeField, Range(1, 2), Tooltip("パーフェクト回避スコア倍率")]
+        private float _avoidPerfectScoreScale;
 
         [Header("スキル パラメータ")]
         [SerializeField, Range(0, 1)]
