@@ -453,8 +453,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLog.AddText("avoid result : success");
 
-            if (isPerfect) { OnPerfectAvoid?.Invoke(); }
-            else if (isGood) { OnGoodAvoid?.Invoke(); }
+            _flowZoneSystem.SuccessResonance();
+            _comboSystem.Attack();
+
+            if (isPerfect)
+            {
+                //スコアにパーフェクト倍率を掛ける
+                _scoreManager.AddScore(
+                    Mathf.FloorToInt(_data.AvoidScore * _data.AvoidPerfectScoreScale));
+                OnPerfectAvoid?.Invoke();
+            }
+            else if (isGood)
+            {
+                _scoreManager.AddScore(_data.AvoidScore);
+                OnGoodAvoid?.Invoke();
+            }
 
             AvoidFlow();
             SymphonyDebugLog.TextLog();
@@ -606,21 +619,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
-            _flowZoneSystem.SuccessResonance();
-            _comboSystem.Attack();
-
-            if (isPerfect)
-            {
-                //スコアにパーフェクト倍率を掛ける
-                _scoreManager.AddScore(
-                    Mathf.FloorToInt(_data.AvoidScore * _data.AvoidPerfectScoreScale));
-                OnPerfectSkill?.Invoke();
-            }
-            else if (isGood)
-            {
-                _scoreManager.AddScore(_data.AvoidScore);
-                OnGoodSkill?.Invoke();
-            }
+            if (isPerfect) { OnPerfectSkill?.Invoke(); }
+            else if (isGood) { OnGoodSkill?.Invoke(); }
 
             
 
