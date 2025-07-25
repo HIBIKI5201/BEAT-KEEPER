@@ -606,8 +606,23 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLog.AddText($"{_data.Name} do skill");
 
-            if (isPerfect) { OnPerfectSkill?.Invoke(); }
-            else if (isGood) { OnGoodSkill?.Invoke(); }
+            _flowZoneSystem.SuccessResonance();
+            _comboSystem.Attack();
+
+            if (isPerfect)
+            {
+                //スコアにパーフェクト倍率を掛ける
+                _scoreManager.AddScore(
+                    Mathf.FloorToInt(_data.AvoidScore * _data.AvoidPerfectScoreScale));
+                OnPerfectSkill?.Invoke();
+            }
+            else if (isGood)
+            {
+                _scoreManager.AddScore(_data.AvoidScore);
+                OnGoodSkill?.Invoke();
+            }
+
+            
 
             OnSkill?.Invoke();
             _animeManager.Skill();
