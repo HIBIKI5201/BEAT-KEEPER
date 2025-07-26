@@ -12200,6 +12200,10 @@ MonoBehaviour:
   _avoidSound: Dodge
   _hitSound: PlayerHit
   _perfectSound: Perfect
+  _flowZone1: Flowzonegauge01
+  _flowZone2: Flowzonegauge02
+  _flowZone3: Flowzonegauge03
+  _flowZone4: Flowzonegauge04
   _flowZoneStartSound: Flowzone_In
   _flowZoneEndSound: Flowzone_Out
   _damageScale: 1
