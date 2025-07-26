@@ -14,14 +14,15 @@ namespace BeatKeeper.Runtime.Outgame.System
     /// </summary>
     public class OutGameManager : MonoBehaviour
     {
-        private const string OutGameScene = "OutGame";
+        private const SceneListEnum OutGameScene = SceneListEnum.OutGame;
         private const SceneListEnum InGameScene = SceneListEnum.InGame;
         private const SceneListEnum StageScene = SceneListEnum.Stage;
 
         [SerializeField] private OutGameUIManager _outGameUIManager;
-        [SerializeField]private CriAtomSource _criAtomSourceSE;
+        [SerializeField] private CriAtomSource _criAtomSourceSE;
 
         private InputBuffer _inputBuffer;
+        private bool _look;
 
         private async void Awake()
         {
@@ -44,6 +45,8 @@ namespace BeatKeeper.Runtime.Outgame.System
         /// </summary>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
+            if (_look) return;
+            _look = true;
             _ = LoadInGameSceneAsync();
         }
 
@@ -54,7 +57,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         {
             _criAtomSourceSE.Play();
             await _outGameUIManager.GameStart();
-            await SceneLoader.UnloadScene(OutGameScene);
+            await SceneLoader.UnloadScene(OutGameScene.ToString());
             await SceneLoader.LoadScene(InGameScene.ToString());
             SceneLoader.SetActiveScene(InGameScene.ToString());
         }

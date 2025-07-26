@@ -8,4 +8,5 @@ public enum LayersEnum : int
     TransparentFX = 1 << 2,
     Water = 1 << 3,
     UI = 1 << 4,
+    Meca = 1 << 5,
 }
