@@ -50,15 +50,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _isFailed = false;
 
             ResetAllTween();
-            
+
             // イベント購読解除
             _player.OnSuccessAvoid -= OnPlayerAvoidSuccess;
             _player.OnFailedAvoid -= PlayFailEffect;
-            
+
             // UIのリセット
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-            
+
             base.End();
 
             //敵攻撃はノックバックを与えるので確認
@@ -70,15 +70,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
         [SerializeField] private Text[] _centerTexts; // リング中央のテキスト
-        
+
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
 
-        [Header("SE")]
-        [SerializeField] private string _apperanceSoundCueName;
-
         private bool _isFailed; // 回避失敗フラグ
-        
+
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
@@ -86,10 +83,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 生成時点のタイミングを保存
             _timing = MusicEngineHelper.GetBeatSinceStart();
-            
+
             // Tweenの配列を作成
             _tweens = new Tween[3];
-            
+
             // 初期状態の設定
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -100,15 +97,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartBlinkEffect()
         {
-            SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName);
+            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
+                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
 
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
+
             var blinkSequence = DOTween.Sequence()
 
                 // 3回点滅
                 .Append(_ringImages[0].DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo))
-            
+
                 // デフォルト色に戻す
                 .Append(_ringImages[0].DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
 
@@ -126,11 +124,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 点滅シーケンスをキル
             _tweens[0]?.Kill();
-            
+
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
+
             var contractionSequence = DOTween.Sequence();
-            
+
             // 縮小エフェクト
             contractionSequence.Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
             contractionSequence.Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
@@ -140,13 +138,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[0] = contractionSequence;
             }
-            
+
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
-            
+
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
             {
@@ -191,16 +189,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 回避失敗フラグを立てる
             _isFailed = true;
-            
+
             // 回避失敗したときに他のTweenが再生されていたら中断
             ResetAllTween();
-            
+
             var failSequence = DOTween.Sequence();
-            
+
             // 色変更とフェードアウト
             failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
             failSequence.Join(CreateFadeSequence(_fadeDuration));
-            
+
             failSequence.OnComplete(End);
         }
 
@@ -260,7 +258,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private DG.Tweening.Sequence CreateFadeSequence(float duration)
         {
             var fadeSequence = DOTween.Sequence();
-            
+
             // リングのフェード
             foreach (var ring in _ringImages)
             {
@@ -272,23 +270,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 fadeSequence.Join(ring.DOFade(0f, duration).SetEase(Ease.Linear));
             }
-            
+
             // 中央のテキストのフェード
             foreach (var text in _centerTexts)
             {
                 fadeSequence.Join(text.DOFade(0f, duration).SetEase(Ease.Linear));
             }
-            
+
             return fadeSequence;
         }
-        
+
         /// <summary>
         /// 色変更シーケンスを作成
         /// </summary>
-        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor,  float duration)
+        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
         {
             var colorSequence = DOTween.Sequence();
-           
+
             // リングの色変更
             foreach (var ring in _ringImages)
             {
@@ -300,13 +298,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 colorSequence.Join(ring.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
             }
-            
+
             // 中央のテキストのフェード
             foreach (var text in _centerTexts)
             {
                 colorSequence.Join(text.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             }
-            
+
             return colorSequence;
         }
 
