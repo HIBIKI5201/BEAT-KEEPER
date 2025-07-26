@@ -5,4 +5,5 @@
     Stage = 2,
     Battle = 3,
     System = 4,
+    OutGame = 5,
 }
