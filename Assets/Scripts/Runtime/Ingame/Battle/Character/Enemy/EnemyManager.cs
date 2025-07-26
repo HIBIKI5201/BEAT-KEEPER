@@ -98,6 +98,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public Transform NormalAttackRandomHit()
         {
+            if (0 <= _normalAttackHitPositions.Length) return null;
+
             int index = UnityEngine.Random.Range(0, _normalAttackHitPositions.Length);
             Transform target = _normalAttackHitPositions[index];
 
