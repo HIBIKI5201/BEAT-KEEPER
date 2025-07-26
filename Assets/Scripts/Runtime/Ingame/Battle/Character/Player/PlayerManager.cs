@@ -566,10 +566,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                OnShootComboAttack?.Invoke();
-                _comboSystem.Attack(); //コンボを更新
-
-                SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                 _isThisBeatInputed = true;
 
                 if (isPerfectHit)
@@ -645,7 +641,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnPerfectAttack?.Invoke();
             _specialSystem.AddSpecialEnergy(0.05f);
             SoundEffectManager.PlaySoundEffect(_perfectSound);
-            _animeManager.Shoot();
+            BothComboAttack();
             AttackEnemy(_data.ComboAttackPower, _data.PerfectCriticalDamage);
         }
 
@@ -655,8 +651,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void GoodAttack()
         {
             OnGoodAttack?.Invoke();
-            _animeManager.Shoot();
+            BothComboAttack();
             AttackEnemy(_data.ComboAttackPower);
+        }
+
+        private void BothComboAttack()
+        {
+            OnShootComboAttack?.Invoke();
+            _comboSystem.Attack(); //コンボを更新
+            _animeManager.Shoot();
+            _target.NormalAttackRandomHit();
+            SoundEffectManager.PlaySoundEffect(_comboAttackSound);
         }
 
         /// <summary>
