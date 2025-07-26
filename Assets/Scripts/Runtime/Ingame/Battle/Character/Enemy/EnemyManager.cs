@@ -101,7 +101,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             int index = UnityEngine.Random.Range(0, _normalAttackHitPositions.Length);
             Transform target = _normalAttackHitPositions[index];
 
-            Instantiate(_normalAttackHitPerticle, target.position, target.rotation);
+            if (_normalAttackHitPerticle != null)
+                { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
 
             return target;
         }
