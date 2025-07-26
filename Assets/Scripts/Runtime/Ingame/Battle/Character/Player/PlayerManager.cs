@@ -184,7 +184,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
-        private AudioSource _soundEffectSource;
 
         private IEnemy _target;
         private bool _isBattle;
@@ -252,8 +251,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.LogWarning("Phase manager is null");
             }
-
-            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
         }
 
         private void Update()
