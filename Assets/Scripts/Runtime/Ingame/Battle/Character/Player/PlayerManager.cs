@@ -150,6 +150,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #region プライベートフィールド
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
+        [SerializeField] private GameObject _comboPerticle;
+        [SerializeField] private Transform _muzzle;
 
         #region サウンドクリップ
         [Header("SE")]
@@ -658,6 +660,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void BothComboAttack()
         {
             OnShootComboAttack?.Invoke();
+            if (_comboPerticle != null && _muzzle != null)
+                { Instantiate(_comboPerticle, _muzzle.position, _muzzle.rotation); }
             _comboSystem.Attack(); //コンボを更新
             _animeManager.Shoot();
             _target.NormalAttackRandomHit();
