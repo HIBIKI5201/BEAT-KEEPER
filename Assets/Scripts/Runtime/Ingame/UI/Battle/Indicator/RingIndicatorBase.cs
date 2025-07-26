@@ -102,6 +102,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		[SerializeField] protected Image _centerImage; // 操作方法・評価を表示するImage
 		[SerializeField] protected HitResultSpriteSO _hitResult;
 
+        [Header("SE")]
+        [SerializeField] protected string _apperanceSoundCueName;
+
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
         protected Action _onEndAction;

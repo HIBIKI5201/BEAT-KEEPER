@@ -519,6 +519,7 @@ MonoBehaviour:
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
+  _apperanceSoundCueName: Ring_Skill
   _centerText: {fileID: 5711982954574632157}
   _ringImages:
   - {fileID: 6800337163817613581}

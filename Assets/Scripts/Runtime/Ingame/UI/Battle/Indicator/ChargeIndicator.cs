@@ -1,4 +1,5 @@
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -98,6 +99,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartContractionEffect()
         {
+            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
+                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
+
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             // 表示
