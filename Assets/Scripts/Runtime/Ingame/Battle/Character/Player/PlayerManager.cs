@@ -176,6 +176,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("Perfect判定時（攻撃・回避兼用）")]
         private string _perfectSound;
 
+        [SerializeField, Tooltip("フローゾーンゲージが1になった時の音")]
+        private string _flowZone1;
+
+        [SerializeField, Tooltip("フローゾーンゲージが2になった時の音")]
+        private string _flowZone2;
+
+        [SerializeField, Tooltip("フローゾーンゲージが3になった時の音")]
+        private string _flowZone3;
+
+        [SerializeField, Tooltip("フローゾーンゲージが4になった時の音")]
+        private string _flowZone4;
+
         [SerializeField, Tooltip("フローゾーン突入")]
         private string _flowZoneStartSound;
 
@@ -539,6 +551,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _flowZoneSystem.OnStartFlowZone += StartFlowZone;
                 _flowZoneSystem.OnEndFlowZone += EndFlowZone;
+                _flowZoneSystem.ResonanceCount.Subscribe(n =>
+                {
+                    string queName = n switch
+                    {
+                        1 => _flowZone1,
+                        2 => _flowZone2,
+                        3 => _flowZone3,
+                        4 => _flowZone4,
+                        _ => string.Empty
+                    };
+                    if (string.IsNullOrEmpty(queName)) return;
+                    SoundEffectManager.PlaySoundEffect(queName);
+                }).AddTo(destroyCancellationToken);
             }
 
             //コンボとアニメーターを同期

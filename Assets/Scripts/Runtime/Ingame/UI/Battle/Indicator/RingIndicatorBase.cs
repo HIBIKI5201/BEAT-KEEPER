@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -31,6 +32,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _count = 0;
 
             CheckRemainTime();
+
+            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
+                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
         }
 
         /// <summary>
@@ -101,6 +105,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		[Header("中央の操作方法/判定UIの設定")]
 		[SerializeField] protected Image _centerImage; // 操作方法・評価を表示するImage
 		[SerializeField] protected HitResultSpriteSO _hitResult;
+
+        [Header("SE")]
+        [SerializeField] protected string _apperanceSoundCueName;
 
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
