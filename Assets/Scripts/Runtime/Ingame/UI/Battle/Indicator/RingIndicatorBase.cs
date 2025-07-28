@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -31,6 +32,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _count = 0;
 
             CheckRemainTime();
+
+            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
+                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
         }
 
         /// <summary>

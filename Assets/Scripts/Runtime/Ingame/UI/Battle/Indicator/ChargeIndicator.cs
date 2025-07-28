@@ -99,9 +99,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartContractionEffect()
         {
-            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
-                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
-
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             // 表示

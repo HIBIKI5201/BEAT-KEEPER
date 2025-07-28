@@ -97,9 +97,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartBlinkEffect()
         {
-            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
-                { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
-
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var blinkSequence = DOTween.Sequence()
