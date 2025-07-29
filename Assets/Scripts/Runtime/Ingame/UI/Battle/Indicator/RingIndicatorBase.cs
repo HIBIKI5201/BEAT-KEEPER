@@ -26,6 +26,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
+            _centerImage.rectTransform.sizeDelta = _defaultCenterImageSize;
             _onEndAction = onEndAction;
             _timing = timing;
 
@@ -119,11 +120,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected int _timing;
         protected int _count;
         protected Tween[] _tweens;
+        
+        private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
 
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
             _ringImage = transform.GetChild(0).GetComponent<Image>();
+			_defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
         }
     }
 }

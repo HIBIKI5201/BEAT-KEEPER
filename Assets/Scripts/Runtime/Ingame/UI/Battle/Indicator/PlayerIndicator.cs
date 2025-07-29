@@ -136,12 +136,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _ringImage.rectTransform.localScale = Vector3.one;
                 
                 // Perfect判定のスプライトに差し替え
-                _centerImage.sprite = _hitResult.Perfect;
+				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
+                _centerImage.sprite = _hitResult.Perfect.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
             }
             else
             {
                 // Good判定のスプライトに差し替え
-                _centerImage.sprite = _hitResult.Good;
+                _centerImage.sprite = _hitResult.Good.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
             }
            
             _centerImage.enabled = true;
@@ -169,7 +172,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens[0].Kill();
             
             // Miss判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Miss;
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+            
             _centerImage.enabled = true;
             
             var failSequence = DOTween.Sequence();
