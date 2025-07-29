@@ -1759,6 +1759,10 @@ PrefabInstance:
       propertyPath: _scoreManager
       value: 
       objectReference: {fileID: 719706917}
+    - target: {fileID: 4251410414298865080, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4546012881941083311, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_Name
       value: InGameUICanvas
