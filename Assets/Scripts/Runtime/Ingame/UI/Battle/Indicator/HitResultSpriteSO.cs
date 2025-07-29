@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace BeatKeeper
 {
@@ -8,23 +9,30 @@ namespace BeatKeeper
     [CreateAssetMenu(fileName = "HitResultSpriteSO", menuName = "BeatKeeper/UI/HitResultSpriteSO")]
     public class HitResultSpriteSO : ScriptableObject
     {
-        [SerializeField] private Sprite _perfect;
-        [SerializeField] private Sprite _good;
-        [SerializeField] private Sprite _miss;
+        [SerializeField] private HitResultData _perfect;
+        [SerializeField] private HitResultData _good;
+        [SerializeField] private HitResultData _miss;
         
         /// <summary>
-        /// Perfectの画像
+        /// Perfectの画像データ
         /// </summary>
-        public Sprite Perfect => _perfect;
+        public HitResultData Perfect => _perfect;
         
         /// <summary>
-        /// Goodの画像
+        /// Goodの画像データ
         /// </summary>
-        public Sprite Good => _good;
+        public HitResultData Good => _good;
         
         /// <summary>
-        /// Missの画像
+        /// Missの画像データ
         /// </summary>
-        public Sprite Miss => _miss;
+        public HitResultData Miss => _miss;
+    }
+
+    [Serializable]
+    public class HitResultData
+    {
+        public Sprite Sprite;
+        public Vector2 SizeDelta = new Vector2(250, 60);
     }
 }
