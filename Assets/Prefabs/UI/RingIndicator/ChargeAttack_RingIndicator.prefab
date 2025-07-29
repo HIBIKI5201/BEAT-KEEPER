@@ -687,6 +687,7 @@ MonoBehaviour:
   _fadeDuration: 0.2
   _centerImage: {fileID: 6851541169836843214}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
+  _apperanceSoundCueName: Ring_Charge
   _contractionImage: {fileID: 4480527766625380243}
   _blurImage: {fileID: 661764378258809708}
   _startPositionRing: {fileID: 9076401914382325685}
