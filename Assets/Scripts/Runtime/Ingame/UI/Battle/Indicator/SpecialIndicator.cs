@@ -54,6 +54,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間
         private const float RECEPTION_TIME = 0.45f;
 
+        [SerializeField] private CanvasGroup _skillGroup; // スキルノーツのCanvasGroup
+        [SerializeField] private CanvasGroup _finisherGroup; // フィニッシャーノーツのCanvasGroup
+        [SerializeField] private Color _finisherColor; // フィニッシャー用の色指定
+        [SerializeField] private Color _translucentFinisherColor; // フィニッシャー用の半透明の色指定
         [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
@@ -86,11 +90,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // Just判定まで縮小を行う
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[3].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                
+                // 中央のリング
                 .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[4].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_ringImages[3].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -101,7 +112,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[5].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[6].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[5].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[6].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
@@ -161,9 +176,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void ResetRingsScale()
         {
             if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = Vector3.one * _initialScale;
+            if(_ringImages[3] != null) _ringImages[3].rectTransform.localScale = Vector3.one * _initialScale;
             if(_translucentRingImages[0] != null) _translucentRingImages[0].rectTransform.localScale = Vector3.one * _initialScale;
+            if(_translucentRingImages[1] != null) _translucentRingImages[1].rectTransform.localScale = Vector3.one * _initialScale;
             if (_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;
+            if (_ringImages[4] != null) _ringImages[4].rectTransform.localScale = _centerRingsScale;
             if(_ringImages[2] != null) _ringImages[2].rectTransform.localScale = _centerRingsScale;
+            if(_ringImages[5] != null) _ringImages[5].rectTransform.localScale = _centerRingsScale;
+            if(_ringImages[6] != null) _ringImages[6].rectTransform.localScale = _centerRingsScale;
         }
         
         /// <summary>
