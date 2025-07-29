@@ -114,6 +114,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             return _stunEndTiming > timing;
         }
+        
+        /// <summary>
+        ///     フィニッシャーが可能かどうかを判定する
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFinisherable()
+        {
+            return _target.IsFinisherable;
+        }
+        
         #endregion
 
         #region  インターフェースメソッド
@@ -792,15 +802,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
             _lastAvoidSuccessTiming = Time.time;
-        }
-
-        /// <summary>
-        ///     フィニッシャーが可能かどうかを判定する
-        /// </summary>
-        /// <returns></returns>
-        private bool IsFinisherable()
-        {
-            return _target.IsFinisherable;
         }
 
 # if UNITY_EDITOR
