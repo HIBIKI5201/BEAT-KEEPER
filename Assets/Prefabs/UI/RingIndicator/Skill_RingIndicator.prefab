@@ -105,6 +105,7 @@ MonoBehaviour:
   _apperanceSoundCueName: Ring_Skill
   _skillGroup: {fileID: 6919595722609849635}
   _finisherGroup: {fileID: 3435196377680079590}
+  _changeDuration: 0.2
   _finisherColor: {r: 0.48627454, g: 0.9960785, b: 0.54509807, a: 1}
   _translucentFinisherColor: {r: 0.4862745, g: 0.99607843, b: 0.54509807, a: 0.043137256}
   _centerText: {fileID: 5711982954574632157}
@@ -317,7 +318,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2930255250106735334}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1049,7 +1050,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9059079520883803577}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

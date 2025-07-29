@@ -1,6 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.System;
 using DG.Tweening;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
     public class SpecialIndicator : RingIndicatorBase
     {
         public override int EffectLength => 3;
-
+        
         public override void Effect(int count)
         {
             base.Effect(count);
-
+            
+            // 即座にスキルノーツ/フィニッシャーノーツの見た目の変更を行う
+            CanvasChangeTween();
+            
+            // フィニッシャーが発動できるか監視を行う。前回の変更時と状態が変化したときだけ、見た目を切り替えるTweenを発火する
+            StartAwaitable();
+            
             switch (count)
             {
                 // 1拍目　縮小エフェクトを開始する
@@ -36,6 +43,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _player.OnSkill -= PlaySkillEffect;
             
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
+            
             // 全てのTweenを停止
             foreach (var tween in _tweens)
             {
@@ -45,6 +56,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
+            CanvasChangeTween();
             
             base.End();
         }
@@ -54,14 +66,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間
         private const float RECEPTION_TIME = 0.45f;
 
+        [Header("スキル/フィニッシャーノーツ切り替え用の設定")]
         [SerializeField] private CanvasGroup _skillGroup; // スキルノーツのCanvasGroup
         [SerializeField] private CanvasGroup _finisherGroup; // フィニッシャーノーツのCanvasGroup
+        [SerializeField] private float _changeDuration = 0.2f; // 切り替えにかける秒数
         [SerializeField] private Color _finisherColor; // フィニッシャー用の色指定
         [SerializeField] private Color _translucentFinisherColor; // フィニッシャー用の半透明の色指定
         [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
 
+        private CancellationTokenSource _cts; // フィニッシャー発動可能か監視する非同期処理のキャンセル用
+        private bool _finisherable; // 前回の変更時フィニッシャー可能か
+        private Tween _changeTween; // 切り替えTween
+        
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
@@ -109,11 +127,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             _tweens[0] = sequence;
             
+            var 
+            
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
+                
+                // 色を濃くする
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Join(_ringImages[5].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Join(_ringImages[6].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                
+                // 元に戻る
                 .Append(_ringImages[2].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .Join(_ringImages[5].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .Join(_ringImages[6].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
@@ -168,6 +192,56 @@ namespace BeatKeeper.Runtime.Ingame.UI
             failSequence.OnComplete(End);
             
             _tweens[0] = failSequence;
+        }
+
+        private void StartAwaitable()
+        {
+            _cts = new CancellationTokenSource();
+            _ = MonitorFinisherableStateAsync(_cts.Token);
+        }
+        
+        private async Awaitable MonitorFinisherableStateAsync(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                if (_finisherable != _player.IsFinisherable())
+                {
+                    CanvasChangeTween();
+                }
+        
+                await Awaitable.NextFrameAsync(token);
+            }
+        }
+        
+        /// <summary>
+        /// フィニッシャーノーツとスキルノーツの見た目を切り替えるTween
+        /// </summary>
+        private void CanvasChangeTween()
+        {
+            // 変数を上書き
+            _finisherable = _player.IsFinisherable();
+
+            // 既にTweenがあったらKill
+            _changeTween?.Kill();
+            
+            var sequence = DOTween.Sequence();
+            
+            if (_finisherable)
+            {
+                // フィニッシャーが可能なときはフィニッシャーノーツを表示する
+                sequence.Append(_finisherGroup.DOFade(1, _changeDuration));
+                sequence.Join(_skillGroup.DOFade(0, _changeDuration));
+            }
+            else
+            {
+                // フィニッシャーが不可能なときはスキルノーツを表示する
+                sequence.Append(_skillGroup.DOFade(1, _changeDuration));
+                sequence.Join(_finisherGroup.DOFade(0, _changeDuration));
+            }
+
+            _changeTween = sequence;
+
+            StartAwaitable();
         }
 
         /// <summary>
