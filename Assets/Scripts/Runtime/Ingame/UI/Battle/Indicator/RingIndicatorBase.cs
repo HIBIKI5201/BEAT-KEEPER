@@ -119,7 +119,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         protected int _timing;
         protected int _count;
-        protected Tween[] _tweens = new Tween[0];
+        protected Tween[] _tweens;
         
         private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
 
