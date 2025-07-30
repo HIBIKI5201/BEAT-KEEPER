@@ -718,7 +718,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private async void ChargeAttackCharging()
         {
             Debug.Log($"{_data.Name} start charge attack");
-            OnStartChargeAttack?.Invoke();
+            _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
@@ -814,7 +814,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _isThisBeatInputed = true; //連打防止フラグを立てる
 
-            OnSuccessAvoid?.Invoke();
+            _onSuccessAvoid?.Invoke();
             SoundEffectManager.PlaySoundEffect(_avoidSound);
 
             _animeManager.Avoid();
