@@ -1,11 +1,12 @@
-﻿using System;
-using BeatKeeper.Runtime.Ingame.Character;
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
+    /// <summary>
+    ///     InGameシーンのマネージャー
+    /// </summary>
     public class InGameSceneManager : SceneManagerB
     {
         private void Start()

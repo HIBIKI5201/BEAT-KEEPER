@@ -1,5 +1,6 @@
 ﻿using System;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
@@ -14,19 +15,20 @@ namespace BeatKeeper
     {
         private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
         [SerializeField] private ComboBonusSettingsSO _comboBonusData;
-        
+
         public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;
         private readonly ReactiveProperty<int> _scoreProp = new ReactiveProperty<int>(0);
         public int Score => _scoreProp.Value;
-        
+
         /// <summary>
         /// コンボによるスコアボーナス倍率
         /// </summary>
         public ReadOnlyReactiveProperty<float> BonusMultiply => _bonusMultiply;
         private readonly ReactiveProperty<float> _bonusMultiply = new ReactiveProperty<float>(0);
-
+        private CompositeDisposable _disposable = new CompositeDisposable();
+        
         private int _preBattleScore = 0; // バトルが始まる直前のスコア（バトルグレードの判定用）
-
+        
         private void Awake()
         {
             if (_comboBonusData == null)
@@ -38,48 +40,41 @@ namespace BeatKeeper
         private async void Start()
         {
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            if (_playerManager != null)
+            {
+                _playerManager.ComboSystem.ComboCount.Subscribe(EvaluateComboBonus).AddTo(_disposable);
+            }
         }
 
+        private void OnDestroy()
+        {
+            // コンボ数のリアクティブプロパティの購読をやめる
+            _disposable?.Dispose();
+        }
+        
         /// <summary>
         /// スコアを更新する
         /// </summary>
         public void AddScore(int score)
         {
             int addedScore = score + Score;
-            
+
             // 正の数ならコンボボーナスも含めて計算する。負の数なら受け取ったスコアのまま
             if (score > 0)
             {
-                addedScore = Mathf.RoundToInt(score * EvaluateComboBonus()) + Score; // 小数点以下は切り捨ててint型に変換
+                addedScore = Mathf.RoundToInt(score * _bonusMultiply.Value) + Score; // 小数点以下は切り捨ててint型に変換
             }
             _scoreProp.Value = Mathf.Max(addedScore, 0); // スコアはゼロ以下にはしない
-
-            SymphonyDebugLog.DirectLog($"[ScoreManager]\nスコアを更新 現在: {_scoreProp.Value} (追加: {score})");
         }
 
-        /// <summary>
-        /// コンボ倍率を設定する
-        /// </summary>
-        private float EvaluateComboBonus()
-        {
-            if (_playerManager == null || _comboBonusData == null)
-            {
-                return 1.0f;
-            }
-
-            int currentCombo = _playerManager.ComboSystem.ComboCount.CurrentValue;
-            float bonusMultiply = _comboBonusData.GetBonusMultiplier(currentCombo);
-            _bonusMultiply.Value = bonusMultiply; // スコア倍率のリアクティブプロパティを更新
-            return bonusMultiply;
-        }
-        
         /// <summary>
         /// バトル開始時にスコアを保存する
         /// </summary>
         public void SavePreBattleScore()
         {
             _preBattleScore = Score;
-            Debug.Log($"[ScoreManager] スコアを保存しました 保存: {_preBattleScore}"); 
+            Debug.Log($"[ScoreManager] スコアを保存しました 保存: {_preBattleScore}");
         }
 
         /// <summary>
@@ -98,6 +93,27 @@ namespace BeatKeeper
         {
             _scoreProp.Value = 0;
             Debug.Log($"[ScoreManager] スコアをリセットしました 現在: {Score}");
+        }
+        
+        /// <summary>
+        /// コンボ倍率を設定する
+        /// </summary>
+        private void EvaluateComboBonus(int comboCount)
+        {
+            if (_playerManager == null || _comboBonusData == null)
+            {
+                return;
+            }
+
+            // コンボボーナスを設定しているScriptableObjectから現在のコンボに対応するコンボボーナスを取得
+            float bonusMultiply = _comboBonusData.GetBonusMultiplier(comboCount);
+            
+            // float型の比較になるため「0に近くない時」で比較
+            if (!Mathf.Approximately(bonusMultiply, _bonusMultiply.Value))
+            {
+                // 値が変動していた場合、スコア倍率のリアクティブプロパティを更新
+                _bonusMultiply.Value = bonusMultiply;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.Battle;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
 using System;
 using UnityEngine;
 
@@ -11,12 +11,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public abstract class CharacterManagerB<TDataType> : MonoBehaviour, IHitable
         where TDataType : CharacterData
     {
-        [SerializeField] protected TDataType _data;
-
+        public Action<int> OnHitAttack { get; set; }
 
         public TDataType Data => _data;
 
-        public Action<int> OnHitAttack { get; set; }
+        public virtual void HitAttack(AttackData data) { }
+
+        [SerializeField] protected TDataType _data;
 
         protected virtual void Awake()
         {
@@ -26,9 +27,5 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} initialized");
         }
 
-        public virtual void HitAttack(AttackData data)
-        {
-             
-        }
     }
 }

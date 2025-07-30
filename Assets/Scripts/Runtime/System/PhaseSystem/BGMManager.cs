@@ -1,8 +1,11 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
+using CriWare;
 using R3;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -12,12 +15,6 @@ namespace BeatKeeper.Runtime.Ingame.System
     /// </summary>
     public class BGMManager : MonoBehaviour
     {
-
-        private const int DEFAULT_MAX_REPEAT_COUNT = 100; //TODO: 繰り返し回数の上限を適切な値が渡せるように修正する
-
-        // タイミングを指定して実行するアクションのディクショナリ
-        private readonly Dictionary<TimingKey, Dictionary<Guid, TimingActionInfo>> _timingActions = new();
-
         #region イベント
 
         /// <summary>小節が切り替わった時に発火するイベント</summary>
@@ -39,62 +36,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         public ReadOnlyReactiveProperty<bool> IsNearBarChange => _isNearBarChange;
         public ReadOnlyReactiveProperty<bool> IsNearBeatChange => _isNearBeatChange;
 
-        [Tooltip("小節の切り替わりタイミングが近いかどうか")]
-        private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
-        [Tooltip("拍の切り替わりタイミングが近いかどうか")]
-        private readonly ReactiveProperty<bool> _isNearBeatChange = new(false);
-
         #endregion
 
-        // TODO: リファクタリング
-
-        /// <summary>
-        /// BGMレイヤーを管理するためのFlowZoneSystemの参照
-        /// </summary>
-        private FlowZoneSystem _flowZoneSystem;
-
-        private CompositeDisposable _disposable = new();
-
-        private async void Start()
-        {
-            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-            _flowZoneSystem = playerManager.FlowZoneSystem;
-
-            // リズム共鳴のリアクティブプロパティを購読
-            _flowZoneSystem.ResonanceCount
-                .Subscribe(OnChangeResonanceCount)
-                .AddTo(_disposable);
-        }
-
-        private void OnChangeResonanceCount(int value)
-        {
-            ChangeBGMLayer(GetLayerEnum(value).ToString());
-        }
-
-        /// <summary>
-        /// 受け取ったValueを変換し変更するBGMレイヤーを決定する
-        /// </summary>
-        private BGMLayerEnum GetLayerEnum(int value)
-        {
-            // 共鳴カウントを最大値で正規化し、レイヤー数（0-5の6段階）にスケーリング
-            int layerIndex = value * 5 / FlowZoneSystem.MAX_COUNT;
-            return (BGMLayerEnum)layerIndex;
-        }
-
-        #region ライフサイクル
-
-        private void Update()
-        {
-            CheckAndNotifyBarChanges();
-            CheckAndNotifyBeatChanges();
-        }
-
-        private void OnDestroy()
-        {
-            _disposable?.Dispose();
-        }
-
-        #endregion
 
         #region BGMの管理
 
@@ -104,7 +47,16 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeBGM(string name)
         {
-            Music.SetHorizontalSequence(name);
+            Music.Play(name);
+
+            if (Music.Current.TryGetComponent<CriAtomSource>(out var source))
+            {
+                _atomSource = source;
+                _lastJustBeat = 0;
+                _lastNearBeat = 0;
+                ChangeSelectLayer(0);
+            }
+
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
         }
 
@@ -112,59 +64,34 @@ namespace BeatKeeper.Runtime.Ingame.System
         ///     BGMのレイヤーを変更する
         /// </summary>
         /// <param name="name"></param>
-        public void ChangeBGMLayer(string name)
+        public void ChangeSelectLayer(int index)
         {
-            Music.SetVerticalMix(name);
-            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを変更しました");
-        }
+            StringBuilder label = new(_selectorLabelName);
 
-        #endregion
-
-        #region タイミング変更の検知（Update内で呼んでいるメソッド2種）
-
-        /// <summary>
-        /// 小節情報の処理
-        /// </summary>
-        private void CheckAndNotifyBarChanges()
-        {
-            // 小節の切り替わりチェック
-            if (Music.IsJustChangedBar())
+            if (index <= 4) //レイヤーを変更する
             {
-                _isNearBarChange.Value = false;
-                OnJustChangedBar?.Invoke();
-                return;
+                label.Append(index.ToString("0"));
+            }
+            else
+            {
+                float beat = MusicEngineHelper.GetBeatSinceStart();
+
+                //今の範囲を計算
+                int layer = 
+                    (Mathf.CeilToInt(
+                        (beat - 16) //イントロの分を減らす
+                        % 64f //ループ分を削る
+                        / 16f) //拍から節に変換
+                    + 1) // 最低でも1以上になる
+                    * 4 + 1; //レイヤー値の4n+1に合わせる
+
+                //遷移先のレイヤー名を取得
+                label.Append(layer.ToString("0"));
             }
 
-            // 小節の切り替わりが近いかチェック
-            bool isNear = Music.IsNearChangedBar();
-            if (isNear && !_isNearBarChange.Value)
-            {
-                _isNearBarChange.Value = true;
-                OnNearChangedBar?.Invoke();
-            }
-        }
-
-        /// <summary>
-        /// 拍情報の処理
-        /// </summary>
-        private void CheckAndNotifyBeatChanges()
-        {
-            // 拍の切り替わりチェック
-            if (Music.IsJustChangedBeat())
-            {
-                _isNearBeatChange.Value = false;
-                OnJustChangedBeat?.Invoke();
-                ProcessTimingActions(); // タイミングアクションの実行
-                return;
-            }
-
-            // 拍の切り替わりが近いかチェック
-            bool isNear = Music.IsNearChangedBeat();
-            if (isNear && !_isNearBeatChange.Value)
-            {
-                _isNearBeatChange.Value = true;
-                OnNearChangedBeat?.Invoke();
-            }
+            _atomSource.player.SetSelectorLabel(_selectorName, label.ToString());
+            _atomSource.player.UpdateAll();
+            Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました。\nセレクター名 {label.ToString()}");
         }
 
         #endregion
@@ -234,18 +161,6 @@ namespace BeatKeeper.Runtime.Ingame.System
             return actionId;
         }
 
-        /// <summary>
-        /// タイミングアクションを辞書に追加する
-        /// </summary>
-        private void AddActionToTiming(TimingKey timing, Guid actionId, TimingActionInfo actionInfo)
-        {
-            // キーが既に辞書に存在する場合は、そのDictionaryにactionInfoを追加し、
-            // 存在しない場合は、そのactionInfoを含む新しいDictionaryを作成して辞書に追加する
-            if (!_timingActions.TryAdd(timing, new Dictionary<Guid, TimingActionInfo> { [actionId] = actionInfo }))
-            {
-                _timingActions[timing][actionId] = actionInfo;
-            }
-        }
         #endregion
 
         #region タイミングアクション削除
@@ -332,6 +247,146 @@ namespace BeatKeeper.Runtime.Ingame.System
         }
 
         #endregion
+
+        private const int DEFAULT_MAX_REPEAT_COUNT = 100; //TODO: 繰り返し回数の上限を適切な値が渡せるように修正する
+
+        // タイミングを指定して実行するアクションのディクショナリ
+        private readonly Dictionary<TimingKey, Dictionary<Guid, TimingActionInfo>> _timingActions = new();
+
+        [SerializeField]
+        private string _selectorName = "Selector_for_Battle";
+        [SerializeField]
+        private string _selectorLabelName = "SelectorLabel_Layer";
+        [SerializeField]
+        private string _selectorFlowZoneLabelName = "SelectorLabel_Flowzone_from";
+
+        [Tooltip("小節の切り替わりタイミングが近いかどうか")]
+        private readonly ReactiveProperty<bool> _isNearBarChange = new(false);
+        [Tooltip("拍の切り替わりタイミングが近いかどうか")]
+        private readonly ReactiveProperty<bool> _isNearBeatChange = new(false);
+
+        private CriAtomSource _atomSource;
+
+        /// <summary>
+        /// BGMレイヤーを管理するためのFlowZoneSystemの参照
+        /// </summary>
+        private FlowZoneSystem _flowZoneSystem;
+
+        private CompositeDisposable _disposable = new();
+
+        private int _lastJustBeat;
+        private int _lastNearBeat;
+
+        private async void Start()
+        {
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
+            _flowZoneSystem = playerManager.FlowZoneSystem;
+
+            // リズム共鳴のリアクティブプロパティを購読
+            _flowZoneSystem.ResonanceCount
+                .Subscribe(OnChangeResonanceCount)
+                .AddTo(_disposable);
+        }
+
+        private void OnChangeResonanceCount(int value)
+        {
+            ChangeSelectLayer((int)GetLayerEnum(value));
+        }
+
+        /// <summary>
+        /// 受け取ったValueを変換し変更するBGMレイヤーを決定する
+        /// </summary>
+        private BGMLayerEnum GetLayerEnum(int value)
+        {
+            // 共鳴カウントを最大値で正規化し、レイヤー数（0-5の6段階）にスケーリング
+            //int layerIndex = value * (Enum.GetValues(typeof(BGMLayerEnum)).Length - 1) / FlowZoneSystem.MAX_COUNT;
+            int layerIndex = value * 5 / FlowZoneSystem.MAX_COUNT;
+            return (BGMLayerEnum)layerIndex;
+        }
+
+        #region ライフサイクル
+
+        private void Update()
+        {
+            CheckAndNotifyBarChanges();
+            CheckAndNotifyBeatChanges();
+        }
+
+        private void OnDestroy()
+        {
+            _disposable?.Dispose();
+        }
+
+        #endregion
+
+        #region タイミング変更の検知（Update内で呼んでいるメソッド2種）
+
+        /// <summary>
+        /// 小節情報の処理
+        /// </summary>
+        private void CheckAndNotifyBarChanges()
+        {
+            // 小節の切り替わりチェック
+            if (Music.IsJustChangedBar())
+            {
+                _isNearBarChange.Value = false;
+                OnJustChangedBar?.Invoke();
+                return;
+            }
+
+            // 小節の切り替わりが近いかチェック
+            bool isNear = Music.IsNearChangedBar();
+            if (isNear && !_isNearBarChange.Value)
+            {
+                _isNearBarChange.Value = true;
+                OnNearChangedBar?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 拍情報の処理
+        /// </summary>
+        private void CheckAndNotifyBeatChanges()
+        {
+            int just = MusicEngineHelper.GetBeatSinceStart();
+            int near = MusicEngineHelper.GetBeatNearerSinceStart();
+
+
+            // 拍の切り替わりチェック
+            if (_lastJustBeat != just)
+            {
+                _lastJustBeat = just;
+                _isNearBeatChange.Value = false;
+                OnJustChangedBeat?.Invoke();
+                ProcessTimingActions(); // タイミングアクションの実行
+                return;
+            }
+
+            // 拍の切り替わりが近いかチェック
+            if (_lastNearBeat != near && !_isNearBeatChange.Value)
+            {
+                _lastNearBeat = near;
+                _isNearBeatChange.Value = true;
+                OnNearChangedBeat?.Invoke();
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// タイミングアクションを辞書に追加する
+        /// </summary>
+        private void AddActionToTiming(TimingKey timing, Guid actionId, TimingActionInfo actionInfo)
+        {
+            // キーが既に辞書に存在する場合は、そのDictionaryにactionInfoを追加し、
+            // 存在しない場合は、そのactionInfoを含む新しいDictionaryを作成して辞書に追加する
+            if (!_timingActions.TryAdd(timing, new Dictionary<Guid, TimingActionInfo> { [actionId] = actionInfo }))
+            {
+                _timingActions[timing][actionId] = actionInfo;
+            }
+        }
 
         #region タイミングアクションの実行処理
 

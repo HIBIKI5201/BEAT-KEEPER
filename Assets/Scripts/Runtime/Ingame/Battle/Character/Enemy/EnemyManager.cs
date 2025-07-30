@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     敵キャラクターの管理クラス
+    /// </summary>
     public class EnemyManager : CharacterManagerB<EnemyData>, IEnemy, IDisposable
     {
         public event Action OnFinisherable;
@@ -17,6 +20,81 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnShootChargeAttack;
 
         public CharacterHealthSystem HealthSystem => _healthSystem;
+        public bool IsFinisherable => _canFinisher;
+
+        public void Dispose()
+        {
+            InputUnregister();
+        }
+
+        /// <summary>
+        ///     入力の登録を行う
+        /// </summary>
+        public void InputRegister()
+        {
+            if (_bgmManager)
+            {
+                _bgmManager.OnNearChangedBeat += OnAttack;
+            }
+        }
+
+        /// <summary>
+        ///     入力の登録を解除する
+        /// </summary>
+        public void InputUnregister()
+        {
+            if (_bgmManager)
+            {
+                _bgmManager.OnNearChangedBeat -= OnAttack;
+            }
+        }
+
+        /// <summary>
+        ///     戦闘を有効化する
+        /// </summary>
+        public void SetActive()
+        {
+            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
+            _target = ServiceLocator.GetInstance<PlayerManager>();
+
+            if (!_bgmManager)
+            {
+                Debug.LogWarning($"{_data.name} has no music engine");
+            }
+
+            SetActiveModel(true);
+
+            //フェーズ変更時のイベント登録
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            phaseManager.CurrentPhaseProp
+                .Subscribe(OnPhaseChange)
+                .AddTo(destroyCancellationToken);
+        }
+
+        /// <summary>
+        ///     モデルの表示・非表示を切り替える
+        /// </summary>
+        /// <param name="active"></param>
+        public void SetActiveModel(bool active)
+        {
+            _modelParent.SetActive(active);
+        }
+
+        public override void HitAttack(AttackData data)
+        {
+            base.HitAttack(data);
+
+            _healthSystem?.HealthChange(-data.Damage);
+
+            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+
+            FinisherableCheck(); //フィニッシャー可能かどうかを確認
+
+            if (data.IsNockback) //ノックバックする
+            {
+                Nockback();
+            }
+        }
 
         EnemyData IEnemy.EnemyData => _data;
 
@@ -58,38 +136,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnDestroy()
         {
             InputRegister();
-        }
-
-        public void Dispose()
-        {
-            InputUnregister();
-        }
-
-        /// <summary>
-        ///     戦闘を有効化する
-        /// </summary>
-        public void SetActive()
-        {
-            _bgmManager = ServiceLocator.GetInstance<BGMManager>();
-            _target = ServiceLocator.GetInstance<PlayerManager>();
-
-            if (!_bgmManager)
-            {
-                Debug.LogWarning($"{_data.name} has no music engine");
-            }
-
-            SetActiveModel(true);
-
-            //フェーズ変更時のイベント登録
-            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            phaseManager.CurrentPhaseProp
-                .Subscribe(OnPhaseChange)
-                .AddTo(destroyCancellationToken);
-        }
-
-        public void SetActiveModel(bool active)
-        {
-            _modelParent.SetActive(active);
         }
 
         /// <summary>
@@ -143,44 +189,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         /// <summary>
-        ///     入力の登録を行う
-        /// </summary>
-        public void InputRegister()
-        {
-            if (_bgmManager)
-            {
-                _bgmManager.OnJustChangedBeat += OnAttack;
-            }
-        }
-
-        /// <summary>
-        ///     入力の登録を解除する
-        /// </summary>
-        public void InputUnregister()
-        {
-            if (_bgmManager)
-            {
-                _bgmManager.OnJustChangedBeat -= OnAttack;
-            }
-        }
-
-        public override void HitAttack(AttackData data)
-        {
-            base.HitAttack(data);
-
-            _healthSystem?.HealthChange(-data.Damage);
-
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
-
-            FinisherableCheck(); //フィニッシャー可能かどうかを確認
-
-            if (data.IsNockback) //ノックバックする
-            {
-                Nockback();
-            }
-        }
-
-        /// <summary>
         ///     フィニッシャー可能かどうかを確認する
         /// </summary>
         private void FinisherableCheck()
@@ -193,7 +201,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 Debug.Log("Finisherable event triggered for " + _data.name);
 
-                InputUnregister(); // 入力の登録を解除
                 _canFinisher = true;
                 OnFinisherable?.Invoke();
             }

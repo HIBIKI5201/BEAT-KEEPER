@@ -2,19 +2,11 @@
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     Playerのアニメーション制御を請け負う
+    /// </summary>
     public class PlayerAnimeManager : CharacterAnimeManagerB
     {
-        private readonly int _moveX = Animator.StringToHash("MoveX");
-        private readonly int _moveZ = Animator.StringToHash("MoveZ");
-
-        private readonly int _avoid = Animator.StringToHash("Avoid");
-        private readonly int _hit = Animator.StringToHash("Hit");
-
-        private readonly int _shoot = Animator.StringToHash("Shoot");
-        private readonly int _combo = Animator.StringToHash("Combo");
-
-        private readonly int _skill = Animator.StringToHash("Skill");
-
         public PlayerAnimeManager(Animator animator) : base(animator) { }
 
         public void Avoid() => _animator?.SetTrigger(_avoid);
@@ -29,7 +21,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Shoot() => _animator?.SetTrigger(_shoot);
         public void Combo(int count) => _animator?.SetInteger(_combo, count);
+        public void ChargeShoot() => _animator?.SetTrigger(_chargeShoot);
 
         public void Skill() => _animator?.SetTrigger(_skill);
+
+        private readonly int _moveX = Animator.StringToHash("MoveX");
+        private readonly int _moveZ = Animator.StringToHash("MoveZ");
+
+        private readonly int _avoid = Animator.StringToHash("Avoid");
+        private readonly int _hit = Animator.StringToHash("Hit");
+
+        private readonly int _shoot = Animator.StringToHash("Shoot");
+        private readonly int _combo = Animator.StringToHash("Combo");
+        private readonly int _chargeShoot = Animator.StringToHash("ChargeShoot");
+
+        private readonly int _skill = Animator.StringToHash("Skill");
     }
 }

@@ -9,9 +9,6 @@ namespace BeatKeeper.Runtime.Ingame.System
     /// </summary>
     public class PhaseManager : MonoBehaviour
     {
-        [SerializeField] private PhaseEnum _firstPhase = PhaseEnum.Movie;
-        private readonly ReactiveProperty<PhaseEnum> _currentPhaseProp = new();
-
         /// <summary>
         ///     現在のフェーズ
         /// </summary>
@@ -19,27 +16,34 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         public ReadOnlyReactiveProperty<PhaseEnum> CurrentPhaseProp => _currentPhaseProp;
 
-        private void Awake()
-        {
-            TransitionTo(_firstPhase); // 指定したフェーズから始める
-        }
-
         public void NextPhase()
         {
             TransitionTo((PhaseEnum)((int)(_currentPhaseProp.Value + 1) % Enum.GetValues(typeof(PhaseEnum)).Length));
         }
-
+        
         /// <summary>
-        ///     フェーズを変更する※InGameSystemから変更すること
+        ///     フェーズを変更する
         /// </summary>
-        private void TransitionTo(PhaseEnum nextPhase)
+        public void TransitionTo(PhaseEnum nextPhase)
         {
             // 同じフェーズへの遷移をチェック
-            if (CurrentPhase == nextPhase) Debug.Log($"[PhaseManager] 同じフェーズです: {nextPhase}");
+            if (CurrentPhase == nextPhase)
+            {
+                Debug.Log($"[PhaseManager] 同じフェーズです: {nextPhase}");
+                return;
+            }
 
             // フェーズの更新
             _currentPhaseProp.Value = nextPhase;
             Debug.Log($"[PhaseManager] フェーズが変更されました 現在：{CurrentPhase}");
+        }
+
+        [SerializeField] private PhaseEnum _firstPhase = PhaseEnum.Movie;
+        private readonly ReactiveProperty<PhaseEnum> _currentPhaseProp = new();
+
+        private void Awake()
+        {
+            TransitionTo(_firstPhase); // 指定したフェーズから始める
         }
     }
 }

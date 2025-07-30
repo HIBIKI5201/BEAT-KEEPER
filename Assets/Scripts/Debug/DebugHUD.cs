@@ -1,8 +1,11 @@
-﻿using System;
+﻿using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
+using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Develop
 {
     public class DebugHUD : MonoBehaviour
     {
@@ -16,6 +19,8 @@ namespace BeatKeeper
 
         private void OnGUI()
         {
+            if (!Application.isPlaying) return;
+
             int w = Screen.width, h = Screen.height;
 
             GUIStyle style = new GUIStyle();
@@ -24,8 +29,6 @@ namespace BeatKeeper
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = h * 1 / 50;
             style.normal.textColor = Color.white;
-
-            var currentBeat = MusicEngineHelper.GetBeatSinceStart();
 
             float msec = deltaTime * 1000.0f;
             float fps = 1.0f / deltaTime;
@@ -46,7 +49,18 @@ namespace BeatKeeper
                 (totalReserved / (1024 * 1024))
                 );
 
-            text += $"Current Beat: {currentBeat}";
+            if (Music.Current != null)
+            {
+                (int just, int near) beat = (MusicEngineHelper.GetBeatSinceStart(), MusicEngineHelper.GetBeatNearerSinceStart());
+                text += $"Beat: just {beat.just}, near {beat.near}\n";
+                text += $"Bar:{Music.Just.Bar}, Just:{Music.Just.Beat}\n";
+            }
+
+            PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
+            if (player != null)
+            {
+                text += $"combo : {player.ComboSystem.ComboCount}\n";
+            }
 
             GUI.Label(rect, text, style);
         }

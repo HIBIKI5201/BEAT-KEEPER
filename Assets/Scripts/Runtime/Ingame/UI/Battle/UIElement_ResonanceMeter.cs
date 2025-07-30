@@ -14,11 +14,14 @@ namespace BeatKeeper
     /// </summary>
     public class UIElement_ResonanceMeter : MonoBehaviour
     {
+        [Header("初期設定")]
         [SerializeField] private GameObject _meterPrefab;
-        [SerializeField] private Color _defaultColor = Color.black;
-        [SerializeField] private Color _resonanceColor = Color.yellow;
-        [SerializeField] private Image[] _icons;
+        [SerializeField, Tooltip("点灯していないときの画像")] private Sprite _defaultSprite;
+        [SerializeField, Tooltip("点灯時の画像")] private Sprite _lightingSprite;
         [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
+        
+        [Header("実行中に追加されるもの")]
+        [SerializeField] private Image[] _icons;
 
         private PlayerManager _playerManager;
         private CompositeDisposable _disposable = new CompositeDisposable();
@@ -66,6 +69,9 @@ namespace BeatKeeper
                 {
                     _icons[i] = go.AddComponent<Image>();
                 }
+                
+                // デフォルトの画像を設定
+                _icons[i].sprite = _defaultSprite;
             }
         }
 
@@ -74,6 +80,13 @@ namespace BeatKeeper
         /// </summary>
         private void IconColorChanged(int count)
         {
+            if (count == 0)
+            {
+                // フローゾーンゲージのカウントがリセットされた場合、UIも全て暗い色に変更
+                AllReset();
+                return;
+            }
+            
             count--; // カウントが1オリジンで渡ってくるので、1減らす処理を挟む
 
             if (count < -1 || count >= _icons.Length) // 0-6の範囲に収めたい
@@ -82,7 +95,8 @@ namespace BeatKeeper
                 return;
             }
 
-            _icons[count].color = _resonanceColor;
+            // 点灯時の画像に差し替える
+            _icons[count].sprite = _lightingSprite;
         }
 
         /// <summary>
@@ -92,7 +106,8 @@ namespace BeatKeeper
         {
             foreach (var icon in _icons)
             {
-                icon.color = _defaultColor;
+                // デフォルトの画像に戻す
+                icon.sprite = _defaultSprite;
             }
         }
 

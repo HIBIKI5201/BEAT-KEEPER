@@ -1,14 +1,11 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
-using UnityEngine;
 using UnityEngine.Playables;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.System.Sequence
 {
     public class BGMChangeBehaviour : PlayableBehaviour
     {
-        private string _bgmName = string.Empty;
-
         public void SetBGMName(string name) => _bgmName = name;
 
         public override void OnBehaviourPlay(Playable playable, FrameData info)
@@ -19,5 +16,7 @@ namespace BeatKeeper
                 bgmManager.ChangeBGM(_bgmName);
             }
         }
+
+        private string _bgmName = string.Empty;
     }
 }

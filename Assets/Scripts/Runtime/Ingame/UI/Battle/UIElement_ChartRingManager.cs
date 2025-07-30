@@ -23,9 +23,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField]
         private RingIndicatorData _ringIndicatorData;
 
-        [SerializeField, Tooltip("攻撃予告")]
-        private AudioClip _apearSound;
-
         private StageEnemyAdmin _enemies;
         private BGMManager _musicEngineHelper;
 
@@ -35,13 +32,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
         private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
         private int[] _appearTiming;
-        private AudioSource _soundEffectSource;
 
         private EnemyData _targetData;
+		public EnemyData TargetData => _targetData;
 
         private async void Start()
         {
             _player = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            _player.OnFinisher += OnFinisher;
             _musicEngineHelper = ServiceLocator.GetInstance<BGMManager>();
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
@@ -49,8 +47,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 phaseManager.CurrentPhaseProp
                     .Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
             }
-
-            _soundEffectSource = AudioManager.GetAudioSource(AudioGroupTypeEnum.SE.ToString());
+            _enemies = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())?.EnemyAdmin;
+            _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
             ObjectPoolInitialize();
         }
@@ -71,12 +69,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (phase == PhaseEnum.Battle) //譜面を取得してビートの購買を開始
             {
-                _enemies = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
+                _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
-                _musicEngineHelper.OnJustChangedBeat += OnJustBeat;
-                enemy.OnFinisherable += OnFinisherable;
+                RegisterOnJustBeat();
             }
         }
 
@@ -114,17 +111,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         op.Release(ring); //オブジェクトを非アクティブに
                         _activeRingIndicator.Remove(ring); //アクティブリストから除外
                     },
-                        element.Position);
-
-                    _soundEffectSource?.PlayOneShot(_apearSound);
+                        element.Position, (timing + _appearTiming[i]) % chart.Length);
                 }
             }
         }
 
         /// <summary>
-        ///     フィニッシャー待機状態になった時の処理
+        ///     フィニッシャー開始時の処理
         /// </summary>
-        private void OnFinisherable()
+        private void OnFinisher()
         {
             UnregisterOnJustBeat();
             ReleaseAllActiveIndicator();
@@ -153,6 +148,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 var ring = _activeRingIndicator.ToArray()[i];
                 ring.CheckRemainTime();
+            }
+        }
+
+        private void RegisterOnJustBeat()
+        {
+            if (_musicEngineHelper)
+            {
+                _musicEngineHelper.OnJustChangedBeat += OnJustBeat;
             }
         }
 
@@ -214,7 +217,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                             manager.gameObject.SetActive(false);
                             _onBeat -= manager.AddCount;
                         },
-                        Destroy,
+                        manager => { if (Application.isPlaying) Destroy(manager); },
                         defaultCapacity: data.DefaultCapacity,
                         maxSize: 10));
             }

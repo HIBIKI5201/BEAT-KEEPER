@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
+    /// <summary>
+    ///     譜面データを管理するクラス
+    /// </summary>
     [CreateAssetMenu(fileName = "ChartData", menuName = "BeatKeeper/ChartData", order = 1)]
     public partial class ChartData : ScriptableObject
     {
@@ -37,7 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             index %= _chart.Length;
 
             var attackKind =
-                ChartKindEnum.Normal | ChartKindEnum.Charge | ChartKindEnum.Super; //敵の攻撃
+                ChartKindEnum.Normal | ChartKindEnum.Charge; //敵の攻撃
 
             return (_chart[index].AttackKind & attackKind) != 0;
         }

@@ -4,24 +4,13 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.System
 {
     /// <summary>
     /// カメラマネージャー
     /// </summary>
     public class CameraManager : MonoBehaviour
     {
-        private CinemachineCamera _camera;
-
-        private readonly Dictionary<string, CinemachineCamera> _cameras = new();
-
-        private async void Start()
-        {
-            var stageManager = await ServiceLocator.GetInstanceAsync<StageSceneManager>();
-
-            ChangeCamera(stageManager.PlayerCamera);
-        }
-
         /// <summary>
         ///     使用するカメラを変更する
         /// </summary>
@@ -37,6 +26,16 @@ namespace BeatKeeper
             camera.enabled = true;
 
             _camera = camera;
+        }
+
+        private CinemachineCamera _camera;
+        private readonly Dictionary<string, CinemachineCamera> _cameras = new();
+
+        private async void Start()
+        {
+            var stageManager = await ServiceLocator.GetInstanceAsync<StageSceneManager>();
+
+            ChangeCamera(stageManager.PlayerCamera);
         }
     }
 }

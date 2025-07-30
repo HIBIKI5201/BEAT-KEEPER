@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.System
 {
     /// <summary>
     ///     入力を受け取るバッファー
@@ -15,42 +14,45 @@ namespace BeatKeeper
         private InputSystemUIInputModule _uiInputModule;
         public InputSystemUIInputModule uiInputModule => _uiInputModule;
 
-        # region Player
-        
+        #region Player
+
         public InputAction Move => _move;
         private InputAction _move;
-        
+
         public InputAction Look => _look;
         private InputAction _look;
-        
+
         public InputAction Attack => _attack;
         private InputAction _attack;
-        
+
         public InputAction Interact => _interact;
         private InputAction _interact;
 
         public InputAction Avoid => _avoid;
         private InputAction _avoid;
-        
+
         public InputAction Skill => _skill;
         private InputAction _skill;
-        
+
         public InputAction Special => _special;
         private InputAction _special;
-                
+
         public InputAction Finishier => _finisher;
         private InputAction _finisher;
 
         public InputAction Quit => _quit;
         private InputAction _quit;
-        
+
+        public InputAction AnyKey => _anyKey;
+        private InputAction _anyKey;
+
         #endregion
 
         private void Awake()
         {
             _playerInput = GetComponent<PlayerInput>();
             _uiInputModule = GetComponent<InputSystemUIInputModule>();
-            
+
             if (_playerInput)
             {
                 _playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
@@ -64,6 +66,7 @@ namespace BeatKeeper
                 _special = _playerInput.actions["Special"];
                 _finisher = _playerInput.actions["Finisher"];
                 _quit = _playerInput.actions["Quit"];
+                _anyKey = _playerInput.actions["AnyKey"];
             }
             else
             {
