@@ -24,13 +24,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnPerfectAttack;
         public event Action OnGoodAttack;
 
-        public event Action OnStartChargeAttack;
+        public event Action OnStartChargeAttack
+        {
+            add => _onStartChargeAttack.Event += value;
+            remove => _onStartChargeAttack.Event -= value;
+        }
         public event Action OnShootChargeAttack;
         public event Action OnFullChargeAttack;
         public event Action OnNonFullChargeAttack;
 
         public event Action OnFailedAvoid;
-        public event Action OnSuccessAvoid;
+        public event Action OnSuccessAvoid
+        {
+            add => _onSuccessAvoid.Event += value;
+            remove => _onSuccessAvoid.Event -= value;
+        }
         public event Action OnPerfectAvoid;
         public event Action OnGoodAvoid;
 
@@ -154,11 +162,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region プライベートフィールド
         [SerializeField]
-        private UnityEventWrapper _onSkill;
-
+        private UnityEventWrapper _onStartChargeAttack = new();
+        [SerializeField]
+        private UnityEventWrapper _onSkill = new();
+        [SerializeField]
+        private UnityEventWrapper _onSuccessAvoid = new();
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
-        [SerializeField] private GameObject _comboPerticle;
+        [SerializeField] private GameObject _comboShootPerticle;
         [SerializeField] private Transform _muzzle;
 
         #region サウンドクリップ
@@ -693,8 +704,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void BothComboAttack()
         {
             OnShootComboAttack?.Invoke();
-            if (_comboPerticle != null && _muzzle != null)
-                { Instantiate(_comboPerticle, _muzzle.position, _muzzle.rotation); }
+            if (_comboShootPerticle != null && _muzzle != null)
+                { Instantiate(_comboShootPerticle, _muzzle.position, _muzzle.rotation); }
             _comboSystem.Attack(); //コンボを更新
             _animeManager.Shoot();
             _target.NormalAttackRandomHit();
