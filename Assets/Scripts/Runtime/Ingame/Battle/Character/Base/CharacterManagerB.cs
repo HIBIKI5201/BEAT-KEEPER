@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.System;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,12 +15,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         public event Action<int> OnHitAttack
         {
-            add => _onHitAttack.AddListener(new UnityAction<int>(value));
-            remove => _onHitAttack.RemoveListener(new UnityAction<int>(value));
+            add => _onHitAttack.Event += value;
+            remove => _onHitAttack.Event += value;
         }
 
         [SerializeField]
-        protected UnityEvent<int> _onHitAttack;
+        protected UnityEventWrapper<int> _onHitAttack;
 
         public TDataType Data => _data;
 
@@ -31,7 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             //データがなかったら初期データをアサイン
             if (!_data) _data = ScriptableObject.CreateInstance<TDataType>();
-            
+
             Debug.Log($"{_data.Name} initialized");
         }
 
