@@ -49,7 +49,7 @@ namespace BeatKeeper.Runtime.System
 
         public void Invoke()
         {
-            _unityEvent.Invoke();
+            _unityEvent?.Invoke();
         }
 
         private Dictionary<Action, UnityAction> _actionToUnityActionMap = new();
@@ -101,7 +101,7 @@ namespace BeatKeeper.Runtime.System
 
         public void Invoke(T arg)
         {
-            _unityEvent.Invoke(arg);
+            _unityEvent?.Invoke(arg);
         }
 
         private Dictionary<Action<T>, UnityAction<T>> _actionToUnityActionMap = new();
