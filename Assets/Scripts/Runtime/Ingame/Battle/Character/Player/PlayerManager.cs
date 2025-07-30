@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -33,7 +34,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnPerfectAvoid;
         public event Action OnGoodAvoid;
 
-        public event Action OnSkill;
+        public event Action OnSkill
+        {
+            add => _onSkill.Event += value;
+            remove => _onSkill.Event -= value;
+        }
         public event Action OnPerfectSkill;
         public event Action OnGoodSkill;
 
@@ -148,6 +153,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region プライベートフィールド
+        [SerializeField]
+        private UnityEventWrapper _onSkill;
+
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
         [SerializeField] private GameObject _comboPerticle;
@@ -644,7 +652,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             
 
-            OnSkill?.Invoke();
+            _onSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
 

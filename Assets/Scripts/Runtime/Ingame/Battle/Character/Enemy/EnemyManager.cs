@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
@@ -18,6 +19,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnShootAttack;
         public event Action OnShootNormalAttack;
         public event Action OnShootChargeAttack;
+
+        public event Action OnHitCriticalAttack
+        {
+            add => _onHitCriticalAttack.Event += value;
+            remove => _onHitCriticalAttack.Event -= value;
+        }
 
         public CharacterHealthSystem HealthSystem => _healthSystem;
         public bool IsFinisherable => _canFinisher;
@@ -92,6 +99,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (data.IsNockback) //ノックバックする
             {
+                _onHitCriticalAttack?.Invoke(); //クリティカルヒットイベントを発火
                 Nockback();
             }
         }
@@ -110,6 +118,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         EnemyData IEnemy.EnemyData => _data;
+
+        [SerializeField]
+        private UnityEventWrapper _onHitCriticalAttack;
 
         [SerializeField, Tooltip("モデルの親オブジェクト")]
         private GameObject _modelParent;
