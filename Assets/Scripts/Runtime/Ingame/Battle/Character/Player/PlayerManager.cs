@@ -135,7 +135,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             base.HitAttack(data);
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
             SoundEffectManager.PlaySoundEffect(_hitSound);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化

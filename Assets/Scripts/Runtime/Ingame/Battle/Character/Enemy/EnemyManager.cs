@@ -86,7 +86,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _healthSystem?.HealthChange(-data.Damage);
 
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
             FinisherableCheck(); //フィニッシャー可能かどうかを確認
 
