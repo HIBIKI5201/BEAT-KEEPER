@@ -41,19 +41,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnPerfectAttack -= HandlePerfectAttack;
             _player.OnGoodAttack -= HandleGoodAttack;
 
-            // 全てのTweenを停止
-            foreach (var tween in _tweens)
-            {
-                tween?.Kill();
-            }
-
+			base.End();
+            
             _centerImage.enabled = false;
             
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-
-            base.End();
         }
 
         // Justタイミングは2拍後
@@ -128,7 +122,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            _tweens[0].Kill();
+            _tweens[0]?.Kill();
             
             if (isPerfect)
             {
@@ -193,6 +187,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
 		private void ResetRingsScale()
 		{
+			if(_selfImage != null) _selfImage.rectTransform.localScale = Vector3.one;
 			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
 			if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = _centerRingsScale;
 			if(_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;

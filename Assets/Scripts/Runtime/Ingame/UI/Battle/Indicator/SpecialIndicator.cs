@@ -40,19 +40,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _player.OnSkill -= PlaySuccessEffect;
             StopFinisherMonitoring();
-            
-            // 全てのTweenを停止
-            foreach (var tween in _tweens)
-            {
-                tween?.Kill();
-            }
+
+            base.End();
             
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
             UpdateRingState();
-            
-            base.End();
         }
 
         // Justタイミングは2拍後
