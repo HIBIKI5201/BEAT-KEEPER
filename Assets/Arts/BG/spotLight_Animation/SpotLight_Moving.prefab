@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2250545967122463565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4539836571077829975}
+  m_Layer: 0
+  m_Name: SpotLight_Moving
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4539836571077829975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2250545967122463565}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.08643458, y: -0.9602776, z: -0.09993439, w: -0.24578269}
+  m_LocalPosition: {x: -81.559746, y: 337.84708, z: 705.48785}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6263859437315655987}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -8.595, y: -209.661, z: 12.566}
+--- !u!1001 &463633553092415453
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4539836571077829975}
+    m_Modifications:
+    - target: {fileID: 1388532202974862140, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ae777c224d570914eb1506a6c4b6aa6e, type: 2}
+    - target: {fileID: 3956807500280973051, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -167.51743
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -193.1809
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -31.702782
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.73154265
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5738285
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.31352702
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.19304651
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -73.865
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 58.586
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -16.167
+      objectReference: {fileID: 0}
+    - target: {fileID: 7422069162209827858, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+      propertyPath: m_Name
+      value: Volumetric Spot Light
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+--- !u!4 &6263859437315655987 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
+  m_PrefabInstance: {fileID: 463633553092415453}
+  m_PrefabAsset: {fileID: 0}
