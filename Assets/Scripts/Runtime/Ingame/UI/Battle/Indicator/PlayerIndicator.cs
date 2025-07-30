@@ -41,7 +41,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnPerfectAttack -= HandlePerfectAttack;
             _player.OnGoodAttack -= HandleGoodAttack;
 
-			if(_tween != null)
+			if(_tweens != null)
 			{
 				// 全てのTweenを停止
             	foreach (var tween in _tweens)
