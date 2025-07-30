@@ -14,6 +14,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="damage"></param>
         public void HitAttack(AttackData damage);
 
-        public Action<int> OnHitAttack { get; set; }
+        public event Action<int> OnHitAttack;
     }
 }
