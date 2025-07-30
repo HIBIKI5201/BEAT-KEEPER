@@ -12191,8 +12191,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cd35eecb152a245a74fb97043991b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onHitAttack:
+    m_PersistentCalls:
+      m_Calls: []
   _data: {fileID: 11400000, guid: b02e335feeb586f4ca543a64070ad17f, type: 2}
   _battleBuffData: {fileID: 11400000, guid: c6122e1c9553b36458f86d2b23be5d29, type: 2}
+  _comboPerticle: {fileID: 0}
+  _muzzle: {fileID: 0}
   _comboAttackSound: NormalGunshot
   _chargeAttackStartSound: Charging
   _chargeAttackEndSound: ChargeComplete
