@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -188,6 +189,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private UnityEventWrapper _onSuccessAvoid = new();
         [SerializeField]
         private UnityEventWrapper _onPerfectAvoid = new();
+        [SerializeField]
+        private UnityEvent _onFlowZone;
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
         [SerializeField] private GameObject _comboShootPerticle;
@@ -553,7 +556,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     フローゾーンが開始した時のイベント
         /// </summary>
-        private void StartFlowZone() => SoundEffectManager.PlaySoundEffect(_flowZoneStartSound);
+        private void StartFlowZone()
+        {
+            SoundEffectManager.PlaySoundEffect(_flowZoneStartSound);
+            _onFlowZone?.Invoke();
+        }
 
         /// <summary>
         ///     フローゾーンが終了した時のイベント
