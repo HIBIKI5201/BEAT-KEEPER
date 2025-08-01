@@ -10004,6 +10004,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9511744bce98be4fb04e5c3fadfc498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onHitAttack:
+    m_PersistentCalls:
+      m_Calls: []
   _data: {fileID: 11400000, guid: 186f1d5e3a16384418eff931cb09e96c, type: 2}
   _modelParent: {fileID: 3914750233683809333}
   _particleSystem: {fileID: 3270306859132638148}

@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -19,21 +20,41 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
         #region イベント
-        public event Action OnShootComboAttack;
+        public event Action OnShootComboAttack
+        {
+            add => _onShootComboAttack.Event += value;
+            remove => _onShootComboAttack.Event -= value;
+        }
         public event Action OnPerfectAttack;
         public event Action OnGoodAttack;
 
-        public event Action OnStartChargeAttack;
+        public event Action OnStartChargeAttack
+        {
+            add => _onStartChargeAttack.Event += value;
+            remove => _onStartChargeAttack.Event -= value;
+        }
         public event Action OnShootChargeAttack;
         public event Action OnFullChargeAttack;
         public event Action OnNonFullChargeAttack;
 
         public event Action OnFailedAvoid;
-        public event Action OnSuccessAvoid;
-        public event Action OnPerfectAvoid;
+        public event Action OnSuccessAvoid
+        {
+            add => _onSuccessAvoid.Event += value;
+            remove => _onSuccessAvoid.Event -= value;
+        }
+        public event Action OnPerfectAvoid
+        {
+            add => _onPerfectAvoid.Event += value;
+            remove => _onPerfectAvoid.Event -= value;
+        }
         public event Action OnGoodAvoid;
 
-        public event Action OnSkill;
+        public event Action OnSkill
+        {
+            add => _onSkill.Event += value;
+            remove => _onSkill.Event -= value;
+        }
         public event Action OnPerfectSkill;
         public event Action OnGoodSkill;
 
@@ -114,7 +135,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             return _stunEndTiming > timing;
         }
-        
+
         /// <summary>
         ///     フィニッシャーが可能かどうかを判定する
         /// </summary>
@@ -123,7 +144,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             return _target.IsFinisherable;
         }
-        
+
         #endregion
 
         #region  インターフェースメソッド
@@ -145,7 +166,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             base.HitAttack(data);
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
             SoundEffectManager.PlaySoundEffect(_hitSound);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
@@ -158,8 +179,22 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region プライベートフィールド
+        [SerializeField]
+        private UnityEventWrapper _onShootComboAttack = new();
+        [SerializeField]
+        private UnityEventWrapper _onStartChargeAttack = new();
+        [SerializeField]
+        private UnityEventWrapper _onSkill = new();
+        [SerializeField]
+        private UnityEventWrapper _onSuccessAvoid = new();
+        [SerializeField]
+        private UnityEventWrapper _onPerfectAvoid = new();
+        [SerializeField]
+        private UnityEventWrapper _onFlowZone = new();
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
+        [SerializeField] private GameObject _comboShootPerticle;
+        [SerializeField] private Transform _muzzle;
 
         #region サウンドクリップ
         [Header("SE")]
@@ -480,7 +515,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 //スコアにパーフェクト倍率を掛ける
                 _scoreManager.AddScore(
                     Mathf.FloorToInt(_data.AvoidScore * _data.AvoidPerfectScoreScale));
-                OnPerfectAvoid?.Invoke();
+                _onPerfectAvoid?.Invoke();
             }
             else if (isGood)
             {
@@ -521,7 +556,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     フローゾーンが開始した時のイベント
         /// </summary>
-        private void StartFlowZone() => SoundEffectManager.PlaySoundEffect(_flowZoneStartSound);
+        private void StartFlowZone()
+        {
+            SoundEffectManager.PlaySoundEffect(_flowZoneStartSound);
+            _onFlowZone?.Invoke();
+        }
 
         /// <summary>
         ///     フローゾーンが終了した時のイベント
@@ -601,10 +640,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                OnShootComboAttack?.Invoke();
-                _comboSystem.Attack(); //コンボを更新
-
-                SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                 _isThisBeatInputed = true;
 
                 if (isPerfectHit)
@@ -654,9 +689,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
             else if (isGood) { OnGoodSkill?.Invoke(); }
 
-            
 
-            OnSkill?.Invoke();
+
+            _onSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
 
@@ -680,7 +715,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnPerfectAttack?.Invoke();
             _specialSystem.AddSpecialEnergy(0.05f);
             SoundEffectManager.PlaySoundEffect(_perfectSound);
-            _animeManager.Shoot();
+            BothComboAttack();
             AttackEnemy(_data.ComboAttackPower, _data.PerfectCriticalDamage);
         }
 
@@ -690,8 +725,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void GoodAttack()
         {
             OnGoodAttack?.Invoke();
-            _animeManager.Shoot();
+            BothComboAttack();
             AttackEnemy(_data.ComboAttackPower);
+        }
+
+        private void BothComboAttack()
+        {
+            _onShootComboAttack?.Invoke();
+            if (_comboShootPerticle != null && _muzzle != null)
+            { Instantiate(_comboShootPerticle, _muzzle.position, _muzzle.rotation); }
+            _comboSystem.Attack(); //コンボを更新
+            _animeManager.Shoot();
+            _target.NormalAttackRandomHit();
+            SoundEffectManager.PlaySoundEffect(_comboAttackSound);
         }
 
         /// <summary>
@@ -700,7 +746,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private async void ChargeAttackCharging()
         {
             Debug.Log($"{_data.Name} start charge attack");
-            OnStartChargeAttack?.Invoke();
+            _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
@@ -796,7 +842,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _isThisBeatInputed = true; //連打防止フラグを立てる
 
-            OnSuccessAvoid?.Invoke();
+            _onSuccessAvoid?.Invoke();
             SoundEffectManager.PlaySoundEffect(_avoidSound);
 
             _animeManager.Avoid();
