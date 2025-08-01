@@ -42,7 +42,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             add => _onSuccessAvoid.Event += value;
             remove => _onSuccessAvoid.Event -= value;
         }
-        public event Action OnPerfectAvoid;
+        public event Action OnPerfectAvoid
+        {
+            add => _onPerfectAvoid.Event += value;
+            remove => _onPerfectAvoid.Event -= value;
+        }
         public event Action OnGoodAvoid;
 
         public event Action OnSkill
@@ -182,6 +186,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private UnityEventWrapper _onSkill = new();
         [SerializeField]
         private UnityEventWrapper _onSuccessAvoid = new();
+        [SerializeField]
+        private UnityEventWrapper _onPerfectAvoid = new();
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
         [SerializeField] private GameObject _comboShootPerticle;
@@ -506,7 +512,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 //スコアにパーフェクト倍率を掛ける
                 _scoreManager.AddScore(
                     Mathf.FloorToInt(_data.AvoidScore * _data.AvoidPerfectScoreScale));
-                OnPerfectAvoid?.Invoke();
+                _onPerfectAvoid?.Invoke();
             }
             else if (isGood)
             {
