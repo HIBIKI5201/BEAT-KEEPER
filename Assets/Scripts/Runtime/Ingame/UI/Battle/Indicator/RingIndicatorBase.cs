@@ -24,8 +24,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
         {
+			// 終了フラグをリセット
+			_isEnded = false;
+			
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
+            _centerImage.rectTransform.sizeDelta = _defaultCenterImageSize;
             _onEndAction = onEndAction;
             _timing = timing;
 
@@ -42,10 +46,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public virtual void End()
         {
-            if (_tweens != null) //実行中のTweenを停止
+			if (_isEnded) return; // 既に終了済みなら何もしない
+       	 	_isEnded = true;
+            
+			if (_tweens != null) //実行中のTweenを停止
             {
                 foreach (var teen in _tweens)
-                    teen?.Kill();
+                    teen?.Kill(true);
             }
 
             _onEndAction?.Invoke();
@@ -116,14 +123,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Image _selfImage;
         protected Image _ringImage;
 
+		protected bool _isEnded = false;
         protected int _timing;
         protected int _count;
         protected Tween[] _tweens;
+        
+        private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
 
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
             _ringImage = transform.GetChild(0).GetComponent<Image>();
+			_defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
         }
     }
 }

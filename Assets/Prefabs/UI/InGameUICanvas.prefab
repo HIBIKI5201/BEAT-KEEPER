@@ -498,6 +498,7 @@ MonoBehaviour:
   _numberSpriteAtlas: {fileID: 4343727234628468602, guid: ddae3b51e93722c4b992cc88f0cb4051, type: 2}
   _ones: {fileID: 4804451606914575516}
   _decimalPlace: {fileID: 2358259872313595833}
+  _spritePrefix: number_
 --- !u!1 &911066179862465140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,112 +1497,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &4251410414298865080
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7709065526278336819}
-  - component: {fileID: 5757031336248644326}
-  - component: {fileID: 558647567878389986}
-  - component: {fileID: 3003543268734824129}
-  m_Layer: 5
-  m_Name: IndicatorHitResultImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7709065526278336819
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4251410414298865080}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 302145706440026476}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -22.323975, y: 240.27}
-  m_SizeDelta: {x: 327.0255, y: 85.0154}
-  m_Pivot: {x: 1, y: 0.5}
---- !u!222 &5757031336248644326
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4251410414298865080}
-  m_CullTransparentMesh: 1
---- !u!114 &558647567878389986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4251410414298865080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a72ecce585c19aa4fa0b1b9133113e82, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &3003543268734824129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4251410414298865080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37aaa38be2a6b4e4dbbc14007d0cad70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _image: {fileID: 0}
-  _perfect: {fileID: 21300000, guid: a72ecce585c19aa4fa0b1b9133113e82, type: 3}
-  _good: {fileID: 21300000, guid: 7f719e32fa6c7544abd8af5d833b972b, type: 3}
-  _miss: {fileID: 21300000, guid: b0f6b61e4c623b341b10f96337dd926c, type: 3}
-  _appearanceDuration: 0.15
-  _shrinkDuration: 0.1
-  _bounceDuration: 0.3
-  _bounceVibrato: 3
-  _waitInterval: 0.5
-  _exitDuration: 0.4
-  _punchScale: 1.05
-  _shrinkScale: 0.95
-  _bounceIntensity: 0.8
-  _exitMoveDistance: 50
-  _entranceEase: 27
-  _shrinkEase: 5
-  _bounceEase: 24
-  _exitEase: 6
 --- !u!1 &4546012881941083311
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +1975,6 @@ RectTransform:
   - {fileID: 3343023035188979881}
   - {fileID: 1116584958319909152}
   - {fileID: 3884830661968032753}
-  - {fileID: 7709065526278336819}
   m_Father: {fileID: 1517865131295371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
