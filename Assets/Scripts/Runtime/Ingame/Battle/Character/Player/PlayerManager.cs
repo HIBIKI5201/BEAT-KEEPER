@@ -190,7 +190,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField]
         private UnityEventWrapper _onPerfectAvoid = new();
         [SerializeField]
-        private UnityEvent _onFlowZone;
+        private UnityEventWrapper _onFlowZone = new();
 
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
         [SerializeField] private GameObject _comboShootPerticle;
