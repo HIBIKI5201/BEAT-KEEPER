@@ -9,7 +9,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -20,7 +19,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public class PlayerManager : CharacterManagerB<PlayerData>, IDisposable
     {
         #region イベント
-        public event Action OnShootComboAttack;
+        public event Action OnShootComboAttack
+        {
+            add => _onShootComboAttack.Event += value;
+            remove => _onShootComboAttack.Event -= value;
+        }
         public event Action OnPerfectAttack;
         public event Action OnGoodAttack;
 
@@ -127,7 +130,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             return _stunEndTiming > timing;
         }
-        
+
         /// <summary>
         ///     フィニッシャーが可能かどうかを判定する
         /// </summary>
@@ -136,7 +139,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             return _target.IsFinisherable;
         }
-        
+
         #endregion
 
         #region  インターフェースメソッド
@@ -171,6 +174,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         #endregion
 
         #region プライベートフィールド
+        [SerializeField]
+        private UnityEventWrapper _onShootComboAttack = new();
         [SerializeField]
         private UnityEventWrapper _onStartChargeAttack = new();
         [SerializeField]
@@ -671,7 +676,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
             else if (isGood) { OnGoodSkill?.Invoke(); }
 
-            
+
 
             _onSkill?.Invoke();
             _animeManager.Skill();
@@ -713,9 +718,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void BothComboAttack()
         {
-            OnShootComboAttack?.Invoke();
+            _onShootComboAttack?.Invoke();
             if (_comboShootPerticle != null && _muzzle != null)
-                { Instantiate(_comboShootPerticle, _muzzle.position, _muzzle.rotation); }
+            { Instantiate(_comboShootPerticle, _muzzle.position, _muzzle.rotation); }
             _comboSystem.Attack(); //コンボを更新
             _animeManager.Shoot();
             _target.NormalAttackRandomHit();
