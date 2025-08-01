@@ -76,8 +76,11 @@ namespace BeatKeeper.Runtime.System
                 }
 
                 UnityAction<T> action = new(value);
-                _actionToUnityActionMap.Add(value, action);
-                _unityEvent.AddListener(action);
+                if (_actionToUnityActionMap.TryAdd(value, action))
+                {
+                    _unityEvent.AddListener(action);
+                }
+
             }
             remove
             {
