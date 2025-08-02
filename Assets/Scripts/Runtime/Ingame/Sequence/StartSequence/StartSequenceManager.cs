@@ -10,6 +10,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     /// </summary>
     public class StartSequenceManager : MonoBehaviour
     {
+        [SerializeField] PlayableDirector _tutorialPlayableDirector;
         private async void Start()
         {
             var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
@@ -20,6 +21,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             var director = GetComponent<PlayableDirector>();
+            //スタートシーケンスの再生終了時にチュートリアルシーケンスを再生する
+            director.stopped += (_) =>
+            {
+                _tutorialPlayableDirector.Play();
+            };
             director.Play();
             //現在最初にBGMが再生されていないのでコメントアウト
             //director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);

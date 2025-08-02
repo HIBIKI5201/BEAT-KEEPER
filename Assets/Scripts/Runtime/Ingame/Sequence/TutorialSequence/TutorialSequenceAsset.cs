@@ -13,18 +13,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             switch (_tutorialFase)
             {
                 case 1:
-                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
+                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
                 case 2:
-                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
+                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
                 case 3:
-                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_3>(graph, owner);
+                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_3>(graph, owner);
                 case 4:
-                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_4>(graph, owner);
+                    break;
+                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_4>(graph, owner);
                 case 5:
-                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_5>(graph, owner);
+                    return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
+            return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
         }
 
-        [SerializeField, Range(1, 3)] private int _tutorialFase;
+        [SerializeField, Range(1, 5)] private int _tutorialFase;
     }
 }
