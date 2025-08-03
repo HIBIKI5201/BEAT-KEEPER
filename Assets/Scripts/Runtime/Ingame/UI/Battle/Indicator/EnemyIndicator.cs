@@ -33,11 +33,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 case 1:
                     InitializeComponents();
                     // StartBlinkEffect(); // 警告のような点滅アニメーション
-          
-                    _player.OnSuccessAvoid += OnPlayerAvoidSuccess;
-                    _player.OnFailedAvoid += PlayFailEffect;
                     StartContractionEffect(); // 収縮アニメーション
                     break;
+				
+				// 	誤反応対策として念のために直前にイベント登録を行う
+				case 2:
+					_player.OnPerfectAvoid += HandlePerfectAvoid;
+					_player.OnGoodAvoid += HandleGoodAvoid;
+                    _player.OnFailedAvoid += PlayFailEffect;
+					break;
             }
         }
 
@@ -49,7 +53,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetAllTween();
 
             // イベント購読解除
-            _player.OnSuccessAvoid -= OnPlayerAvoidSuccess;
+            _player.OnPerfectAvoid -= HandlePerfectAvoid;
+            _player.OnGoodAvoid -= HandleGoodAvoid;
             _player.OnFailedAvoid -= PlayFailEffect;
 
             base.End();
@@ -111,7 +116,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
-        /// 3拍目　リングの縮小
+        ///リングの縮小
         /// </summary>
         private void StartContractionEffect()
         {
@@ -148,10 +153,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// プレイヤーが回避に成功したときに再生する回避成功エフェクト
         /// </summary>
-        private void OnPlayerAvoidSuccess()
+        private void OnPlayerAvoidSuccess(bool isPerfect)
         {
             // 他のアニメーションが再生されていたらキャンセル
             ResetAllTween();
+
+			if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                //_ringImage.rectTransform.localScale = Vector3.one;
+                HandleCenterImage(true);
+            }
+            else
+            {
+                HandleCenterImage(false);
+            }
 
             var successSequence = DOTween.Sequence();
 
@@ -300,6 +316,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             return colorSequence;
         }
+
+		private void HandlePerfectAvoid() => OnPlayerAvoidSuccess(true);
+        private void HandleGoodAvoid() => OnPlayerAvoidSuccess(false);
 
         #endregion
     }
