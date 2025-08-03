@@ -66,7 +66,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
-        [SerializeField] private Text[] _centerTexts; // リング中央のテキスト
 
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -125,7 +124,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 縮小エフェクト
             contractionSequence.Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
-            contractionSequence.Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
+            // contractionSequence.Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
 
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
@@ -218,7 +217,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void ResetRingsScale()
         {
             if (_ringImages[0] != null) _ringImages[0].rectTransform.localScale = Vector3.one * _initialScale;
-            if (_translucentRingImages[0] != null) _translucentRingImages[0].rectTransform.localScale = Vector3.one * _initialScale;
+            // if (_translucentRingImages[0] != null) _translucentRingImages[0].rectTransform.localScale = Vector3.one * _initialScale;
             if (_ringImages[1] != null) _ringImages[1].rectTransform.localScale = Vector3.one;
             if (_ringImages[2] != null) _ringImages[2].rectTransform.localScale = Vector3.one;
         }
@@ -235,10 +234,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             foreach (var ring in _translucentRingImages)
             {
                 ring.color = translucentColor;
-            }
-            foreach (var text in _centerTexts)
-            {
-                text.color = color;
             }
         }
 
@@ -265,11 +260,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 fadeSequence.Join(ring.DOFade(0f, duration).SetEase(Ease.Linear));
             }
 
+			/*
             // 中央のテキストのフェード
             foreach (var text in _centerTexts)
             {
                 fadeSequence.Join(text.DOFade(0f, duration).SetEase(Ease.Linear));
             }
+			*/
 
             return fadeSequence;
         }
@@ -293,11 +290,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 colorSequence.Join(ring.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
             }
 
+			/*
             // 中央のテキストのフェード
             foreach (var text in _centerTexts)
             {
                 colorSequence.Join(text.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             }
+			*/
 
             return colorSequence;
         }

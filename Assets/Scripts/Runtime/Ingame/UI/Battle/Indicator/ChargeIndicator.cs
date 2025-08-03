@@ -61,7 +61,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const string COMPLEAT_KEY_TEXT = "RELEASE";
         
         [Header("コンポーネントの参照")] 
-        [SerializeField] private Image _blurImage; // 収縮を行う枠の発光演出用のリング
+        // [SerializeField] private Image _blurImage; // 収縮を行う枠の発光演出用のリング
 
         [SerializeField] private Image _maskImage;
         [SerializeField] private Image _gaugeImage;
@@ -104,6 +104,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 表示
             SetAllAlpha(1f);
             
+			/*
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
                 .Append(_blurImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
@@ -111,6 +112,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[2] = blurPulseSequence;
+			*/
 
             var sequence = DOTween.Sequence()
                 
@@ -121,7 +123,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // 縮小開始（完全には収縮しきらないようにする）
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 .Join(_gaugeImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_blurImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.Linear))
+                // .Join(_blurImage.rectTransform.DOScale(_centerRingsScale * 1.5f, beatDuration * CONTRACTION_SPEED * 0.7f).SetEase(Ease.Linear))
                 
                 // Just判定後も縮小を続ける
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
@@ -157,7 +159,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 色変更
                 .Join(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
-                .Join(_blurImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
+                // .Join(_blurImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
                 .Join(_selfImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash))
                 
                 // メインのマスクアニメーション（全体の60%で最初のスケール）
@@ -206,7 +208,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // 拡大
                 .Append(_selfImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 2f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                // .Join(_blurImage.rectTransform.DOScale(Vector3.one * _initialScale * 2f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(CreateSuccessTextExplosion(_blinkDuration * 0.4f))
                 
                 // フェードアウト
@@ -268,7 +270,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 収縮する一番外側のリング
             if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-            if(_blurImage != null) _blurImage.rectTransform.localScale = Vector3.one * _initialScale;
+            // if(_blurImage != null) _blurImage.rectTransform.localScale = Vector3.one * _initialScale;
             
             // チャージのゲージを管理しているもの
             if(_maskImage != null) _maskImage.rectTransform.localScale = Vector3.one * _initialScale;
@@ -287,7 +289,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_ringImage != null) _ringImage.color = color;
             if(_gaugeImage != null) _gaugeImage.color = translucentColor;
             if(_selfImage != null) _selfImage.color = color;
-            if(_blurImage != null) _blurImage.color = translucentColor;
+            // if(_blurImage != null) _blurImage.color = translucentColor;
             if(_centerTexts[0] != null) _centerTexts[0].color = color;
             if(_centerTexts[1] != null) _centerTexts[1].color = color;
         }
@@ -300,7 +302,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_ringImage != null) _ringImage.color = new Color(_ringImage.color.r, _ringImage.color.g, _ringImage.color.b, alpha);
             if(_gaugeImage != null) _gaugeImage.color = new Color(_gaugeImage.color.r, _gaugeImage.color.g, _gaugeImage.color.b, alpha);
             if(_selfImage != null) _selfImage.color = new Color(_selfImage.color.r, _selfImage.color.g, _selfImage.color.b, alpha);
-            if(_blurImage != null) _blurImage.color = new Color(_blurImage.color.r, _blurImage.color.g, _blurImage.color.b, alpha);
+            // if(_blurImage != null) _blurImage.color = new Color(_blurImage.color.r, _blurImage.color.g, _blurImage.color.b, alpha);
             if(_centerTexts != null)
             {
                 foreach (var text in _centerTexts)
@@ -349,7 +351,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_gaugeImage.DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_selfImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            fadeSequence.Join(_blurImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            // fadeSequence.Join(_blurImage.DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_centerTexts[0].DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_centerTexts[1].DOFade(0f, duration).SetEase(Ease.Linear));
             
@@ -366,7 +368,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             colorSequence.Join(_gaugeImage.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
             colorSequence.Join(_selfImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            colorSequence.Join(_blurImage.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
+            // colorSequence.Join(_blurImage.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
             colorSequence.Join(_centerTexts[0].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             colorSequence.Join(_centerTexts[1].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             
