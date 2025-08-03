@@ -151,7 +151,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-			successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));            
+			successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));            
 
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));

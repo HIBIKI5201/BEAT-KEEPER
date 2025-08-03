@@ -640,10 +640,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _successColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _translucentSuccessColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.39215687}
-  _defaultColor: {r: 0.8117647, g: 0.09019608, b: 1, a: 1}
-  _translucentDefaultColor: {r: 0.8117647, g: 0.09019608, b: 1, a: 0.23529412}
+  _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
+  _defaultColor: {r: 0.427451, g: 0.43921572, b: 0.90196085, a: 1}
+  _translucentDefaultColor: {r: 0.42745098, g: 0.4392157, b: 0.9019608, a: 0.23529412}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
   _centerImage: {fileID: 6851541169836843214}

@@ -94,10 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _successColor: {r: 0.015686274, g: 1, b: 0.9654295, a: 1}
-  _translucentSuccessColor: {r: 0.015686275, g: 1, b: 0.96862745, a: 0.09803922}
-  _defaultColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _translucentDefaultColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.09803922}
+  _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
+  _defaultColor: {r: 0.9686275, g: 0.5254902, b: 0.6901961, a: 1}
+  _translucentDefaultColor: {r: 0.96862745, g: 0.5254902, b: 0.6901961, a: 0.09803922}
   _blinkDuration: 0.3
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
@@ -106,8 +105,8 @@ MonoBehaviour:
   _skillGroup: {fileID: 6919595722609849635}
   _finisherGroup: {fileID: 3435196377680079590}
   _changeDuration: 0.2
-  _finisherColor: {r: 0.48627454, g: 0.9960785, b: 0.54509807, a: 1}
-  _translucentFinisherColor: {r: 0.4862745, g: 0.99607843, b: 0.54509807, a: 0.043137256}
+  _finisherColor: {r: 0.9725491, g: 0.5254902, b: 0.53333336, a: 1}
+  _translucentFinisherColor: {r: 0.972549, g: 0.5254902, b: 0.53333336, a: 0.043137256}
   _centerText: {fileID: 5711982954574632157}
   _ringImages:
   - {fileID: 6800337163817613581}

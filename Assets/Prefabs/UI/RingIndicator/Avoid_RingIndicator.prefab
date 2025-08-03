@@ -685,14 +685,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2.5
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _successColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _translucentSuccessColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 0.19607843}
-  _defaultColor: {r: 1, g: 0, b: 0.50176144, a: 1}
-  _translucentDefaultColor: {r: 1, g: 0, b: 0.5019608, a: 0.19607843}
+  _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
+  _defaultColor: {r: 0.7058824, g: 0.52156866, b: 0.9568628, a: 1}
+  _translucentDefaultColor: {r: 0.7058824, g: 0.52156866, b: 0.95686275, a: 0.19607843}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
   _centerImage: {fileID: 2479790196635966107}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
+  _apperanceSoundCueName: Ring_Avoid
   _ringImages:
   - {fileID: 4851049892196883910}
   - {fileID: 7318825444765555048}
@@ -703,7 +703,6 @@ MonoBehaviour:
   - {fileID: 5634149881092919488}
   - {fileID: 9177198301299860051}
   _warningColor: {r: 1, g: 0, b: 0, a: 1}
-  _apperanceSoundCueName: Ring_Avoid
 --- !u!224 &1204603360954716855 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}

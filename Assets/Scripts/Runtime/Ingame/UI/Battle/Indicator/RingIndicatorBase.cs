@@ -101,8 +101,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
       　[SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
 
         [Header("色設定")]
-        [SerializeField] protected Color _successColor = Color.yellow;
-        [SerializeField] protected Color _translucentSuccessColor = Color.yellow; // 半透明の成功色
+        [SerializeField] protected RingIndicatorColorSO _colorSettings;
         [SerializeField] protected Color _defaultColor = Color.white;
         [SerializeField] protected Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
 
@@ -122,6 +121,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         protected Image _selfImage;
         protected Image _ringImage;
+
+		// 判定に合わせて適用する色を変えるための変数
+		protected Color _newColor;
+		protected Color _newTranslucentColor;
 
 		protected bool _isEnded = false;
         protected int _timing;

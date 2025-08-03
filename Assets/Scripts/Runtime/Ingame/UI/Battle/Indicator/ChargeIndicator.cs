@@ -176,7 +176,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             // 色とテキストを変更
-            ResetRingsColor(_successColor, _successColor);
+            ResetRingsColor(_newColor, _newColor);
             ChangeText(COMPLEAT_TEXT, COMPLEAT_KEY_TEXT);
         }
         
@@ -198,7 +198,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
             
             // 色とテキストが変更されていない場合、念のためここで変えておく
-            ResetRingsColor(_successColor, _successColor);
+            ResetRingsColor(_newColor, _newColor);
             ChangeText(COMPLEAT_TEXT, COMPLEAT_KEY_TEXT);
            
             var sequence = DOTween.Sequence()

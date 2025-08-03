@@ -160,7 +160,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             successSequence.Append(_ringImages[1].rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
 
             // 色変更とフェードアウト
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
 
             // 少し待機して成功の色変化を見せてからフェードアウトする
             successSequence.AppendInterval(0.1f);

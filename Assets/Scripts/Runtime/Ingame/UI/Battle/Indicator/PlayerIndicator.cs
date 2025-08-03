@@ -133,12 +133,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
 				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
                 _centerImage.sprite = _hitResult.Perfect.Sprite;
                 _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
+
+				// 使用する色を設定する
+				_newColor = _colorSettings.PerfectColor;
+				_translucentDefaultColor = _colorSettings.TranslucentPerfectColor;
             }
             else
             {
                 // Good判定のスプライトに差し替え
                 _centerImage.sprite = _hitResult.Good.Sprite;
                 _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
+
+				// 使用する色を設定する
+				_newColor = _colorSettings.GoodColor;
+				_translucentDefaultColor = _colorSettings.TranslucentGoodColor;
             }
            
             _centerImage.enabled = true;
@@ -147,7 +155,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _translucentDefaultColor, _fadeDuration));
             
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
