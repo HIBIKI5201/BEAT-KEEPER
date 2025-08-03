@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.944896, a: 1}
+  m_Color: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.944896, a: 1}
+  m_Color: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -233,6 +233,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 756840543726829097, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Name
       value: NormalAttack_RingIndicator
@@ -375,18 +379,22 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 248c42b83e1847f4189aca8dc743457b, type: 3}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
-      value: 0.97596145
+      value: 0.99215686
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.92941177
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.17254902
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8009516805528248443, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -434,8 +442,8 @@ MonoBehaviour:
   _initialScale: 3
   _centerRingsScale: {x: 1, y: 1, z: 1}
   _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
-  _defaultColor: {r: 0, g: 1, b: 0.94509804, a: 1}
-  _translucentDefaultColor: {r: 0, g: 1, b: 1, a: 0.09803922}
+  _defaultColor: {r: 0.17254902, g: 0.9294118, b: 0.9921569, a: 1}
+  _translucentDefaultColor: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 0.09803922}
   _blinkDuration: 0.3
   _fadeDuration: 0.15
   _centerImage: {fileID: 8444433897189030754}
