@@ -77,6 +77,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private bool _isFailed; // 回避失敗フラグ
 
+        private void Start()
+        {
+			_centerImage.enabled = true;
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
+        }
+
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
@@ -161,18 +168,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                //_ringImage.rectTransform.localScale = Vector3.one;
-                HandleCenterImage(true);
+                _ringImages[0].rectTransform.localScale = Vector3.one;
             }
-            else
-            {
-                HandleCenterImage(false);
-            }
+			HandleCenterImage(isPerfect);
 
             var successSequence = DOTween.Sequence();
 
             // パンチスケール
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
 
             // 色変更とフェードアウト
             successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));

@@ -31,14 +31,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 3拍目　スキル発動の演出を行う
                 case 2:
-                    _player.OnSkill += PlaySuccessEffect;
+                    _player.OnPerfectSkill += HandlePerfectSkill;
+                    _player.OnGoodSkill +=　HandleGoodSkill;
                     break;
             }
         }
         
         public override void End()
         {
-            _player.OnSkill -= PlaySuccessEffect;
+            _player.OnPerfectSkill -= HandlePerfectSkill;
+            _player.OnGoodSkill -= HandleGoodSkill;
             StopFinisherMonitoring();
 
             base.End();
@@ -69,6 +71,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private Color _currentPulseColor; // パルスの色の管理
 		
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length; // 譜面の長さ
+
+        private void Start()
+        {
+            _centerImage.enabled = true;
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
+        }
 
         /// <summary>
         /// コンポーネントの初期化
@@ -136,7 +145,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 発動エフェクト
         /// </summary>
-        private void PlaySuccessEffect()
+        private void PlaySuccessEffect(bool isPerfect)
         {
             if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
             {
@@ -146,6 +155,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0]?.Kill();
+            
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImages[0].rectTransform.localScale = Vector3.one;
+                _ringImages[3].rectTransform.localScale = Vector3.one;
+            }
+            HandleCenterImage(isPerfect);
            
             var successSequence = DOTween.Sequence();
 
@@ -381,5 +398,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
+        
+        private void HandlePerfectSkill() => PlaySuccessEffect(true);
+        private void HandleGoodSkill() => PlaySuccessEffect(false);
     }
 }

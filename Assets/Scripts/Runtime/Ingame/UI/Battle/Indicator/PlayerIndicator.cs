@@ -124,13 +124,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImage.rectTransform.localScale = Vector3.one;
-                HandleCenterImage(true);
+                _ringImage.rectTransform.localScale = Vector3.one;   
             }
-            else
-            {
-                HandleCenterImage(false);
-            }
+			HandleCenterImage(isPerfect);
            
             _centerImage.enabled = true;
             
