@@ -4,7 +4,7 @@ using System;
 namespace BeatKeeper
 {
     /// <summary>
-    /// Perfect/Good/Missの画像を設定するスクリプタブルオブジェクト
+    /// 中央の画像を設定するスクリプタブルオブジェクト
     /// </summary>
     [CreateAssetMenu(fileName = "HitResultSpriteSO", menuName = "BeatKeeper/UI/HitResultSpriteSO")]
     public class HitResultSpriteSO : ScriptableObject
@@ -12,6 +12,7 @@ namespace BeatKeeper
         [SerializeField] private HitResultData _perfect;
         [SerializeField] private HitResultData _good;
         [SerializeField] private HitResultData _miss;
+        [SerializeField] private HitResultData _operation;
         
         /// <summary>
         /// Perfectの画像データ
@@ -27,6 +28,11 @@ namespace BeatKeeper
         /// Missの画像データ
         /// </summary>
         public HitResultData Miss => _miss;
+
+		/// <summary>
+        /// 操作方法
+        /// </summary>
+		public HitResultData Operation => _operation;
     }
 
     [Serializable]
