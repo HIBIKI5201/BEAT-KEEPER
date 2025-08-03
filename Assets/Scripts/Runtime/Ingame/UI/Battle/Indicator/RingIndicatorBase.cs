@@ -166,5 +166,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
 				_translucentDefaultColor = _colorSettings.TranslucentGoodColor;
 			}
         }
+
+		/// <summary>
+        /// 中央のイメージをMiss判定のものに差し替える
+        /// </summary>
+		protected void SetMissImage()
+		{
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+		}
     }
 }

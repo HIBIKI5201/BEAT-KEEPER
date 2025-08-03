@@ -150,13 +150,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void PlayFailEffect()
         {
-            _tweens[0].Kill();
+            _tweens[0]?.Kill();
             
-            // Miss判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Miss.Sprite;
-			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
-            
-            _centerImage.enabled = true;
+			SetMissImage();
             
             var failSequence = DOTween.Sequence();
             
