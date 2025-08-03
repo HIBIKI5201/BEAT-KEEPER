@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96c6eb19bb2fad4685af835e88233d2, type: 3}
   m_Name: ComboBonusSettingsSO
   m_EditorClassIdentifier: 
-  thresholds:
-  - ComboCount: 10
-    Multiplier: 1.2
-  - ComboCount: 30
-    Multiplier: 1.5
-  - ComboCount: 50
-    Multiplier: 2
-  - ComboCount: 100
-    Multiplier: 3
+  _thresholds:
+  - _comboCount: 3
+    _multiplier: 1.2
+  - _comboCount: 5
+    _multiplier: 1.5
+  - _comboCount: 10
+    _multiplier: 2
+  - _comboCount: 100
+    _multiplier: 3
