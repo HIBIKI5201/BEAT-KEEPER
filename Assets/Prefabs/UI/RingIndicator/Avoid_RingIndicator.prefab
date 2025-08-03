@@ -364,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5512287676888942609, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 2
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6093630949331703828, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Name
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e8058389e0f48468489c8435f1a06f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialScale: 2.5
+  _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
   _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
   _defaultColor: {r: 0.7058824, g: 0.52156866, b: 0.9568628, a: 1}
