@@ -17,10 +17,11 @@ namespace BeatKeeper
         [Header("初期設定")] 
         [SerializeField] private Image _scoreImage; // Scoreの文字のImageコンポーネント
         [SerializeField] private Image[] _numberImages = new Image[3]; // 数字表記用のImageコンポーネント
-        [SerializeField] private SpriteAtlas _numberSpriteAtlas; // 数字のSpriteAtlas
+        [SerializeField] private SpriteAtlas[] _numberSpriteAtlas; // 数字のSpriteAtlas。コンボの段階に応じて複数存在する
         [SerializeField] private ViewData[] _differenceViewData; // 差分設定データ
         [SerializeField] private int _showThreshold = 5; // コンボを表示するしきい値
-        
+
+        private int _differenceIndex; // SpriteAtlasの差分使用用のIndex。コンボが一定のしきい値以上になった時に変更される
         private PlayerManager _playerManager; // ComboSystem取得用
         private CanvasGroup _canvasGroup;
         private CompositeDisposable _disposables = new CompositeDisposable();
@@ -93,6 +94,7 @@ namespace BeatKeeper
                 if (comboCount >= _differenceViewData[i].Threshold)
                 {
                     _scoreImage.sprite = _differenceViewData[i].DifferenceImage;
+                    _differenceIndex = i;
                     return;
                 }
             }
@@ -135,7 +137,7 @@ namespace BeatKeeper
             
             // プレフィックスと受け取った値を連結してスプライト名を作成
             string spriteName = SPRITE_PREFIX + number.ToString();
-            return _numberSpriteAtlas.GetSprite(spriteName);
+            return _numberSpriteAtlas[_differenceIndex].GetSprite(spriteName);
         }
 
         /// <summary>
