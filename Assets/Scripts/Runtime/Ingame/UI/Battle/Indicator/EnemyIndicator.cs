@@ -11,7 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
     /// </summary>
     public class EnemyIndicator : RingIndicatorBase
     {
-        public override int EffectLength => 5;
+        public override int EffectLength => 3;
 
         /// <summary>
         /// ビートごとに実行される処理
@@ -29,17 +29,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             switch (count)
             {
-                // 1拍目　点滅して表示
+                // 1拍目　点滅して表示 -> 1拍目から縮小するように修正
                 case 1:
                     InitializeComponents();
-                    StartBlinkEffect();
-                    break;
-
-                // 3拍目　縮小エフェクトを開始する
-                case 3:
+                    // StartBlinkEffect(); // 警告のような点滅アニメーション
+          
                     _player.OnSuccessAvoid += OnPlayerAvoidSuccess;
                     _player.OnFailedAvoid += PlayFailEffect;
-                    StartContractionEffect();
+                    StartContractionEffect(); // 収縮アニメーション
                     break;
             }
         }
