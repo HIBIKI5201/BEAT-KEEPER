@@ -29,7 +29,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
-            _centerImage.rectTransform.sizeDelta = _defaultCenterImageSize;
+			
+			// 中央のリングの画像を操作方法のものに差し替える
+            _centerImage.sprite = _hitResult.Operation.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Operation.SizeDelta;
+
             _onEndAction = onEndAction;
             _timing = timing;
 

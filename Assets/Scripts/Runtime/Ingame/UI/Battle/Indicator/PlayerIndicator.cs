@@ -43,8 +43,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			base.End();
             
-            _centerImage.enabled = false;
-            
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -61,6 +59,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void Start()
         {
+			_centerImage.enabled = true;
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
@@ -72,9 +71,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
-            
-            _centerImage.enabled = false;
-            
+                        
             // 初期化
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
