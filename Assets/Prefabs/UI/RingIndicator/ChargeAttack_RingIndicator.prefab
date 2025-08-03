@@ -580,7 +580,7 @@ MonoBehaviour:
   _blinkDuration: 0.2
   _fadeDuration: 0.2
   _centerImage: {fileID: 6851541169836843214}
-  _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
+  _hitResult: {fileID: 11400000, guid: 06c387e192aabe84ba0b9f06b7ddd358, type: 2}
   _apperanceSoundCueName: Ring_Charge
   _maskImage: {fileID: 2486665361135006193}
   _gaugeImage: {fileID: 8422718386299830461}
