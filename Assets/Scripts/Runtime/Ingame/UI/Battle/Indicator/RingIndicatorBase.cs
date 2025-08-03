@@ -143,5 +143,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _ringImage = transform.GetChild(0).GetComponent<Image>();
 			_defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
         }
+
+		/// <summary>
+        /// 中央のイメージを操作する
+        /// </summary>
+		protected void HandleCenterImage(bool isPerfect)
+        {	
+			var hitResult = isPerfect ? _hitResult.Perfect : _hitResult.Good;
+
+			// 中央のImageのスプライト変更とサイズ変更
+			_centerImage.sprite = hitResult.Sprite;
+           	_centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
+
+			if(isPerfect)
+			{
+				_newColor = _colorSettings.PerfectColor;
+				_translucentDefaultColor = _colorSettings.TranslucentPerfectColor;
+			}
+			else
+			{
+				_newColor = _colorSettings.GoodColor;
+				_translucentDefaultColor = _colorSettings.TranslucentGoodColor;
+			}
+        }
     }
 }
