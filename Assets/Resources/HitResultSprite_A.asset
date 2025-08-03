@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21089f9d9cc6aea4592d6866716c7e21, type: 3}
-  m_Name: HitResultSprite
+  m_Name: HitResultSprite_A
   m_EditorClassIdentifier: 
   _perfect:
     Sprite: {fileID: 21300000, guid: a72ecce585c19aa4fa0b1b9133113e82, type: 3}
