@@ -125,25 +125,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
                 _ringImage.rectTransform.localScale = Vector3.one;
-                
-                // Perfect判定のスプライトに差し替え
-				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
-                _centerImage.sprite = _hitResult.Perfect.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
-
-				// 使用する色を設定する
-				_newColor = _colorSettings.PerfectColor;
-				_translucentDefaultColor = _colorSettings.TranslucentPerfectColor;
+                HandleCenterImage(true);
             }
             else
             {
-                // Good判定のスプライトに差し替え
-                _centerImage.sprite = _hitResult.Good.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
-
-				// 使用する色を設定する
-				_newColor = _colorSettings.GoodColor;
-				_translucentDefaultColor = _colorSettings.TranslucentGoodColor;
+                HandleCenterImage(false);
             }
            
             _centerImage.enabled = true;
