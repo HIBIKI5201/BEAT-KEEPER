@@ -172,7 +172,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var successSequence = DOTween.Sequence();
 
             // パンチスケール
-            successSequence.Append(_ringImages[1].rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * * 0.65f, _blinkDuration, 2, 0.5f));
 
             // 色変更とフェードアウト
             successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
