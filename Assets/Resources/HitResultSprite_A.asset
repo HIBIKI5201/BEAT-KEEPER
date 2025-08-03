@@ -21,3 +21,6 @@ MonoBehaviour:
   _miss:
     Sprite: {fileID: 21300000, guid: b0f6b61e4c623b341b10f96337dd926c, type: 3}
     SizeDelta: {x: 172, y: 60}
+  _operation:
+    Sprite: {fileID: 21300000, guid: 6627d2801f73fa34582a0fed4109fc31, type: 3}
+    SizeDelta: {x: 220, y: 220}
