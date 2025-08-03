@@ -187,6 +187,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 念のためキルしておく
             _tweens[0]?.Kill();
             
+            SetMissImage();
+            
             var failSequence = DOTween.Sequence();
             
             // 色変更とフェードアウト

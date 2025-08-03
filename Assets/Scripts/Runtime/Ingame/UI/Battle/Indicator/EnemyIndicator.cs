@@ -204,7 +204,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 回避失敗したときに他のTweenが再生されていたら中断
             ResetAllTween();
-
+			
+			SetMissImage();
+			
             var failSequence = DOTween.Sequence();
 
             // 色変更とフェードアウト
