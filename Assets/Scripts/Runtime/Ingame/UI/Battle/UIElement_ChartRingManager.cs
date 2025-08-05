@@ -115,12 +115,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
-        /// リングを生成するメソッド
+        /// リングを生成するメソッド。戻り値として生成したインジケーターのGameObjectを返す。
         /// </summary>
         /// <param name="chartKind"></param>
         /// <param name="rectPosition"></param>
         /// <param name="timing"></param>
-        public void GenerateRing(ChartKindEnum chartKind, Vector2 rectPosition, int timing)
+        public GameObject GenerateRing(ChartKindEnum chartKind, Vector2 rectPosition, int timing)
         {
             if (_ringPools.TryGetValue(chartKind, out var op))
             {
@@ -131,7 +131,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     op.Release(ring); //オブジェクトを非アクティブに
                     _activeRingIndicator.Remove(ring); //アクティブリストから除外
                 }, rectPosition, timing);
+                return ring.gameObject;
             }
+            return null;
         }
 
         /// <summary>

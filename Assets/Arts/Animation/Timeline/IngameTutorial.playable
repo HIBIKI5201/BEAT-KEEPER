@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e955a86508583a4899cc39e64322c85, type: 3}
   m_Name: TutorialSequenceAsset(Clone)(Clone)
   m_EditorClassIdentifier: 
-  _tutorialPhase: 0
+  _tutorialPhase: 5
 --- !u!114 &7046702140701727379
 MonoBehaviour:
   m_ObjectHideFlags: 1

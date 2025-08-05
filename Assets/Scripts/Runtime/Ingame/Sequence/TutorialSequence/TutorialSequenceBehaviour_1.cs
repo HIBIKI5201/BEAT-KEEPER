@@ -10,7 +10,11 @@ namespace BeatKeeper
             base.OnBehaviourPlay(playable, info);
             if (_owner)
             {
-
+                TutorialManager tutorialManager = _owner.GetComponent<TutorialManager>();
+                if (tutorialManager)
+                {
+                    //tutorialManager.StartTutorial();
+                }
             }
         }
     }

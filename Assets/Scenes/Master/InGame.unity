@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba89522decac8d4b8a38bcd6ee55b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tutorialManager: {fileID: 0}
+  _tutorialManager: {fileID: 1493203130}
 --- !u!4 &1042500690
 Transform:
   m_ObjectHideFlags: 0
@@ -1260,7 +1260,7 @@ PlayableDirector:
   m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
-  m_InitialTime: 0
+  m_InitialTime: 4
   m_SceneBindings: []
   m_ExposedReferences:
     m_References: []
@@ -1278,6 +1278,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
+  _indicatorGenerateCount: 4
+  _chartKindEnum: 1
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
