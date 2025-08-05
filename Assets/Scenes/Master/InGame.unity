@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba89522decac8d4b8a38bcd6ee55b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tutorialPlayableDirector: {fileID: 1493203129}
+  _tutorialManager: {fileID: 0}
 --- !u!4 &1042500690
 Transform:
   m_ObjectHideFlags: 0
@@ -1192,6 +1192,17 @@ Transform:
   - {fileID: 1684345547}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1325421708 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
+  m_PrefabInstance: {fileID: 2908268678855267497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f5c0f12e56fd347875b56e1a91ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1435200629 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 206223790429547571, guid: b76d99356d60d9b40998617976859451, type: 3}
@@ -1212,6 +1223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1493203128}
+  - component: {fileID: 1493203130}
   - component: {fileID: 1493203129}
   m_Layer: 0
   m_Name: TutorialSequence
@@ -1252,6 +1264,20 @@ PlayableDirector:
   m_SceneBindings: []
   m_ExposedReferences:
     m_References: []
+--- !u!114 &1493203130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493203127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298f41cdb23a69642afae443a2c3baca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _director: {fileID: 1493203129}
+  _chartRingManager: {fileID: 1325421708}
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0

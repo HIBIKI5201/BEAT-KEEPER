@@ -114,6 +114,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _isProcessingRingOperation = false;
         }
 
+        /// <summary>
+        /// リングを生成するメソッド
+        /// </summary>
+        /// <param name="chartKind"></param>
+        /// <param name="rectPosition"></param>
+        /// <param name="timing"></param>
         public void GenerateRing(ChartKindEnum chartKind, Vector2 rectPosition, int timing)
         {
             if (_ringPools.TryGetValue(chartKind, out var op))

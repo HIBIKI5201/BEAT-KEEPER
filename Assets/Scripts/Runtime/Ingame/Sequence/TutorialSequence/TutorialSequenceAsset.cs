@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.UI;
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
@@ -10,23 +12,22 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            switch (_tutorialFase)
+            switch (_tutorialPhase)
             {
                 case 1:
-                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
+                    break;
                 case 2:
-                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
+                    break;
                 case 3:
-                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_3>(graph, owner);
+                    break;
                 case 4:
                     break;
-                //return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_4>(graph, owner);
                 case 5:
                     return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
             return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
         }
 
-        [SerializeField, Range(1, 5)] private int _tutorialFase;
+        [SerializeField, Range(1, 5)] private int _tutorialPhase;
     }
 }
