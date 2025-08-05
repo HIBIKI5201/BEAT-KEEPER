@@ -342,6 +342,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                 _target = stage.EnemyAdmin.GetActiveEnemy();
+                _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
             }
             else
             {
