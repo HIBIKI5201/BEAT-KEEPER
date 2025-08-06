@@ -15,13 +15,6 @@ namespace BeatKeeper.Runtime.System
         public InputSystemUIInputModule uiInputModule => _uiInputModule;
 
         #region Player
-
-        public InputAction Move => _move;
-        private InputAction _move;
-
-        public InputAction Look => _look;
-        private InputAction _look;
-
         public InputAction Attack => _attack;
         private InputAction _attack;
 
@@ -30,15 +23,6 @@ namespace BeatKeeper.Runtime.System
 
         public InputAction Avoid => _avoid;
         private InputAction _avoid;
-
-        public InputAction Skill => _skill;
-        private InputAction _skill;
-
-        public InputAction Special => _special;
-        private InputAction _special;
-
-        public InputAction Finishier => _finisher;
-        private InputAction _finisher;
 
         public InputAction Quit => _quit;
         private InputAction _quit;
@@ -57,14 +41,9 @@ namespace BeatKeeper.Runtime.System
             {
                 _playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
 
-                _move = _playerInput.actions["Move"];
-                _look = _playerInput.actions["Look"];
                 _attack = _playerInput.actions["Attack"];
                 _interact = _playerInput.actions["Interact"];
                 _avoid = _playerInput.actions["Avoid"];
-                _skill = _playerInput.actions["Skill"];
-                _special = _playerInput.actions["Special"];
-                _finisher = _playerInput.actions["Finisher"];
                 _quit = _playerInput.actions["Quit"];
                 _anyKey = _playerInput.actions["AnyKey"];
             }
