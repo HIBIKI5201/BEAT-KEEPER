@@ -50,6 +50,88 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
 
+        /// <summary>
+        /// Perfect判定時のエフェクト
+        /// </summary>
+        public void PlayPerfectEffect()
+        {
+            _tweens[0]?.Kill();
+
+            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+            _ringImage.rectTransform.localScale = Vector3.one;
+
+            // Perfect判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Perfect.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
+            _centerImage.enabled = true;
+
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+
+        /// <summary>
+        /// Good判定時のエフェクト
+        /// </summary>
+        public void PlayGoodEffect()
+        {
+            _tweens[0]?.Kill();
+
+            // Good判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Good.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
+            _centerImage.enabled = true;
+
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+
+
+        /// <summary>
+        /// 失敗演出
+        /// </summary>
+        public void PlayFailEffect()
+        {
+            _tweens[0].Kill();
+
+            // Miss判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+
+            _centerImage.enabled = true;
+
+            var failSequence = DOTween.Sequence();
+
+            // 色変更とフェードアウト
+            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
+            failSequence.Join(CreateFadeSequence(_fadeDuration));
+
+            failSequence.OnComplete(End);
+
+            _tweens[0] = failSequence;
+        }
+
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
@@ -156,30 +238,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             successSequence.OnComplete(End);
 
             _tweens[0] = successSequence;
-        }
-
-        /// <summary>
-        /// 失敗演出
-        /// </summary>
-        private void PlayFailEffect()
-        {
-            _tweens[0].Kill();
-            
-            // Miss判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Miss.Sprite;
-			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
-            
-            _centerImage.enabled = true;
-            
-            var failSequence = DOTween.Sequence();
-            
-            // 色変更とフェードアウト
-            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
-            failSequence.Join(CreateFadeSequence(_fadeDuration));
-            
-            failSequence.OnComplete(End);
-            
-            _tweens[0] = failSequence;
         }
 
 		/// <summary>
