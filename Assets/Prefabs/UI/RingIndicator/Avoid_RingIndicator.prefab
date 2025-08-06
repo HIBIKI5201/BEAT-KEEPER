@@ -298,7 +298,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e9617797f78691f4e9006bbb96f4505a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6acce6d4d659fd458924e9188d27519, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 59d2ca74d60f8a24982b0bf90d7ceacf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4671e72ef688ca046921d3e65f747572, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -555,11 +555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 230
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 230
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalScale.x
@@ -630,6 +630,10 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 248c42b83e1847f4189aca8dc743457b, type: 3}
+    - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
       value: 0.5019608
       objectReference: {fileID: 0}
@@ -646,16 +650,16 @@ PrefabInstance:
     - {fileID: 702963479238514956, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 5452206659944082538}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 5184067000131770246}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 3
       addedObject: {fileID: 6948879313488365171}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 4
       addedObject: {fileID: 5336658516498425922}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
@@ -687,6 +691,8 @@ MonoBehaviour:
   _translucentDefaultColor: {r: 1, g: 0, b: 0.5019608, a: 0.19607843}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
+  _centerImage: {fileID: 2479790196635966107}
+  _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _ringImages:
   - {fileID: 4851049892196883910}
   - {fileID: 7318825444765555048}
@@ -703,6 +709,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
   m_PrefabInstance: {fileID: 2695882649909931677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2479790196635966107 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+  m_PrefabInstance: {fileID: 2695882649909931677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4851049892196883910 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}

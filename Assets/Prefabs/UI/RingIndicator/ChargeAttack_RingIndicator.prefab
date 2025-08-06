@@ -554,6 +554,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5061960755056945525, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b6acce6d4d659fd458924e9188d27519, type: 3}
+    - target: {fileID: 5061960755056945525, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
@@ -565,6 +569,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.8118438
       objectReference: {fileID: 0}
+    - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 248c42b83e1847f4189aca8dc743457b, type: 3}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -581,22 +589,33 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 4573061191452116828}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 2825105196020062725}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 3
       addedObject: {fileID: 6518390891740524473}
     - targetCorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
-      insertIndex: -1
+      insertIndex: 4
       addedObject: {fileID: 7409067622384328391}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2318007837649346414, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5170481278371548663}
   m_SourcePrefab: {fileID: 100100000, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+--- !u!114 &6851541169836843214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+  m_PrefabInstance: {fileID: 6347223975405835464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7911681263166023906 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3881591208483994666, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
@@ -627,6 +646,9 @@ MonoBehaviour:
   _translucentDefaultColor: {r: 0.8117647, g: 0.09019608, b: 1, a: 0.23529412}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
+  _centerImage: {fileID: 6851541169836843214}
+  _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
+  _apperanceSoundCueName: Ring_Charge
   _blurImage: {fileID: 661764378258809708}
   _maskImage: {fileID: 2486665361135006193}
   _gaugeImage: {fileID: 8422718386299830461}

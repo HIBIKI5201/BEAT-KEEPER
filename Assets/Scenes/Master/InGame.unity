@@ -1815,6 +1815,10 @@ PrefabInstance:
       propertyPath: _scoreManager
       value: 
       objectReference: {fileID: 719706917}
+    - target: {fileID: 8655863126827582592, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _scoreManager
+      value: 
+      objectReference: {fileID: 719706917}
     - target: {fileID: 9100631615109704522, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

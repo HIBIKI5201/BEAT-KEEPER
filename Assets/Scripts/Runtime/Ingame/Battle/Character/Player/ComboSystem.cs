@@ -24,7 +24,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     コンボをリセットする
         /// </summary>
-        public void ComboReset() => _comboCount.Value = 0;
+        public void ComboReset() 
+        {
+            if (_comboCount.Value == 0) return;
+
+            _comboCount.Value = 0;
+            Debug.Log("Combo Reset");
+        }
 
         public void Update()
         {

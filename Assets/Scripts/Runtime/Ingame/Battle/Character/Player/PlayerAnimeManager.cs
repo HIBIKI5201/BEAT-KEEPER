@@ -17,10 +17,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animator?.SetFloat(_moveZ, direction.y);
         }
 
+        public void SetAnimatorSpeed(float speed)
+        {
+            if (_animator != null)
+            {
+                Debug.Log($"Player SetAnimatorSpeed: {speed}");
+                _animator.speed = speed;
+            }
+        }
+
         public void Hit() => _animator?.SetTrigger(_hit);
 
         public void Shoot() => _animator?.SetTrigger(_shoot);
         public void Combo(int count) => _animator?.SetInteger(_combo, count);
+        public void ChargeShoot() => _animator?.SetTrigger(_chargeShoot);
 
         public void Skill() => _animator?.SetTrigger(_skill);
 
@@ -32,6 +42,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private readonly int _shoot = Animator.StringToHash("Shoot");
         private readonly int _combo = Animator.StringToHash("Combo");
+        private readonly int _chargeShoot = Animator.StringToHash("ChargeShoot");
 
         private readonly int _skill = Animator.StringToHash("Skill");
     }

@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: Dev_ChartData
   m_EditorClassIdentifier: 
   _chart:
-  - AttackKind: 0
-    Position: {x: 100, y: 100}
-  - AttackKind: 0
-    Position: {x: -100, y: 100}
-  - AttackKind: 0
+  - AttackKind: 1
+    Position: {x: 500, y: 100}
+  - AttackKind: 1
+    Position: {x: -500, y: 100}
+  - AttackKind: 1
     Position: {x: 0, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: 400, y: 100}
+    Position: {x: 500, y: 100}
   - AttackKind: 1
-    Position: {x: 0, y: 100}
+    Position: {x: 500, y: 100}
   - AttackKind: 1
     Position: {x: 0, y: 100}
   - AttackKind: 0
@@ -34,23 +34,23 @@ MonoBehaviour:
   - AttackKind: 1
     Position: {x: 0, y: 100}
   - AttackKind: 4
-    Position: {x: 200, y: 100}
+    Position: {x: 500, y: -100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
-  - AttackKind: 1
+  - AttackKind: 0
     Position: {x: 500, y: 100}
-  - AttackKind: 0
+  - AttackKind: 8
     Position: {x: 0, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: 500, y: 100}
+    Position: {x: 0, y: 200}
   - AttackKind: 1
-    Position: {x: 0, y: 100}
+    Position: {x: 250, y: -200}
   - AttackKind: 1
-    Position: {x: -200, y: 100}
+    Position: {x: -250, y: -200}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     Position: {x: -250, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
-  - AttackKind: 0
+  - AttackKind: 1
     Position: {x: 0, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
@@ -78,11 +78,11 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: 250, y: 100}
+    Position: {x: 0, y: 200}
   - AttackKind: 1
-    Position: {x: 0, y: 100}
+    Position: {x: -250, y: -200}
   - AttackKind: 1
-    Position: {x: -250, y: 100}
+    Position: {x: 250, y: -200}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 8
-    Position: {x: 0, y: 100}
+    Position: {x: 0, y: 0}
   - AttackKind: 1
     Position: {x: 250, y: 100}
   - AttackKind: 0
@@ -111,22 +111,22 @@ MonoBehaviour:
     Position: {x: -250, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
-  - AttackKind: 1
-    Position: {x: 400, y: 100}
   - AttackKind: 1
     Position: {x: -400, y: 100}
+  - AttackKind: 1
+    Position: {x: 400, y: -100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: 250, y: 100}
+    Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 4
     Position: {x: 500, y: 100}
   - AttackKind: 1
-    Position: {x: 0, y: 100}
-  - AttackKind: 2
     Position: {x: -500, y: 100}
+  - AttackKind: 2
+    Position: {x: 0, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 0
@@ -134,11 +134,11 @@ MonoBehaviour:
   - AttackKind: 8
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: -900, y: 100}
+    Position: {x: -300, y: 100}
   - AttackKind: 1
-    Position: {x: 900, y: 100}
+    Position: {x: 300, y: 100}
   - AttackKind: 0
     Position: {x: 0, y: 100}
   - AttackKind: 1
-    Position: {x: 250, y: 100}
-  _visible: 01010000010000010100010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    Position: {x: 0, y: 100}
+  _visible: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

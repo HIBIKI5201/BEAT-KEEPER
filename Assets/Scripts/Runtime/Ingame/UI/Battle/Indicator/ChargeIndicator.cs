@@ -1,4 +1,5 @@
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;

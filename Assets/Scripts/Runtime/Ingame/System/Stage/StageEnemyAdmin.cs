@@ -12,6 +12,8 @@ namespace BeatKeeper.Runtime.Ingame.Battle
     /// </summary>
     public class StageEnemyAdmin : MonoBehaviour
     {
+        public event Action<EnemyManager> OnNextEnemyActive;
+
         public EnemyManager[] Enemies => _enemies;
         public int ActiveEnemyIndex => _activeEnemyIndex;
 
@@ -37,6 +39,8 @@ namespace BeatKeeper.Runtime.Ingame.Battle
 
             // 次の敵をアクティブに設定
             SetActiveEnemy(nextIndex);
+            // イベントを発火
+            OnNextEnemyActive?.Invoke(_enemies[nextIndex]);
 
             _activeEnemyIndex = nextIndex;
         }

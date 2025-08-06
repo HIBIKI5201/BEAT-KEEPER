@@ -1,4 +1,7 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.Character;
+using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -15,6 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayableAsset[] playables;
 
         private PlayableDirector _playableDirector;
+        
+        private PhaseManager _phaseManager;
 
         private void Awake()
         {
@@ -25,13 +30,35 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
         }
 
-        private void Start()
+        private async void Start()
         {
             var finisher = transform.parent.GetComponentInChildren<FinisherSequenceManager>();
             if (finisher)
             {
                 finisher.OnFinisherSequenceEnd += OnFinisherSequenceEnd;
             }
+
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            StageEnemyAdmin enemyAdmin = battleSceneManager.EnemyAdmin;
+            if (enemyAdmin)
+            {
+                enemyAdmin.OnNextEnemyActive += OnNextEnemyActive;
+
+                EnemyManager firstEnemy = enemyAdmin.GetActiveEnemy();
+                firstEnemy.HealthSystem.OnDeath += OnEnemyDeath;
+            }
+            
+            _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+        }
+
+        private void OnNextEnemyActive(EnemyManager enemy)
+        {
+            enemy.HealthSystem.OnDeath += OnEnemyDeath;
+        }
+
+        private void OnEnemyDeath()
+        {
+            PlayBreakMovie();
         }
 
         /// <summary>
@@ -39,8 +66,21 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// </summary>
         private void OnFinisherSequenceEnd()
         {
+            PlayBreakMovie();
+        }
+
+        /// <summary>
+        ///     ブレイクムービーを再生する
+        /// </summary>
+        private void PlayBreakMovie()
+        {
             if (!_playableDirector) return;
 
+            if (_phaseManager)
+            {
+                _phaseManager.TransitionTo(PhaseEnum.Movie);
+            }
+            
             StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
             int index = enemyAdmin.ActiveEnemyIndex;
 

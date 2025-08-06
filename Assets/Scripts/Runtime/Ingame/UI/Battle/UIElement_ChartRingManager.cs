@@ -32,8 +32,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
         private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
         private int[] _appearTiming;
+        private bool _isProcessingRingOperation = false; // 今回の拍のノーツの生成が終了したか
 
         private EnemyData _targetData;
+		public EnemyData TargetData => _targetData;
 
         private async void Start()
         {
@@ -47,6 +49,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .Subscribe(OnChangePhase).AddTo(destroyCancellationToken);
             }
             _enemies = (await ServiceLocator.GetInstanceAsync<BattleSceneManager>())?.EnemyAdmin;
+            _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
             ObjectPoolInitialize();
         }
@@ -69,6 +72,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
+                _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
 
                 RegisterOnJustBeat();
             }
@@ -80,6 +84,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnJustBeat()
         {
             if (_enemies == null) return;
+            
+            // ノーツ生成開始状態にする
+            _isProcessingRingOperation = true;
 
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
@@ -111,6 +118,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                         element.Position, (timing + _appearTiming[i]) % chart.Length);
                 }
             }
+            
+            // 登録完了
+            _isProcessingRingOperation = false;
         }
 
         /// <summary>
@@ -119,14 +129,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnFinisher()
         {
             UnregisterOnJustBeat();
-            ReleaseAllActiveIndicator();
+            ReleaseAllActiveIndicator().Forget();
         }
 
         /// <summary>
         ///     全てのアクティブなインジケーターを非アクティブ化する
         /// </summary>
-        public void ReleaseAllActiveIndicator()
+        public async UniTask ReleaseAllActiveIndicator()
         {
+            // リング操作の処理完了を待つ
+            await UniTask.WaitUntil(() => !_isProcessingRingOperation);
+            
             List<RingIndicatorBase> rings = _activeRingIndicator.ToList();
             foreach (var ring in rings)
             {

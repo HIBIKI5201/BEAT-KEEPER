@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,26 +30,24 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 2拍目　念のため判定が始まる2拍目のタイミングでアクション登録を行う
                 case 2:
-                    _player.OnShootComboAttack += OnPlayerAttackSuccess;
+                    _player.OnPerfectAttack += HandlePerfectAttack;
+                    _player.OnGoodAttack += HandleGoodAttack;
                     break;
             }
         }
-        
+
         public override void End()
         {
-            _player.OnShootComboAttack -= OnPlayerAttackSuccess;
+            _player.OnPerfectAttack -= HandlePerfectAttack;
+            _player.OnGoodAttack -= HandleGoodAttack;
+
+			base.End();
             
-            // 全てのTweenを停止
-            foreach (var tween in _tweens)
-            {
-                tween?.Kill();
-            }
+            _centerImage.enabled = false;
             
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-            
-            base.End();
         }
 
         // Justタイミングは2拍後
@@ -57,6 +56,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float RECEPTION_TIME = 0.45f;
 
         [SerializeField] private Image[] _ringImages = new Image[2];
+        // 譜面の長さ
+        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
         private void Start()
         {
@@ -71,6 +72,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
+            
+            _centerImage.enabled = false;
             
             // 初期化
             ResetRingsScale();
@@ -110,25 +113,44 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 当たりエフェクト（プレイヤーが攻撃に成功したときに再生）
         /// </summary>
-        private void OnPlayerAttackSuccess()
+        private void OnPlayerAttackSuccess(bool isPerfect)
         {
-            if (_timing < MusicEngineHelper.GetBeatNearerSinceStart())
+            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
-            
+
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            _tweens[0].Kill();
+            _tweens[0]?.Kill();
+            
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImage.rectTransform.localScale = Vector3.one;
+                
+                // Perfect判定のスプライトに差し替え
+				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
+                _centerImage.sprite = _hitResult.Perfect.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
+            }
+            else
+            {
+                // Good判定のスプライトに差し替え
+                _centerImage.sprite = _hitResult.Good.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
+            }
            
+            _centerImage.enabled = true;
+            
             var successSequence = DOTween.Sequence();
 
-            // パンチスケール
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.3f, _blinkDuration, 2, 0.5f));
-            
-            // 色変更とフェードアウト
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
             successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
-            successSequence.Join(CreateFadeSequence(_fadeDuration));
+            
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
 
             // エフェクトが完了したらEnd処理を実行
             successSequence.OnComplete(End);
@@ -142,6 +164,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void PlayFailEffect()
         {
             _tweens[0].Kill();
+            
+            // Miss判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+            
+            _centerImage.enabled = true;
             
             var failSequence = DOTween.Sequence();
             
@@ -159,6 +187,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
 		private void ResetRingsScale()
 		{
+			if(_selfImage != null) _selfImage.rectTransform.localScale = Vector3.one;
 			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
 			if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = _centerRingsScale;
 			if(_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;
@@ -201,5 +230,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
+        
+        private void HandlePerfectAttack() => OnPlayerAttackSuccess(true);
+        private void HandleGoodAttack() => OnPlayerAttackSuccess(false);
     }
 }

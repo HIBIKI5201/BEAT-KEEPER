@@ -68,6 +68,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 EndFlowZone();
             }
         }
+        
+        /// <summary>
+        ///     ゾーンカウントをリセットする
+        /// </summary>
+        public void ResetResonanceCount()
+        {
+            _resonanceCount.Value = 0;
+        }
 
         private readonly PlayerData _data;
         private readonly BGMManager _musicEngineHelper;
@@ -83,8 +91,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private readonly ReactiveProperty<bool> _isFlowZone = new();
 
         private int _count;
-
-
+        
         /// <summary>
         ///     拍数が変更されるタイミングで呼び出されるメソッド
         /// </summary>

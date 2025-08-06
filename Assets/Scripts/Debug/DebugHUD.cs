@@ -1,4 +1,6 @@
-﻿using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.System;
+using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -17,6 +19,8 @@ namespace BeatKeeper.Runtime.Develop
 
         private void OnGUI()
         {
+            if (!Application.isPlaying) return;
+
             int w = Screen.width, h = Screen.height;
 
             GUIStyle style = new GUIStyle();
@@ -47,9 +51,15 @@ namespace BeatKeeper.Runtime.Develop
 
             if (Music.Current != null)
             {
-                var currentBeat = MusicEngineHelper.GetBeatSinceStart();
-                text += $"Current Beat: {currentBeat}";
-                text += $"\nBar:{Music.Just.Bar}, Just:{Music.Just.Beat}";
+                (int just, int near) beat = (MusicEngineHelper.GetBeatSinceStart(), MusicEngineHelper.GetBeatNearerSinceStart());
+                text += $"Beat: just {beat.just}, near {beat.near}\n";
+                text += $"Bar:{Music.Just.Bar}, Just:{Music.Just.Beat}\n";
+            }
+
+            PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
+            if (player != null)
+            {
+                text += $"combo : {player.ComboSystem.ComboCount}\n";
             }
 
             GUI.Label(rect, text, style);

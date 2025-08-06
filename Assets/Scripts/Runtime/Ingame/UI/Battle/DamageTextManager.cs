@@ -7,137 +7,213 @@ using UnityEngine.UI;
 using DG.Tweening;
 using R3;
 
-/// <summary>
-/// スコアUIの近くのプレイヤーが与えたダメージ表記を管理するクラス
-/// </summary>
-public class DamageTextManager : MonoBehaviour
+namespace BeatKeeper
 {
-    [Header("コンポーネントの参照")]
-    [SerializeField] private Text _damageText;
-    [SerializeField] private Color _textColor;
-    
-    [Header("アニメーションの設定")]
-    [SerializeField, Tooltip("表示時間")] private float _displayTime = 0.2f;
-    [SerializeField, Tooltip("テキストのY軸上の移動距離")] private float _moveDistanceY = 1.5f;
-    [SerializeField, Tooltip("イージング")] private Ease _easeType = Ease.InExpo;
-    
-    private EnemyManager _enemy; // 敵がダメージを受けた時のイベントを購読しているため、解除用のキャッシュを保持している
-    private Sequence _textSequence; // テキストアニメーションのシーケンス
-    private Vector3 _initPosition; // テキストオブジェクトの初期位置
-    
-    private CompositeDisposable _disposable = new CompositeDisposable();
-    
-    private async void Start()
-    {
-        if (_damageText == null)
-        {
-            Debug.LogError($"[{typeof(DamageTextManager)}] テキストコンポーネントが設定されていません");
-            return;
-        }
-        
-        // テキストコンポーネントの初期位置を保存・α値は0にして見えないようにしておく
-        _initPosition = _damageText.transform.position;
-        _damageText.color = new Color(_textColor.r, _textColor.g, _textColor.b, 0);
-        
-        // 敵のクラスの参照を取りたいので、敵オブジェクトが存在するバトルシーンが読み込まれるまで待機する
-        await SceneLoader.WaitForLoadSceneAsync("Battle");
-
-        SubscribeToPhaseChange();
-    }
-
     /// <summary>
-    /// フェーズ変更のリアクティブプロパティを購読する
+    /// スプライトを使用してプレイヤーが与えたダメージ表記を管理するクラス
     /// </summary>
-    private void SubscribeToPhaseChange()
+    public class DamageTextManager : MonoBehaviour
     {
-        var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-        if (phaseManager)
-        {
-            // フェーズが変更されたタイミングで敵のHitイベントの登録をしなおす
-            phaseManager.CurrentPhaseProp
-                .Subscribe(OnPhaseChanged)
-                .AddTo(_disposable);
-        }
-        else
-        {
-            Debug.Log($"[{typeof(DamageTextManager)}] {typeof(PhaseManager)}が取得できませんでした");
-        }
-    }
+        [Header("コンポーネントの参照")]
+        [SerializeField] private UIElement_ScoreText _scoreText;
+        [SerializeField] private CanvasGroup _containerCanvasGroup;
+        [SerializeField] private RectTransform _plusSignTransform;
+        [SerializeField] private Image[] _digitImages = new Image[8];
 
-    /// <summary>
-    /// フェーズ変更時に敵がダメージを受けた時のアクション登録を行う
-    /// </summary>
-    private void OnPhaseChanged(PhaseEnum phase)
-    {
-        if (_enemy != null)
+        [Header("アニメーションの設定")]
+        [SerializeField, Tooltip("表示時間")] private float _displayTime = 0.2f;
+        [SerializeField, Tooltip("テキストのY軸上の移動距離")] private float _moveDistanceY = 1.5f;
+        [SerializeField, Tooltip("イージング")] private Ease _easeType = Ease.InExpo;
+
+        private EnemyManager _enemy; // アクティブな敵のマネージャー
+        private Sequence _animationSequence; // アニメーションシーケンス
+        private Vector3 _initialPosition; // CanvasGroupの初期位置
+        private readonly CompositeDisposable _disposable = new CompositeDisposable(); // R3のSubscribe解除管理用CompositeDisposable
+
+        private static readonly int[] _digitDivisors = { 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 }; // 桁数分解計算の最適化用。事前計算済み配列
+
+        #region Life cycle
+
+        /// <summary>
+        /// Start
+        /// </summary>
+        private async void Start()
         {
-            // 既存のアクション登録を解除
-            _enemy.OnHitAttack -= HandleDisplayDamage;
+            if (!ValidateComponents())
+            {
+                return;
+            }
+
+            // アニメーション用の初期位置を記録
+            _initialPosition = _containerCanvasGroup.transform.position;
+            _containerCanvasGroup.alpha = 0; // 初期状態では非表示
+
+            // Battleシーンのロードが完了するまで待機
+            await SceneLoader.WaitForLoadSceneAsync("Battle");
+            
+            // フェーズ変更の監視を開始する
+            SubscribeToPhaseChange();
         }
         
-        // 新しい敵の参照を取得する
-        _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.GetActiveEnemy();
-
-        if (_enemy != null)
+        /// <summary>
+        /// Destory
+        /// </summary>
+        private void OnDestroy()
         {
-            // 敵がダメージを受けた時のイベントにダメージ表記UIの処理を追加する
-            _enemy.OnHitAttack += HandleDisplayDamage;
+            _animationSequence?.Kill();
+            _disposable?.Dispose();
+            
+            if (_enemy != null)
+            {
+                _enemy.OnHitAttack -= HandleDisplayDamage;
+            }
         }
-        else
+
+        #endregion
+        
+        /// <summary>
+        /// ダメージ数値の表示とアニメーション実行
+        /// </summary>
+        private void HandleDisplayDamage(int damageAmount)
         {
-            Debug.Log($"[{typeof(DamageTextManager)}] {typeof(EnemyManager)}が取得できませんでした");
+            if (_containerCanvasGroup == null)
+            {
+                //  CanvasGroupが設定されていなければreturn
+                return;
+            }
+
+            // 既存のアニメーションがあればKill
+            _animationSequence?.Kill();
+
+            // ダメージ数値の表示をセットアップ
+            SetupDamageDisplay(damageAmount);
+
+            // アニメーション開始位置にリセット
+            _containerCanvasGroup.transform.position = _initialPosition;
+            _containerCanvasGroup.alpha = 1;
+
+            // アニメーション終了位置を計算
+            var targetPosition = _initialPosition + Vector3.up * _moveDistanceY;
+
+            // アニメーション実行（移動・フェードアニメーション）
+            _animationSequence = DOTween.Sequence()
+                .Append(_containerCanvasGroup.transform.DOMove(targetPosition, _displayTime).SetEase(_easeType))
+                .Join(_containerCanvasGroup.DOFade(0, _displayTime).SetEase(_easeType));
         }
-    }
-    
-    /// <summary>
-    /// ダメージを表示する
-    /// </summary>
-    private void HandleDisplayDamage(int damageAmount)
-    {
-        if (_damageText == null)
+
+        /// <summary>
+        /// ダメージ量に応じてスプライトの表示をセットアップする
+        /// </summary>
+        private void SetupDamageDisplay(int damage)
         {
-            // コンポーネントが設定されていない場合はreturn
-            return;
+            // 全ての数字イメージを一旦非表示に
+            foreach (var img in _digitImages)
+            {
+                img.enabled = false;
+            }
+            _plusSignTransform.gameObject.SetActive(false);
+
+            if (damage <= 0)
+            {
+                // ダメージが0以下なら以降の処理は行わない
+                return;
+            }
+
+            // 8桁制限
+            int tempDamage = Mathf.Min(damage, 99999999);
+            int firstDigitIndex = -1;
+
+            // 上の桁から調べて、最初に0でない数字が見つかった位置を記録
+            for (int i = 0; i < _digitImages.Length; i++)
+            {
+                int digit = (tempDamage / _digitDivisors[i]) % 10;
+                if (digit > 0 && firstDigitIndex == -1)
+                {
+                    // 最初のゼロではない桁を検出
+                    firstDigitIndex = i;
+                }
+
+                if (firstDigitIndex != -1)
+                {
+                    // 最初のゼロではない桁が見つかった後は、0も含めて全ての桁を表示
+                    _digitImages[i].enabled = true;
+                    _digitImages[i].sprite = _scoreText.NumberSprites[digit];
+                }
+            }
+            
+            if (firstDigitIndex == -1 && tempDamage > 0)
+            {
+                // NOTE: エッジケース　1桁の数字（1-9）の処理
+                firstDigitIndex = _digitImages.Length - 1;
+                 _digitImages[firstDigitIndex].enabled = true;
+                 _digitImages[firstDigitIndex].sprite = _scoreText.NumberSprites[tempDamage % 10];
+            }
+
+            if (firstDigitIndex != -1)
+            {
+                // プラス記号を最初の数字の左側に配置
+                _plusSignTransform.gameObject.SetActive(true);
+                var firstDigitRect = _digitImages[firstDigitIndex].rectTransform;
+                _plusSignTransform.position = firstDigitRect.position - new Vector3(firstDigitRect.rect.width, 0, 0);
+            }
         }
-        
-        // 既存シーケンスがあったらKill
-        _textSequence?.Kill();
-        _textSequence = DOTween.Sequence();
-        
-        // テキストの初期化
-        SetupText(damageAmount);
-        
-        // 現在位置から相対的に移動する（絶対位置ではなく相対位置を指定）
-        var targetPosition = _initPosition + Vector3.up * _moveDistanceY;
 
-        // テキストがスライドするアニメーション
-        _textSequence.Append(_damageText.transform.DOMove(targetPosition, _displayTime).SetEase(_easeType));
-        
-        // スライドアニメーションと同時にフェードアウトも実行する
-        _textSequence.Join(_damageText.DOFade(0, _displayTime).SetEase(_easeType));
-    }
-
-    /// <summary>
-    /// テキストアニメーション時の初期化処理
-    /// </summary>
-    private void SetupText(int damageAmount)
-    {
-        _damageText.transform.position = _initPosition;
-        _damageText.text = $"+{damageAmount}";
-        _damageText.color = _textColor;
-    }
-
-    private void OnDestroy()
-    {
-        // アニメーションの停止
-        _textSequence?.Kill();
-        
-        // フェーズ変更のリアクティブプロパティの購読解除
-        _disposable?.Dispose();
-        
-        if (_enemy != null)
+        /// <summary>
+        /// 必要なコンポーネントが設定されているかチェック
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateComponents()
         {
-            _enemy.OnHitAttack -= HandleDisplayDamage;
+            if (_containerCanvasGroup == null)
+            {
+                Debug.LogError($"[{nameof(DamageTextManager)}] CanvasGroupが設定されていません");
+                return false;
+            }
+
+            if (_scoreText == null)
+            {
+                Debug.LogError($"[{nameof(DamageTextManager)}] ScoreTextが設定されていません");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// PhaseManagerの変更イベントを購読
+        /// </summary>
+        private void SubscribeToPhaseChange()
+        {
+            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            if (phaseManager)
+            {
+                phaseManager.CurrentPhaseProp.Subscribe(OnPhaseChanged).AddTo(_disposable);
+            }
+            else
+            {
+                Debug.Log($"[{nameof(DamageTextManager)}] {nameof(PhaseManager)}が取得できませんでした");
+            }
+        }
+
+        /// <summary>
+        /// フェーズ変更時、新しいアクティブな敵を取得する
+        /// </summary>
+        private void OnPhaseChanged(PhaseEnum phase)
+        {
+            if (_enemy != null)
+            {
+                _enemy.OnHitAttack -= HandleDisplayDamage;
+            }
+
+            _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.GetActiveEnemy();
+
+            if (_enemy != null)
+            {
+                _enemy.OnHitAttack += HandleDisplayDamage;
+            }
+            else
+            {
+                Debug.Log($"[{nameof(DamageTextManager)}] {nameof(EnemyManager)}が取得できませんでした");
+            }
         }
     }
 }
