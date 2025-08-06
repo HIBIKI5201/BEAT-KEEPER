@@ -17,6 +17,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animator?.SetFloat(_moveZ, direction.y);
         }
 
+        public void SetAnimatorSpeed(float speed)
+        {
+            if (_animator != null)
+            {
+                Debug.Log($"Player SetAnimatorSpeed: {speed}");
+                _animator.speed = speed;
+            }
+        }
+
         public void Hit() => _animator?.SetTrigger(_hit);
 
         public void Shoot() => _animator?.SetTrigger(_shoot);
