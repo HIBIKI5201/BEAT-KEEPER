@@ -2,9 +2,6 @@
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
-using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +18,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField, Tooltip("チュートリアルクリアに何回good以上の判定を出すか")] private int _targetClearCount = 4;
         [SerializeField] private float _goodRange = 0.8f;
         [SerializeField] private float _perfectRange = 0.5f;
+        [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
         ChartKindEnum _chartKindEnum;
 
         private List<RingIndicatorBase> _activeRingIndicator = new();
@@ -53,6 +51,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         public void TutorialRegister(ChartKindEnum chartKindEnum)
         {
+            if (!_playTutorial) return;
             _chartKindEnum = chartKindEnum;
             _inputBuffer.Attack.started += OnShot;
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;

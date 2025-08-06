@@ -1278,10 +1278,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
-  _indicatorGenerateCount: 4
+  _indicatorGenerateCount: 8
   _targetClearCount: 4
-  _goodRange: 0.8
-  _perfectRange: 0.5
+  _goodRange: 0.9
+  _perfectRange: 0.7
+  _playTutorial: 0
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
