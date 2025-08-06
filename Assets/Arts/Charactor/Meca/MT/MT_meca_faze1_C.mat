@@ -389,7 +389,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _ColorMask: 15
     - _Cull: 2
-    - _Cutoff: -0.001
+    - _Cutoff: 0.001
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DissolveNoiseStrength: 0.1

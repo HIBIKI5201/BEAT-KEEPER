@@ -15,7 +15,6 @@ Material:
   - EFFECT_HUE_VARIATION
   - _EMISSION
   - _METALLICGLOSSMAP
-  - _REQUIRE_UV2
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -679,7 +678,7 @@ Material:
     - _UseReflection: 0
     - _UseRim: 1
     - _UseRimShade: 0
-    - _UseShadow: 1
+    - _UseShadow: 0
     - _VertexLightStrength: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -704,8 +703,8 @@ Material:
     - _AudioLinkVertexUVParams: {r: 0.25, g: 0, b: 0, a: 0.125}
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.58592916, g: 0.62691903, b: 0.7264151, a: 1}
+    - _Color: {r: 0.58592916, g: 0.62691903, b: 0.7264151, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
@@ -757,7 +756,7 @@ Material:
     - _OutlineTex_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
     - _ReflectionColor: {r: 0.7971698, g: 0.9082434, b: 1, a: 1}
     - _ReflectionCubeColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.5990566, g: 0.8056537, b: 1, a: 1}
+    - _RimColor: {r: 0.7216981, g: 0.8635776, b: 1, a: 1}
     - _RimIndirColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimShadeColor: {r: 0.01886791, g: 0.017888915, b: 0.017888915, a: 1}
     - _Shadow2ndColor: {r: 0.4756141, g: 0.5709122, b: 0.6037736, a: 1}
