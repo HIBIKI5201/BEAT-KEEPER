@@ -258,8 +258,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 154410672}
   _locateType: 1
-  _autoSet: 1
-  _autoDestroy: 1
+  _autoRegister: 1
+  _autoUnregister: 1
 --- !u!114 &154410672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1278,11 +1278,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
-  _indicatorGenerateCount: 8
-  _targetClearCount: 4
+  _indicatorGenerateCount: 4
+  _attackTutorialClearCount: 4
+  _skillTutorialClearCount: 1
   _goodRange: 0.9
   _perfectRange: 0.7
-  _playTutorial: 0
+  _playTutorial: 1
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0

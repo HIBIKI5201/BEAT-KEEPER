@@ -133,6 +133,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns></returns>
         public bool IsFinisherable()
         {
+            if(_target == null) return false; //ターゲットがいなければフィニッシャーはできない
             return _target.IsFinisherable;
         }
 

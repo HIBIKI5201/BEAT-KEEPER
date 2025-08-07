@@ -15,7 +15,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private PlayableDirector _director;
         [SerializeField] private UIElement_ChartRingManager _chartRingManager;
         [SerializeField, Tooltip("何拍ごとにインジケーターを出すか")] private int _indicatorGenerateCount;
-        [SerializeField, Tooltip("チュートリアルクリアに何回good以上の判定を出すか")] private int _targetClearCount = 4;
+        [SerializeField, Tooltip("チュートリアルクリアに何回good以上の判定を出すか")] private int _attackTutorialClearCount = 4;
+        [SerializeField, Tooltip("チュートリアルクリアに何回good以上の判定を出すか")] private int _skillTutorialClearCount = 1;
         [SerializeField] private float _goodRange = 0.8f;
         [SerializeField] private float _perfectRange = 0.5f;
         [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
@@ -29,6 +30,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private async void Start()
         {
+            _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
         }
@@ -52,8 +54,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void TutorialRegister(ChartKindEnum chartKindEnum)
         {
             if (!_playTutorial) return;
+            if (_chartKindEnum == chartKindEnum) return;
             _chartKindEnum = chartKindEnum;
-            _inputBuffer.Attack.started += OnShot;
+            if (_chartKindEnum == ChartKindEnum.Attack)
+            {
+                _inputBuffer.Attack.started += OnShot;
+            }
+            else if (chartKindEnum == ChartKindEnum.Skill)
+            {
+                _inputBuffer.Attack.started += OnSkill;
+            }
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;
             _director.Pause();
         }
@@ -66,6 +76,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 ind.End();
             }
+            _activeRingIndicator.Clear();
         }
 
         /// <summary>
@@ -89,8 +100,19 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 }
                 _currentIndicatorCount = 0;
             }
-            Debug.Log(_currentIndicatorCount);
             _currentIndicatorCount++;
+
+            if (_chartKindEnum == ChartKindEnum.Attack)
+            {
+
+                if (_currentTargetClearCount >= _attackTutorialClearCount)
+                {
+                    Debug.Log("Tutorial Clear!----------------------------------------------------");
+                    _currentTargetClearCount = 0;
+                    _inputBuffer.Attack.started -= OnShot;
+                    TutorialUnRegister();
+                }
+            }
         }
 
         /// <summary>
@@ -100,7 +122,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void OnShot(InputAction.CallbackContext callbackContext)
         {
             if (_activeRingIndicator.Count == 0) return;
-           
+            Debug.Log(_currentIndicatorCount);
             if (callbackContext.phase == InputActionPhase.Started)
             {
                 var isGood = CheckGood();
@@ -130,23 +152,60 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
         }
 
+        private void OnSkill(InputAction.CallbackContext callbackContext)
+        {
+            if (_activeRingIndicator.Count == 0) return;
+
+            if (callbackContext.phase == InputActionPhase.Started)
+            {
+                var isGood = CheckGood();
+                var isPerfect = CheckPerfect();
+                var specitalIndicator = (SpecialIndicator)_activeRingIndicator[0];
+                if (isGood)
+                {
+                    _currentTargetClearCount++;
+                    Debug.Log("Good!");
+                    specitalIndicator.PlaySuccessEffectPublic();
+
+                }
+                else
+                {
+                    Debug.Log("Missed!");
+                    specitalIndicator.PlayFailEffect();
+                    _activeRingIndicator.RemoveAt(0);
+                }
+            }
+            if (_currentTargetClearCount >= _skillTutorialClearCount)
+            {
+                _currentTargetClearCount = 0;
+                _inputBuffer.Attack.started -= OnSkill;
+                TutorialUnRegister();
+            }
+        }
+
         private bool CheckGood()
         {
-            if (_currentIndicatorCount == 0 || _currentIndicatorCount == _indicatorGenerateCount) return false;
+            if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
+            {
+                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
 
-            var normalizedTimingFromJust = (float)Music.UnitFromJust;
-            Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
-
-            // Justタイミング付近か判定
-            return Mathf.Abs(normalizedTimingFromJust) <= _goodRange / 2;
+                // Justタイミング付近か判定
+                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2;
+            }
+            return false;
         }
         private bool CheckPerfect()
         {
-            if (_currentIndicatorCount == 0 || _currentIndicatorCount == _indicatorGenerateCount) return false;
-            var normalizedTimingFromJust = (float)Music.UnitFromJust;
-            // Justタイミング付近か判定
-            Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
-            return Mathf.Abs(normalizedTimingFromJust) <= _perfectRange / 2;
+            if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
+            {
+
+                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                // Justタイミング付近か判定
+                Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
+                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _perfectRange / 2;
+            }
+            return false;
         }
     }
 }
