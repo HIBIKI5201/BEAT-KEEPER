@@ -73,8 +73,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// </summary>
         public void TutorialIndicatorGenerate()
         {
-
-            //if (_activeRingIndicator.Count > 0 && !_activeRingIndicator[0].CheckRemainTime()) _activeRingIndicator.RemoveAt(0);
+            if (_activeRingIndicator.Count > 0 && !_activeRingIndicator[0].CheckRemainTime()) _activeRingIndicator.RemoveAt(0);
 
             foreach (var ind in _activeRingIndicator)
             {
