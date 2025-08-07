@@ -1284,6 +1284,8 @@ MonoBehaviour:
   _goodRange: 0.9
   _perfectRange: 0.7
   _playTutorial: 1
+  _comboAttackSound: NormalGunshot
+  _perfectAttackSound: Perfect
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0

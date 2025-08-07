@@ -20,6 +20,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private float _goodRange = 0.8f;
         [SerializeField] private float _perfectRange = 0.5f;
         [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
+        [SerializeField] private string _comboAttackSound;
+        [SerializeField] private string _perfectAttackSound;
         ChartKindEnum _chartKindEnum;
 
         private List<RingIndicatorBase> _activeRingIndicator = new();
@@ -136,11 +138,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     {
                         Debug.Log("Perfect!");
                         playerIndicator.PlayPerfectEffect();
+                        SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
                     }
                     else
                     {
                         Debug.Log("Good!");
                         playerIndicator.PlayGoodEffect();
+                        SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                     }
                 }
                 else
