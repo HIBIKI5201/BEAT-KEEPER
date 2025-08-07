@@ -81,9 +81,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void InitializeComponents()
         {
-            // 生成時点のタイミングを保存
-            _timing = MusicEngineHelper.GetBeatSinceStart();
-
             // Tweenの配列を作成
             _tweens = new Tween[3];
 

@@ -138,8 +138,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float RECEPTION_TIME = 0.45f;
 
         [SerializeField] private Image[] _ringImages = new Image[2];
-        // 譜面の長さ
-        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
         private void Start()
         {
@@ -197,7 +195,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess(bool isPerfect)
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
