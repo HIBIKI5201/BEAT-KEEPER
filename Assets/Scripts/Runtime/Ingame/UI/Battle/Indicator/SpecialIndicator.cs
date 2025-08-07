@@ -160,7 +160,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void PlaySuccessEffect()
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;

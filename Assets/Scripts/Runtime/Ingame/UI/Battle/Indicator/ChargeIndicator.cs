@@ -82,8 +82,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void InitializeComponents()
         {
             ResetAllComponents();
-            
-            _timing = MusicEngineHelper.GetBeatSinceStart();
 
             _tweens = new Tween[5];
 
@@ -185,11 +183,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess()
         {
-            if (_timing + CHARGE_TIME >= MusicEngineHelper.GetBeatSinceStart())
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
-                // チャージ完了タイミングより前なら処理はスキップ
+                // ノーツのタイミングより前なら処理はスキップ
                 return;
-            }
+            }   
             
             // 他のすべてのTweenをキル
             for (int i = 0; i < _tweens.Length; i++)
