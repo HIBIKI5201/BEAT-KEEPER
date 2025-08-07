@@ -17,15 +17,17 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 case 1:
                     return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
                 case 2:
+                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
                     break;
                 case 3:
                     break;
                 case 4:
                     break;
-                case 5:
+                default:
                     return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
-            return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
+
+            return Playable.Null;
         }
 
         [SerializeField, Range(1, 5)] private int _tutorialPhase;
