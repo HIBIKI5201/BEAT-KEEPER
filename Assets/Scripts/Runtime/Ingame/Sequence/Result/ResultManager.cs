@@ -1,4 +1,5 @@
-﻿using BeatKeeper.Runtime.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using DG.Tweening;
 using SymphonyFrameWork.System;
 using System.Threading.Tasks;
@@ -50,7 +51,10 @@ namespace BeatKeeper
 
         public async Task LoadOutGameScene()
         {
+            ServiceLocator.GetInstance<BGMManager>().ClearAllTimingActions();
             await SceneLoader.UnloadScene(SceneListEnum.InGame.ToString());
+            await SceneLoader.UnloadScene(SceneListEnum.Stage.ToString());
+            await SceneLoader.UnloadScene(SceneListEnum.Battle.ToString());
             await SceneLoader.LoadScene(SceneListEnum.OutGame.ToString());
             SceneLoader.SetActiveScene(SceneListEnum.OutGame.ToString());
         }
