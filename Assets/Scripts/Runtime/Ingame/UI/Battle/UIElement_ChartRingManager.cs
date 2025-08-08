@@ -57,6 +57,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void OnDestroy()
         {
+            if (_player != null)
+            {
+                _player.OnFinisher -= OnFinisher;
+            }
+            if (_enemies != null && _enemies.GetActiveEnemy() != null)
+            {
+                _enemies.GetActiveEnemy().HealthSystem.OnDeath -= OnFinisher;
+            }
+            UnregisterOnJustBeat();
+
             foreach (var data in _activeRingIndicator)
             {
                 Destroy(data.gameObject);

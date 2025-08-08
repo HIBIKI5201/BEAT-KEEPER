@@ -163,7 +163,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnDestroy()
         {
-            Dispose();
+            InputUnregister();
         }
 
         /// <summary>

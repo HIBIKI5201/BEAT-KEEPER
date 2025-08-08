@@ -309,10 +309,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void Dispose()
         {
-            _bgmManager.OnJustChangedBeat -= OnJustBeat;
-            _bgmManager.OnNearChangedBeat -= OnNearBeat;
-
             InputUnregister();
+            _flowZoneSystem?.Dispose();
+        }
+
+        private void OnDestroy()
+        {
+            if (_bgmManager != null)
+            {
+                _bgmManager.OnJustChangedBeat -= OnJustBeat;
+                _bgmManager.OnNearChangedBeat -= OnNearBeat;
+            }
+            Dispose();
         }
 
         #endregion
