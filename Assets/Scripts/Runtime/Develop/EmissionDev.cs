@@ -22,6 +22,15 @@ namespace BeatKeeper.Runtime.Develop
             _color = _material.GetColor("_Color");
         }
 
+        private void OnDestroy()
+        {
+            var musicEngine = ServiceLocator.GetInstance<BGMManager>();
+            if (musicEngine != null)
+            {
+                musicEngine.OnJustChangedBeat -= OnJustBeat;
+            }
+        }
+
         private async void OnJustBeat()
         {
             int count = 10;

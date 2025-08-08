@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _outGameUIManager: {fileID: 1982149415}
-  _criAtomSourceSE: {fileID: 0}
+  _criAtomSourceSE: {fileID: 1102409121}
   _bgmName: Phase1
 --- !u!4 &789693826
 Transform:

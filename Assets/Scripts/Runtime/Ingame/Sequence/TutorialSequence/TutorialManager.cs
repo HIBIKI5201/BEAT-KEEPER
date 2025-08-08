@@ -74,6 +74,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             _director.Resume();
             _bgmManager.OnJustChangedBeat -= TutorialIndicatorGenerate;
+            _inputBuffer.Attack.started -= OnShot;
+            _inputBuffer.Attack.started -= OnSkill;
             foreach (var ind in _activeRingIndicator)
             {
                 ind.End();

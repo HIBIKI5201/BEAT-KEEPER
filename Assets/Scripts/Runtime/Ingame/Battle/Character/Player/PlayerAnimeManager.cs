@@ -9,30 +9,55 @@ namespace BeatKeeper.Runtime.Ingame.Character
     {
         public PlayerAnimeManager(Animator animator) : base(animator) { }
 
-        public void Avoid() => _animator?.SetTrigger(_avoid);
+        public void Avoid()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_avoid);
+        }
 
         public void MoveVector(Vector2 direction)
         {
-            _animator?.SetFloat(_moveX, direction.x);
-            _animator?.SetFloat(_moveZ, direction.y);
+            if (_animator == null) return;
+            _animator.SetFloat(_moveX, direction.x);
+            _animator.SetFloat(_moveZ, direction.y);
         }
 
         public void SetAnimatorSpeed(float speed)
         {
-            if (_animator != null)
-            {
-                Debug.Log($"Player SetAnimatorSpeed: {speed}");
-                _animator.speed = speed;
-            }
+            if (_animator == null) return;
+            Debug.Log($"Player SetAnimatorSpeed: {speed}");
+            _animator.speed = speed;
         }
 
-        public void Hit() => _animator?.SetTrigger(_hit);
+        public void Hit()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_hit);
+        }
 
-        public void Shoot() => _animator?.SetTrigger(_shoot);
-        public void Combo(int count) => _animator?.SetInteger(_combo, count);
-        public void ChargeShoot() => _animator?.SetTrigger(_chargeShoot);
+        public void Shoot()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_shoot);
+        }
 
-        public void Skill() => _animator?.SetTrigger(_skill);
+        public void Combo(int count)
+        {
+            if (_animator == null) return;
+            _animator.SetInteger(_combo, count);
+        }
+
+        public void ChargeShoot()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_chargeShoot);
+        }
+
+        public void Skill()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_skill);
+        }
 
         private readonly int _moveX = Animator.StringToHash("MoveX");
         private readonly int _moveZ = Animator.StringToHash("MoveZ");
