@@ -349,8 +349,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 ring.color = translucentColor;
             }
-            
-            if(_centerText != null) _centerText.color = color;
         }
         
         /// <summary>
