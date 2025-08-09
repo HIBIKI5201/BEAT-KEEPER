@@ -53,11 +53,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: 684d37061507a984090057f5bf1c4649, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6bba018345d71f04692cb585d4f403fc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 684d37061507a984090057f5bf1c4649, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6bba018345d71f04692cb585d4f403fc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Bump2ndMap:
@@ -105,7 +105,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 684d37061507a984090057f5bf1c4649, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0e84f351935419e488379ab592610dcb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlitterColorTex:
@@ -157,7 +157,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 684d37061507a984090057f5bf1c4649, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6bba018345d71f04692cb585d4f403fc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap2ndBlendMask:
@@ -181,7 +181,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d6b50da84473ca54a9a7f1343b332bff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -245,7 +245,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SmoothnessTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d6b50da84473ca54a9a7f1343b332bff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -652,7 +652,7 @@ Material:
     - _UseOutline: 0
     - _UsePOM: 0
     - _UseParallax: 0
-    - _UseReflection: 0
+    - _UseReflection: 1
     - _UseRim: 0
     - _UseRimShade: 0
     - _UseShadow: 0
