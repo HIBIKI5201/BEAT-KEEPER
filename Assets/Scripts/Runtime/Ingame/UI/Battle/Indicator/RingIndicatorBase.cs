@@ -20,6 +20,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _player = player;
             _chartRingManager = ringManager;
+            
+            // 中央のリングの画像を操作方法のものに差し替える
+            _centerImage.sprite = _hitResult.Operation.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Operation.SizeDelta;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
