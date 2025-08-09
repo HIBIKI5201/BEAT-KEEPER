@@ -60,7 +60,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private float _changeDuration = 0.2f; // 切り替えにかける秒数
         [SerializeField] private Color _finisherColor; // フィニッシャー用の色指定
         [SerializeField] private Color _translucentFinisherColor; // フィニッシャー用の半透明の色指定
-        [SerializeField] Text _centerText;
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
 
@@ -97,8 +96,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // Just判定まで縮小を行う
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 .Join(_ringImages[3].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // 中央のリング
                 .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
@@ -107,8 +104,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(_ringImages[3].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -313,10 +308,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             SetRingScale(_ringImages[0], Vector3.one * _initialScale);
             SetRingScale(_ringImages[3], Vector3.one * _initialScale);
             
-            // 収縮を行うリングのブラーImage
-            SetRingScale(_translucentRingImages[0], Vector3.one * _initialScale);
-            SetRingScale(_translucentRingImages[1], Vector3.one * _initialScale);
-            
             // HitLine
             SetRingScale(_ringImages[1], _centerRingsScale);
             SetRingScale(_ringImages[4], _centerRingsScale);
@@ -372,8 +363,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 fadeSequence.Join(ring.DOFade(0f, duration).SetEase(Ease.Linear));
             }
             
-            if(_centerText != null) fadeSequence.Join(_centerText.DOFade(0f, duration).SetEase(Ease.Linear));
-            
             return fadeSequence;
         }
         
@@ -395,9 +384,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 colorSequence.Join(ring.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
             }
-            
-            // テキストの色変更
-            if (_centerText != null) colorSequence.Join(_centerText.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             
             return colorSequence;
         }
