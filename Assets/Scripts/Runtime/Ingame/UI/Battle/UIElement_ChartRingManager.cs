@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
@@ -32,9 +33,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private readonly Dictionary<ChartKindEnum, ObjectPool<RingIndicatorBase>> _ringPools = new();
         private readonly HashSet<RingIndicatorBase> _activeRingIndicator = new();
         private int[] _appearTiming;
+        private bool _isProcessingRingOperation = false; // 今回の拍のノーツの生成が終了したか
 
         private EnemyData _targetData;
-		public EnemyData TargetData => _targetData;
+        public EnemyData TargetData => _targetData;
 
         private async void Start()
         {
@@ -55,7 +57,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         private void OnDestroy()
         {
-            foreach(var data in _activeRingIndicator)
+            if (_player != null)
+            {
+                _player.OnFinisher -= OnFinisher;
+            }
+            if (_enemies != null && _enemies.GetActiveEnemy() != null)
+            {
+                _enemies.GetActiveEnemy().HealthSystem.OnDeath -= OnFinisher;
+            }
+            UnregisterOnJustBeat();
+
+            foreach (var data in _activeRingIndicator)
             {
                 Destroy(data.gameObject);
             }
@@ -84,6 +96,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (_enemies == null) return;
 
+            // ノーツ生成開始状態にする
+            _isProcessingRingOperation = true;
+
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
             _onBeat?.Invoke(); //リングのカウントを更新 
@@ -102,18 +117,33 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     continue;
 
                 //リングを生成
-                if (_ringPools.TryGetValue(data.AttackKind, out var op))
-                {
-                    var ring = op.Get(); //リングを取得
-                    _activeRingIndicator.Add(ring);
-                    ring.OnGet(() => //終了時のイベントを設定
-                    {
-                        op.Release(ring); //オブジェクトを非アクティブに
-                        _activeRingIndicator.Remove(ring); //アクティブリストから除外
-                    },
-                        element.Position, (timing + _appearTiming[i]) % chart.Length);
-                }
+                GenerateRing(data.AttackKind, element.Position, timing + _appearTiming[i]);
             }
+
+            // 登録完了
+            _isProcessingRingOperation = false;
+        }
+
+        /// <summary>
+        /// リングを生成するメソッド。戻り値として生成したインジケーターのGameObjectを返す。
+        /// </summary>
+        /// <param name="chartKind"></param>
+        /// <param name="rectPosition"></param>
+        /// <param name="timing"></param>
+        public GameObject GenerateRing(ChartKindEnum chartKind, Vector2 rectPosition, int timing)
+        {
+            if (_ringPools.TryGetValue(chartKind, out var op))
+            {
+                var ring = op.Get(); //リングを取得
+                _activeRingIndicator.Add(ring);
+                ring.OnGet(() => //終了時のイベントを設定
+                {
+                    op.Release(ring); //オブジェクトを非アクティブに
+                    _activeRingIndicator.Remove(ring); //アクティブリストから除外
+                }, rectPosition, timing);
+                return ring.gameObject;
+            }
+            return null;
         }
 
         /// <summary>
@@ -122,14 +152,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnFinisher()
         {
             UnregisterOnJustBeat();
-            ReleaseAllActiveIndicator();
+            ReleaseAllActiveIndicator().Forget();
         }
 
         /// <summary>
         ///     全てのアクティブなインジケーターを非アクティブ化する
         /// </summary>
-        public void ReleaseAllActiveIndicator()
+        public async UniTask ReleaseAllActiveIndicator()
         {
+            // リング操作の処理完了を待つ
+            await UniTask.WaitUntil(() => !_isProcessingRingOperation);
+
             List<RingIndicatorBase> rings = _activeRingIndicator.ToList();
             foreach (var ring in rings)
             {
@@ -144,7 +177,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void CheckAllRingIndicatorRemainTime()
         {
-            for(int i = 0; i < _activeRingIndicator.Count; i++)
+            for (int i = 0; i < _activeRingIndicator.Count; i++)
             {
                 var ring = _activeRingIndicator.ToArray()[i];
                 ring.CheckRemainTime();

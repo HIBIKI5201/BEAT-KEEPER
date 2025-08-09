@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
@@ -18,6 +19,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnShootAttack;
         public event Action OnShootNormalAttack;
         public event Action OnShootChargeAttack;
+
+        public event Action OnHitNockBackAttack
+        {
+            add => _onHitNockBackAttack.Event += value;
+            remove => _onHitNockBackAttack.Event -= value;
+        }
 
         public CharacterHealthSystem HealthSystem => _healthSystem;
         public bool IsFinisherable => _canFinisher;
@@ -86,20 +93,41 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _healthSystem?.HealthChange(-data.Damage);
 
-            OnHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
+            _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
 
             FinisherableCheck(); //フィニッシャー可能かどうかを確認
 
             if (data.IsNockback) //ノックバックする
             {
+                _onHitNockBackAttack?.Invoke(); //クリティカルヒットイベントを発火
                 Nockback();
             }
         }
 
+        public Transform NormalAttackRandomHit()
+        {
+            if (0 <= _normalAttackHitPositions.Length) return null;
+
+            int index = UnityEngine.Random.Range(0, _normalAttackHitPositions.Length);
+            Transform target = _normalAttackHitPositions[index];
+
+            if (_normalAttackHitPerticle != null)
+                { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
+
+            return target;
+        }
+
         EnemyData IEnemy.EnemyData => _data;
+
+        [SerializeField]
+        private UnityEventWrapper _onHitNockBackAttack = new();
 
         [SerializeField, Tooltip("モデルの親オブジェクト")]
         private GameObject _modelParent;
+        [SerializeField]
+        private Transform[] _normalAttackHitPositions;
+        [SerializeField]
+        private GameObject _normalAttackHitPerticle;
 
         private BGMManager _bgmManager;
 
@@ -135,7 +163,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void OnDestroy()
         {
-            InputRegister();
+            InputUnregister();
         }
 
         /// <summary>

@@ -55,11 +55,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnSuccessAvoid -= OnPlayerAvoidSuccess;
             _player.OnFailedAvoid -= PlayFailEffect;
 
+            base.End();
+            
             // UIのリセット
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-
-            base.End();
 
             //敵攻撃はノックバックを与えるので確認
             _chartRingManager.CheckAllRingIndicatorRemainTime();
@@ -81,9 +81,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void InitializeComponents()
         {
-            // 生成時点のタイミングを保存
-            _timing = MusicEngineHelper.GetBeatSinceStart();
-
             // Tweenの配列を作成
             _tweens = new Tween[3];
 

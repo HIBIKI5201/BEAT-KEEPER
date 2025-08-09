@@ -77,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                 float beat = MusicEngineHelper.GetBeatSinceStart();
 
                 //今の範囲を計算
-                int layer = 
+                int layer =
                     (Mathf.CeilToInt(
                         (beat - 16) //イントロの分を減らす
                         % 64f //ループ分を削る
@@ -359,7 +359,14 @@ namespace BeatKeeper.Runtime.Ingame.System
             {
                 _lastJustBeat = just;
                 _isNearBeatChange.Value = false;
-                OnJustChangedBeat?.Invoke();
+                try
+                {
+                    OnJustChangedBeat?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"BGMManager: 拍の切り替わり処理でエラー: {ex}");
+                }
                 ProcessTimingActions(); // タイミングアクションの実行
                 return;
             }
@@ -369,7 +376,14 @@ namespace BeatKeeper.Runtime.Ingame.System
             {
                 _lastNearBeat = near;
                 _isNearBeatChange.Value = true;
-                OnNearChangedBeat?.Invoke();
+                try
+                {
+                    OnNearChangedBeat?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"BGMManager: 拍の切り替わりが近い処理でエラー: {ex}");
+                }
             }
         }
 
