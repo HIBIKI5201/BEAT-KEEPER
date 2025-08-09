@@ -43,8 +43,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			base.End();
             
-            _centerImage.enabled = false;
-            
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -60,10 +58,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // パーフェクト判定の場合は収縮するリングのScaleを1に補正
             _ringImage.rectTransform.localScale = Vector3.one;
 
-            // Perfect判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Perfect.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをPerfectのものに変える
+            HandleCenterImage(true);
 
             var successSequence = DOTween.Sequence();
 
@@ -87,10 +83,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _tweens[0]?.Kill();
 
-            // Good判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Good.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをGoodのものに変える
+            HandleCenterImage(false);
 
             var successSequence = DOTween.Sequence();
 
@@ -115,11 +109,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _tweens[0].Kill();
 
-            // Miss判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Miss.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
-
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをMissのものに変える
+            SetMissImage();
 
             var failSequence = DOTween.Sequence();
 
@@ -153,9 +144,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
             
-            _centerImage.enabled = false;
-            
-            // 初期化
+            // スケールと色を初期化
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
@@ -165,6 +154,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartContractionEffect()
         {
+            // 一拍が何秒か、アニメーションのために値をキャッシュしておく
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var sequence = DOTween.Sequence()
@@ -208,20 +198,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
                 _ringImage.rectTransform.localScale = Vector3.one;
-                
-                // Perfect判定のスプライトに差し替え
-				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
-                _centerImage.sprite = _hitResult.Perfect.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
             }
-            else
-            {
-                // Good判定のスプライトに差し替え
-                _centerImage.sprite = _hitResult.Good.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
-            }
-           
-            _centerImage.enabled = true;
+
+            // 中央の画像を判定用の画像に変更
+            HandleCenterImage(isPerfect);
             
             var successSequence = DOTween.Sequence();
 
