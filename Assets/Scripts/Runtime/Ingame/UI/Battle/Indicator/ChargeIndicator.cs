@@ -135,7 +135,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerCharge()
         {
-			if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing - CHARGE_TIME)
+			if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing - CHARGE_TIME)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
@@ -184,7 +184,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess()
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
