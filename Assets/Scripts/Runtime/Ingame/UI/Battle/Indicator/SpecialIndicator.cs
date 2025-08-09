@@ -31,14 +31,22 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 3拍目　スキル発動の演出を行う
                 case 2:
-                    _player.OnSkill += PlaySuccessEffect;
+                    _player.OnPerfectSkill += HandlePerfectSkill;
+                    _player.OnGoodSkill += HandleGoodSkill;
+                    
+                    // TODO: 仮
+                    _player.OnFinisher += HandlePerfectSkill;
                     break;
             }
         }
         
         public override void End()
         {
-            _player.OnSkill -= PlaySuccessEffect;
+            _player.OnPerfectSkill -= HandlePerfectSkill;
+            _player.OnGoodSkill -= HandleGoodSkill;
+            _player.OnFinisher -= HandlePerfectSkill;
+            
+            // フィニッシャー状態の監視を解除
             StopFinisherMonitoring();
 
             base.End();
@@ -89,6 +97,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartContractionEffect()
         {
+            // 一拍が何秒か、アニメーションのために値をキャッシュしておく
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var sequence = DOTween.Sequence()
@@ -153,7 +162,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 発動エフェクト
         /// </summary>
-        private void PlaySuccessEffect()
+        private void PlaySuccessEffect(bool isPerfect)
         {
             if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
@@ -163,6 +172,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0]?.Kill();
+
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImages[0].rectTransform.localScale = Vector3.one;
+                _ringImages[3].rectTransform.localScale = Vector3.one;
+            }
+
+            // 中央の画像を判定用の画像に変更
+            // NOTE: この処理を呼ばないと、この後に使用される「_newColor」が更新されない
+            HandleCenterImage(isPerfect);
            
             var successSequence = DOTween.Sequence();
 
@@ -186,6 +206,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 念のためキルしておく
             _tweens[0]?.Kill();
+            
+            // 中央のImageのスプライトとサイズをMissのものに変える
+            SetMissImage();
             
             var failSequence = DOTween.Sequence();
             
@@ -246,7 +269,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 変数を上書き
             _isFinisherable = _player.IsFinisherable();
-
+            
             SwitchCanvasGroup();
             ApplyCurrentColors();
 
@@ -255,7 +278,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
-        /// CanvasGroupの切り替え
+        /// スキルノーツとフィニッシャーノーツのCanvasGroupを切り替える
         /// </summary>
         private void SwitchCanvasGroup()
         {
@@ -323,8 +346,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void SetRingScale(Image ring, Vector3 scale)
         {
-            if (ring != null)
-                ring.rectTransform.localScale = scale;
+            if (ring != null) ring.rectTransform.localScale = scale;
         }
         
         /// <summary>
@@ -387,5 +409,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
+        
+        private void HandlePerfectSkill() => PlaySuccessEffect(true);
+        private void HandleGoodSkill() => PlaySuccessEffect(false);
     }
 }
