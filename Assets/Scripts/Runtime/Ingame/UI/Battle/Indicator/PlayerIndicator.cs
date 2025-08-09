@@ -43,9 +43,93 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			base.End();
             
+            _centerImage.enabled = false;
+            
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
+        }
+
+        /// <summary>
+        /// Perfect判定時のエフェクト
+        /// </summary>
+        public void PlayPerfectEffect()
+        {
+            _tweens[0]?.Kill();
+
+            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+            _ringImage.rectTransform.localScale = Vector3.one;
+
+            // Perfect判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Perfect.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
+            _centerImage.enabled = true;
+
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+
+        /// <summary>
+        /// Good判定時のエフェクト
+        /// </summary>
+        public void PlayGoodEffect()
+        {
+            _tweens[0]?.Kill();
+
+            // Good判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Good.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
+            _centerImage.enabled = true;
+
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+
+
+        /// <summary>
+        /// 失敗演出
+        /// </summary>
+        public void PlayFailEffect()
+        {
+            _tweens[0].Kill();
+
+            // Miss判定のスプライトに差し替え
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+
+            _centerImage.enabled = true;
+
+            var failSequence = DOTween.Sequence();
+
+            // 色変更とフェードアウト
+            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
+            failSequence.Join(CreateFadeSequence(_fadeDuration));
+
+            failSequence.OnComplete(End);
+
+            _tweens[0] = failSequence;
         }
 
         // Justタイミングは2拍後
@@ -54,12 +138,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float RECEPTION_TIME = 0.45f;
 
         [SerializeField] private Image[] _ringImages = new Image[2];
-        // 譜面の長さ
-        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
         private void Start()
         {
-			_centerImage.enabled = true;
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
@@ -71,7 +152,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
-                        
+            
+            _centerImage.enabled = false;
+            
             // 初期化
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -112,7 +195,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAttackSuccess(bool isPerfect)
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
@@ -124,9 +207,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImage.rectTransform.localScale = Vector3.one;   
+                _ringImage.rectTransform.localScale = Vector3.one;
+                
+                // Perfect判定のスプライトに差し替え
+				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
+                _centerImage.sprite = _hitResult.Perfect.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
             }
-			HandleCenterImage(isPerfect);
+            else
+            {
+                // Good判定のスプライトに差し替え
+                _centerImage.sprite = _hitResult.Good.Sprite;
+                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
+            }
            
             _centerImage.enabled = true;
             
@@ -134,7 +227,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_newColor, _translucentDefaultColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
             
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
@@ -143,26 +236,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             successSequence.OnComplete(End);
 
             _tweens[0] = successSequence;
-        }
-
-        /// <summary>
-        /// 失敗演出
-        /// </summary>
-        private void PlayFailEffect()
-        {
-            _tweens[0]?.Kill();
-            
-			SetMissImage();
-            
-            var failSequence = DOTween.Sequence();
-            
-            // 色変更とフェードアウト
-            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
-            failSequence.Join(CreateFadeSequence(_fadeDuration));
-            
-            failSequence.OnComplete(End);
-            
-            _tweens[0] = failSequence;
         }
 
 		/// <summary>

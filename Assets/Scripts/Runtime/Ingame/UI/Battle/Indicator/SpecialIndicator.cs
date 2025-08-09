@@ -31,16 +31,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 3拍目　スキル発動の演出を行う
                 case 2:
-                    _player.OnPerfectSkill += HandlePerfectSkill;
-                    _player.OnGoodSkill +=　HandleGoodSkill;
+                    _player.OnSkill += PlaySuccessEffect;
                     break;
             }
         }
         
         public override void End()
         {
-            _player.OnPerfectSkill -= HandlePerfectSkill;
-            _player.OnGoodSkill -= HandleGoodSkill;
+            _player.OnSkill -= PlaySuccessEffect;
             StopFinisherMonitoring();
 
             base.End();
@@ -72,13 +70,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length; // 譜面の長さ
 
-        private void Start()
-        {
-            _centerImage.enabled = true;
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
@@ -106,8 +97,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // Just判定まで縮小を行う
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 .Join(_ringImages[3].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                // .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                // .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // 中央のリング
                 .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
@@ -116,8 +107,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
                 .Append(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(_ringImages[3].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                // .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                // .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_translucentRingImages[1].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -145,9 +136,31 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 発動エフェクト
         /// </summary>
-        private void PlaySuccessEffect(bool isPerfect)
+        public void PlaySuccessEffectPublic()
         {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() % _chartLength != _timing)
+            _tweens[0]?.Kill();
+
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+
+        /// <summary>
+        /// 発動エフェクト
+        /// </summary>
+        private void PlaySuccessEffect()
+        {
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
@@ -155,20 +168,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // 成功した場合はリングの縮小演出は不要になるのでキル
             _tweens[0]?.Kill();
-            
-            if (isPerfect)
-            {
-                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImages[0].rectTransform.localScale = Vector3.one;
-                _ringImages[3].rectTransform.localScale = Vector3.one;
-            }
-            HandleCenterImage(isPerfect);
            
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-			successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));            
+			successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));            
 
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
@@ -182,12 +187,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 失敗演出
         /// </summary>
-        private void PlayFailEffect()
+        public void PlayFailEffect()
         {
             // 念のためキルしておく
             _tweens[0]?.Kill();
-            
-            SetMissImage();
             
             var failSequence = DOTween.Sequence();
             
@@ -311,8 +314,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             SetRingScale(_ringImages[3], Vector3.one * _initialScale);
             
             // 収縮を行うリングのブラーImage
-            // SetRingScale(_translucentRingImages[0], Vector3.one * _initialScale);
-            // SetRingScale(_translucentRingImages[1], Vector3.one * _initialScale);
+            SetRingScale(_translucentRingImages[0], Vector3.one * _initialScale);
+            SetRingScale(_translucentRingImages[1], Vector3.one * _initialScale);
             
             // HitLine
             SetRingScale(_ringImages[1], _centerRingsScale);
@@ -400,8 +403,5 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
-        
-        private void HandlePerfectSkill() => PlaySuccessEffect(true);
-        private void HandleGoodSkill() => PlaySuccessEffect(false);
     }
 }

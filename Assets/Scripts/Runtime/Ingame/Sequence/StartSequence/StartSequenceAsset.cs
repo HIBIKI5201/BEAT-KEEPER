@@ -19,8 +19,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 case 2:
                     return SequenceBehaviourBase.CreatePlayable<StartSequenceBehaviour_2>(graph, owner);
 
-                case 3:
-                    return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
+                default:
+                    break;
+                    //return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
 
             return Playable.Null;

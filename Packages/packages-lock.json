@@ -14,6 +14,16 @@
       "dependencies": {},
       "hash": "06067cd4c83e372310d6f79d1c625f6870ff7a2a"
     },
+    "com.hecomi.ulipsync": {
+      "version": "https://github.com/hecomi/uLipSync.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.burst": "1.4.11",
+        "com.unity.mathematics": "1.2.5"
+      },
+      "hash": "ece3272762f2148dd8d3e658ec04fcbd79d4d97e"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -486,14 +496,14 @@
       },
       "url": "https://package.openupm.com"
     },
-    "symphony.framework": {
+    "symphonyframework": {
       "version": "https://github.com/HIBIKI5201/SymphonyFramework.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       },
-      "hash": "e7a1ab85955f5673fe7dd3a913f07fa753bc9f95"
+      "hash": "0f95f7be18a0026e72dda72636dabb91b96b29c4"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
