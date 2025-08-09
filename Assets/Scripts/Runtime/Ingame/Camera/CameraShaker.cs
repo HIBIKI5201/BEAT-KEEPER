@@ -13,12 +13,26 @@ namespace BeatKeeper.Runtime.Ingame
         private CinemachineImpulseSource _impulseSource;
         private PlayerManager _playerManager;
 
-        private void Start()
+        private void Awake()
         {
             _playerManager = GetComponent<PlayerManager>();
             _impulseSource = GetComponent<CinemachineImpulseSource>();
-            
-            _playerManager.OnHitAttack += HandleShake;
+        }
+
+        private void OnEnable()
+        {
+            if (_playerManager != null)
+            {
+                _playerManager.OnHitAttack += HandleShake;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_playerManager != null)
+            {
+                _playerManager.OnHitAttack -= HandleShake;
+            }
         }
 
         /// <summary>
@@ -31,12 +45,8 @@ namespace BeatKeeper.Runtime.Ingame
         /// </summary>
         private void Shake()
         {
+            if (_impulseSource == null) return;
             _impulseSource.GenerateImpulse();
-        }
-
-        private void OnDestroy()
-        {
-            _playerManager.OnHitAttack -= HandleShake;
         }
     }
 }

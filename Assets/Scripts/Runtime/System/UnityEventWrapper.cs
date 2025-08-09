@@ -15,44 +15,17 @@ namespace BeatKeeper.Runtime.System
 
         public event Action Event
         {
-            add
-            {
-                if (value == null)
-                {
-                    Debug.LogWarning("Attempted to add a null action to UnityEventWrapper.");
-                    return;
-                }
-
-                UnityAction action = new(value);
-                _actionToUnityActionMap.Add(value, action);
-                _unityEvent.AddListener(action);
-            }
-            remove
-            {
-                if (value == null)
-                {
-                    Debug.LogWarning("Attempted to remove a null action to UnityEventWrapper.");
-                    return;
-                }
-
-                if (_actionToUnityActionMap.TryGetValue(value, out var action))
-                {
-                    _actionToUnityActionMap.Remove(value);
-                    _unityEvent.RemoveListener(action);
-                }
-                else
-                {
-                    Debug.LogWarning("Attempted to remove an action that was not registered in UnityEventWrapper: " + value);
-                }
-            }
+            add => _action += value;
+            remove => _action -= value;
         }
 
         public void Invoke()
         {
+            _action?.Invoke();
             _unityEvent?.Invoke();
         }
 
-        private Dictionary<Action, UnityAction> _actionToUnityActionMap = new();
+        private Action _action;
         [SerializeField]
         private UnityEvent _unityEvent = new();
     }
@@ -67,47 +40,17 @@ namespace BeatKeeper.Runtime.System
 
         public event Action<T> Event
         {
-            add
-            {
-                if (value == null)
-                {
-                    Debug.LogWarning("Attempted to add a null action to UnityEventWrapper.");
-                    return;
-                }
-
-                UnityAction<T> action = new(value);
-                if (_actionToUnityActionMap.TryAdd(value, action))
-                {
-                    _unityEvent.AddListener(action);
-                }
-
-            }
-            remove
-            {
-                if (value == null)
-                {
-                    Debug.LogWarning("Attempted to remove a null action to UnityEventWrapper.");
-                    return;
-                }
-
-                if (_actionToUnityActionMap.TryGetValue(value, out var action))
-                {
-                    _actionToUnityActionMap.Remove(value);
-                    _unityEvent.RemoveListener(action);
-                }
-                else
-                {
-                    Debug.LogWarning("Attempted to remove an action that was not registered in UnityEventWrapper: " + value);
-                }
-            }
+            add => _action += value;
+            remove => _action -= value;
         }
 
         public void Invoke(T arg)
         {
+            _action?.Invoke(arg);
             _unityEvent?.Invoke(arg);
         }
 
-        private Dictionary<Action<T>, UnityAction<T>> _actionToUnityActionMap = new();
+        private Action<T> _action;
         [SerializeField]
         private UnityEvent<T> _unityEvent = new();
     }

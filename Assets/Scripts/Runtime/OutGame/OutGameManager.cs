@@ -1,4 +1,5 @@
-﻿using BeatKeeper.Runtime.Outgame.UI;
+﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Outgame.UI;
 using BeatKeeper.Runtime.System;
 using CriWare;
 using Cysharp.Threading.Tasks;
@@ -20,17 +21,22 @@ namespace BeatKeeper.Runtime.Outgame.System
 
         [SerializeField] private OutGameUIManager _outGameUIManager;
         [SerializeField] private CriAtomSource _criAtomSourceSE;
+        [SerializeField] private string _bgmName = "Phase1";
 
         private InputBuffer _inputBuffer;
         private bool _look;
 
         private async void Awake()
         {
+            _look = false;
             await SceneLoader.LoadScene(StageScene.ToString());
+            var bgmManager = ServiceLocator.GetInstance<BGMManager>();
+            bgmManager.ChangeBGM(_bgmName);
         }
 
         private void Start()
         {
+            Debug.Log("OutGameManager Start");
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _inputBuffer.AnyKey.started += OnAnyKeyInput;
         }
@@ -45,6 +51,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         /// </summary>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
+            Debug.Log("OnAnyKeyInput called");
             if (_look) return;
             _look = true;
             _ = LoadInGameSceneAsync();
