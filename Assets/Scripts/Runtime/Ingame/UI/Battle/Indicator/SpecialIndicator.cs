@@ -127,11 +127,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .Append(_ringImages[2].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Join(_ringImages[5].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 .Join(_ringImages[6].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[7].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 
                 // 元に戻る
                 .Append(_ringImages[2].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .Join(_ringImages[5].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .Join(_ringImages[6].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[7].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
@@ -339,6 +341,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             SetRingScale(_ringImages[2], _centerRingsScale);
             SetRingScale(_ringImages[5], _centerRingsScale);
             SetRingScale(_ringImages[6], _centerRingsScale);
+            SetRingScale(_ringImages[7], _centerRingsScale);
         }
         
         /// <summary>
