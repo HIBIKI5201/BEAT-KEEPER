@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ComboBonusSettingsSO
   m_EditorClassIdentifier: 
   _thresholds:
-  - _comboCount: 3
-    _multiplier: 1.2
-  - _comboCount: 5
-    _multiplier: 1.5
   - _comboCount: 10
+    _multiplier: 1.2
+  - _comboCount: 30
+    _multiplier: 1.5
+  - _comboCount: 50
     _multiplier: 2
   - _comboCount: 100
     _multiplier: 3
