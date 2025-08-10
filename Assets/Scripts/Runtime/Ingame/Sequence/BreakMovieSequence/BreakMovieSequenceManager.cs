@@ -6,6 +6,7 @@ using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
 using UnityEngine.Playables;
+using System.Threading.Tasks;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -58,7 +59,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private void OnEnemyDeath()
         {
-            PlayBreakMovie();
+            _ = PlayBreakMovie();
         }
 
         /// <summary>
@@ -66,13 +67,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// </summary>
         private void OnFinisherSequenceEnd()
         {
-            PlayBreakMovie();
+            _ = PlayBreakMovie();
         }
 
         /// <summary>
         ///     ブレイクムービーを再生する
         /// </summary>
-        private void PlayBreakMovie()
+        private async Task PlayBreakMovie()
         {
             if (!_playableDirector) return;
 
@@ -84,10 +85,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             StageEnemyAdmin enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin;
             int index = enemyAdmin.ActiveEnemyIndex;
 
-            _playableDirector.playableAsset = playables[index];
-            _playableDirector.Play();
+            var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
+            var director = movieManager.GetDirector(playables[index]);
+            if (director != null)
+            {
+                director.Play();
+                director.stopped += OnPlayableDirectorStopped;
+            }
+            else
+            {
+                _playableDirector.playableAsset = playables[index];
+                _playableDirector.Play();
 
-            _playableDirector.stopped += OnPlayableDirectorStopped;
+                _playableDirector.stopped += OnPlayableDirectorStopped;
+            }
         }
 
         /// <summary>
