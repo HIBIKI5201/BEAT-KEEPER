@@ -276,6 +276,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_startPositionRing != null) _startPositionRing.color = color;
             if(_endPositionRing != null) _endPositionRing.color = color;
             if(_decorationImage != null) _decorationImage.color = color;
+            if(_centerImage != null) _centerImage.color = Color.white;
         }
 
         /// <summary>
@@ -305,6 +306,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             fadeSequence.Join(_startPositionRing.DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_endPositionRing.DOFade(0f, duration).SetEase(Ease.Linear));
             fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            fadeSequence.Join(_centerImage.DOFade(0f, duration).SetEase(Ease.Linear));
             
             return fadeSequence;
         }
