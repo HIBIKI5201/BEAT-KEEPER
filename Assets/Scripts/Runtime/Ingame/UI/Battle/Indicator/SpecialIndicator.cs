@@ -142,7 +142,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlaySuccessEffectPublic()
         {
-            _tweens[0]?.Kill();
+            if(_tween != null)
+            {
+                _tweens[0]?.Kill();
+            }
 
             ChangeRingsImage();
             
@@ -173,7 +176,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }   
             
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            _tweens[0]?.Kill();
+            if(_tween != null)
+            {
+                _tweens[0]?.Kill();
+            }
 
             if (isPerfect)
             {
@@ -288,8 +294,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void SwitchCanvasGroup()
         {
-            // 既にTweenがあったらKill
-            _tweens[2]?.Kill();
+            if(_tween != null)
+            {
+                // 既にTweenがあったらKill
+                _tweens[2]?.Kill();
+            }
             
             var sequence = DOTween.Sequence();
             

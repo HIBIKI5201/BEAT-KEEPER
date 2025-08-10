@@ -53,7 +53,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayPerfectEffect()
         {
-            _tweens[0]?.Kill();
+            if(_tween != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
             // パーフェクト判定の場合は収縮するリングのScaleを1に補正
             _ringImage.rectTransform.localScale = Vector3.one;
@@ -82,7 +85,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayGoodEffect()
         {
-            _tweens[0]?.Kill();
+            if(_tween != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
             // 中央のImageのスプライトとサイズをGoodのものに変える
             HandleCenterImage(false);
@@ -109,7 +115,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayFailEffect()
         {
-            _tweens[0].Kill();
+			if(_tween != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
             // 中央のImageのスプライトとサイズをMissのものに変える
             SetMissImage();
@@ -192,7 +201,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            _tweens[0]?.Kill();
+            if(_tween != null)
+			{
+				_tweens[0]?.Kill();
+			}
             
             if (isPerfect)
             {

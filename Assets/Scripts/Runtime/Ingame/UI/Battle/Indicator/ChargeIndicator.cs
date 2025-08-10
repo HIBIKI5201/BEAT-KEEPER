@@ -133,8 +133,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 return;
             }
 
-            // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
-            _tweens[0]?.Kill();
+            if (_tweens != null)
+            {
+                // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
+                _tweens[0]?.Kill();   
+            }
             
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             var totalDuration = beatDuration * CHARGE_TIME;
