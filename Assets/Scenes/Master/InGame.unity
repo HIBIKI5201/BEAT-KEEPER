@@ -666,8 +666,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playables:
-  - {fileID: 11400000, guid: 6b95d50c8848a794f840cbf13fead130, type: 2}
   - {fileID: 11400000, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+  - {fileID: 11400000, guid: 6b95d50c8848a794f840cbf13fead130, type: 2}
   - {fileID: 11400000, guid: 022b810a266d07740ae185532b386823, type: 2}
 --- !u!320 &634489670
 PlayableDirector:
@@ -686,6 +686,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -4899989691476907692, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
     value: {fileID: 1666133214}
+  - key: {fileID: 65508317396613980, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &634489671
@@ -701,6 +703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resultPanel: {fileID: 542414396}
+  _fadeDuration: 0.5
 --- !u!1001 &654063667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -826,33 +829,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2232030082424575940, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
+      propertyPath: field of view
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232030082424575940, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
+      propertyPath: far clip plane
+      value: 994.1
+      objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.3
+      value: -5.195
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.25
+      value: 1.107
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.17
+      value: -16.519
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99685395
+      value: 0.99376637
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.002557868
+      value: -0.083524615
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.0792187
+      value: 0.073752545
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00020327047
+      value: 0.003550032
       objectReference: {fileID: 0}
     - target: {fileID: 2729995547414933435, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -951,7 +962,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1042500690}
   - component: {fileID: 1042500689}
-  - component: {fileID: 1042500691}
   m_Layer: 0
   m_Name: StartPerformance
   m_TagString: Untagged
@@ -972,6 +982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tutorialManager: {fileID: 1493203130}
+  _playableAsset: {fileID: 11400000, guid: e9df9d845e0507941af030695dbf5371, type: 2}
 --- !u!4 &1042500690
 Transform:
   m_ObjectHideFlags: 0
@@ -989,23 +1000,6 @@ Transform:
   - {fileID: 172002791}
   m_Father: {fileID: 1175477591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!320 &1042500691
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042500688}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: e9df9d845e0507941af030695dbf5371, type: 2}
-  m_InitialState: 0
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings: []
-  m_ExposedReferences:
-    m_References: []
 --- !u!1 &1091961452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,7 +1010,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1091961453}
   - component: {fileID: 1091961454}
-  - component: {fileID: 1091961455}
   m_Layer: 0
   m_Name: FinisherSequence
   m_TagString: Untagged
@@ -1053,25 +1046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _finisherScore: 2000
---- !u!320 &1091961455
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091961452}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 4914a492972d7e449a406d28d9ffd8a5, type: 2}
-  m_InitialState: 0
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: 2343438298150025372, guid: 4914a492972d7e449a406d28d9ffd8a5, type: 2}
-    value: {fileID: 375950659}
-  m_ExposedReferences:
-    m_References: []
+  _playableAsset: {fileID: 11400000, guid: 4914a492972d7e449a406d28d9ffd8a5, type: 2}
 --- !u!1 &1118530755
 GameObject:
   m_ObjectHideFlags: 0
