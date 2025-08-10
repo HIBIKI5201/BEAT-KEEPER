@@ -68,6 +68,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         private const float CONTRACTION_SPEED = 2; // 収縮にかける拍
+		// Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
+        private const float RECEPTION_TIME = 0.45f;
 
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -133,7 +135,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 縮小エフェクト
             contractionSequence.Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
-            // contractionSequence.Join(_translucentRingImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
+            
+			// Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
+			contractionSequence.Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear));
+			contractionSequence.Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
 
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
@@ -159,6 +164,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnPlayerAvoidSuccess(bool isPerfect)
         {
+			// 成功した場合はリングの縮小演出は不要になるのでキル
+            if(_tweens != null)
+			{
+				_tweens[0]?.Kill();
+			}
+
             // 他のアニメーションが再生されていたらキャンセル
             ResetAllTween();
 
@@ -167,6 +178,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
                 _ringImage.rectTransform.localScale = Vector3.one;
             }
+
 			HandleCenterImage(isPerfect);
 			ChangeRingsImage();
 
@@ -178,8 +190,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 色変更とフェードアウト
             successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
 
-            // 少し待機して成功の色変化を見せてからフェードアウトする
-            successSequence.AppendInterval(0.1f);
+			// フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
 
             // エフェクトが完了したらEnd処理を実行
@@ -248,6 +259,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			_ringImage.color = color;
 			_hitImage.color = color;
 			_decorationImage.color = color;
+			
+			//  フェードアウトしているのでここでリセットをかける
+			_centerImage.color = Color.white;
         }
 
         #endregion
@@ -264,6 +278,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
 			fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
 			fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
+			fadeSequence.Join(_centerImage.DOFade(0f, duration).SetEase(Ease.Linear));
 
             return fadeSequence;
         }
