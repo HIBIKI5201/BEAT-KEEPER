@@ -16,3 +16,5 @@ MonoBehaviour:
   _translucentPerfectColor: {r: 1, g: 0.8745098, b: 0.25490198, a: 0.09803922}
   _goodColor: {r: 0.5568628, g: 0.98823535, b: 0.15294118, a: 1}
   _translucentGoodColor: {r: 0.5568628, g: 0.9882353, b: 0.15294118, a: 0.09803922}
+  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  _translucentDefaultColor: {r: 1, g: 1, b: 1, a: 0.3529412}
