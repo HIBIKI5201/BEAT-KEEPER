@@ -99,6 +99,9 @@ MonoBehaviour:
   _blinkDuration: 0.3
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
+  _guide:
+    Sprite: {fileID: 21300000, guid: 4847a82be1fd85e499ddb4d2931ce8fc, type: 3}
+    SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Skill
   _skillGroup: {fileID: 6919595722609849635}

@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4671e72ef688ca046921d3e65f747572, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 100a56e1ca91a824cafbc4264154039e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -133,14 +133,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b6acce6d4d659fd458924e9188d27519, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1677502634cb95749be74aa4fc2bf311, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -158,6 +158,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 504489981096408070, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -264,15 +276,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3883433063752479060, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -305,18 +317,18 @@ PrefabInstance:
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 248c42b83e1847f4189aca8dc743457b, type: 3}
+      objectReference: {fileID: 21300000, guid: 7f9dc13e474fb674cb536c5dde33e716, type: 3}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
-      value: 0.99215686
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.g
-      value: 0.92941177
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.r
-      value: 0.17254902
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Enabled
@@ -368,11 +380,14 @@ MonoBehaviour:
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
   _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
-  _defaultColor: {r: 0.17254902, g: 0.9294118, b: 0.9921569, a: 1}
-  _translucentDefaultColor: {r: 0.17254902, g: 0.92941177, b: 0.99215686, a: 0.09803922}
+  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  _translucentDefaultColor: {r: 1, g: 1, b: 1, a: 0.09803922}
   _blinkDuration: 0.3
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
+  _guide:
+    Sprite: {fileID: 21300000, guid: def046d3c88feec429e62c8a68c666cf, type: 3}
+    SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Normal
   _ringImages:

@@ -434,7 +434,10 @@ MonoBehaviour:
   _blinkDuration: 0.2
   _fadeDuration: 0.2
   _centerImage: {fileID: 2479790196635966107}
-  _hitResult: {fileID: 11400000, guid: 06c387e192aabe84ba0b9f06b7ddd358, type: 2}
+  _guide:
+    Sprite: {fileID: 21300000, guid: 1cf1e7c8a6156864da3dbb4433916820, type: 3}
+    SizeDelta: {x: 215, y: 215}
+  _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Avoid
   _ringImages:
   - {fileID: 4851049892196883910}
