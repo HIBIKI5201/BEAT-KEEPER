@@ -60,6 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のImageのスプライトとサイズをPerfectのものに変える
             HandleCenterImage(true);
+			ChangeRingsImage();
 
             var successSequence = DOTween.Sequence();
 
@@ -85,6 +86,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のImageのスプライトとサイズをGoodのものに変える
             HandleCenterImage(false);
+			ChangeRingsImage();
 
             var successSequence = DOTween.Sequence();
 
@@ -127,8 +129,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
         private const float RECEPTION_TIME = 0.45f;
-
-        [SerializeField] private Image[] _ringImages = new Image[2];
 
         private void Start()
         {
@@ -173,8 +173,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
-                .Append(_ringImages[0].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_ringImages[0].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
@@ -202,6 +202,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央の画像を判定用の画像に変更
             HandleCenterImage(isPerfect);
+
+			// 白色のSpriteに変更
+			ChangeRingsImage();
             
             var successSequence = DOTween.Sequence();
 
@@ -225,8 +228,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			if(_selfImage != null) _selfImage.rectTransform.localScale = Vector3.one;
 			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-			if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = _centerRingsScale;
-			if(_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;
+			if(_decorationImage != null) _decorationImage.rectTransform.localScale = _centerRingsScale;
+			if(_hitImage != null) _hitImage.rectTransform.localScale = _centerRingsScale;
 		}
         
         /// <summary>
@@ -235,8 +238,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void ResetRingsColor(Color color, Color translucentColor)
         {
             if(_ringImage != null) _ringImage.color = color;
-            if(_ringImages[0] != null) _ringImages[0].color = color;
-            if(_ringImages[1] != null) _ringImages[1].color = color;
+            if(_decorationImage != null) _decorationImage.color = color;
+            if(_hitImage != null) _hitImage.color = color;
         }
         
         /// <summary>
@@ -247,8 +250,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var fadeSequence = DOTween.Sequence();
             
             if (_ringImage != null) fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_ringImages[0] != null) fadeSequence.Join(_ringImages[0].DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_ringImages[1] != null) fadeSequence.Join(_ringImages[1].DOFade(0f, duration).SetEase(Ease.Linear));
+            if (_decorationImage != null) fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            if (_hitImage != null) fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
             
             return fadeSequence;
         }
@@ -261,8 +264,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var colorSequence = DOTween.Sequence();
             
             if (_ringImage != null) colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_ringImages[0] != null) colorSequence.Join(_ringImages[0].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_ringImages[1] != null) colorSequence.Join(_ringImages[1].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_decorationImage != null) colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_hitImage != null) colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             
             return colorSequence;
         }
