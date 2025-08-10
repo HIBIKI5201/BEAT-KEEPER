@@ -53,7 +53,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayPerfectEffect()
         {
-            if(_tween != null)
+            if(_tweens != null)
 			{
 				_tweens[0]?.Kill();
 			}
@@ -85,7 +85,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayGoodEffect()
         {
-            if(_tween != null)
+            if(_tweens != null)
 			{
 				_tweens[0]?.Kill();
 			}
@@ -115,7 +115,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayFailEffect()
         {
-			if(_tween != null)
+			if(_tweens != null)
 			{
 				_tweens[0]?.Kill();
 			}
@@ -201,7 +201,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            if(_tween != null)
+            if(_tweens != null)
 			{
 				_tweens[0]?.Kill();
 			}
