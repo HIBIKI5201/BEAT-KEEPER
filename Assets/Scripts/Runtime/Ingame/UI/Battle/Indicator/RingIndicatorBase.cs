@@ -22,8 +22,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _chartRingManager = ringManager;
             
             // 中央のリングの画像を操作方法のものに差し替える
-            _centerImage.sprite = _hitResult.Operation.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Operation.SizeDelta;
+            _centerImage.sprite = _guide.Sprite;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
@@ -35,8 +35,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 + new Vector2(Screen.width / 2, Screen.height / 2);
 			
 			// 中央のリングの画像を操作方法のものに差し替える
-            _centerImage.sprite = _hitResult.Operation.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Operation.SizeDelta;
+            _centerImage.sprite = _guide.Sprite;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
 
             _onEndAction = onEndAction;
             _timing = timing;
@@ -118,6 +118,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 		[Header("中央の操作方法/判定UIの設定")]
 		[SerializeField] protected Image _centerImage; // 操作方法・評価を表示するImage
+
+		[SerializeField] protected HitResultData _guide; // 操作方法の画像の設定
 		[SerializeField] protected HitResultSpriteSO _hitResult;
 
         [Header("SE")]
