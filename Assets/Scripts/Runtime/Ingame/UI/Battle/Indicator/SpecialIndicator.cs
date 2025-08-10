@@ -101,16 +101,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var sequence = DOTween.Sequence()
                 
                 // Just判定まで縮小を行う
-                .Append(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[3].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // 中央のリング
+                .Join(_hitImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[4].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_ringImages[3].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -122,16 +122,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var blurPulseSequence = DOTween.Sequence()
                 
                 // 色を濃くする
-                .Append(_ringImages[2].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Join(_ringImages[5].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Join(_ringImages[6].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Join(_ringImages[7].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[2].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[3].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Join(_ringImages[4].DOFade(_currentPulseColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                 
                 // 元に戻る
-                .Append(_ringImages[2].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .Join(_ringImages[5].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .Join(_ringImages[6].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .Join(_ringImages[7].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Append(_decorationImage.DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[2].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[3].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Join(_ringImages[4].DOFade(_currentPulseColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
@@ -144,6 +144,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _tweens[0]?.Kill();
 
+            ChangeRingsImage();
+            
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
@@ -176,13 +178,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImage.rectTransform.localScale = Vector3.one;
                 _ringImages[0].rectTransform.localScale = Vector3.one;
-                _ringImages[3].rectTransform.localScale = Vector3.one;
             }
 
             // 中央の画像を判定用の画像に変更
             // NOTE: この処理を呼ばないと、この後に使用される「_newColor」が更新されない
             HandleCenterImage(isPerfect);
+            ChangeRingsImage();
            
             var successSequence = DOTween.Sequence();
 
@@ -323,18 +326,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void ResetRingsScale()
         {
             // 収縮を行うリング
+            SetRingScale(_ringImage, Vector3.one * _initialScale);
             SetRingScale(_ringImages[0], Vector3.one * _initialScale);
-            SetRingScale(_ringImages[3], Vector3.one * _initialScale);
             
             // HitLine
+            SetRingScale(_hitImage, _centerRingsScale);
             SetRingScale(_ringImages[1], _centerRingsScale);
-            SetRingScale(_ringImages[4], _centerRingsScale);
             
             // 中央のデコレーションリング
+            SetRingScale(_decorationImage, _centerRingsScale);
             SetRingScale(_ringImages[2], _centerRingsScale);
-            SetRingScale(_ringImages[5], _centerRingsScale);
-            SetRingScale(_ringImages[6], _centerRingsScale);
-            SetRingScale(_ringImages[7], _centerRingsScale);
+            SetRingScale(_ringImages[3], _centerRingsScale);
+            SetRingScale(_ringImages[4], _centerRingsScale);
         }
         
         /// <summary>
@@ -350,10 +353,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void ResetRingsColor(Color color, Color translucentColor)
         {
+            _ringImage.color = color;
+            _hitImage.color = color;
+            
             foreach (var ring in _ringImages)
             {
                 ring.color = color;
             }
+            
+            _decorationImage.color = translucentColor;
+            
             foreach (var ring in _translucentRingImages)
             {
                 ring.color = translucentColor;
@@ -368,12 +377,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var fadeSequence = DOTween.Sequence();
             
             fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
             
             // リングのフェード
             foreach (var ring in _ringImages)
             {
                 fadeSequence.Join(ring.DOFade(0f, duration).SetEase(Ease.Linear));
             }
+            
+            fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
 
             // 半透明リングのフェード
             foreach (var ring in _translucentRingImages)
@@ -390,13 +402,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
         {
             var colorSequence = DOTween.Sequence();
-
+            
+            colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            
             // リングの色変更
             foreach (var ring in _ringImages)
             {
                 colorSequence.Join(ring.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             }
 
+            colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            
             // 半透明リングの色変更
             foreach (var ring in _translucentRingImages)
             {
