@@ -355,13 +355,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _ringImage.color = color;
             _hitImage.color = color;
+            _decorationImage.color = color;
             
             foreach (var ring in _ringImages)
             {
                 ring.color = color;
             }
-            
-            _decorationImage.color = translucentColor;
             
             foreach (var ring in _translucentRingImages)
             {
