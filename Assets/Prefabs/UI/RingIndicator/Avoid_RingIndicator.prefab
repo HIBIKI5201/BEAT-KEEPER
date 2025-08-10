@@ -429,6 +429,9 @@ MonoBehaviour:
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
+  _hitImage: {fileID: 4851049892196883910}
+  _decorationImage: {fileID: 202788682867774720}
+  _ringImage: {fileID: 7318825444765555048}
   _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
   _blinkDuration: 0.2
   _fadeDuration: 0.2
