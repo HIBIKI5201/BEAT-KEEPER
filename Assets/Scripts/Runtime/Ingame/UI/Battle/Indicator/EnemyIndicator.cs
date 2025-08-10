@@ -143,8 +143,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
-                .Append(_hitImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_hitImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
 
             // Tweenを配列に保存
@@ -247,9 +247,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
 			_ringImage.color = color;
 			_hitImage.color = color;
-
-			// デコレーションリングのみ半透明の色にする
-			_decorationImage.color = translucentColor;
+			_decorationImage.color = color;
         }
 
         #endregion
@@ -279,7 +277,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
 			colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-			colorSequence.Join(_decorationImage.DOColor(translucentColor, duration).SetEase(Ease.OutFlash));
+			colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
 
             return colorSequence;
         }
