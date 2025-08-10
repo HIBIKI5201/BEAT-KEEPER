@@ -206,8 +206,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayFailEffect()
         {
-            // 念のためキルしておく
-            _tweens[0]?.Kill();
+            if (_tweens != null)
+            {
+                // 念のためキルしておく
+                _tweens[0]?.Kill();
+            }
             
             // 中央のImageのスプライトとサイズをMissのものに変える
             SetMissImage();
