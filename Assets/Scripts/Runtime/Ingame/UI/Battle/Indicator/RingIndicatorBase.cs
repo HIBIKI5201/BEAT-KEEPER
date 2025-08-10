@@ -33,10 +33,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
-			
-			// 中央のリングの画像を操作方法のものに差し替える
-            _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+
+            UIInitialized();
 
             _onEndAction = onEndAction;
             _timing = timing;
@@ -107,7 +105,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
       　[SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
+        [SerializeField] protected IndicatorSpriteDataSO _commonSprite; // Perfect/Good判定で色を変更するための白色リング
 
+        [Header("リングのImageコンポーネントの設定")]
+        [SerializeField] protected Image _hitImage; // 中央の太めのリング
+        [SerializeField] protected Image _decorationImage; // デコレーションパーツ
+        [SerializeField] protected Image _ringImage; // 収縮するリング
+        
         [Header("色設定")]
         [SerializeField] protected RingIndicatorColorSO _colorSettings;
 
@@ -127,8 +131,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected UIElement_ChartRingManager _chartRingManager;
         protected Action _onEndAction;
 
-        protected Image _selfImage;
-        protected Image _ringImage;
+        protected Image _selfImage; // 自身のImageコンポーネント
+        
+        // 画像データ
+        private Sprite _hitLine;
+        private Sprite _decoration;
+        private Sprite _ring;
 
 		// 判定に合わせて適用する色を変えるための変数
 		protected Color _newColor;
@@ -147,7 +155,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
-            _ringImage = transform.GetChild(0).GetComponent<Image>();
+
+            if (_ringImage == null)
+            {
+	            // スクリプタブルオブジェクトで割り当てられていない場合のみ、子オブジェクトを取得
+	            _ringImage = transform.GetChild(0).GetComponent<Image>();
+            }
+            
 			_defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
         }
 
@@ -181,6 +195,41 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
             _centerImage.sprite = _hitResult.Miss.Sprite;
 			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+		}
+
+		/// <summary>
+		/// UIの初期化処理
+		/// オブジェクトプールのOnGet()処理の中で呼び出される
+		/// </summary>
+		protected virtual void UIInitialized()
+		{
+			if(_hitLine == null && _decoration == null && _ring == null)
+			{
+				// 初期画像を取得する
+				_hitLine = _ringImage.sprite;
+				_decoration = _decorationImage.sprite;
+				_ring = _hitImage.sprite;
+			}
+			
+			// 中央のリングの画像を操作方法のものに差し替える
+			_centerImage.sprite = _guide.Sprite;
+			_centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+			
+			// デフォルトのスプライトを設定する
+			_ringImage.sprite = _hitLine;
+			_decorationImage.sprite = _decoration;
+			_hitImage.sprite = _ring;
+		}
+
+		/// <summary>
+		/// Perfect/Goodの色変更用にSpriteを白色のものに変更する
+		/// </summary>
+		protected virtual void ChangeRingsImage()
+		{
+			// 色変更用にSpriteを白色のものに変更する
+			_ringImage.sprite = _commonSprite.Ring;
+			_decorationImage.sprite = _commonSprite.Decoration;
+			_hitImage.sprite = _commonSprite.HitLine;
 		}
     }
 }
