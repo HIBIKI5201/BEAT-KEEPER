@@ -93,9 +93,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
+  _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _colorSettings: {fileID: 11400000, guid: 46fc204f2dbec6a4cbb39a499a0d2945, type: 2}
-  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  _translucentDefaultColor: {r: 1, g: 1, b: 1, a: 0.09803922}
   _blinkDuration: 0.3
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
@@ -107,8 +106,6 @@ MonoBehaviour:
   _skillGroup: {fileID: 6919595722609849635}
   _finisherGroup: {fileID: 3435196377680079590}
   _changeDuration: 0.2
-  _finisherColor: {r: 1, g: 1, b: 1, a: 1}
-  _translucentFinisherColor: {r: 1, g: 1, b: 1, a: 0.043137256}
   _ringImages:
   - {fileID: 6800337163817613581}
   - {fileID: 1064944501665903157}
