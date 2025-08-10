@@ -66,8 +66,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private CanvasGroup _skillGroup; // スキルノーツのCanvasGroup
         [SerializeField] private CanvasGroup _finisherGroup; // フィニッシャーノーツのCanvasGroup
         [SerializeField] private float _changeDuration = 0.2f; // 切り替えにかける秒数
-        [SerializeField] private Color _finisherColor; // フィニッシャー用の色指定
-        [SerializeField] private Color _translucentFinisherColor; // フィニッシャー用の半透明の色指定
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
 
@@ -313,16 +311,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void ApplyCurrentColors()
         {
-            if (_isFinisherable)
-            {
-                _currentPulseColor = _translucentFinisherColor;
-                ResetRingsColor(_finisherColor, _translucentFinisherColor);
-            }
-            else
-            {
-                _currentPulseColor = _translucentDefaultColor;
-                ResetRingsColor(_defaultColor, _translucentDefaultColor);
-            }
+            _currentPulseColor = _translucentDefaultColor;
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
         
         #endregion

@@ -110,8 +110,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("色設定")]
         [SerializeField] protected RingIndicatorColorSO _colorSettings;
-        [SerializeField] protected Color _defaultColor = Color.white;
-        [SerializeField] protected Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
 
         [SerializeField] protected float _blinkDuration = 0.2f;
         [SerializeField] protected float _fadeDuration = 0.3f;
@@ -142,6 +140,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Tween[] _tweens;
         
         private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
+        
+        protected Color _defaultColor => _colorSettings.DefaultColor;
+        protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
         private void Awake()
         {
@@ -164,12 +165,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			if(isPerfect)
 			{
 				_newColor = _colorSettings.PerfectColor;
-				_translucentDefaultColor = _colorSettings.TranslucentPerfectColor;
+				_newTranslucentColor = _colorSettings.TranslucentPerfectColor;
 			}
 			else
 			{
 				_newColor = _colorSettings.GoodColor;
-				_translucentDefaultColor = _colorSettings.TranslucentGoodColor;
+				_newTranslucentColor = _colorSettings.TranslucentGoodColor;
 			}
         }
 
