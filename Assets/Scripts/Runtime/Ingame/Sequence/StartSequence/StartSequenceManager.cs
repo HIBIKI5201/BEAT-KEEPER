@@ -11,6 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     public class StartSequenceManager : MonoBehaviour
     {
         [SerializeField] TutorialManager _tutorialManager;
+        [SerializeField] PlayableAsset _playableAsset;
         private async void Start()
         {
             var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
@@ -20,7 +21,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 await multiSceneManager.WaitForSceneLoad(SceneListEnum.Battle);
             }
 
-            var director = GetComponent<PlayableDirector>();
+            var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
+            var director = movieManager.GetDirector(_playableAsset);
             //スタートシーケンスの再生終了時にチュートリアルシーケンスを再生する
             director.stopped += (_) =>
             {
