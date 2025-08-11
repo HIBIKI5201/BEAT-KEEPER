@@ -20,6 +20,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             _player = player;
             _chartRingManager = ringManager;
+            
+            // 中央のリングの画像を操作方法のものに差し替える
+            _centerImage.sprite = _guide.Sprite;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
@@ -29,7 +33,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
-            _centerImage.rectTransform.sizeDelta = _defaultCenterImageSize;
+
+            UIInitialized();
+
             _onEndAction = onEndAction;
             _timing = timing;
 
@@ -99,18 +105,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
       　[SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
+        [SerializeField] protected IndicatorSpriteDataSO _commonSprite; // Perfect/Good判定で色を変更するための白色リング
 
+        [Header("リングのImageコンポーネントの設定")]
+        [SerializeField] protected Image _hitImage; // 中央の太めのリング
+        [SerializeField] protected Image _decorationImage; // デコレーションパーツ
+        [SerializeField] protected Image _ringImage; // 収縮するリング
+        
         [Header("色設定")]
-        [SerializeField] protected Color _successColor = Color.yellow;
-        [SerializeField] protected Color _translucentSuccessColor = Color.yellow; // 半透明の成功色
-        [SerializeField] protected Color _defaultColor = Color.white;
-        [SerializeField] protected Color _translucentDefaultColor = Color.white; // 半透明のデフォルト色
+        [SerializeField] protected RingIndicatorColorSO _colorSettings;
 
         [SerializeField] protected float _blinkDuration = 0.2f;
         [SerializeField] protected float _fadeDuration = 0.3f;
 
 		[Header("中央の操作方法/判定UIの設定")]
 		[SerializeField] protected Image _centerImage; // 操作方法・評価を表示するImage
+
+		[SerializeField] protected HitResultData _guide; // 操作方法の画像の設定
 		[SerializeField] protected HitResultSpriteSO _hitResult;
 
         [Header("SE")]
@@ -120,8 +131,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected UIElement_ChartRingManager _chartRingManager;
         protected Action _onEndAction;
 
-        protected Image _selfImage;
-        protected Image _ringImage;
+        protected Image _selfImage; // 自身のImageコンポーネント
+        
+        // 画像データ
+        private Sprite _hitLine;
+        private Sprite _decoration;
+        private Sprite _ring;
+
+		// 判定に合わせて適用する色を変えるための変数
+		protected Color _newColor;
+		protected Color _newTranslucentColor;
 
 		protected bool _isEnded = false;
         protected int _timing;
@@ -129,12 +148,88 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Tween[] _tweens;
         
         private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
+        
+        protected Color _defaultColor => _colorSettings.DefaultColor;
+        protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
-            _ringImage = transform.GetChild(0).GetComponent<Image>();
+
+            if (_ringImage == null)
+            {
+	            // スクリプタブルオブジェクトで割り当てられていない場合のみ、子オブジェクトを取得
+	            _ringImage = transform.GetChild(0).GetComponent<Image>();
+            }
+            
 			_defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
         }
+
+		/// <summary>
+        /// 中央のイメージを操作する
+        /// </summary>
+		protected void HandleCenterImage(bool isPerfect)
+        {	
+			var hitResult = isPerfect ? _hitResult.Perfect : _hitResult.Good;
+
+			// 中央のImageのスプライト変更とサイズ変更
+			_centerImage.sprite = hitResult.Sprite;
+           	_centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
+
+			if(isPerfect)
+			{
+				_newColor = _colorSettings.PerfectColor;
+				_newTranslucentColor = _colorSettings.TranslucentPerfectColor;
+			}
+			else
+			{
+				_newColor = _colorSettings.GoodColor;
+				_newTranslucentColor = _colorSettings.TranslucentGoodColor;
+			}
+        }
+
+		/// <summary>
+        /// 中央のイメージをMiss判定のものに差し替える
+        /// </summary>
+		protected void SetMissImage()
+		{
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+			_centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+		}
+
+		/// <summary>
+		/// UIの初期化処理
+		/// オブジェクトプールのOnGet()処理の中で呼び出される
+		/// </summary>
+		protected virtual void UIInitialized()
+		{
+			if(_hitLine == null && _decoration == null && _ring == null)
+			{
+				// 初期画像を取得する
+				_hitLine = _ringImage.sprite;
+				_decoration = _decorationImage.sprite;
+				_ring = _hitImage.sprite;
+			}
+			
+			// 中央のリングの画像を操作方法のものに差し替える
+			_centerImage.sprite = _guide.Sprite;
+			_centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+			
+			// デフォルトのスプライトを設定する
+			_ringImage.sprite = _hitLine;
+			_decorationImage.sprite = _decoration;
+			_hitImage.sprite = _ring;
+		}
+
+		/// <summary>
+		/// Perfect/Goodの色変更用にSpriteを白色のものに変更する
+		/// </summary>
+		protected virtual void ChangeRingsImage()
+		{
+			// 色変更用にSpriteを白色のものに変更する
+			_ringImage.sprite = _commonSprite.Ring;
+			_decorationImage.sprite = _commonSprite.Decoration;
+			_hitImage.sprite = _commonSprite.HitLine;
+		}
     }
 }

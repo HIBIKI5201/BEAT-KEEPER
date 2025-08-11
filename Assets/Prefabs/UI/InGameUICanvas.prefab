@@ -1571,8 +1571,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7239464005814020127}
   _locateType: 1
-  _autoSet: 1
-  _autoDestroy: 1
+  _autoRegister: 1
+  _autoUnregister: 1
 --- !u!223 &8441500394411540005
 Canvas:
   m_ObjectHideFlags: 0
@@ -2874,7 +2874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1520496468489501056, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 687
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1520496468489501056, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2891,6 +2891,10 @@ PrefabInstance:
     - target: {fileID: 1520496468489501056, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2817720132905131164, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 2947165769252561863, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_Alpha
@@ -2916,6 +2920,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_Font
       value: 
       objectReference: {fileID: 12800000, guid: d61759c5fc5632d41a4ea4cd0b46fb01, type: 3}
+    - target: {fileID: 5496753918943000007, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -260
+      objectReference: {fileID: 0}
     - target: {fileID: 8061870439428462383, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_Color.b
       value: 1
