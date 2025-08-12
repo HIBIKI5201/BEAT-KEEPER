@@ -145,7 +145,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     攻撃を受けた際の処理
         /// </summary>
         /// <param name="data"></param>
-        public override void HitAttack(AttackData data)
+        public override async void HitAttack(AttackData data)
         {
             //無敵時間なら受けない
             if (_lastAvoidSuccessTiming
@@ -160,12 +160,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.HitAttack(data);
             _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
             SoundEffectManager.PlaySoundEffect(_hitSound);
+            VoiceManager.PlayVoice(_hitVoice);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
 
             _comboSystem.ComboReset();
             _animeManager.Hit();
+
+            if (_stunTokenSource != null)
+            {
+                _stunTokenSource.Cancel(); //前のスタンをキャンセル
+            }
+            _stunTokenSource = new CancellationTokenSource();
+
+            await Awaitable.WaitForSecondsAsync(stunTime, _stunTokenSource.Token);
+
+            VoiceManager.PlayVoice(_stunEndVoice);
+            _stunTokenSource = null;
         }
 
         #endregion
@@ -252,6 +264,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private IEnemy _target;
         private bool _isBattle;
         [Tooltip("スタンが終了するタイミング")] private float _stunEndTiming;
+        private CancellationTokenSource _stunTokenSource;
         private float _chargeAttackTimer;
         private CancellationTokenSource _chargeAttackChargingTokenSource;
         [Tooltip("最後の回避成功のタイミング")] private float _lastAvoidSuccessTiming;
@@ -618,6 +631,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (isGoodHit) //最低でもGood以上ならヒット
             {
                 _isThisBeatInputed = true;
+                VoiceManager.PlayVoice(_comboShootVoice);
 
                 if (isPerfectHit)
                 {
@@ -755,6 +769,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnShootChargeAttack?.Invoke();
             SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+            VoiceManager.PlayVoice(_chargeShootVoice);
             AttackEnemy(_data.ChargeAttackPower);
 
             //フルチャージかどうか
