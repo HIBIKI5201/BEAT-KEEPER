@@ -230,6 +230,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private string _flowZoneEndSound;
         #endregion
 
+        #region ボイス
+        [Header("Voice")]
+        [SerializeField, Tooltip("コンボ攻撃のボイス")]
+        private string _comboShootVoice;
+
+        [SerializeField, Tooltip("チャージ攻撃のボイス")]
+        private string _chargeShootVoice;
+
+        [SerializeField, Tooltip("ヒット時のボイス")]
+        private string _hitVoice;
+
+        [SerializeField, Tooltip("スタン解除時のボイス")]
+        private string _stunEndVoice;
+        #endregion
+
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
