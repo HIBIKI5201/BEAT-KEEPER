@@ -6,7 +6,6 @@ using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    [RequireComponent(typeof(PlayableDirector))]
     public class FinisherSequenceManager : MonoBehaviour
     {
         public event Action OnFinisherSequenceEnd;
@@ -16,19 +15,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField, Tooltip("フィニッシャー時の加算スコア")]
         private int _finisherScore = 2000;
 
+        [SerializeField]
+        private PlayableAsset _playableAsset;
+
         private PlayableDirector _playableDirector;
 
-        private void Awake()
+        private async void Start()
         {
-            _playableDirector = GetComponent<PlayableDirector>();
-            if (!_playableDirector)
-            {
-                Debug.LogWarning("PlayableDirector component is missing on FinisherSequence.");
-            }
-        }
+            var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
+            _playableDirector = movieManager.GetDirector(_playableAsset);
 
-        private void Start()
-        {
             if (_playableDirector)
             {
                 _playableDirector.stopped += OnPlayableDirectorStopped;

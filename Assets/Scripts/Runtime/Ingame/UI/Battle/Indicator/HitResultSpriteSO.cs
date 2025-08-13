@@ -4,7 +4,7 @@ using System;
 namespace BeatKeeper
 {
     /// <summary>
-    /// Perfect/Good/Missの画像を設定するスクリプタブルオブジェクト
+    /// 中央の画像を設定するスクリプタブルオブジェクト
     /// </summary>
     [CreateAssetMenu(fileName = "HitResultSpriteSO", menuName = "BeatKeeper/UI/HitResultSpriteSO")]
     public class HitResultSpriteSO : ScriptableObject

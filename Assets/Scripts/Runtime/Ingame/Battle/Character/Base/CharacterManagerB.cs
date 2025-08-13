@@ -1,6 +1,8 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.System;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -11,7 +13,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
     public abstract class CharacterManagerB<TDataType> : MonoBehaviour, IHitable
         where TDataType : CharacterData
     {
-        public Action<int> OnHitAttack { get; set; }
+        public event Action<int> OnHitAttack
+        {
+            add => _onHitAttack.Event += value;
+            remove => _onHitAttack.Event += value;
+        }
+
+        [SerializeField]
+        protected UnityEventWrapper<int> _onHitAttack;
 
         public TDataType Data => _data;
 
@@ -23,7 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             //データがなかったら初期データをアサイン
             if (!_data) _data = ScriptableObject.CreateInstance<TDataType>();
-            
+
             Debug.Log($"{_data.Name} initialized");
         }
 

@@ -1,4 +1,6 @@
-﻿namespace BeatKeeper.Runtime.Ingame.Character
+﻿using UnityEngine;
+
+namespace BeatKeeper.Runtime.Ingame.Character
 {
     /// <summary>
     ///     敵キャラクターのインターフェース
@@ -7,5 +9,7 @@
     {
         public EnemyData EnemyData { get; }
         public bool IsFinisherable { get; }
+
+        public Transform NormalAttackRandomHit();
     }
 }
