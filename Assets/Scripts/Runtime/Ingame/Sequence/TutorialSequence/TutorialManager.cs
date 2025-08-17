@@ -29,6 +29,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private InputBuffer _inputBuffer;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
+        private bool _charge = false;
 
         private async void Start()
         {
@@ -69,6 +70,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             else if (chartKindEnum == ChartKindEnum.Normal)
             {
                 _inputBuffer.Avoid.started += OnAvoid;
+            }
+            else if (chartKindEnum == ChartKindEnum.Charge)
+            {
+                _inputBuffer.Avoid.started += OnCharge;
             }
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;
             _director.Pause();
@@ -133,7 +138,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             else if (_chartKindEnum == ChartKindEnum.Normal)
             {
-                if(_currentTargetClearCount >= _skillTutorialClearCount)
+                if (_currentTargetClearCount >= _skillTutorialClearCount)
                 {
                     Debug.Log("Tutorial Clear!----------------------------------------------------");
                     _currentTargetClearCount = 0;
@@ -236,6 +241,25 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     avoidIndicator.PlayFailEffect();
                     _activeRingIndicator.RemoveAt(0);
                 }
+            }
+        }
+
+        private void OnCharge(InputAction.CallbackContext callbackContext)
+        {
+            if (_activeRingIndicator.Count == 0) return;
+            Debug.Log(_currentIndicatorCount);
+            var chargeIndicator = (ChargeIndicator)_activeRingIndicator[0];
+            if (callbackContext.phase == InputActionPhase.Started)
+            {
+                _charge = true;
+                var isGood = CheckGood();
+                var isPerfect = CheckPerfect();
+            }
+            else if (callbackContext.phase == InputActionPhase.Canceled)
+            {
+                _charge = false;
+                var isGood = CheckGood();
+                var isPerfect = CheckPerfect();
             }
         }
 

@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -122,6 +122,38 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         #endregion
 
+        public void OnPlayerChargeTutorial()
+        {
+            if (_tweens != null)
+            {
+                // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
+                _tweens[0]?.Kill();
+            }
+
+            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+            var totalDuration = beatDuration * CHARGE_TIME;
+
+            // マスクのスケールを外側リングの大きさに合わせる
+            _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
+
+            var sequence = DOTween.Sequence()
+
+                // 色変更（チャージ開始時）
+                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
+                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
+                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
+
+                // メインのリング移動アニメーション（外側リングから内側リングへ）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
+
+                // 必要に応じて位置も調整
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
+
+                .OnComplete(OnChargeComplete);
+
+            _tweens[1] = sequence;
+        }
+
         /// <summary>
         /// チャージ中の演出
         /// </summary>
@@ -212,7 +244,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 失敗演出（チャージ完了前に終了）
         /// </summary>
-        private void PlayFailEffect()
+        public void PlayFailEffect()
         {
             for (int i = 0; i < 3; i++)
             {
