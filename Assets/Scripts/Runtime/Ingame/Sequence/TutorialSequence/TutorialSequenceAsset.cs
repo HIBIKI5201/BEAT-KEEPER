@@ -18,9 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
                 case 2:
                     return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
-                    break;
                 case 3:
-                    break;
+                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_3>(graph, owner);
                 case 4:
                     break;
                 default:

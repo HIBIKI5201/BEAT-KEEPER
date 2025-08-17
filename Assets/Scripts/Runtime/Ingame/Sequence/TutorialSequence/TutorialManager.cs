@@ -66,6 +66,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 _inputBuffer.Attack.started += OnSkill;
             }
+            else if (chartKindEnum == ChartKindEnum.Normal)
+            {
+                _inputBuffer.Avoid.started += OnAvoid;
+            }
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;
             _director.Pause();
         }
@@ -117,7 +121,29 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     TutorialUnRegister();
                 }
             }
+            else if (_chartKindEnum == ChartKindEnum.Skill)
+            {
+                if (_currentTargetClearCount >= _skillTutorialClearCount)
+                {
+                    Debug.Log("Tutorial Clear!----------------------------------------------------");
+                    _currentTargetClearCount = 0;
+                    _inputBuffer.Attack.started -= OnSkill;
+                    TutorialUnRegister();
+                }
+            }
+            else if (_chartKindEnum == ChartKindEnum.Normal)
+            {
+                if(_currentTargetClearCount >= _skillTutorialClearCount)
+                {
+                    Debug.Log("Tutorial Clear!----------------------------------------------------");
+                    _currentTargetClearCount = 0;
+                    _inputBuffer.Avoid.started -= OnAvoid;
+                    TutorialUnRegister();
+                }
+            }
         }
+
+        #region チュートリアル専用の操作
 
         /// <summary>
         /// チュートリアル用のショット処理
@@ -188,6 +214,33 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 TutorialUnRegister();
             }
         }
+
+        private void OnAvoid(InputAction.CallbackContext callbackContext)
+        {
+            if (_activeRingIndicator.Count == 0) return;
+            Debug.Log(_currentIndicatorCount);
+            var avoidIndicator = (EnemyIndicator)_activeRingIndicator[0];
+            if (callbackContext.phase == InputActionPhase.Started)
+            {
+                var isGood = CheckGood();
+                var isPerfect = CheckPerfect();
+                if (isGood)
+                {
+                    _currentTargetClearCount++;
+                    Debug.Log("Good!");
+                    avoidIndicator.OnPlayerAvoidSuccess(isPerfect);
+                }
+                else
+                {
+                    Debug.Log("Missed!");
+                    avoidIndicator.PlayFailEffect();
+                    _activeRingIndicator.RemoveAt(0);
+                }
+            }
+        }
+
+        #endregion
+
 
         private bool CheckGood()
         {
