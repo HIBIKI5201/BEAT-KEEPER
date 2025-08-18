@@ -26,8 +26,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 #endif
         }
 
-        public ChartDataElement this[int index] => _chart[index % _chart.Length];
-
         public ChartDataElement[] Chart => _chart;
         [SerializeField, Tooltip("ビートの拍子")]
         private ChartDataElement[] _chart = new ChartDataElement[CHART_LENGTH];
