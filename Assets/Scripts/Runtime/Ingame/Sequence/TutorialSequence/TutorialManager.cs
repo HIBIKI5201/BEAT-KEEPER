@@ -30,7 +30,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private bool _isCharging = false;
-        private int _chargeStartBeat = -1;
+        private int _currentChargeBeat;
 
         private async void Start()
         {
@@ -120,6 +120,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             _currentIndicatorCount++;
 
+            if(_isCharging) _currentChargeBeat++;
+
+            #region チュートリアルクリア判定
+
             if (_chartKindEnum == ChartKindEnum.Attack)
             {
 
@@ -162,6 +166,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     TutorialUnRegister();
                 }
             }
+            #endregion
         }
 
         #region チュートリアル専用の操作
@@ -265,70 +270,57 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (_activeRingIndicator.Count == 0) return;
             var chargeIndicator = (ChargeIndicator)_activeRingIndicator[0];
 
-            // --- 長押し開始の処理 ---
             if (callbackContext.phase == InputActionPhase.Started)
             {
-                // 要件①: インジケーター表示から2拍後か？
-                // (インジケーター表示の2拍後は _currentIndicatorCount が 2 の時、と仮定)
-                if (_currentIndicatorCount == 2)
+                if (_currentIndicatorCount == 3)
                 {
                     var normalizedTiming = (float)Music.UnitFromJust;
-                    // 拍の真ん中で押せているか？
-                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _perfectRange / 2)
+                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2)
                     {
-                        Debug.Log("チャージ開始: Perfect!");
                         _isCharging = true;
-                        _chargeStartBeat = _currentIndicatorCount; // ★開始した拍を記録
+                        _currentChargeBeat = 0;
                         chargeIndicator.OnPlayerChargeTutorial();
                     }
                     else
                     {
-                        Debug.Log("チャージ開始: Miss (タイミングが悪い)");
                         chargeIndicator.PlayFailEffect();
                         _activeRingIndicator.RemoveAt(0);
                     }
                 }
                 else
                 {
-                    Debug.Log("チャージ開始: Miss (拍が違う)");
                     chargeIndicator.PlayFailEffect();
                     _activeRingIndicator.RemoveAt(0);
                 }
             }
-            // --- ボタンを離した時の処理 ---
             else if (callbackContext.phase == InputActionPhase.Canceled)
             {
-                // チャージ中でなければ何もしない
                 if (!_isCharging) return;
 
-                // 要件②: 長押し開始から2拍後か？
-                if (_currentIndicatorCount - _chargeStartBeat == 2)
+                if (_currentChargeBeat == 3 || _currentChargeBeat == 2)
                 {
                     var normalizedTiming = (float)Music.UnitFromJust;
                     // 拍の真ん中で離せているか？
-                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _perfectRange / 2)
+                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2)
                     {
-                        Debug.Log("チャージ解放: Perfect!");
                         _currentTargetClearCount++;
                         chargeIndicator.OnPlayerAttackSuccessTutorial();
                     }
                     else
                     {
-                        Debug.Log("チャージ解放: Miss (タイミングが悪い)");
                         chargeIndicator.PlayFailEffect();
                         _activeRingIndicator.RemoveAt(0);
                     }
                 }
                 else
                 {
-                    Debug.Log("チャージ解放: Miss (長さが違う)");
+                    Debug.Log(_currentChargeBeat);
                     chargeIndicator.PlayFailEffect();
                     _activeRingIndicator.RemoveAt(0);
                 }
 
-                // 判定が終わったら状態をリセット
                 _isCharging = false;
-                _chargeStartBeat = -1;
+                _currentChargeBeat = 0;
             }
         }
 
