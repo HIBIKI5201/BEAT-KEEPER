@@ -29,7 +29,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private InputBuffer _inputBuffer;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
-        private bool _charge = false;
+        private bool _isCharging = false;
+        private int _chargeStartBeat = -1;
 
         private async void Start()
         {
@@ -73,7 +74,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
             {
-                _inputBuffer.Avoid.started += OnCharge;
+                _inputBuffer.Interact.started += OnCharge;
+                _inputBuffer.Interact.canceled += OnCharge;
             }
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;
             _director.Pause();
@@ -85,6 +87,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _bgmManager.OnJustChangedBeat -= TutorialIndicatorGenerate;
             _inputBuffer.Attack.started -= OnShot;
             _inputBuffer.Attack.started -= OnSkill;
+            _inputBuffer.Avoid.started -= OnAvoid;
+            _inputBuffer.Interact.started -= OnCharge;
+            _inputBuffer.Interact.canceled -= OnCharge;
             foreach (var ind in _activeRingIndicator)
             {
                 ind.End();
@@ -143,6 +148,17 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     Debug.Log("Tutorial Clear!----------------------------------------------------");
                     _currentTargetClearCount = 0;
                     _inputBuffer.Avoid.started -= OnAvoid;
+                    TutorialUnRegister();
+                }
+            }
+            else
+            {
+                if(_currentTargetClearCount >= _skillTutorialClearCount)
+                {
+                    Debug.Log("Tutorial Clear!----------------------------------------------------");
+                    _currentTargetClearCount = 0;
+                    _inputBuffer.Interact.started -= OnCharge;
+                    _inputBuffer.Interact.canceled -= OnCharge;
                     TutorialUnRegister();
                 }
             }
@@ -247,26 +263,79 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void OnCharge(InputAction.CallbackContext callbackContext)
         {
             if (_activeRingIndicator.Count == 0) return;
-            Debug.Log(_currentIndicatorCount);
             var chargeIndicator = (ChargeIndicator)_activeRingIndicator[0];
+
+            // --- 長押し開始の処理 ---
             if (callbackContext.phase == InputActionPhase.Started)
             {
-                _charge = true;
-                var isGood = CheckGood();
-                var isPerfect = CheckPerfect();
+                // 要件①: インジケーター表示から2拍後か？
+                // (インジケーター表示の2拍後は _currentIndicatorCount が 2 の時、と仮定)
+                if (_currentIndicatorCount == 2)
+                {
+                    var normalizedTiming = (float)Music.UnitFromJust;
+                    // 拍の真ん中で押せているか？
+                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _perfectRange / 2)
+                    {
+                        Debug.Log("チャージ開始: Perfect!");
+                        _isCharging = true;
+                        _chargeStartBeat = _currentIndicatorCount; // ★開始した拍を記録
+                        chargeIndicator.OnPlayerChargeTutorial();
+                    }
+                    else
+                    {
+                        Debug.Log("チャージ開始: Miss (タイミングが悪い)");
+                        chargeIndicator.PlayFailEffect();
+                        _activeRingIndicator.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    Debug.Log("チャージ開始: Miss (拍が違う)");
+                    chargeIndicator.PlayFailEffect();
+                    _activeRingIndicator.RemoveAt(0);
+                }
             }
+            // --- ボタンを離した時の処理 ---
             else if (callbackContext.phase == InputActionPhase.Canceled)
             {
-                _charge = false;
-                var isGood = CheckGood();
-                var isPerfect = CheckPerfect();
+                // チャージ中でなければ何もしない
+                if (!_isCharging) return;
+
+                // 要件②: 長押し開始から2拍後か？
+                if (_currentIndicatorCount - _chargeStartBeat == 2)
+                {
+                    var normalizedTiming = (float)Music.UnitFromJust;
+                    // 拍の真ん中で離せているか？
+                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _perfectRange / 2)
+                    {
+                        Debug.Log("チャージ解放: Perfect!");
+                        _currentTargetClearCount++;
+                        chargeIndicator.OnPlayerAttackSuccessTutorial();
+                    }
+                    else
+                    {
+                        Debug.Log("チャージ解放: Miss (タイミングが悪い)");
+                        chargeIndicator.PlayFailEffect();
+                        _activeRingIndicator.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    Debug.Log("チャージ解放: Miss (長さが違う)");
+                    chargeIndicator.PlayFailEffect();
+                    _activeRingIndicator.RemoveAt(0);
+                }
+
+                // 判定が終わったら状態をリセット
+                _isCharging = false;
+                _chargeStartBeat = -1;
             }
         }
 
         #endregion
 
 
-        private bool CheckGood()
+        private bool CheckGood(float offset = 0)
         {
             if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
             {
@@ -274,11 +343,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
 
                 // Justタイミング付近か判定
-                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2;
+                return Mathf.Abs(normalizedTimingFromJust - 0.5f + offset) <= _goodRange / 2;
             }
             return false;
         }
-        private bool CheckPerfect()
+        private bool CheckPerfect(float offset = 0)
         {
             if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
             {
@@ -286,7 +355,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var normalizedTimingFromJust = (float)Music.UnitFromJust;
                 // Justタイミング付近か判定
                 Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
-                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _perfectRange / 2;
+                return Mathf.Abs(normalizedTimingFromJust - 0.5f + offset) <= _perfectRange / 2;
             }
             return false;
         }

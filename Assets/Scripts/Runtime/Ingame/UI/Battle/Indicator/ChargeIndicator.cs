@@ -153,6 +153,31 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             _tweens[1] = sequence;
         }
+        public void OnPlayerAttackSuccessTutorial()
+        {
+            // 他のすべてのTweenをキル
+            for (int i = 0; i < _tweens.Length; i++)
+            {
+                _tweens[i]?.Kill();
+            }
+
+            // 色とテキストが変更されていない場合、念のためここで変えておく
+            ResetRingsColor(_newColor, _newColor);
+
+            var sequence = DOTween.Sequence()
+
+                // 拡大
+                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+
+                // フェードアウト
+                .Join(CreateFadeSequence(_fadeDuration))
+
+                .OnComplete(End);
+
+            _tweens[3] = sequence;
+        }
 
         /// <summary>
         /// チャージ中の演出
