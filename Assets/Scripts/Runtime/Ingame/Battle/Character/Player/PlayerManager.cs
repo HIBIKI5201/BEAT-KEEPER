@@ -462,7 +462,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             var chartData = _target.EnemyData.ChartData;
             var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
-            var enemyAttackKind = chartData.Chart[timing].AttackKind;
+            var enemyAttackKind = chartData[timing].AttackKind;
 
             //Charge攻撃は回避できない
             if ((enemyAttackKind & ChartKindEnum.Charge) != 0)

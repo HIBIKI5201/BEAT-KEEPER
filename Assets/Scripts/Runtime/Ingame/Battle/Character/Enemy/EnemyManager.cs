@@ -190,13 +190,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 # region デバッグログ
                 Debug.Log($"{_data.name} " +
-                    $"{_data.ChartData.Chart[(timing) % _data.ChartData.Chart.Length].AttackKind} attack\n" +
+                    $"{_data.ChartData[timing].AttackKind} attack\n" +
                     $"timing : {timing}");
                 #endregion
 
                 OnShootAttack?.Invoke();
 
-                var attackKind = _data.ChartData.Chart[timing % _data.ChartData.Chart.Length].AttackKind;
+                var attackKind = _data.ChartData[timing].AttackKind;
 
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
