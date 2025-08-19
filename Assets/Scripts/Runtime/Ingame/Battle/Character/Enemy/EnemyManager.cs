@@ -147,12 +147,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
 
-        #region モック用の機能
-
-        [SerializeField, Obsolete("モック用")] private ParticleSystem _particleSystem;
-
-        #endregion
-
         protected override void Awake()
         {
             Animator animator = GetComponentInChildren<Animator>();
@@ -222,11 +216,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 {
                     _target.HitAttack(new AttackData(1, true));
                     OnShootChargeAttack?.Invoke();
-                }
-
-                if (_particleSystem)
-                {
-                    _particleSystem?.Play();
                 }
             }
         }
