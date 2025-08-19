@@ -643,8 +643,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SymphonyDebugLogger.AddText($"{_data.Name} do attack");
 
             //攻撃が成功したか
-            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
-            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
+            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ComboPerfectRange);
+            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ComboGoodRange);
 
             //評価のログ
             SymphonyDebugLogger.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
@@ -757,6 +757,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private async void ChargeAttackCharging()
         {
+            bool isPerfecet = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartPerfectRange);
+            bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
+
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
@@ -786,6 +789,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void ChargeAttackActivation()
         {
+            bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
+            bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
+
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             OnShootChargeAttack?.Invoke();
