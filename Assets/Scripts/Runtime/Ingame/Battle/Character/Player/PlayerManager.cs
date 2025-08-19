@@ -428,41 +428,32 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (!_isBattle) return;
 
-            ChartData.ChartDataElement[] chart = _target.EnemyData
-                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
+            //タイミングや時間を取得
+            ChartData chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
-
-            bool willChargeAttack = false;
-            int chargeAttackRange = Mathf.CeilToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
-            for (int i = 0; i < chargeAttackRange; i++)
-            {
-                if (CHARGE_ATTACK_ENUM == chart[(timing + i) % chart.Length].AttackKind)
-                {
-                    willChargeAttack = true; //チャージ攻撃が可能ならフラグを立てる
-
-                    if (_ringIndicatorData.TryGetRingData(CHARGE_ATTACK_ENUM, out RingData data))
-                    {
-                        //チャージ攻撃の開始タイミングを取得
-                        int effectLength = data.EffectLength;
-                        float startTiming = Time.time
-                            +(i - effectLength) //i拍後のlength拍前の時間
-                            * (float)MusicEngineHelper.DurationOfBeat;
-
-                        if (_phaseManager.IsAnotherPhaseByTiming(startTiming)) return;
-                    }
-                    break;
-                }
-            }
-
-            if (!willChargeAttack) return; //直近がチャージ攻撃でなければ何もしない
-
+            int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
+            
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
+                    if (chart[chargeAttackRange + timing].AttackKind != CHARGE_ATTACK_ENUM) return;
+
                     ChargeAttackCharging();
                     break;
 
                 case InputActionPhase.Canceled: //発動
+
+                    if (IsAnotherPhaseByChartKind(CHARGE_ATTACK_ENUM))
+                    {
+                        SymphonyDebugLogger.AddText(
+                            $"[{nameof(PlayerManager)}] {CHARGE_ATTACK_ENUM} is in another phase");
+                        SymphonyDebugLogger.TextLog();
+                        return;
+                    }
+
+                    if (chart[timing].AttackKind != CHARGE_ATTACK_ENUM) return;
+
                     ChargeAttackActivation();
                     break;
             }
@@ -652,8 +643,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SymphonyDebugLogger.AddText($"{_data.Name} do attack");
 
             //攻撃が成功したか
-            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.PerfectRange);
-            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.GoodRange);
+            bool isPerfectHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ComboPerfectRange);
+            bool isGoodHit = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ComboGoodRange);
 
             //評価のログ
             SymphonyDebugLogger.AddText($"{(isPerfectHit ? "perfect" : (isGoodHit ? "good" : "miss"))}attack");
@@ -766,6 +757,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private async void ChargeAttackCharging()
         {
+            bool isPerfecet = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartPerfectRange);
+            bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
+
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
@@ -795,6 +789,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void ChargeAttackActivation()
         {
+            bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
+            bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
+
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             OnShootChargeAttack?.Invoke();

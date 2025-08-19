@@ -17,8 +17,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float ChargeAttackPower => _chargeAttackPower;
         public float ChargeAttackTime => _chargeAttackTime;
 
-        public float PerfectRange => _perfectRange;
-        public float GoodRange => _goodRange;
+        public float ComboPerfectRange => _comboPerfectRange;
+        public float ComboGoodRange => _comboGoodRange;
+
+        public float ChargeStartPerfectRange => _chargeStartPerfectRange;
+        public float ChargeStartGoodRange => _chargeStartGoodRange;
+        public float ChargeEndPerfectRange => _chargeEndPerfectRange;
+        public float ChargeEndGoodRange => _chargeEndGoodRange;
         #endregion
 
         #region リズムパラメータ
@@ -70,10 +75,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
 
+        [Space(5), DisplayText("攻撃の成功範囲")]
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
-        private float _perfectRange = 0.1f;
+        private float _comboPerfectRange = 0.1f;
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
-        private float _goodRange = 0.5f;
+        private float _comboGoodRange = 0.5f;
+        [Space(3)]
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のパーフェクトヒットの範囲")]
+        private float _chargeStartPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のグッドヒットの範囲")]
+        private float _chargeStartGoodRange = 0.5f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のパーフェクトヒットの範囲")]
+        private float _chargeEndPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のグッドヒットの範囲")]
+        private float _chargeEndGoodRange = 0.5f;
 
         [Header("リズム パラメータ")]
 
