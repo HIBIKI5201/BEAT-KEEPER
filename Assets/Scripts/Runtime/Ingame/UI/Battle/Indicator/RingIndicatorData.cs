@@ -12,6 +12,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
     {
         public RingData[] RingDatas => _ringDatas;
 
+        public RingData GetRingData(ChartKindEnum attackKind)
+        {
+            foreach (var ringData in _ringDatas)
+            {
+                if (ringData.AttackKind == attackKind)
+                {
+                    return ringData;
+                }
+            }
+
+            Debug.LogWarning($"No RingData found for attack kind: {attackKind}");
+            return null;
+        }
+
         [SerializeField, Tooltip("リングのデータ群")]
         private RingData[] _ringDatas;
     }

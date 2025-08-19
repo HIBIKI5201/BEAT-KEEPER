@@ -1,29 +1,9 @@
 fileFormatVersion: 2
-guid: 9b0ee8b21df464b46ba9f4216ae88286
+guid: fdc218b238893cc4f88dc5fa70e03ae7
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Default_Material
-    second: {fileID: 2100000, guid: de817fd97c82cfa468a235f5cbcbb141, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: meca_2_M_mecarobot
-    second: {fileID: 2100000, guid: 127d45ebdbbf09c41989d6f24d15909b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: meca_2_lambert4
-    second: {fileID: 2100000, guid: de817fd97c82cfa468a235f5cbcbb141, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: meca_2_standardSurface2
-    second: {fileID: 2100000, guid: 54005fc9e7541044aacad0867f241140, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -53,7 +33,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 5
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -108,7 +88,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.049999997
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
