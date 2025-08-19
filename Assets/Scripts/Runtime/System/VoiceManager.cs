@@ -17,6 +17,20 @@ namespace BeatKeeper.Runtime.System
             _instance._criAtomSource.Play();
         }
 
+        public static void ChangePhaseSelector(string phaseName)
+        {
+            if (_instance == null)
+            {
+                Debug.LogError("VoiceManager is not initialized.");
+                return;
+            }
+            CriAtomExPlayer player = _instance._criAtomSource.player;
+            player.SetSelectorLabel(PHASE_SELECTOR_NAME, phaseName);
+            player.UpdateAll();
+        }
+
+        private const string PHASE_SELECTOR_NAME = "Selector_Phase";
+
         private static VoiceManager _instance;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
