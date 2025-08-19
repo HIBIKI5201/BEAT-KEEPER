@@ -875,11 +875,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool IsAnotherPhaseByChartKind(ChartKindEnum kind)
         {
             if (kind == ChartKindEnum.None) return false;
+            if (_ringIndicatorData == null) return false;
 
-            int? effectLength = _ringIndicatorData.GetRingData(kind)?.EffectLength;
-            if (effectLength == null || effectLength <= 0) return false;
+            if (!_ringIndicatorData.TryGetRingData(kind, out RingData data)) return false;
+            int effectLength = data.EffectLength;
 
-            float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength.Value;
+            float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength;
             return _phaseManager.IsAnotherPhaseByTiming(startTiming);
         }
 
