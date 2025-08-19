@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -42,6 +43,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_bgmManager)
             {
                 _bgmManager.OnNearChangedBeat += OnAttack;
+                _bgmManager.OnJustChangedBar += OnPrepareAttack;
             }
         }
 
@@ -53,6 +55,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_bgmManager)
             {
                 _bgmManager.OnNearChangedBeat -= OnAttack;
+                _bgmManager.OnJustChangedBar -= OnPrepareAttack;
             }
         }
 
@@ -129,12 +132,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField]
         private GameObject _normalAttackHitPerticle;
 
+        [SerializeField]
+        private RingIndicatorData _indicatorData;
+
         private BGMManager _bgmManager;
 
         private PlayerManager _target;
 
         private bool _canFinisher;
         private bool _isKnockback;
+
+        private int _normalAttackLength;
 
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
@@ -157,6 +165,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             _healthSystem = new(_data);
+
+            _normalAttackLength = 
+                _indicatorData.GetRingData(ChartKindEnum.Normal).RingPrefab
+                    .GetComponent<RingIndicatorBase>()
+                    .EffectLength;
 
             SetActiveModel(false); //初期はモデル表示を無くす
         }
@@ -214,6 +227,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _particleSystem?.Play();
                 }
             }
+        }
+
+        private void OnPrepareAttack()
+        {
+            if (_animeManager == null) return;
+
+            var timing = MusicEngineHelper.GetBeatSinceStart();
+
+            ChartKindEnum kind = _data.ChartData.Chart[timing + _normalAttackLength].AttackKind;
+
+            Debug.Log($"{timing + _normalAttackLength}t kind is {kind}");
+
+            if ((kind & ChartKindEnum.Normal) == 0) return; //ノーマルアタックでない場合は何もしない
+
+            _animeManager.PreAttack();
         }
 
         /// <summary>
