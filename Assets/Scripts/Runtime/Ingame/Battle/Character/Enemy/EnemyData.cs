@@ -13,7 +13,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float MaxHealth => _maxHealth;
         public float FinisherThreshold => _finisherThreshold;
         public ChartData ChartData => _chartData;
+        public ChartData FlowZoneChartData => _flowZoneChartData;
         public float NockbackTime => _nockbackTime;
+
+        public ChartData GetChartDataByFlowZone(bool isFlowZone)
+        {
+            return isFlowZone ? _flowZoneChartData : _chartData;
+        }
 
         [SerializeField, Tooltip("最大体力値")]
         private float _maxHealth = 100;
@@ -26,5 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField, Tooltip("譜面データ")]
         private ChartData _chartData;
+        [SerializeField, Tooltip("フローゾーン用の譜面データ")]
+        private ChartData _flowZoneChartData;
     }
 }

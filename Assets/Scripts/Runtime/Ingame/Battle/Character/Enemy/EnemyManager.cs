@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -142,18 +143,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _canFinisher;
         private bool _isKnockback;
 
+        private bool _isFlowZone;
+
         private int _normalAttackLength;
 
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
 
-        #region モック用の機能
-
-        [SerializeField, Obsolete("モック用")] private ParticleSystem _particleSystem;
-
-        #endregion
-
-        protected override void Awake()
+        protected override async void Awake()
         {
             Animator animator = GetComponentInChildren<Animator>();
             if (animator != null)
@@ -173,6 +170,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     .EffectLength;
 
             SetActiveModel(false); //初期はモデル表示を無くす
+
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            playerManager.FlowZoneSystem.IsFlowZone
+                .Subscribe(value => _isFlowZone = value)
+                .AddTo(destroyCancellationToken);
         }
 
         private void OnDestroy()
@@ -198,9 +200,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない
 
-            var timing = MusicEngineHelper.GetBeatSinceStart();
+            int timing = MusicEngineHelper.GetBeatSinceStart();
 
-            if (_data.ChartData.IsEnemyAttack(timing)) //攻撃タイミングかどうかを確認
+            ChartData chartData = _data.GetChartDataByFlowZone(_isFlowZone);
+
+            if (chartData.IsEnemyAttack(timing)) //攻撃タイミングかどうかを確認
             {
                 # region デバッグログ
                 Debug.Log($"{_data.name} " +
@@ -210,7 +214,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 OnShootAttack?.Invoke();
 
-                var attackKind = _data.ChartData[timing].AttackKind;
+                ChartKindEnum attackKind = chartData[timing].AttackKind;
 
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
@@ -223,11 +227,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _target.HitAttack(new AttackData(1, true));
                     OnShootChargeAttack?.Invoke();
                 }
-
-                if (_particleSystem)
-                {
-                    _particleSystem?.Play();
-                }
             }
         }
 
@@ -235,9 +234,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_animeManager == null) return;
 
-            var timing = MusicEngineHelper.GetBeatSinceStart();
+            int timing = MusicEngineHelper.GetBeatSinceStart();
+            ChartData chartData = _data.GetChartDataByFlowZone(_isFlowZone);
 
-            ChartKindEnum kind = _data.ChartData[timing + _normalAttackLength].AttackKind;
+            ChartKindEnum kind = chartData[timing + _normalAttackLength].AttackKind;
 
             Debug.Log($"{timing + _normalAttackLength}t kind is {kind}");
 

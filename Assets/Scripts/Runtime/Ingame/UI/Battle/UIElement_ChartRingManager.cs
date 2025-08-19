@@ -102,7 +102,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
             _onBeat?.Invoke(); //リングのカウントを更新 
-            var chart = _targetData.ChartData.Chart;
+            var chart = _targetData
+                .GetChartDataByFlowZone(_player.FlowZoneSystem.IsFlowZone.CurrentValue).Chart;
 
             //新しいリングを監視
             for (int i = 0; i < _ringIndicatorData.RingDatas.Length; i++)
