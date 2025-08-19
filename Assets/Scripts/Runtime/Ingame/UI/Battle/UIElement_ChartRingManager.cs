@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
-using static UnityEditor.Rendering.FilterWindow;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
