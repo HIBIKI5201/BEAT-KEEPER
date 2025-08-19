@@ -9962,6 +9962,8 @@ MonoBehaviour:
   _battleBuffData: {fileID: 11400000, guid: c6122e1c9553b36458f86d2b23be5d29, type: 2}
   _comboShootPerticle: {fileID: 0}
   _muzzle: {fileID: 0}
+  _ringIndicatorData: {fileID: 0}
+  _modelParent: {fileID: 8991426660756910790}
   _comboAttackSound: NormalGunshot
   _chargeAttackStartSound: Charging
   _chargeAttackEndSound: ChargeComplete
