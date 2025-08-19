@@ -8,6 +8,7 @@ using SymphonyFrameWork.System;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.InputManagerEntry;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -80,6 +81,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             phaseManager.CurrentPhaseProp
                 .Subscribe(OnPhaseChange)
                 .AddTo(destroyCancellationToken);
+            _phaseManager = phaseManager;
         }
 
         /// <summary>
@@ -139,6 +141,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private BGMManager _bgmManager;
 
         private PlayerManager _target;
+        private PhaseManager _phaseManager;
 
         private bool _canFinisher;
         private bool _isKnockback;
@@ -216,6 +219,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 ChartKindEnum attackKind = chartData[timing].AttackKind;
 
+                int effectLength = _indicatorData.GetRingData(attackKind).EffectLength;
+                float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength;
+                if (_phaseManager.IsAnotherPhaseByTiming(startTiming)) return;
+
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
                     _target.HitAttack(new AttackData(1));
@@ -238,8 +245,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData chartData = _data.GetChartDataByFlowZone(_isFlowZone);
 
             ChartKindEnum kind = chartData[timing + _normalAttackLength].AttackKind;
-
-            Debug.Log($"{timing + _normalAttackLength}t kind is {kind}");
 
             if ((kind & ChartKindEnum.Normal) == 0) return; //ノーマルアタックでない場合は何もしない
 

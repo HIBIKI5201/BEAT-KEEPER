@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputManagerEntry;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -199,6 +201,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField] private BattleBuffTimelineData _battleBuffData;
         [SerializeField] private GameObject _comboShootPerticle;
         [SerializeField] private Transform _muzzle;
+        [SerializeField] private RingIndicatorData _ringIndicatorData;
 
         #region サウンドクリップ
         [Header("SE")]
@@ -260,6 +263,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private InputBuffer _inputBuffer;
         private BGMManager _bgmManager;
         private ScoreManager _scoreManager;
+        private PhaseManager _phaseManager;
 
         private IEnemy _target;
         private bool _isBattle;
@@ -392,7 +396,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData.ChartDataElement[] chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
             int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-            ChartKindEnum kind = chart[timing].AttackKind;
+            ChartKindEnum kind = chart[timing].AttackKind;    
+            
+            if (IsAnotherPhaseByChartKind(kind)) return; //別のフェーズなら何もしない
 
             if (kind == ChartKindEnum.Attack)
             {
@@ -418,6 +424,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="context"></param>
         private void OnChargeAttackInput(InputAction.CallbackContext context)
         {
+            const ChartKindEnum CHARGE_ATTACK_ENUM = ChartKindEnum.Charge;
+
             if (!_isBattle) return;
 
             ChartData.ChartDataElement[] chart = _target.EnemyData
@@ -428,9 +436,20 @@ namespace BeatKeeper.Runtime.Ingame.Character
             int chargeAttackRange = Mathf.CeilToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
             for (int i = 0; i < chargeAttackRange; i++)
             {
-                if (ChartKindEnum.Charge == chart[(timing + i) % chart.Length].AttackKind)
+                if (CHARGE_ATTACK_ENUM == chart[(timing + i) % chart.Length].AttackKind)
                 {
                     willChargeAttack = true; //チャージ攻撃が可能ならフラグを立てる
+
+                    if (_ringIndicatorData.TryGetRingData(CHARGE_ATTACK_ENUM, out RingData data))
+                    {
+                        //チャージ攻撃の開始タイミングを取得
+                        int effectLength = data.EffectLength;
+                        float startTiming = Time.time
+                            +(i - effectLength) //i拍後のlength拍前の時間
+                            * (float)MusicEngineHelper.DurationOfBeat;
+
+                        if (_phaseManager.IsAnotherPhaseByTiming(startTiming)) return;
+                    }
                     break;
                 }
             }
@@ -466,6 +485,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
             ChartKindEnum enemyAttackKind = chartData[timing].AttackKind;
+
+            if (IsAnotherPhaseByChartKind(enemyAttackKind))
+            {
+                SymphonyDebugLogger.AddText(
+                    $"[{nameof(PlayerManager)}] {enemyAttackKind} is in another phase");
+                SymphonyDebugLogger.TextLog();
+                return;
+            }
 
             //Charge攻撃は回避できない
             if ((enemyAttackKind & ChartKindEnum.Charge) != 0)
@@ -843,6 +870,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
             _lastAvoidSuccessTiming = Time.time;
+        }
+
+        private bool IsAnotherPhaseByChartKind(ChartKindEnum kind)
+        {
+            if (kind == ChartKindEnum.None) return false;
+            if (_ringIndicatorData == null) return false;
+
+            if (!_ringIndicatorData.TryGetRingData(kind, out RingData data)) return false;
+            int effectLength = data.EffectLength;
+
+            float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength;
+            return _phaseManager.IsAnotherPhaseByTiming(startTiming);
         }
 
 # if UNITY_EDITOR
