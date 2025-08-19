@@ -43,7 +43,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_bgmManager)
             {
                 _bgmManager.OnNearChangedBeat += OnAttack;
-                _bgmManager.OnJustChangedBar += OnPrepareAttack;
+                _bgmManager.OnJustChangedBeat += OnPrepareAttack;
             }
         }
 
@@ -55,7 +55,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_bgmManager)
             {
                 _bgmManager.OnNearChangedBeat -= OnAttack;
-                _bgmManager.OnJustChangedBar -= OnPrepareAttack;
+                _bgmManager.OnJustChangedBeat -= OnPrepareAttack;
             }
         }
 
@@ -155,7 +155,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         protected override void Awake()
         {
-            if (TryGetComponent(out Animator animator))
+            Animator animator = GetComponentInChildren<Animator>();
+            if (animator != null)
             {
                 _animeManager = new(animator);
             }
@@ -215,6 +216,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 {
                     _target.HitAttack(new AttackData(1));
                     OnShootNormalAttack?.Invoke();
+                    _animeManager.Attack();
                 }
                 else if (attackKind == ChartKindEnum.Charge) //チャージアタック
                 {
@@ -235,7 +237,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             var timing = MusicEngineHelper.GetBeatSinceStart();
 
-            ChartKindEnum kind = _data.ChartData.Chart[timing + _normalAttackLength].AttackKind;
+            ChartKindEnum kind = _data.ChartData[timing + _normalAttackLength].AttackKind;
 
             Debug.Log($"{timing + _normalAttackLength}t kind is {kind}");
 
