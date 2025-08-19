@@ -1,5 +1,6 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.UI
@@ -39,6 +40,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         public ChartKindEnum AttackKind => _attackKind;
         public GameObject RingPrefab => _ringPrefab;
         public int DefaultCapacity => _defaultCapacity;
+        public int EffectLength => _effectLength;
 
         [SerializeField] private ChartKindEnum _attackKind;
 
@@ -47,5 +49,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField]
         [Tooltip("リングの事前用意数（ある程度の同時出現数を入力）")]
         private int _defaultCapacity = 3;
+
+        [SerializeField]
+        private int _effectLength;
     }
 }
