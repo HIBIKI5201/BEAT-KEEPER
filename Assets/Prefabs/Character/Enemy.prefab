@@ -9964,7 +9964,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1583352038077202991}
   - component: {fileID: 1842813055644466579}
-  - component: {fileID: 8781298014033360628}
   - component: {fileID: 3979840490643913428}
   - component: {fileID: 8948385255264843100}
   m_Layer: 0
@@ -9984,7 +9983,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5229176691813205646}
@@ -10005,33 +10004,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitAttack:
-    m_PersistentCalls:
-      m_Calls: []
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
   _data: {fileID: 11400000, guid: 186f1d5e3a16384418eff931cb09e96c, type: 2}
+  _onHitNockBackAttack:
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
   _modelParent: {fileID: 3914750233683809333}
+  _normalAttackHitPositions: []
+  _normalAttackHitPerticle: {fileID: 0}
+  _indicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
   _particleSystem: {fileID: 3270306859132638148}
---- !u!95 &8781298014033360628
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8194842443545813967}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6ebe4a69da95d7a4d8081086594ca927, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3979840490643913428
 MonoBehaviour:
   m_ObjectHideFlags: 0

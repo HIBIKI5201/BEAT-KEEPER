@@ -703,8 +703,8 @@ Material:
     - _AudioLinkVertexUVParams: {r: 0.25, g: 0, b: 0, a: 0.125}
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
-    - _BaseColor: {r: 0.6544144, g: 0.7674793, b: 0.8113208, a: 1}
-    - _Color: {r: 0.6544144, g: 0.7674793, b: 0.8113208, a: 1}
+    - _BaseColor: {r: 0.7517247, g: 0.88160217, b: 0.9319628, a: 1}
+    - _Color: {r: 0.7517247, g: 0.88160217, b: 0.9319628, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
