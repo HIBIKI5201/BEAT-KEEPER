@@ -389,9 +389,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_data) return;
             if (_isThisBeatInputed) return; //連打防止
 
-            var chart = _target.EnemyData.ChartData.Chart;
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-            var kind = chart[timing].AttackKind;
+            ChartData.ChartDataElement[] chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
+            ChartKindEnum kind = chart[timing].AttackKind;
 
             if (kind == ChartKindEnum.Attack)
             {
@@ -419,7 +420,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (!_isBattle) return;
 
-            var chart = _target.EnemyData.ChartData.Chart;
+            ChartData.ChartDataElement[] chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
 
             bool willChargeAttack = false;
@@ -460,9 +462,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 $"[{nameof(PlayerManager)}]" +
                 $"{_data.Name} is avoiding");
 
-            var chartData = _target.EnemyData.ChartData;
-            var timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
-            var enemyAttackKind = chartData[timing].AttackKind;
+            ChartData chartData = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
+            ChartKindEnum enemyAttackKind = chartData[timing].AttackKind;
 
             //Charge攻撃は回避できない
             if ((enemyAttackKind & ChartKindEnum.Charge) != 0)
@@ -799,7 +802,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 var buffData = _battleBuffData.Data;
 
-                var timing = MusicEngineHelper.GetBeatSinceStart();
+                int timing = MusicEngineHelper.GetBeatSinceStart();
 
                 for (int i = buffData.Length - 1; i >= 0; i--)
                 {
