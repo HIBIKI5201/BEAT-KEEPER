@@ -79,18 +79,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //フェーズ変更時のイベント登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
-                .Skip(1) // 初期フェーズをスキップ
                 .Subscribe(OnPhaseChange)
                 .AddTo(destroyCancellationToken);
             _phaseManager = phaseManager;
         }
-
-        public void SetDiactive()
-        {
-            SetActiveModel(false);
-            Dispose();
-        }
-
 
         /// <summary>
         ///     モデルの表示・非表示を切り替える
@@ -98,7 +90,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <param name="active"></param>
         public void SetActiveModel(bool active)
         {
-            Debug.Log(active);
             _modelParent.SetActive(active);
         }
 
@@ -202,11 +193,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (phase == PhaseEnum.Battle) //戦闘フェーズが始まったら動き始める
             {
                 InputRegister();
-            }
-            if (phase == PhaseEnum.Movie) //ムービーフェーズが始まったら動きを止める
-            {
-                InputUnregister();
-                SetActiveModel(false); //モデルを非表示にする
             }
         }
 

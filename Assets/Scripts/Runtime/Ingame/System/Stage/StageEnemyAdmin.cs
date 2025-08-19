@@ -45,26 +45,6 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             _activeEnemyIndex = nextIndex;
         }
 
-        /// <summary>
-        ///     アクティブな敵を設定する
-        /// </summary>
-        /// <param name="index"></param>
-        public void SetActiveEnemy(int index)
-        {
-            if (index < 0 || index >= _enemies.Length)
-            {
-                Debug.LogWarning($"Index {index} is out of range for enemies.");
-                return;
-            }
-
-            // 既存のアクティブな敵を非アクティブにする
-            _enemies[_activeEnemyIndex].SetDiactive();
-
-            // 新しい敵をアクティブにする
-            _activeEnemyIndex = index;
-            _enemies[index].SetActive();
-        }
-
         private EnemyManager[] _enemies;
 
         private int _activeEnemyIndex; //最初の敵を出すために-1から始める
@@ -79,6 +59,29 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             var ui = await ServiceLocator.GetInstanceAsync<InGameUIManager>();
 
             Array.ForEach(_enemies, ui.HealthBarInitialize); //ヘルスバーを初期化
+
+            // 最初の敵をアクティブにする
+            _enemies.First()?.SetActive();
+        }
+
+        /// <summary>
+        ///     アクティブな敵を設定する
+        /// </summary>
+        /// <param name="index"></param>
+        private void SetActiveEnemy(int index)
+        {
+            if (index < 0 || index >= _enemies.Length)
+            {
+                Debug.LogWarning($"Index {index} is out of range for enemies.");
+                return;
+            }
+
+            // 既存のアクティブな敵を非アクティブにする
+            Destroy(_enemies[_activeEnemyIndex].gameObject);
+
+            // 新しい敵をアクティブにする
+            _activeEnemyIndex = index;
+            _enemies[index].SetActive();
         }
     }
 }

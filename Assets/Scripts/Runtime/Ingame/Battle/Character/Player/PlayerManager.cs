@@ -202,7 +202,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField] private GameObject _comboShootPerticle;
         [SerializeField] private Transform _muzzle;
         [SerializeField] private RingIndicatorData _ringIndicatorData;
-        [SerializeField] private GameObject _modelParent;
 
         #region サウンドクリップ
         [Header("SE")]
@@ -376,13 +375,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                 _target = stage.EnemyAdmin.GetActiveEnemy();
                 _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
-                _modelParent.SetActive(true);
             }
             else
             {
                 _flowZoneSystem.ResetFlowZone();
                 _flowZoneSystem.ResetResonanceCount();
-                _modelParent.SetActive(false);
             }
         }
 
