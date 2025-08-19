@@ -81,9 +81,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
         private float _comboGoodRange = 0.5f;
         [Space(3)]
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のパーフェクトヒットの範囲")]
         private float _chargeStartPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のグッドヒットの範囲")]
         private float _chargeStartGoodRange = 0.5f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のパーフェクトヒットの範囲")]
         private float _chargeEndPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のグッドヒットの範囲")]
         private float _chargeEndGoodRange = 0.5f;
 
         [Header("リズム パラメータ")]
