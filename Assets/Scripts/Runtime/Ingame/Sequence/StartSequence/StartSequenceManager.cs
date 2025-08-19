@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -24,11 +25,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
             var director = movieManager.GetDirector(_playableAsset);
+            var phaseManager = await ServiceLocator.GetInstanceAsync<PhaseManager>();
             //スタートシーケンスの再生終了時にチュートリアルシーケンスを再生する
             director.stopped += (_) =>
             {
                 ServiceLocator.GetInstance<BattleSceneManager>()
                     .EnemyAdmin.SetActiveEnemy(0);
+                phaseManager.TransitionTo(PhaseEnum.Battle);
                 _tutorialManager.StartTutorial();
             };
             director.Play();

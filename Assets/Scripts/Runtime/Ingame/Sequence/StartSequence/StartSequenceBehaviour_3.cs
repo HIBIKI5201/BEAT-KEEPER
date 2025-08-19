@@ -14,7 +14,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
             {
-                phaseManager.NextPhase();
+                phaseManager.TransitionTo(PhaseEnum.Battle);
             }
 
             Debug.Log("StartPerformanceBehaviour_3");
