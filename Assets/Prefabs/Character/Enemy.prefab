@@ -10016,6 +10016,7 @@ MonoBehaviour:
   _modelParent: {fileID: 3914750233683809333}
   _normalAttackHitPositions: []
   _normalAttackHitPerticle: {fileID: 0}
+  _indicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
   _particleSystem: {fileID: 3270306859132638148}
 --- !u!95 &8781298014033360628
 Animator:
