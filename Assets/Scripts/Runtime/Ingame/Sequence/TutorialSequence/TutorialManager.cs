@@ -393,7 +393,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
                 //リングを動かし始める
                 ringObj.AddCount();
-                ringObj.AddCount();
                 //リングが閉まるまで待機
                 yield return new WaitForNextBeat(3);
                 //リングを一時停止

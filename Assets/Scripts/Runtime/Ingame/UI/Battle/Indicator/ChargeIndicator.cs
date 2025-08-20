@@ -65,10 +65,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
-        private void Start()
-        {
-            ResetAllComponents();
-        }
+        
         
         /// <summary>
         /// コンポーネントの初期化
@@ -382,6 +379,38 @@ namespace BeatKeeper.Runtime.Ingame.UI
             colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
 
             return colorSequence;
+        }
+
+        #endregion
+
+        #region Overrides for Tutorial
+
+        public override void Pause()
+        {
+            base.Pause();
+            if (_decorationImage != null)
+            {
+                // Kill the pulse animation and set the alpha to a static value.
+                _tweens[2]?.Kill();
+                var color = _decorationImage.color;
+                color.a = _translucentDefaultColor.a;
+                _decorationImage.color = color;
+            }
+        }
+
+        public override void Resume()
+        {
+            base.Resume();
+            if (_decorationImage != null)
+            {
+                // Recreate and play the pulse animation.
+                var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+                var blurPulseSequence = DOTween.Sequence()
+                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                    .SetLoops(-1, LoopType.Restart);
+                _tweens[2] = blurPulseSequence;
+            }
         }
 
         #endregion

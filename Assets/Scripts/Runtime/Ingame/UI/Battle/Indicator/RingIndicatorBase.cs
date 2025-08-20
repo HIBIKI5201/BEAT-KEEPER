@@ -152,7 +152,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Color _defaultColor => _colorSettings.DefaultColor;
         protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
-        public void Pause()
+        public virtual void Pause()
         {
             if (_tweens == null) return;
             foreach (var tween in _tweens)
@@ -161,7 +161,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
-        public void Resume()
+        public virtual void Resume()
         {
             if (_tweens == null) return;
             foreach (var tween in _tweens)
