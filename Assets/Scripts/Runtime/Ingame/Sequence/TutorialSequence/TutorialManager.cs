@@ -69,6 +69,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         public void OperationTutorialStart(ChartKindEnum chartKindEnum)
         {
+            if (!_playTutorial) return;
             Debug.Log("OperationTutorialStart");
             StartCoroutine(Explanation(chartKindEnum));
         }
@@ -114,10 +115,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _inputBuffer.Avoid.started -= OnAvoid;
             _inputBuffer.Interact.started -= OnCharge;
             _inputBuffer.Interact.canceled -= OnCharge;
-            foreach (var ind in _activeRingIndicator)
-            {
-                ind.End();
-            }
             _activeRingIndicator.Clear();
         }
 
@@ -379,7 +376,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<PlayerIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringNormalSound);
-                yield return new WaitForNextBeat(2);
+                yield return new WaitForNextBeat(3);
 
                 ringObj.Pause();
                 _inputBuffer.Attack.started += OnWaitInput;
@@ -396,7 +393,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<SpecialIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringSkillSound);
-                yield return new WaitForNextBeat(2);
+                yield return new WaitForNextBeat(3);
                 ringObj.Pause();
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
@@ -410,7 +407,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
-                yield return new WaitForNextBeat(2);
+                yield return new WaitForNextBeat(3);
                 ringObj.Pause();
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
