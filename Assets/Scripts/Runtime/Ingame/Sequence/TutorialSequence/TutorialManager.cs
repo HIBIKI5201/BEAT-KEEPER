@@ -33,6 +33,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private int _currentChargeBeat;
         private bool _isCharging;
         private bool _nextTutorial;
+        private bool _operationTutorialPlaying;
 
         private async void Start()
         {
@@ -57,11 +58,24 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         }
 
+        public void OperationTutorialStart(ChartKindEnum chartKindEnum)
+        {
+            Debug.Log("OperationTutorialStart");
+            StartCoroutine(Explanation(chartKindEnum));
+        }
+
         public void TutorialRegister(ChartKindEnum chartKindEnum)
         {
             if (!_playTutorial) return;
             if (_chartKindEnum == chartKindEnum) return;
             _chartKindEnum = chartKindEnum;
+            _director.Pause();
+            StartCoroutine(TutorialStartCoroutine(chartKindEnum));
+        }
+
+        private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
+        {
+            yield return new WaitUntil(() => !_operationTutorialPlaying);
             if (_chartKindEnum == ChartKindEnum.Attack)
             {
                 _inputBuffer.Attack.started += OnShot;
@@ -80,7 +94,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _inputBuffer.Interact.canceled += OnCharge;
             }
             _bgmManager.OnJustChangedBeat += TutorialIndicatorGenerate;
-            _director.Pause();
         }
 
         public void TutorialUnRegister()
@@ -331,10 +344,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         #region 操作説明の操作
         private IEnumerator Explanation(ChartKindEnum chartKindEnum)
         {
+            _operationTutorialPlaying = true;
             if (chartKindEnum == ChartKindEnum.Attack)
             {
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<PlayerIndicator>();
-                yield return new WaitForNextBeat(3);
+                ringObj.AddCount();
+                yield return new WaitForNextBeat(2);
 
                 ringObj.Pause();
                 _inputBuffer.Attack.started += OnWaitInput;
@@ -349,7 +364,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             else if (chartKindEnum == ChartKindEnum.Skill)
             {
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<SpecialIndicator>();
-                yield return new WaitForNextBeat(3);
+                ringObj.AddCount();
+                yield return new WaitForNextBeat(2);
                 ringObj.Pause();
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
@@ -361,7 +377,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             else if (chartKindEnum == ChartKindEnum.Normal)
             {
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
-                yield return new WaitForNextBeat(3);
+                ringObj.AddCount();
+                yield return new WaitForNextBeat(2);
                 ringObj.Pause();
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
@@ -372,23 +389,39 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
             {
+                //リング生成
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
+                //リングを動かし始める
+                ringObj.AddCount();
+                ringObj.AddCount();
+                //リングが閉まるまで待機
                 yield return new WaitForNextBeat(3);
+                //リングを一時停止
                 ringObj.Pause();
+                //入力を登録
                 _inputBuffer.Interact.started += OnWaitInput;
-                yield return new WaitUntil(() => _nextTutorial);
-                _inputBuffer.Interact.started -= OnWaitInput;
                 _inputBuffer.Interact.canceled += OnWaitInput;
+                //入力を待つ
+                yield return new WaitUntil(() => _nextTutorial);
+                _nextTutorial = false;
+                // startedのイベントを解除
+                _inputBuffer.Interact.started -= OnWaitInput;
+                //一時停止を解除
+                ringObj.Resume();
+                // チャージの演出
                 ringObj.OnPlayerChargeTutorial();
-                yield return new WaitForNextBeat(3);
+                // チャージが完了するまで待機
+                yield return new WaitForNextBeat(2);
+                //チャージが完了したら入力を待つ
                 ringObj.Pause();
-                yield return new WaitUntil(() => _isCharging);
+                yield return new WaitUntil(() => _nextTutorial);
+                //　チャージ攻撃完了演出
                 ringObj.OnPlayerAttackSuccessTutorial();
                 _inputBuffer.Interact.canceled -= OnWaitInput;
                 _nextTutorial = false;
                 ringObj.Resume();
-
             }
+            _operationTutorialPlaying = false;
         }
 
         private void OnWaitInput(InputAction.CallbackContext callbackContext)
@@ -401,6 +434,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         #endregion
 
+        #region チュートリアル上での評価処理
         private bool CheckGood(float offset = 0)
         {
             if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
@@ -425,5 +459,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             return false;
         }
+        #endregion
     }
 }
