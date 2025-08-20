@@ -6,9 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.InputManagerEntry;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
