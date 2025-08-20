@@ -3,6 +3,7 @@ using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,8 +30,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private InputBuffer _inputBuffer;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
-        private bool _isCharging = false;
         private int _currentChargeBeat;
+        private bool _isCharging;
+        private bool _nextTutorial;
 
         private async void Start()
         {
@@ -120,7 +122,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             _currentIndicatorCount++;
 
-            if(_isCharging) _currentChargeBeat++;
+            if (_isCharging) _currentChargeBeat++;
 
             #region チュートリアルクリア判定
 
@@ -157,7 +159,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             else
             {
-                if(_currentTargetClearCount >= _skillTutorialClearCount)
+                if (_currentTargetClearCount >= _skillTutorialClearCount)
                 {
                     Debug.Log("Tutorial Clear!----------------------------------------------------");
                     _currentTargetClearCount = 0;
@@ -326,6 +328,78 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         #endregion
 
+        #region 操作説明の操作
+        private IEnumerator Explanation(ChartKindEnum chartKindEnum)
+        {
+            if (chartKindEnum == ChartKindEnum.Attack)
+            {
+                var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<PlayerIndicator>();
+                yield return new WaitForNextBeat(3);
+
+                ringObj.Pause();
+                _inputBuffer.Attack.started += OnWaitInput;
+                yield return new WaitUntil(() => _nextTutorial);
+
+                _inputBuffer.Attack.started -= OnWaitInput;
+                _nextTutorial = false;
+                ringObj.Resume();
+                ringObj.PlayPerfectEffect();
+                SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+            }
+            else if (chartKindEnum == ChartKindEnum.Skill)
+            {
+                var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<SpecialIndicator>();
+                yield return new WaitForNextBeat(3);
+                ringObj.Pause();
+                _inputBuffer.Attack.started += OnWaitInput;
+                yield return new WaitUntil(() => _nextTutorial);
+                _inputBuffer.Attack.started -= OnWaitInput;
+                _nextTutorial = false;
+                ringObj.Resume();
+                ringObj.PlaySuccessEffectPublic();
+            }
+            else if (chartKindEnum == ChartKindEnum.Normal)
+            {
+                var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
+                yield return new WaitForNextBeat(3);
+                ringObj.Pause();
+                _inputBuffer.Avoid.started += OnWaitInput;
+                yield return new WaitUntil(() => _nextTutorial);
+                _inputBuffer.Avoid.started -= OnWaitInput;
+                _nextTutorial = false;
+                ringObj.Resume();
+                ringObj.OnPlayerAvoidSuccess(true);
+            }
+            else if (chartKindEnum == ChartKindEnum.Charge)
+            {
+                var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
+                yield return new WaitForNextBeat(3);
+                ringObj.Pause();
+                _inputBuffer.Interact.started += OnWaitInput;
+                yield return new WaitUntil(() => _nextTutorial);
+                _inputBuffer.Interact.started -= OnWaitInput;
+                _inputBuffer.Interact.canceled += OnWaitInput;
+                ringObj.OnPlayerChargeTutorial();
+                yield return new WaitForNextBeat(3);
+                ringObj.Pause();
+                yield return new WaitUntil(() => _isCharging);
+                ringObj.OnPlayerAttackSuccessTutorial();
+                _inputBuffer.Interact.canceled -= OnWaitInput;
+                _nextTutorial = false;
+                ringObj.Resume();
+
+            }
+        }
+
+        private void OnWaitInput(InputAction.CallbackContext callbackContext)
+        {
+            if (callbackContext.phase == InputActionPhase.Started || callbackContext.phase == InputActionPhase.Canceled)
+            {
+                _nextTutorial = true;
+            }
+        }
+
+        #endregion
 
         private bool CheckGood(float offset = 0)
         {
