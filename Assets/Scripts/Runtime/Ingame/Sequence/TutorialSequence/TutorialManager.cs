@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using static CriWare.CriProfiler;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -62,15 +63,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         }
 
 
-        public void PlayVoice(int voiceNum)
+        public void PlayVoice(string cueName)
         {
-
+            VoiceManager.PlayVoice(cueName);
         }
 
         public void OperationTutorialStart(ChartKindEnum chartKindEnum)
         {
             if (!_playTutorial) return;
-            Debug.Log("OperationTutorialStart");
+            Debug.Log("OperationTutorialStart-------------------------------");
             StartCoroutine(Explanation(chartKindEnum));
         }
 
@@ -78,6 +79,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (!_playTutorial) return;
             if (_chartKindEnum == chartKindEnum) return;
+            Debug.Log("TutorialStart-------------------------------");
             _chartKindEnum = chartKindEnum;
             _director.Pause();
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));

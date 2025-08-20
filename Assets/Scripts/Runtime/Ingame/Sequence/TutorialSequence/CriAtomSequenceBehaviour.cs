@@ -3,6 +3,7 @@ using CriWare;
 using UnityEngine;
 using UnityEngine.Playables;
 using BeatKeeper.Runtime.System;
+using BeatKeeper.Runtime.Ingame.Sequence;
 namespace BeatKeeper
 {
 
@@ -14,7 +15,14 @@ namespace BeatKeeper
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
             if (string.IsNullOrEmpty(CueName)) return;
-            VoiceManager.PlayVoice(CueName);
+            if (Owner)
+            {
+                var tutorialManager = Owner.GetComponent<TutorialManager>();
+                if (tutorialManager)
+                {
+                    tutorialManager.PlayVoice(CueName);
+                }
+            }
         }
     }
 
