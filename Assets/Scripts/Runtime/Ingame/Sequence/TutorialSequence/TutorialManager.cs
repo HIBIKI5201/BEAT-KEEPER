@@ -8,12 +8,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
-using static CriWare.CriProfiler;
+using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     public class TutorialManager : MonoBehaviour
     {
+        [SerializeField] private GameObject _tutorialUi;
+        [SerializeField] private Text _tutorialText;
         [SerializeField] private PlayableDirector _director;
         [SerializeField] private UIElement_ChartRingManager _chartRingManager;
         [SerializeField, Tooltip("何拍ごとにインジケーターを出すか")] private int _indicatorGenerateCount;
@@ -22,6 +24,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private float _goodRange = 0.8f;
         [SerializeField] private float _perfectRange = 0.5f;
         [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
+        [SerializeField] private string _attackIndicatorText;
+        [SerializeField] private string _skillIndicatorText;
+        [SerializeField] private string _enemyIndicatorText;
+        [SerializeField] private string _chargeIndicatorText1;
+        [SerializeField] private string _chargeIndicatorText2;
         [SerializeField] private string _ringNormalSound;
         [SerializeField] private string _comboAttackSound;
         [SerializeField] private string _perfectAttackSound;
@@ -369,7 +376,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         #endregion
 
-        #region 操作説明の操作
+        #region 操作説明のコード
         private IEnumerator Explanation(ChartKindEnum chartKindEnum)
         {
             _operationTutorialPlaying = true;
@@ -378,12 +385,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<PlayerIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringNormalSound);
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForNextBeat(2);
 
                 ringObj.Pause();
+                _tutorialUi.SetActive(true);
+                _tutorialText.text = _attackIndicatorText;
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
-
+                _tutorialUi.SetActive(false);
                 _inputBuffer.Attack.started -= OnWaitInput;
                 _nextTutorial = false;
                 ringObj.Resume();
@@ -395,10 +404,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<SpecialIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringSkillSound);
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForNextBeat(2);
                 ringObj.Pause();
+                _tutorialUi.SetActive(true);
+                _tutorialText.text = _skillIndicatorText;
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _tutorialUi.SetActive(false);
                 _inputBuffer.Attack.started -= OnWaitInput;
                 _nextTutorial = false;
                 ringObj.Resume();
@@ -409,10 +421,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForNextBeat(2);
                 ringObj.Pause();
+                _tutorialUi.SetActive(true);
+                _tutorialText.text = _enemyIndicatorText;
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _tutorialUi.SetActive(false);
                 _inputBuffer.Avoid.started -= OnWaitInput;
                 _nextTutorial = false;
                 ringObj.Resume();
@@ -425,14 +440,17 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_chargeSound);
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForNextBeat(2);
                 //リングを一時停止
                 ringObj.Pause();
                 //入力を登録
                 _inputBuffer.Interact.started += OnWaitInput;
                 _inputBuffer.Interact.canceled += OnWaitInput;
                 //入力を待つ
+                _tutorialUi.SetActive(true);
+                _tutorialText.text = _chargeIndicatorText1;
                 yield return new WaitUntil(() => _nextTutorial);
+                _tutorialUi.SetActive(false);
                 SoundEffectManager.PlaySoundEffect(_charging);
                 _nextTutorial = false;
                 // startedのイベントを解除
@@ -443,10 +461,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.OnPlayerChargeTutorial();
                 // チャージが完了するまで待機
                 yield return new WaitForNextBeat(3);
+                _tutorialUi.SetActive(true);
+                _tutorialText.text = _chargeIndicatorText2;
                 SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 //チャージが完了したら入力を待つ
                 ringObj.Pause();
                 yield return new WaitUntil(() => _nextTutorial);
+                _tutorialUi.SetActive(false);
                 //　チャージ攻撃完了演出
                 ringObj.OnPlayerAttackSuccessTutorial();
                 _inputBuffer.Interact.canceled -= OnWaitInput;
