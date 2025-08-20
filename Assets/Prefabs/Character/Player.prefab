@@ -9977,10 +9977,10 @@ MonoBehaviour:
   _flowZone4: Flowzonegauge04
   _flowZoneStartSound: Flowzone_In
   _flowZoneEndSound: Flowzone_Out
-  _comboShootVoice: 
-  _chargeShootVoice: 
-  _hitVoice: 
-  _stunEndVoice: 
+  _comboShootVoice: voice_attack_normal1
+  _chargeShootVoice: voice_charge_attack_fire
+  _hitVoice: voice_avoid_damaged
+  _stunEndVoice: voice_recover
   _damageScale: 1
   _particleSystem: {fileID: 5368706015596788293}
 --- !u!114 &8265417069668042560
