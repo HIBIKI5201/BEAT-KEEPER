@@ -592,12 +592,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acfFile: BeatKeepr.acf
   cueSheets:
-  - name: Battle
+  - name: BGM
     acbFile: Battle.acb
     awbFile: 
     loaderStatus: 0
   - name: SE
     acbFile: SE.acb
+    awbFile: 
+    loaderStatus: 0
+  - name: Voice
+    acbFile: Voice.acb
     awbFile: 
     loaderStatus: 0
   dspBusSetting: 

@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.System;
 using CriWare;
 using R3;
 using SymphonyFrameWork.System;
@@ -55,6 +56,9 @@ namespace BeatKeeper.Runtime.Ingame.System
                 _lastJustBeat = 0;
                 _lastNearBeat = 0;
                 ChangeSelectLayer(0);
+
+                VoiceManager.ChangePhaseSelector(name);
+                SoundEffectManager.ChangePhaseSelector(name);
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");

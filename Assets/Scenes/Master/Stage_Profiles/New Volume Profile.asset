@@ -102,7 +102,7 @@ MonoBehaviour:
     m_Value: 3.9
   focalLength:
     m_OverrideState: 1
-    m_Value: 63
+    m_Value: 29
   bladeCount:
     m_OverrideState: 0
     m_Value: 6
@@ -525,7 +525,7 @@ MonoBehaviour:
   active: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.3033108, g: 0.5130513, b: 0.9056604, a: 1}
+    m_Value: {r: 0.48504806, g: 0.64576757, b: 0.9433962, a: 1}
   center:
     m_OverrideState: 1
     m_Value: {x: 0.5, y: 0.5}
@@ -584,57 +584,57 @@ MonoBehaviour:
   active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 2.26
+    m_Value: 3.72
   tintColor:
-    m_OverrideState: 1
-    m_Value: {r: 0.9245283, g: 0.80678177, b: 0.80678177, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   bloomMip:
     m_OverrideState: 0
     m_Value: 1
   firstFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 7.62
+    m_OverrideState: 0
+    m_Value: 1
   secondaryFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 3.49
+    m_OverrideState: 0
+    m_Value: 1
   warpedFlareIntensity:
-    m_OverrideState: 1
-    m_Value: 3.78
+    m_OverrideState: 0
+    m_Value: 1
   warpedFlareScale:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1}
   samples:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   sampleDimmer:
     m_OverrideState: 0
     m_Value: 0.5
   vignetteEffect:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   startingPosition:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1.25
   scale:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1.5
   streaksIntensity:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   streaksLength:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.5
   streaksOrientation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   streaksThreshold:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.25
   resolution:
     m_OverrideState: 0
     m_Value: 4
   chromaticAbberationIntensity:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.5
 --- !u!114 &3669836808925703016
 MonoBehaviour:

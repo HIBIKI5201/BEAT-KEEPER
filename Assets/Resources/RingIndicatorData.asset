@@ -15,13 +15,17 @@ MonoBehaviour:
   _ringDatas:
   - _attackKind: 1
     _ringPrefab: {fileID: 1751697491445142840, guid: 4f5c7ad10248b044bbfa9a319d966e87, type: 3}
-    _defaultCapacity: 5
+    _defaultCapacity: 3
+    _effectLength: 0
   - _attackKind: 2
     _ringPrefab: {fileID: 1751697491445142840, guid: f889c14c193eb524e83511f75d293b45, type: 3}
     _defaultCapacity: 5
+    _effectLength: 0
   - _attackKind: 4
     _ringPrefab: {fileID: 379011709620990451, guid: 2938a4271accb274984d9b053a81d4e0, type: 3}
     _defaultCapacity: 3
+    _effectLength: 0
   - _attackKind: 8
     _ringPrefab: {fileID: 8664619242752134054, guid: 30da86b5684a70b4289fde36b76ca7ca, type: 3}
     _defaultCapacity: 2
+    _effectLength: 0
