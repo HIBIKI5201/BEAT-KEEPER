@@ -1,4 +1,6 @@
-﻿using BeatKeeper.Runtime.System;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -11,6 +13,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     public class StartSequenceManager : MonoBehaviour
     {
         [SerializeField] TutorialManager _tutorialManager;
+        [SerializeField] PlayableAsset _playableAsset;
         private async void Start()
         {
             var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
@@ -20,10 +23,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 await multiSceneManager.WaitForSceneLoad(SceneListEnum.Battle);
             }
 
-            var director = GetComponent<PlayableDirector>();
+            var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
+            var director = movieManager.GetDirector(_playableAsset);
+            var phaseManager = await ServiceLocator.GetInstanceAsync<PhaseManager>();
             //スタートシーケンスの再生終了時にチュートリアルシーケンスを再生する
             director.stopped += (_) =>
             {
+                ServiceLocator.GetInstance<BattleSceneManager>()
+                    .EnemyAdmin.SetActiveEnemy(0);
+                phaseManager.TransitionTo(PhaseEnum.Battle);
                 _tutorialManager.StartTutorial();
             };
             director.Play();

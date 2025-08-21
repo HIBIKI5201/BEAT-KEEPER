@@ -43,8 +43,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			base.End();
             
-            _centerImage.enabled = false;
-            
             // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -55,21 +53,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayPerfectEffect()
         {
-            _tweens[0]?.Kill();
+            if(_tweens != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
             // パーフェクト判定の場合は収縮するリングのScaleを1に補正
             _ringImage.rectTransform.localScale = Vector3.one;
 
-            // Perfect判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Perfect.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをPerfectのものに変える
+            HandleCenterImage(true);
+			ChangeRingsImage();
 
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
 
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
@@ -85,18 +85,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayGoodEffect()
         {
-            _tweens[0]?.Kill();
+            if(_tweens != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
-            // Good判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Good.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをGoodのものに変える
+            HandleCenterImage(false);
+			ChangeRingsImage();
 
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
 
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
@@ -113,13 +115,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayFailEffect()
         {
-            _tweens[0].Kill();
+			if(_tweens != null)
+			{
+				_tweens[0]?.Kill();
+			}
 
-            // Miss判定のスプライトに差し替え
-            _centerImage.sprite = _hitResult.Miss.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
-
-            _centerImage.enabled = true;
+            // 中央のImageのスプライトとサイズをMissのものに変える
+            SetMissImage();
 
             var failSequence = DOTween.Sequence();
 
@@ -137,8 +139,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
         private const float RECEPTION_TIME = 0.45f;
 
-        [SerializeField] private Image[] _ringImages = new Image[2];
-
         private void Start()
         {
             ResetRingsScale();
@@ -153,9 +153,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[2];
             
-            _centerImage.enabled = false;
-            
-            // 初期化
+            // スケールと色を初期化
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
@@ -165,6 +163,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartContractionEffect()
         {
+            // 一拍が何秒か、アニメーションのために値をキャッシュしておく
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var sequence = DOTween.Sequence()
@@ -183,8 +182,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // ブラーリングのパルス
             var blurPulseSequence = DOTween.Sequence()
-                .Append(_ringImages[0].DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_ringImages[0].DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
@@ -202,32 +201,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             // 成功した場合はリングの縮小演出は不要になるのでキル
-            _tweens[0]?.Kill();
+            if(_tweens != null)
+			{
+				_tweens[0]?.Kill();
+			}
             
             if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
                 _ringImage.rectTransform.localScale = Vector3.one;
-                
-                // Perfect判定のスプライトに差し替え
-				// TODO: これらのスプライト変更・サイズ変更処理は、回避や長押しにも判定表示を行う修正の際にベースクラスに移動する
-                _centerImage.sprite = _hitResult.Perfect.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Perfect.SizeDelta;
             }
-            else
-            {
-                // Good判定のスプライトに差し替え
-                _centerImage.sprite = _hitResult.Good.Sprite;
-                _centerImage.rectTransform.sizeDelta = _hitResult.Good.SizeDelta;
-            }
-           
-            _centerImage.enabled = true;
+
+            // 中央の画像を判定用の画像に変更
+            HandleCenterImage(isPerfect);
+
+			// 白色のSpriteに変更
+			ChangeRingsImage();
             
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_successColor, _translucentSuccessColor, _fadeDuration));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
             
             // フェードアウト
             successSequence.Append(CreateFadeSequence(_fadeDuration));
@@ -245,8 +240,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			if(_selfImage != null) _selfImage.rectTransform.localScale = Vector3.one;
 			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-			if(_ringImages[0] != null) _ringImages[0].rectTransform.localScale = _centerRingsScale;
-			if(_ringImages[1] != null) _ringImages[1].rectTransform.localScale = _centerRingsScale;
+			if(_decorationImage != null) _decorationImage.rectTransform.localScale = _centerRingsScale;
+			if(_hitImage != null) _hitImage.rectTransform.localScale = _centerRingsScale;
 		}
         
         /// <summary>
@@ -255,8 +250,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void ResetRingsColor(Color color, Color translucentColor)
         {
             if(_ringImage != null) _ringImage.color = color;
-            if(_ringImages[0] != null) _ringImages[0].color = color;
-            if(_ringImages[1] != null) _ringImages[1].color = color;
+            if(_decorationImage != null) _decorationImage.color = color;
+            if(_hitImage != null) _hitImage.color = color;
         }
         
         /// <summary>
@@ -267,8 +262,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var fadeSequence = DOTween.Sequence();
             
             if (_ringImage != null) fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_ringImages[0] != null) fadeSequence.Join(_ringImages[0].DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_ringImages[1] != null) fadeSequence.Join(_ringImages[1].DOFade(0f, duration).SetEase(Ease.Linear));
+            if (_decorationImage != null) fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            if (_hitImage != null) fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
             
             return fadeSequence;
         }
@@ -281,8 +276,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var colorSequence = DOTween.Sequence();
             
             if (_ringImage != null) colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_ringImages[0] != null) colorSequence.Join(_ringImages[0].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_ringImages[1] != null) colorSequence.Join(_ringImages[1].DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_decorationImage != null) colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            if (_hitImage != null) colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
             
             return colorSequence;
         }
