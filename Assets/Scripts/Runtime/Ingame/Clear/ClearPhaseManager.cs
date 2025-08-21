@@ -105,7 +105,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         private void ActivateBattlePhase()
         {
-            _phaseManager.NextPhase(); // TODO: PhaseManager側に、次のシーンを再生する仕組みを追加する
+            _phaseManager.TransitionTo(PhaseEnum.Battle); // TODO: PhaseManager側に、次のシーンを再生する仕組みを追加する
             _musicEngineHelper.OnJustChangedBar -= Counter; // 購読を解除する
         }
 

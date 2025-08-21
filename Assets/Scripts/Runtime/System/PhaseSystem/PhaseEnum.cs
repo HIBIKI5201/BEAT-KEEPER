@@ -7,5 +7,6 @@
     {
         Movie,
         Battle,
+        Tutorial,
     }
 }

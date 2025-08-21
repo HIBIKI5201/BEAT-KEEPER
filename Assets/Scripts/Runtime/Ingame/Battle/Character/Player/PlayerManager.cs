@@ -367,21 +367,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _isBattle = phase == PhaseEnum.Battle;
 
-            //ターゲットを探す
-            if (_isBattle)
+            switch (phase)
             {
-                InputRegister();
+                case PhaseEnum.Battle:
+                    InputRegister();
+                    var stage = ServiceLocator.GetInstance<BattleSceneManager>();
+                    _target = stage.EnemyAdmin.GetActiveEnemy();
+                    goto case PhaseEnum.Tutorial; //チュートリアルフェーズも同じ処理を行う
 
-                var stage = ServiceLocator.GetInstance<BattleSceneManager>();
-                _target = stage.EnemyAdmin.GetActiveEnemy();
-                _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
-                _modelParent.SetActive(true);
-            }
-            else
-            {
-                _flowZoneSystem.ResetFlowZone();
-                _flowZoneSystem.ResetResonanceCount();
-                _modelParent.SetActive(false);
+                case PhaseEnum.Tutorial:
+                    _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+                    _modelParent.SetActive(true);
+                    break;
+
+                case PhaseEnum.Movie:
+                    _flowZoneSystem.ResetFlowZone();
+                    _flowZoneSystem.ResetResonanceCount();
+                    _modelParent.SetActive(false);
+                    break;
             }
         }
 

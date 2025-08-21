@@ -32,6 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ServiceLocator.GetInstance<BattleSceneManager>()
                     .EnemyAdmin.SetActiveEnemy(0);
                 _tutorialManager.StartTutorial();
+                phaseManager.TransitionTo(PhaseEnum.Tutorial);
             };
             director.Play();
             //現在最初にBGMが再生されていないのでコメントアウト
