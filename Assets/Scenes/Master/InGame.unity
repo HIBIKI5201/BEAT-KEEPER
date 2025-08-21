@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &138751342 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2689928615418818460, guid: b76d99356d60d9b40998617976859451, type: 3}
+  m_PrefabInstance: {fileID: 2908268678855267497}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &143408087
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,7 +1138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298f41cdb23a69642afae443a2c3baca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tutorialUi: {fileID: 2908268678855267498}
+  _tutorialUi: {fileID: 138751342}
   _tutorialText: {fileID: 2908268678855267499}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
@@ -1665,8 +1670,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2410911869524496091, guid: b76d99356d60d9b40998617976859451, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -260
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3933645836938242451, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1701,8 +1706,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5343431392872392576, guid: b76d99356d60d9b40998617976859451, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -300
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5544700595262518688, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1789,11 +1794,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b76d99356d60d9b40998617976859451, type: 3}
---- !u!1 &2908268678855267498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2689928615418818460, guid: b76d99356d60d9b40998617976859451, type: 3}
-  m_PrefabInstance: {fileID: 2908268678855267497}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2908268678855267499 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3707824556953994363, guid: b76d99356d60d9b40998617976859451, type: 3}
