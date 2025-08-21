@@ -408,16 +408,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData.ChartDataElement[] chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
             int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-            ChartKindEnum kind = chart[timing].AttackKind;    
+            ChartKindEnum kind = chart[timing].AttackKind;
             
             if (IsAnotherPhaseByChartKind(kind)) return; //別のフェーズなら何もしない
 
             if (kind == ChartKindEnum.Attack)
             {
+                _isThisBeatInputed = true;
                 AttackFlow();
             }
             else if (kind == ChartKindEnum.Skill)
             {
+                _isThisBeatInputed = true;
                 if (IsFinisherable()) //フィニッシャーが可能ならフィニッシャーする
                 {
                     Debug.Log("<color=red>Finisher invoke</color>");
@@ -663,7 +665,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                _isThisBeatInputed = true;
                 VoiceManager.PlayVoice(_comboShootVoice);
 
                 if (isPerfectHit)
@@ -712,7 +713,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
             else if (isGood) { OnGoodSkill?.Invoke(); }
-
+            else { _comboSystem?.ComboReset(); }
 
 
             _onSkill?.Invoke();

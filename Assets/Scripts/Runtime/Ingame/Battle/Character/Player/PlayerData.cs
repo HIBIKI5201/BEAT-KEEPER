@@ -130,5 +130,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField, Tooltip("スキルの効果量"), Min(1)]
         private float _skillStrangth = 1.5f;
+
+        private void OnValidate()
+        {
+            //パーフェクトがグッドを超えないようにする
+            _chargeEndPerfectRange = Mathf.Min(_chargeEndPerfectRange, _chargeEndGoodRange);
+            _chargeStartPerfectRange = Mathf.Min(_chargeStartPerfectRange, _chargeStartGoodRange);
+            _chargeStartPerfectRange = Mathf.Min(_chargeStartPerfectRange, _comboPerfectRange);
+            _perfectSkillRange = Mathf.Min(_perfectSkillRange, _goodSkillRange);
+            _comboPerfectRange = Mathf.Min(_comboPerfectRange, _comboGoodRange);
+            _perfectAvoidRange = Mathf.Min(_perfectAvoidRange, _goodAvoidRange);
+        }
     }
 }
