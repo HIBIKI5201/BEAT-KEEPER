@@ -35,6 +35,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animator.SetTrigger(_hit);
         }
 
+        public void FatalHit()
+        {
+            if (_animator == null) return;
+            _animator.SetTrigger(_fatalHit);
+        }
+
         public void Shoot()
         {
             if (_animator == null) return;
@@ -64,6 +70,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private readonly int _avoid = Animator.StringToHash("Avoid");
         private readonly int _hit = Animator.StringToHash("Hit");
+        private readonly int _fatalHit = Animator.StringToHash("FatalHit");
 
         private readonly int _shoot = Animator.StringToHash("Shoot");
         private readonly int _combo = Animator.StringToHash("Combo");

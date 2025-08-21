@@ -2,8 +2,10 @@
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Playables;
+using Debug = UnityEngine.Debug;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -37,6 +39,33 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             director.Play();
             //現在最初にBGMが再生されていないのでコメントアウト
             //director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
+
+            SaveDirector(director);
         }
+
+#if UNITY_EDITOR
+        [Header("Debug")]
+        [SerializeField]
+        private float _skipTiming;
+
+        private PlayableDirector _director;
+
+        [Conditional("UNITY_EDITOR")]
+        private void SaveDirector(PlayableDirector director)
+        {
+            _director = director;
+        }
+
+        [ContextMenu(nameof(SkipStart))]
+        private void SkipStart()
+        {
+            if (_director == null)
+            {
+                Debug.LogError("PlayableDirector is not set. Please run the scene in the editor to set it.");
+                return;
+            }
+            _director.time = _skipTiming;
+        }
+#endif
     }
 }
