@@ -54,6 +54,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private async void Start()
         {
+            _tutorialUi.SetActive(false);
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
