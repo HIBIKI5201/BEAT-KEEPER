@@ -167,7 +167,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
 
             _comboSystem.ComboReset();
-            _animeManager.Hit();
+            if (data.IsNockback)
+            {
+                _animeManager.FatalHit();
+            }
+            else
+            {
+                _animeManager.Hit();
+            }
 
             if (_stunTokenSource != null)
             {
