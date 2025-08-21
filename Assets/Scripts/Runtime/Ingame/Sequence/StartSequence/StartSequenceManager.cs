@@ -31,7 +31,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 ServiceLocator.GetInstance<BattleSceneManager>()
                     .EnemyAdmin.SetActiveEnemy(0);
-                phaseManager.TransitionTo(PhaseEnum.Battle);
                 _tutorialManager.StartTutorial();
             };
             director.Play();

@@ -162,7 +162,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// プレイヤーが回避に成功したときに再生する回避成功エフェクト
         /// </summary>
-        private void OnPlayerAvoidSuccess(bool isPerfect)
+        public void OnPlayerAvoidSuccess(bool isPerfect)
         {
 			// 成功した場合はリングの縮小演出は不要になるのでキル
             if(_tweens != null)
@@ -206,7 +206,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// プレイヤーが回避に失敗したときのアニメーション
         /// </summary>
-        private void PlayFailEffect()
+        public void PlayFailEffect()
         {
             // 回避失敗フラグを立てる
             _isFailed = true;

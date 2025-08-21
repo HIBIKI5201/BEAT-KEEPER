@@ -1,4 +1,4 @@
-using BeatKeeper.Runtime.Ingame.System;
+﻿using BeatKeeper.Runtime.Ingame.System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,10 +65,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
 
-        private void Start()
-        {
-            ResetAllComponents();
-        }
+        
         
         /// <summary>
         /// コンポーネントの初期化
@@ -121,6 +118,63 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         #endregion
+
+        public void OnPlayerChargeTutorial()
+        {
+            if (_tweens != null)
+            {
+                // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
+                _tweens[0]?.Kill();
+            }
+
+            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+            var totalDuration = beatDuration * CHARGE_TIME;
+
+            // マスクのスケールを外側リングの大きさに合わせる
+            _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
+
+            var sequence = DOTween.Sequence()
+
+                // 色変更（チャージ開始時）
+                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
+                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
+                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
+
+                // メインのリング移動アニメーション（外側リングから内側リングへ）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
+
+                // 必要に応じて位置も調整
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
+
+                .OnComplete(OnChargeComplete);
+
+            _tweens[1] = sequence;
+        }
+        public void OnPlayerAttackSuccessTutorial()
+        {
+            // 他のすべてのTweenをキル
+            for (int i = 0; i < _tweens.Length; i++)
+            {
+                _tweens[i]?.Kill();
+            }
+
+            // 色とテキストが変更されていない場合、念のためここで変えておく
+            ResetRingsColor(_newColor, _newColor);
+
+            var sequence = DOTween.Sequence()
+
+                // 拡大
+                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+
+                // フェードアウト
+                .Join(CreateFadeSequence(_fadeDuration))
+
+                .OnComplete(End);
+
+            _tweens[3] = sequence;
+        }
 
         /// <summary>
         /// チャージ中の演出
@@ -212,7 +266,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 失敗演出（チャージ完了前に終了）
         /// </summary>
-        private void PlayFailEffect()
+        public void PlayFailEffect()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -325,6 +379,38 @@ namespace BeatKeeper.Runtime.Ingame.UI
             colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
 
             return colorSequence;
+        }
+
+        #endregion
+
+        #region Overrides for Tutorial
+
+        public override void Pause()
+        {
+            base.Pause();
+            if (_decorationImage != null)
+            {
+                // Kill the pulse animation and set the alpha to a static value.
+                _tweens[2]?.Kill();
+                var color = _decorationImage.color;
+                color.a = _translucentDefaultColor.a;
+                _decorationImage.color = color;
+            }
+        }
+
+        public override void Resume()
+        {
+            base.Resume();
+            if (_decorationImage != null)
+            {
+                // Recreate and play the pulse animation.
+                var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+                var blurPulseSequence = DOTween.Sequence()
+                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                    .SetLoops(-1, LoopType.Restart);
+                _tweens[2] = blurPulseSequence;
+            }
         }
 
         #endregion

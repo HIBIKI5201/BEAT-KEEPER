@@ -19,7 +19,7 @@ namespace BeatKeeper
                 }
                 else
                 {
-                                       Debug.LogError("ResultSequenceBehaviour_2: ResultManager component not found on owner.");
+                    Debug.LogError("ResultSequenceBehaviour_2: ResultManager component not found on owner.");
                 }
             }
         }

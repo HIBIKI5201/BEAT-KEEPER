@@ -1,20 +1,22 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Sequence;
-using BeatKeeper.Runtime.Ingame.System;
-using SymphonyFrameWork.System;
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper
 {
-    public class TutorialSequenceBehaviour_Fin : SequenceBehaviourBase
+    public class TutorialSequenceBehaviour_4 : SequenceBehaviourBase
     {
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
             base.OnBehaviourPlay(playable, info);
             if (_owner)
             {
-                var tutorialManager = _owner.GetComponent<TutorialManager>();
-
+                TutorialManager tutorialManager = _owner.GetComponent<TutorialManager>();
+                if (tutorialManager)
+                {
+                    tutorialManager.TutorialRegister(ChartKindEnum.Charge);
+                }
             }
         }
     }
