@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - GEOM_TYPE_BRANCH_DETAIL
   - _METALLICGLOSSMAP
   - _REQUIRE_UV2
   m_InvalidKeywords: []
@@ -338,8 +339,8 @@ Material:
     - _BumpScale: 1
     - _ColorMask: 15
     - _Cull: 2
-    - _Cutoff: 0.5
-    - _DissolveNoiseStrength: 0.1
+    - _Cutoff: 0.001
+    - _DissolveNoiseStrength: 1
     - _DistanceFadeMode: 0
     - _DistanceFadeRimFresnelPower: 5
     - _DitherMaxValue: 255
@@ -654,9 +655,9 @@ Material:
     - _Color: {r: 0.7640174, g: 0.8143764, b: 0.9150943, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
-    - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolveColor: {r: 0, g: 3.1372554, b: 8.000002, a: 1}
     - _DissolveNoiseMask_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
-    - _DissolveParams: {r: 0, g: 0, b: 0.5, a: 0.1}
+    - _DissolveParams: {r: 1, g: 0, b: -1, a: 0.499}
     - _DissolvePos: {r: 0, g: 0, b: 0, a: 0}
     - _DistanceFade: {r: 0.1, g: 0.01, b: 0, a: 0}
     - _DistanceFadeColor: {r: 0, g: 0, b: 0, a: 1}
