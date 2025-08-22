@@ -6,9 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.InputManagerEntry;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -158,6 +156,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _isFlowZone;
 
         private int _normalAttackLength;
+        private int _chargeAttackLength;
 
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
@@ -178,6 +177,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _normalAttackLength = 
                 _indicatorData.GetRingData(ChartKindEnum.Normal).RingPrefab
+                    .GetComponent<RingIndicatorBase>()
+                    .EffectLength;
+            _chargeAttackLength =
+                _indicatorData.GetRingData(ChartKindEnum.Charge).RingPrefab
                     .GetComponent<RingIndicatorBase>()
                     .EffectLength;
 
@@ -247,6 +250,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 {
                     _target.HitAttack(new AttackData(1, true));
                     OnShootChargeAttack?.Invoke();
+                    _animeManager.ChargeAttackEnd();
                 }
             }
         }
@@ -258,12 +262,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
             int timing = MusicEngineHelper.GetBeatSinceStart();
             ChartData chartData = _data.GetChartDataByFlowZone(_isFlowZone);
 
-            ChartKindEnum kind = chartData[timing + _normalAttackLength].AttackKind;
+            if (chartData[timing + _normalAttackLength].AttackKind == ChartKindEnum.Normal) //ノーマルアタックでない場合は何もしない
+            {
+                _animeManager.PreAttack();
+            }
+            else if (chartData[timing + _chargeAttackLength].AttackKind == ChartKindEnum.Charge) //チャージアタックでない場合は何もしない
+            {
+                _animeManager.ChargeAttackStart();
+                _animeManager.ChargeAttackCancel(_isKnockback);
+            }
 
-            if ((kind & ChartKindEnum.Normal) == 0) return; //ノーマルアタックでない場合は何もしない
-
-            _animeManager.PreAttack();
         }
+
+
 
         /// <summary>
         ///     フィニッシャー可能かどうかを確認する

@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.InputManagerEntry;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -168,7 +167,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
 
             _comboSystem.ComboReset();
-            _animeManager.Hit();
+            if (data.IsNockback)
+            {
+                _animeManager.FatalHit();
+            }
+            else
+            {
+                _animeManager.Hit();
+            }
 
             if (_stunTokenSource != null)
             {
@@ -368,21 +374,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             _isBattle = phase == PhaseEnum.Battle;
 
-            //ターゲットを探す
-            if (_isBattle)
+            switch (phase)
             {
-                InputRegister();
+                case PhaseEnum.Battle:
+                    InputRegister();
+                    var stage = ServiceLocator.GetInstance<BattleSceneManager>();
+                    _target = stage.EnemyAdmin.GetActiveEnemy();
+                    goto case PhaseEnum.Tutorial; //チュートリアルフェーズも同じ処理を行う
 
-                var stage = ServiceLocator.GetInstance<BattleSceneManager>();
-                _target = stage.EnemyAdmin.GetActiveEnemy();
-                _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
-                _modelParent.SetActive(true);
-            }
-            else
-            {
-                _flowZoneSystem.ResetFlowZone();
-                _flowZoneSystem.ResetResonanceCount();
-                _modelParent.SetActive(false);
+                case PhaseEnum.Tutorial:
+                    _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+                    _modelParent.SetActive(true);
+                    break;
+
+                case PhaseEnum.Movie:
+                    _flowZoneSystem.ResetFlowZone();
+                    _flowZoneSystem.ResetResonanceCount();
+                    _modelParent.SetActive(false);
+                    break;
             }
         }
 
@@ -399,16 +408,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData.ChartDataElement[] chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
             int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
-            ChartKindEnum kind = chart[timing].AttackKind;    
+            ChartKindEnum kind = chart[timing].AttackKind;
             
             if (IsAnotherPhaseByChartKind(kind)) return; //別のフェーズなら何もしない
 
             if (kind == ChartKindEnum.Attack)
             {
+                _isThisBeatInputed = true;
                 AttackFlow();
             }
             else if (kind == ChartKindEnum.Skill)
             {
+                _isThisBeatInputed = true;
                 if (IsFinisherable()) //フィニッシャーが可能ならフィニッシャーする
                 {
                     Debug.Log("<color=red>Finisher invoke</color>");
@@ -654,7 +665,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                _isThisBeatInputed = true;
                 VoiceManager.PlayVoice(_comboShootVoice);
 
                 if (isPerfectHit)
@@ -703,7 +713,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
             else if (isGood) { OnGoodSkill?.Invoke(); }
-
+            else { _comboSystem?.ComboReset(); }
 
 
             _onSkill?.Invoke();

@@ -18,7 +18,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Attack()
         {
             _comboCount.Value++;
-            _lastAttackTime = Time.time;
+            //_lastAttackTime = Time.time;
         }
 
         /// <summary>
@@ -32,17 +32,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log("Combo Reset");
         }
 
+        // NOTE: 使用しなくなったが、互換性のためにメソッドは残してある
         public void Update()
         {
-            //コンボ維持時間が終了するとリセット
-            if (Time.time > _lastAttackTime + _data.ComboResetTime)
-            {
-                ComboReset();
-            }
+            // //コンボ維持時間が終了するとリセット
+            // if (Time.time > _lastAttackTime + _data.ComboResetTime)
+            // {
+            //     ComboReset();
+            // }
         }
 
         private readonly PlayerData _data;
         private ReactiveProperty<int> _comboCount = new();
-        private float _lastAttackTime = Time.time;
+        // private float _lastAttackTime = Time.time;
     }
 }
