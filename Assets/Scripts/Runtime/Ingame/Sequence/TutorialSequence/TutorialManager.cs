@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
@@ -45,6 +46,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private List<RingIndicatorBase> _activeRingIndicator = new();
         private BGMManager _bgmManager;
         private InputBuffer _inputBuffer;
+        private PlayerAnimeManager _playerAnimeManager;
+        private EnemyAnimeManager _enemyAnimeManager;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -58,6 +61,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
+            var playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            _playerAnimeManager = playerManager.GetPlayerAnimeManager();
+            Debug.Log("+-+-+*+/+/-/+-*/+-*/+*-/+*-+/*-/+-/*+-/*/*+--/*+/-*+/-+--+/*/-+*/*/+-*-/");
+            var enemyManager = await ServiceLocator.GetInstanceAsync<EnemyManager>();
+            _enemyAnimeManager = enemyManager.GetEnemyAnimeManager();
+            Debug.Log("+-+-+*+/+/-/+-*/+-*/+*-/+*-+/*-/+-/*+-/*/*+--/*+/-*+/-+--+/*/-+*/*/+-*-/");
         }
 
         private void OnDestroy()
@@ -118,6 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         public void TutorialUnRegister()
         {
+            _currentIndicatorCount = 0;
             _director.Resume();
             _bgmManager.OnJustChangedBeat -= TutorialIndicatorGenerate;
             _inputBuffer.Attack.started -= OnShot;
@@ -133,6 +143,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// </summary>
         public void TutorialIndicatorGenerate()
         {
+            Debug.Log("_currentIndicatorCount" + _currentIndicatorCount);
             if (_activeRingIndicator.Count > 0 && !_activeRingIndicator[0].CheckRemainTime()) _activeRingIndicator.RemoveAt(0);
 
             foreach (var ind in _activeRingIndicator)
@@ -158,9 +169,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         break;
                     case ChartKindEnum.Normal:
                         SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
+                        _enemyAnimeManager.Attack();
                         break;
                     case ChartKindEnum.Charge:
                         SoundEffectManager.PlaySoundEffect(_chargeSound);
+                        _enemyAnimeManager.ChargeAttackStart();
                         break;
                     default:
                         break;
@@ -248,6 +261,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         playerIndicator.PlayGoodEffect();
                         SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                     }
+                    Debug.Log(_playerAnimeManager);
+                    _playerAnimeManager.Shoot();
                 }
                 else
                 {
@@ -272,7 +287,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _currentTargetClearCount++;
                     Debug.Log("Good!");
                     specitalIndicator.PlaySuccessEffectPublic();
-
+                    _playerAnimeManager.Skill();
                 }
                 else
                 {
@@ -296,14 +311,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var avoidIndicator = (EnemyIndicator)_activeRingIndicator[0];
             if (callbackContext.phase == InputActionPhase.Started)
             {
-                var isGood = CheckGood();
-                var isPerfect = CheckPerfect();
+                var isGood = CheckGoodAvoid();
                 if (isGood)
                 {
                     _currentTargetClearCount++;
                     Debug.Log("Good!");
-                    avoidIndicator.OnPlayerAvoidSuccess(isPerfect);
+                    avoidIndicator.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
+                    _playerAnimeManager.Avoid();
                 }
                 else
                 {
@@ -330,6 +345,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _currentChargeBeat = 0;
                         chargeIndicator.OnPlayerChargeTutorial();
                         SoundEffectManager.PlaySoundEffect(_charging);
+                        _playerAnimeManager.ChargeShoot();
                     }
                     else
                     {
@@ -387,6 +403,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringNormalSound);
                 yield return new WaitForNextBeat(2);
+                
 
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
@@ -422,7 +439,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
-                yield return new WaitForNextBeat(2);
+                yield return new WaitForNextBeat(3);
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _enemyIndicatorText;
@@ -490,6 +507,19 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         #endregion
 
         #region チュートリアル上での評価処理
+
+        private bool CheckGoodAvoid()
+        {
+            if (_currentIndicatorCount == _indicatorGenerateCount - 2 || _currentIndicatorCount == _indicatorGenerateCount - 3)
+            {
+                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
+
+                // Justタイミング付近か判定
+                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2;
+            }
+            return false;
+        }
         private bool CheckGood(float offset = 0)
         {
             if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)

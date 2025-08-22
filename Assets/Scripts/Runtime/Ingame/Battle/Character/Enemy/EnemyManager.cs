@@ -35,6 +35,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             InputUnregister();
         }
 
+        public EnemyAnimeManager GetEnemyAnimeManager()
+        {
+            return _animeManager;
+        }
+
         /// <summary>
         ///     入力の登録を行う
         /// </summary>
