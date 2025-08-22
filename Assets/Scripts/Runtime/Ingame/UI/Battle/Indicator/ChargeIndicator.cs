@@ -103,9 +103,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             var sequence = DOTween.Sequence()
                 
-                // パンチアニメーション
-                .Append(_startPositionRing.rectTransform.DOPunchScale(Vector3.one * 0.2f, beatDuration * 0.2f, 3, 0.8f))
-                
                 // 縮小開始（完全には収縮しきらないようにする）
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
