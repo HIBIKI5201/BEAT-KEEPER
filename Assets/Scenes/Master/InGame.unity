@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!225 &125205696 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3676622544734777704, guid: b76d99356d60d9b40998617976859451, type: 3}
+  m_PrefabInstance: {fileID: 2908268678855267497}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &138751342 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2689928615418818460, guid: b76d99356d60d9b40998617976859451, type: 3}
@@ -618,9 +623,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b38d8bd7842ac77448cd393f8e904d8e, type: 3}
---- !u!1 &542414396 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8022355437328896905, guid: b76d99356d60d9b40998617976859451, type: 3}
+--- !u!225 &542414397 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5033701282921044187, guid: b76d99356d60d9b40998617976859451, type: 3}
   m_PrefabInstance: {fileID: 2908268678855267497}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &634489667
@@ -707,7 +712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec4167a031adb447a2f4cf79a2bd10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resultPanel: {fileID: 542414396}
+  _resultPanel: {fileID: 542414397}
+  _endPanel: {fileID: 125205696}
   _fadeDuration: 0.5
 --- !u!1001 &692709918
 PrefabInstance:

@@ -146,7 +146,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[0]?.Kill();
             }
+            
+            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+            _ringImage.rectTransform.localScale = Vector3.one;
 
+            HandleCenterImage(true);
             ChangeRingsImage();
             
             var successSequence = DOTween.Sequence();
