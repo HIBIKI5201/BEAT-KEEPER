@@ -127,7 +127,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Transform target = _normalAttackHitPositions[index];
 
             if (_normalAttackHitPerticle != null)
-                { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
+            { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
 
             return target;
         }
@@ -179,7 +179,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _healthSystem = new(_data);
 
-            _normalAttackLength = 
+            _normalAttackLength =
                 _indicatorData.GetRingData(ChartKindEnum.Normal).RingPrefab
                     .GetComponent<RingIndicatorBase>()
                     .EffectLength;
@@ -220,7 +220,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack()
         {
             if (!_bgmManager) return;
-            if (_isKnockback) return; //ノックバック中は攻撃しない
 
             if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない
 
@@ -246,14 +245,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
+                    if (_isKnockback) return; //ノックバック中は攻撃しない
+
                     _target.HitAttack(new AttackData(1));
                     OnShootNormalAttack?.Invoke();
                     _animeManager.Attack();
                 }
                 else if (attackKind == ChartKindEnum.Charge) //チャージアタック
                 {
-                    _target.HitAttack(new AttackData(1, true));
-                    OnShootChargeAttack?.Invoke();
+                    if (!_isKnockback) //ノックバック中でない場合のみチャージアタックを行う
+                    {
+                        _target.HitAttack(new AttackData(1, true));
+                        OnShootChargeAttack?.Invoke();
+                    }
+
+                    _animeManager.ChargeAttackCancel(_isKnockback);
                     _animeManager.ChargeAttackEnd();
                 }
             }
@@ -273,7 +279,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else if (chartData[timing + _chargeAttackLength].AttackKind == ChartKindEnum.Charge) //チャージアタックでない場合は何もしない
             {
                 _animeManager.ChargeAttackStart();
-                _animeManager.ChargeAttackCancel(_isKnockback);
             }
 
         }
