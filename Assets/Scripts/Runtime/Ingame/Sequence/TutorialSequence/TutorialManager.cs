@@ -51,6 +51,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
+        private float _indicatorTimer;
         private bool _isCharging;
         private bool _nextTutorial;
         private bool _operationTutorialPlaying;
@@ -136,6 +137,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _inputBuffer.Interact.started -= OnCharge;
             _inputBuffer.Interact.canceled -= OnCharge;
             _activeRingIndicator.Clear();
+            foreach (var ind in _activeRingIndicator)
+            {
+                ind.End();
+            }
         }
 
         /// <summary>
@@ -238,8 +243,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <param name="callbackContext"></param>
         private void OnShot(InputAction.CallbackContext callbackContext)
         {
-            if (_activeRingIndicator.Count == 0) return;
-            Debug.Log(_currentIndicatorCount);
+            if (_activeRingIndicator.Count == 0 || _indicatorTimer >= Time.time) return;
+            _indicatorTimer = Time.time + (float)MusicEngineHelper.DurationOfBeat * 2;
             if (callbackContext.phase == InputActionPhase.Started)
             {
                 var isGood = CheckGood();
@@ -311,7 +316,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var avoidIndicator = (EnemyIndicator)_activeRingIndicator[0];
             if (callbackContext.phase == InputActionPhase.Started)
             {
-                var isGood = CheckGoodAvoid();
+                var isGood = CheckGood();
                 if (isGood)
                 {
                     _currentTargetClearCount++;
@@ -402,14 +407,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<PlayerIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringNormalSound);
-                yield return new WaitForNextBeat(2);
-                
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _attackIndicatorText;
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _playerAnimeManager.Shoot();
                 _tutorialUi.SetActive(false);
                 _inputBuffer.Attack.started -= OnWaitInput;
                 _nextTutorial = false;
@@ -422,12 +427,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<SpecialIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringSkillSound);
-                yield return new WaitForNextBeat(2);
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _skillIndicatorText;
                 _inputBuffer.Attack.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _playerAnimeManager.Skill();
                 _tutorialUi.SetActive(false);
                 _inputBuffer.Attack.started -= OnWaitInput;
                 _nextTutorial = false;
@@ -439,12 +445,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _enemyIndicatorText;
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _playerAnimeManager.Avoid();
                 _tutorialUi.SetActive(false);
                 _inputBuffer.Avoid.started -= OnWaitInput;
                 _nextTutorial = false;
@@ -458,7 +465,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_chargeSound);
-                yield return new WaitForNextBeat(2);
+                _enemyAnimeManager.ChargeAttackStart();
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
                 //リングを一時停止
                 ringObj.Pause();
                 //入力を登録
@@ -478,13 +486,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 // チャージの演出
                 ringObj.OnPlayerChargeTutorial();
                 // チャージが完了するまで待機
-                yield return new WaitForNextBeat(3);
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 3);
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _chargeIndicatorText2;
                 SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 //チャージが完了したら入力を待つ
                 ringObj.Pause();
                 yield return new WaitUntil(() => _nextTutorial);
+                _enemyAnimeManager.ChargeAttackEnd();
+                _enemyAnimeManager.ChargeAttackCancel(true);
                 _tutorialUi.SetActive(false);
                 //　チャージ攻撃完了演出
                 ringObj.OnPlayerAttackSuccessTutorial();
@@ -508,18 +518,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         #region チュートリアル上での評価処理
 
-        private bool CheckGoodAvoid()
-        {
-            if (_currentIndicatorCount == _indicatorGenerateCount - 2 || _currentIndicatorCount == _indicatorGenerateCount - 3)
-            {
-                var normalizedTimingFromJust = (float)Music.UnitFromJust;
-                Debug.Log($"Normalized Timing from Just: {normalizedTimingFromJust}");
-
-                // Justタイミング付近か判定
-                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2;
-            }
-            return false;
-        }
         private bool CheckGood(float offset = 0)
         {
             if (_currentIndicatorCount == _indicatorGenerateCount - 1 || _currentIndicatorCount == _indicatorGenerateCount)
