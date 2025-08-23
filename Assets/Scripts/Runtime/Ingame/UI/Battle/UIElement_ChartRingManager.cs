@@ -109,18 +109,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 //インジケーターのデータを取得
                 var data = _ringIndicatorData.RingDatas[i];
+                // インデックスとして使用する拍数
+                var chartPosition = (timing + _appearTiming[i]) % chart.Length;
                 //インジケーターに対応する譜面を取得
-                var element = chart[(timing + _appearTiming[i]) % chart.Length];
+                var element = chart[chartPosition];
 
                 //譜面がインジケーターと同じか判定
                 if (element.AttackKind != data.AttackKind)
                     continue;
 
                 //リングを生成する
-                if (_targetData.ChartData.HasEndPosition(i))
+                if (_targetData.ChartData.HasEndPosition(chartPosition))
                 {
                     // 終点ノーツの座標が辞書に登録されている場合はそれを取得して渡す
-                    var endPos = _targetData.ChartData.GetRangeEndPosition(i);
+                    // NOTE: 座標取得でnullが返ってくる人はないはずだが、念のため(0, 0)の位置を設定しておく
+                    var endPos = _targetData.ChartData.GetRangeEndPosition(chartPosition) ?? new Vector2(0, 0);
                     GenerateRing(data.AttackKind, element.Position, endPos, timing + _appearTiming[i]);
                 }
                 else
