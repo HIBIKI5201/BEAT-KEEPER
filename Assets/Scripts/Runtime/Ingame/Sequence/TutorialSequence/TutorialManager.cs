@@ -46,6 +46,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private List<RingIndicatorBase> _activeRingIndicator = new();
         private BGMManager _bgmManager;
         private InputBuffer _inputBuffer;
+        private PlayerManager _playerManager;
         private PlayerAnimeManager _playerAnimeManager;
         private EnemyAnimeManager _enemyAnimeManager;
         private int _currentIndicatorCount = 0;
@@ -64,8 +65,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
-            var playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-            _playerAnimeManager = playerManager.GetPlayerAnimeManager();
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            _playerAnimeManager = _playerManager.GetPlayerAnimeManager();
             Debug.Log("+-+-+*+/+/-/+-*/+-*/+*-/+*-+/*-/+-/*+-/*/*+--/*+/-*+/-+--+/*/-+*/*/+-*-/");
             var enemyManager = await ServiceLocator.GetInstanceAsync<EnemyManager>();
             _enemyAnimeManager = enemyManager.GetEnemyAnimeManager();
@@ -182,7 +183,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     case ChartKindEnum.Normal:
                         SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
                         _enemyAnimeManager.PreAttack();
-                        _chargeAttackWaiting = true;
                         break;
                     case ChartKindEnum.Charge:
                         if (_chargeIndicatorGenerate)
@@ -337,6 +337,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     avoidIndicator.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
                     _playerAnimeManager.Avoid();
+                    _playerManager.FlowZoneSystem.SuccessResonance();
+
                 }
                 else
                 {
@@ -473,6 +475,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _tutorialText.text = _enemyIndicatorText;
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
+                _playerManager.FlowZoneSystem.SuccessResonance();
                 _playerAnimeManager.Avoid();
                 _enemyAnimeManager.ResumeAnime();
                 _tutorialUi.SetActive(false);
