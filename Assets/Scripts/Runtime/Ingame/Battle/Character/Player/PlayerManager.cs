@@ -810,7 +810,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnShootChargeAttack?.Invoke();
             SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
             VoiceManager.PlayVoice(_chargeShootVoice);
-            AttackEnemy(_data.ChargeAttackPower);
+            AttackEnemy(_data.ChargeAttackPower, nockback: true);
 
             //フルチャージかどうか
             if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
@@ -831,7 +831,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     敵に攻撃を行う
         /// </summary>
         /// <param name="damageScale"></param>
-        private void AttackEnemy(float power, float damageScale = 1)
+        private void AttackEnemy(float power, float damageScale = 1, bool nockback = false)
         {
             power *= damageScale;
 
@@ -859,7 +859,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             power *= _damageScale;
 
-            _target.HitAttack(new(power));
+            _target.HitAttack(new(power, nockback));
 
             // スコア計算
             float score = power * _data.ComboScoreScale
