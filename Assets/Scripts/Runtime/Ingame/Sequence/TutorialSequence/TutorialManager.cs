@@ -55,6 +55,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private bool _isCharging;
         private bool _nextTutorial;
         private bool _operationTutorialPlaying;
+        private bool _chargeAttackWaiting;
+        private bool _chargeIndicatorGenerate = true;
 
         private async void Start()
         {
@@ -136,11 +138,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _inputBuffer.Avoid.started -= OnAvoid;
             _inputBuffer.Interact.started -= OnCharge;
             _inputBuffer.Interact.canceled -= OnCharge;
-            _activeRingIndicator.Clear();
+            if (_chargeAttackWaiting)
+            {
+                _enemyAnimeManager.ChargeAttackEnd();
+                _enemyAnimeManager.ChargeAttackCancel(true);
+            }
             foreach (var ind in _activeRingIndicator)
             {
                 ind.End();
             }
+            _activeRingIndicator.Clear();
         }
 
         /// <summary>
@@ -174,11 +181,17 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         break;
                     case ChartKindEnum.Normal:
                         SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
-                        _enemyAnimeManager.Attack();
+                        _enemyAnimeManager.PreAttack();
+                        _chargeAttackWaiting = true;
                         break;
                     case ChartKindEnum.Charge:
-                        SoundEffectManager.PlaySoundEffect(_chargeSound);
-                        _enemyAnimeManager.ChargeAttackStart();
+                        if (_chargeIndicatorGenerate)
+                        {
+                            SoundEffectManager.PlaySoundEffect(_chargeSound);
+                            _enemyAnimeManager.ChargeAttackStart();
+                            _chargeAttackWaiting = true;
+                            _chargeIndicatorGenerate = false;
+                        }
                         break;
                     default:
                         break;
@@ -351,17 +364,24 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         chargeIndicator.OnPlayerChargeTutorial();
                         SoundEffectManager.PlaySoundEffect(_charging);
                         _playerAnimeManager.ChargeShoot();
+                        _enemyAnimeManager.ChargeAttackEnd();
+                        _enemyAnimeManager.ChargeAttackCancel(true);
+                        _chargeAttackWaiting = false;
                     }
                     else
                     {
                         chargeIndicator.PlayFailEffect();
                         _activeRingIndicator.RemoveAt(0);
+                        _enemyAnimeManager.ChargeAttackCancel(false);
+                        _chargeAttackWaiting = false;
                     }
                 }
                 else
                 {
                     chargeIndicator.PlayFailEffect();
                     _activeRingIndicator.RemoveAt(0);
+                    _enemyAnimeManager.ChargeAttackCancel(false);
+                    _chargeAttackWaiting = false;
                 }
             }
             else if (callbackContext.phase == InputActionPhase.Canceled)
@@ -445,13 +465,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
+                _enemyAnimeManager.PreAttack();
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
+                _enemyAnimeManager.StopAnime();
                 ringObj.Pause();
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _enemyIndicatorText;
                 _inputBuffer.Avoid.started += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
                 _playerAnimeManager.Avoid();
+                _enemyAnimeManager.ResumeAnime();
                 _tutorialUi.SetActive(false);
                 _inputBuffer.Avoid.started -= OnWaitInput;
                 _nextTutorial = false;
