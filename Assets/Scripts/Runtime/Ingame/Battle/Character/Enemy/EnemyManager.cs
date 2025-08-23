@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -33,6 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Dispose()
         {
             InputUnregister();
+            _disposeCancellationToken?.Cancel();
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             phaseManager.CurrentPhaseProp
                 .Skip(1) // 初期フェーズをスキップ
                 .Subscribe(OnPhaseChange)
-                .AddTo(destroyCancellationToken);
+                .AddTo(_disposeCancellationToken.Token);
             _phaseManager = phaseManager;
         }
 
@@ -160,6 +162,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
+
+        private CancellationTokenSource _disposeCancellationToken = new CancellationTokenSource();
 
         protected override async void Awake()
         {
