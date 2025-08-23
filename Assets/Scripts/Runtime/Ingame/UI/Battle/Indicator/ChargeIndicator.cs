@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
@@ -11,6 +12,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
     public class ChargeIndicator : RingIndicatorBase
     {
         public override int EffectLength => 5;
+
+		public override void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
+		{
+			base.OnGet(onEndAction, startPosition, endPosition, timing);
+
+			// 始点リングの位置を設定
+			_startPositionRing.rectTransform.position = startPosition
+                                                + new Vector2(Screen.width / 2, Screen.height / 2);
+
+			// 終点リングの位置を設定
+			_endPositionRing.rectTransform.position = endPosition
+                                                + new Vector2(Screen.width / 2, Screen.height / 2);
+		}
 
         /// <summary>
         /// エフェクトを再生

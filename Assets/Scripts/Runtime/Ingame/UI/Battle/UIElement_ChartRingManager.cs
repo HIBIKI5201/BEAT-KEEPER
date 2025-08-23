@@ -116,8 +116,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 if (element.AttackKind != data.AttackKind)
                     continue;
 
-                //リングを生成
-                GenerateRing(data.AttackKind, element.Position, timing + _appearTiming[i]);
+                //リングを生成する
+                if (_targetData.ChartData.HasEndPosition(i))
+                {
+                    // 終点ノーツの座標が辞書に登録されている場合はそれを取得して渡す
+                    var endPos = _targetData.ChartData.GetRangeEndPosition(i);
+                    GenerateRing(data.AttackKind, element.Position, endPos, timing + _appearTiming[i]);
+                }
+                else
+                {
+                    GenerateRing(data.AttackKind, element.Position, timing + _appearTiming[i]);
+                }
             }
 
             // 登録完了
@@ -145,6 +154,26 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
             return null;
         }
+        
+        /// <summary>
+        /// リングを生成するメソッド。戻り値として生成したインジケーターのGameObjectを返す
+        /// チャージ攻撃用
+        /// </summary>
+        public GameObject GenerateRing(ChartKindEnum chartKind, Vector2 startPosition, Vector2 endPosition, int timing)
+        {
+            if (_ringPools.TryGetValue(chartKind, out var op))
+            {
+                var ring = op.Get(); //リングを取得
+                _activeRingIndicator.Add(ring);
+                ring.OnGet(() => //終了時のイベントを設定
+                {
+                    op.Release(ring); //オブジェクトを非アクティブに
+                    _activeRingIndicator.Remove(ring); //アクティブリストから除外
+                }, startPosition, endPosition, timing);
+                return ring.gameObject;
+            }
+            return null;
+        } 
 
         /// <summary>
         ///     フィニッシャー開始時の処理
