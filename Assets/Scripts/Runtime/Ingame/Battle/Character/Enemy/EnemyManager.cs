@@ -76,6 +76,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SetActiveModel(true);
 
+            _disposeCancellationToken = new();
+            
             //フェーズ変更時のイベント登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
@@ -259,8 +261,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                         OnShootChargeAttack?.Invoke();
                     }
 
-                    _animeManager.ChargeAttackCancel(_isKnockback);
-                    _animeManager.ChargeAttackEnd();
+                    _animeManager.ChargeAttack();
                 }
             }
         }
@@ -278,7 +279,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             else if (chartData[timing + _chargeAttackLength].AttackKind == ChartKindEnum.Charge) //チャージアタックでない場合は何もしない
             {
-                _animeManager.ChargeAttackStart();
+                _animeManager.PreChargeAttack();
             }
 
         }
@@ -306,9 +307,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private async void Nockback()
         {
             _isKnockback = true;
-            _animeManager?.KnockBack();
+            _animeManager?.KnockBack(_isKnockback);
             await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
             _isKnockback = false;
+            _animeManager?.KnockBack(_isKnockback);
         }
     }
 }
