@@ -21,7 +21,7 @@ MonoBehaviour:
   - 100
   _comboRisetTime: 3
   _chargeAttackPower: 500
-  _chargeAttackTime: 3
+  _chargeAttackTime: 2
   _comboPerfectRange: 0.5
   _comboGoodRange: 0.8
   _chargeStartPerfectRange: 0.5

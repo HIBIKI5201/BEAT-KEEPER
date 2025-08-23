@@ -52,7 +52,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             {
                 // リザルト表示、NPCにフォーカス。NPCが褒めてくれる演出
                 ShowBattleResult();
-                _uiManager.BattleEnd();
+                // _uiManager.BattleEnd();
                 //_cameraManager.ChangeCamera(1);
             }
             else if (_count == 5)
@@ -71,7 +71,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             else if (_count == 13)
             {
                 // プレイヤーにカメラを戻して、武器を構えるモーション
-                _uiManager.BattleStart();
+                // _uiManager.BattleStart();
                 _encounterText.HideEncounterText();
                 _objects[1].transform.DOMove(_positions[1], 4f); // 敵が戦闘位置まで移動
                 _objects[3].transform.LookAt(_objects[1].transform); // プレイヤーを次の敵の方に向かせる
