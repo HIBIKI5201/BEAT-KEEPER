@@ -157,8 +157,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             if (_chargeAttackWaiting)
             {
-                _enemyAnimeManager.ChargeAttackEnd();
-                _enemyAnimeManager.ChargeAttackCancel(true);
+                _enemyAnimeManager.ChargeAttack();
+                _enemyAnimeManager.PreChargeAttack();
             }
             foreach (var ind in _activeRingIndicator)
             {
@@ -203,7 +203,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         if (_chargeIndicatorGenerate)
                         {
                             SoundEffectManager.PlaySoundEffect(_chargeSound);
-                            _enemyAnimeManager.ChargeAttackStart();
+                            _enemyAnimeManager.ChargeAttack();
                             _chargeAttackWaiting = true;
                             _chargeIndicatorGenerate = false;
                         }
@@ -410,15 +410,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     chargeIndicator.OnPlayerChargeTutorial();
                     SoundEffectManager.PlaySoundEffect(_charging);
                     _playerAnimeManager.ChargeShoot();
-                    _enemyAnimeManager.ChargeAttackEnd();
-                    _enemyAnimeManager.ChargeAttackCancel(true);
+                    _enemyAnimeManager.PreChargeAttack();
+                    _enemyAnimeManager.KnockBack(true);
                     _chargeAttackWaiting = false;
                 }
                 else
                 {
                     chargeIndicator.PlayFailEffect();
                     _activeRingIndicator.RemoveAt(0);
-                    _enemyAnimeManager.ChargeAttackCancel(false);
+                    _enemyAnimeManager.PreChargeAttack();
+                    _enemyAnimeManager.KnockBack(false);
                     _chargeAttackWaiting = false;
                 }
             }
@@ -508,7 +509,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringObj = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0).GetComponent<ChargeIndicator>();
                 ringObj.AddCount();
                 SoundEffectManager.PlaySoundEffect(_chargeSound);
-                _enemyAnimeManager.ChargeAttackStart();
+                _enemyAnimeManager.ChargeAttack();
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
                 ringObj.Pause();
@@ -527,8 +528,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 yield return new WaitUntil(() => _nextTutorial);
-                _enemyAnimeManager.ChargeAttackEnd();
-                _enemyAnimeManager.ChargeAttackCancel(true);
+                _enemyAnimeManager.PreChargeAttack();
+                _enemyAnimeManager.KnockBack(true);
                 _tutorialUi.SetActive(false);
                 ringObj.OnPlayerAttackSuccessTutorial();
                 _inputBuffer.Interact.canceled -= OnWaitInput;

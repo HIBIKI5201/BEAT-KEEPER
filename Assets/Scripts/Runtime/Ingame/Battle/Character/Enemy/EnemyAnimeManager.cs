@@ -29,5 +29,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private readonly int _preAttackHash = Animator.StringToHash("PreAttack");
         private readonly int _chargeAttackHash = Animator.StringToHash("ChargeAttackStart");
         private readonly int _chargeAttackEndHash = Animator.StringToHash("ChargeAttackEnd");
+
+        private float _animeSpeed = 1f;
     }
 }
