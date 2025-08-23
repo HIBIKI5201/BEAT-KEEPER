@@ -63,12 +63,11 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         /// <summary>
         /// 指定した拍数の終点ノーツの座標を取得する
-        /// NOTE: Valueが入手出来なかった場合はnullを返す
         /// </summary>
-        public Vector2? GetRangeEndPosition(int index)
+        public Vector2 GetRangeEndPosition(int index)
         {
             index %= _chart.Length;
-            return _rangeEndPositions.TryGetValue(index, out var endPos) ? endPos : null;
+            return _rangeEndPositions[index];
         }
 
         /// <summary>
