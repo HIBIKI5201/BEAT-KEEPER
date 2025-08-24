@@ -17,6 +17,7 @@ namespace BeatKeeper
         private readonly ReactiveProperty<float> _bonusMultiply = new ReactiveProperty<float>(0);
 
         private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
+        private AccuracyTracker _accuracyTracker;
         private CompositeDisposable _disposable = new CompositeDisposable();
         private int _maxCombo = 0; // 最大コンボ数
         private int _preBattleScore = 0; // バトルが始まる直前のスコア（バトルグレードの判定用）
@@ -56,9 +57,14 @@ namespace BeatKeeper
             if (_playerManager != null)
             {
                 _playerManager.ComboSystem.ComboCount.Subscribe(EvaluateComboBonus).AddTo(_disposable);
+                _accuracyTracker = new AccuracyTracker(_playerManager);
+            }
+            else
+            {
+                Debug.LogError($"{typeof(ScoreManager)}: PlayerManagerが取得出来ませんでした。Perfect数などの集計が行えません。");
             }
         }
-
+        
         private void OnDestroy()
         {
             // コンボ数のリアクティブプロパティの購読をやめる
