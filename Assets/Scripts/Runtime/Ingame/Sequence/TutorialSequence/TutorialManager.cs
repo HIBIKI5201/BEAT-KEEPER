@@ -79,8 +79,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             _playerAnimeManager = _playerManager.GetPlayerAnimeManager();
-            var stageEnemyAdmin = await ServiceLocator.GetInstanceAsync<StageEnemyAdmin>();
-            _enemyAnimeManager = stageEnemyAdmin.GetActiveEnemy().GetEnemyAnimeManager();
+            var buleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            var enemy = buleSceneManager.EnemyAdmin.GetActiveEnemy();
+            _enemyAnimeManager = enemy.GetEnemyAnimeManager();
         }
 
         private void OnDestroy()
