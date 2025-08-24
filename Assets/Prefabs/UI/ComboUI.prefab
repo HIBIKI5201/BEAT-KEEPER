@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 3295456447297270489}
   - component: {fileID: 1676980284432869579}
   - component: {fileID: 4729121378040278570}
+  - component: {fileID: 8105086093095796577}
+  - component: {fileID: 693001444011333965}
   m_Layer: 5
   m_Name: ComboUI
   m_TagString: Untagged
@@ -204,6 +206,36 @@ MonoBehaviour:
   - Threshold: 100
     DifferenceImage: {fileID: 21300000, guid: b99749740fc433045940febbedc030d8, type: 3}
   _showThreshold: 5
+  _moveDistance: {x: 0.2, y: 0.2, z: 0}
+  _moveDuration: 0.05
+--- !u!114 &8105086093095796577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998332087027404371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fab1e0423b02514dbeffe9d9abfe6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movePattern: 2
+  _showDuration: 1
+  _hideDuration: 0.5
+  _slideDistance: 100
+--- !u!114 &693001444011333965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998332087027404371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf08e8384d3f7c45b08229c6d76b64a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3314165204801293368
 GameObject:
   m_ObjectHideFlags: 0
