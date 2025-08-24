@@ -42,6 +42,11 @@ namespace BeatKeeper
         /// </summary>
         public ReadOnlyReactiveProperty<float> BonusMultiply => _bonusMultiply;
         
+        /// <summary>
+        /// Perfect/Good/Missなどの精度記録用のクラス
+        /// </summary>
+        public AccuracyTracker AccuracyTracker => _accuracyTracker;
+        
         private void Awake()
         {
             if (_comboBonusData == null)
