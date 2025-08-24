@@ -62,7 +62,7 @@ namespace BeatKeeper
             if(_scoreManager == null || _scoreText == null) return;
             
             // TODO: アニメーションをつける
-            _scoreText.text = _scoreManager.Score.ToString();
+            _scoreText.text = _scoreManager.Score.ToString("D8");
         }
 
         /// <summary>
