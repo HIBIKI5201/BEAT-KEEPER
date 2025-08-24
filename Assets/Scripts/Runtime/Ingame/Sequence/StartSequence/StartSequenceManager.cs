@@ -43,11 +43,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             SaveDirector(director);
         }
 
-#if UNITY_EDITOR
-        [Header("Debug")]
-        [SerializeField]
-        private float _skipTiming;
-
         private PlayableDirector _director;
 
         [Conditional("UNITY_EDITOR")]
@@ -55,6 +50,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             _director = director;
         }
+
+#if UNITY_EDITOR
+        [Header("Debug")]
+        [SerializeField]
+        private float _skipTiming;
 
         [ContextMenu(nameof(SkipStart))]
         private void SkipStart()
