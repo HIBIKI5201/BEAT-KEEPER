@@ -712,9 +712,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec4167a031adb447a2f4cf79a2bd10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _resultUIController: {fileID: 993899693}
   _resultPanel: {fileID: 542414397}
   _endPanel: {fileID: 125205696}
   _fadeDuration: 0.5
+  _moveXDistance: 20
 --- !u!1001 &692709918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -833,6 +835,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05571e519c794754e913bd4de7eea948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &719706919 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4122666561369169013, guid: b38d8bd7842ac77448cd393f8e904d8e, type: 3}
+  m_PrefabInstance: {fileID: 439801351}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfab952b187bc0f4891d949003c885b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &993899693 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5691563224950958708, guid: b76d99356d60d9b40998617976859451, type: 3}
+  m_PrefabInstance: {fileID: 2908268678855267497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2510f324dc72d424aa94ae60df3023f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1042500688
@@ -1149,11 +1173,11 @@ MonoBehaviour:
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
   _indicatorGenerateCount: 4
-  _attackTutorialClearCount: 4
-  _skillTutorialClearCount: 1
   _goodRange: 0.9
   _perfectRange: 0.7
   _playTutorial: 1
+  _attackTutorialClearCount: 4
+  _skillTutorialClearCount: 1
   _attackIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u653B\u6483\uFF01"
   _skillIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u30B9\u30AD\u30EB\u767A\u52D5\uFF01"
   _enemyIndicatorText: "L1/R1\u30DC\u30BF\u30F3\u3067\u56DE\u907F\uFF01"
@@ -1679,6 +1703,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2512439605764068943, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: '_numberSpriteAtlas.Array.data[0]'
+      value: 
+      objectReference: {fileID: 100100200, guid: 51c432c750bce73478a36f273a83ca93, type: 3}
+    - target: {fileID: 2512439605764068943, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: '_numberSpriteAtlas.Array.data[1]'
+      value: 
+      objectReference: {fileID: 100100200, guid: e2510bff387c16543b691fed99b2e355, type: 3}
+    - target: {fileID: 2512439605764068943, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: '_numberSpriteAtlas.Array.data[2]'
+      value: 
+      objectReference: {fileID: 100100200, guid: e8a55790c1b448045b8d06c90de55cb9, type: 3}
     - target: {fileID: 3933645836938242451, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1731,6 +1767,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5691563224950958708, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _scoreManager
+      value: 
+      objectReference: {fileID: 719706917}
+    - target: {fileID: 5691563224950958708, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _gradeEvaluator
+      value: 
+      objectReference: {fileID: 719706919}
     - target: {fileID: 5693033747900140600, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1767,6 +1811,10 @@ PrefabInstance:
       propertyPath: _scoreManager
       value: 
       objectReference: {fileID: 719706917}
+    - target: {fileID: 8184838542282791791, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: _numberSpriteAtlas
+      value: 
+      objectReference: {fileID: 100100200, guid: 51c432c750bce73478a36f273a83ca93, type: 3}
     - target: {fileID: 8655863126827582592, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: _scoreManager
       value: 
