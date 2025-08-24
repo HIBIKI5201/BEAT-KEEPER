@@ -701,8 +701,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
-            if (_isThisBeatInputed) return; //連打防止
-
             bool isPerfect = MusicEngineHelper
                 .IsTimingWithinAcceptableRange(_data.PerfectSkillRange);
             bool isGood = MusicEngineHelper
