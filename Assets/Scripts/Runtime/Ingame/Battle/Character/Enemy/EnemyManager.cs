@@ -37,6 +37,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _disposeCancellationToken?.Cancel();
         }
 
+        public EnemyAnimeManager GetEnemyAnimeManager()
+        {
+            return _animeManager;
+        }
+
         /// <summary>
         ///     入力の登録を行う
         /// </summary>
