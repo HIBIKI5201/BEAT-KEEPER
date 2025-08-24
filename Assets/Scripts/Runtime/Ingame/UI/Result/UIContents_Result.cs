@@ -26,7 +26,7 @@ namespace BeatKeeper
         {
             // 値を入力
             // TODO: 必要であればここに演出のコードを書く
-            _amountText.text = amount.ToString();
+            _amountText.text = amount.ToString("000");
         }
     }
 }
