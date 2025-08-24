@@ -68,7 +68,6 @@ namespace BeatKeeper
         private void RecordPerfect()
         {
             _perfectCount++;
-            Debug.LogError(_perfectCount);
         }
 
         /// <summary>
@@ -77,7 +76,6 @@ namespace BeatKeeper
         private void RecordGood()
         {
             _goodCount++;
-            Debug.LogError(_goodCount);
         }
 
         /// <summary>
@@ -86,7 +84,6 @@ namespace BeatKeeper
         private void RecordMiss()
         {
             _missCount++;
-            Debug.LogError(_missCount);
         }
     }
 }
