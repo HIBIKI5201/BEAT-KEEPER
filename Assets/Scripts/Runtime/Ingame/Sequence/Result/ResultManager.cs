@@ -11,6 +11,7 @@ namespace BeatKeeper
 {
     public class ResultManager : MonoBehaviour
     {
+	    [SerializeField] private ResultUIController _resultUIController;
         [SerializeField] private CanvasGroup _resultPanel;
         [SerializeField] private CanvasGroup _endPanel;
         [SerializeField] private float _fadeDuration = 0.5f;
@@ -42,7 +43,7 @@ namespace BeatKeeper
 				// 2枚目のパネルを確実に非表示にしておく
             	_endPanel.alpha = 0;
 			} 
-           
+			
 			if(_resultPanel != null)
 			{
 				// 開始位置を左にオフセット
@@ -52,6 +53,12 @@ namespace BeatKeeper
 				// リザルトパネルを表示する
             	_resultPanel.DOFade(1, _fadeDuration);
             	_resultPanel.transform.DOLocalMove(_originalResultPanelPosition, _fadeDuration);
+			}
+			
+			if (_resultUIController != null)
+			{
+				// リザルト表示演出を始める
+				_resultUIController.SetResult();
 			}
         }
 
