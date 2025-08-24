@@ -595,6 +595,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
+        public PlayerAnimeManager GetPlayerAnimeManager()
+        {
+            return _animeManager;
+        }
+
         /// <summary>
         ///     システムの初期化処理
         /// </summary>
