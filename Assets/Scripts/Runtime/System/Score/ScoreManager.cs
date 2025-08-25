@@ -1,4 +1,5 @@
-﻿using BeatKeeper.Runtime.Ingame.Character;
+﻿using System;
+using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using SymphonyFrameWork.System;
@@ -11,6 +12,11 @@ namespace BeatKeeper
     /// </summary>
     public class ScoreManager : MonoBehaviour, IScoreManager
     {
+        /// <summary>
+        /// スコア変更時のイベント
+        /// </summary>
+        public event Action<int> OnChangeScore;
+        
         [SerializeField] private ComboBonusSettingsSO _comboBonusData;
         
         private readonly ReactiveProperty<int> _scoreProp = new ReactiveProperty<int>(0);
@@ -81,14 +87,21 @@ namespace BeatKeeper
         /// </summary>
         public void AddScore(int score)
         {
-            int addedScore = score + Score;
-
-            // 正の数ならコンボボーナスも含めて計算する。負の数なら受け取ったスコアのまま
+            int amount;
+            
             if (score > 0)
             {
-                addedScore = Mathf.RoundToInt(score * _bonusMultiply.Value) + Score; // 小数点以下は切り捨ててint型に変換
+                // 正の数ならコンボボーナスも含めて計算する
+                amount = Mathf.RoundToInt(score * _bonusMultiply.Value);
+                OnChangeScore?.Invoke(amount);
             }
-            _scoreProp.Value = Mathf.Max(addedScore, 0); // スコアはゼロ以下にはしない
+            else
+            {
+                // 負の数の場合ボーナスは含めない
+                amount = score;
+            }
+    
+            _scoreProp.Value = Mathf.Max(Score + amount, 0); // スコアはゼロ以下にはしない
         }
 
         /// <summary>
