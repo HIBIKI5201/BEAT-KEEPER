@@ -717,6 +717,7 @@ MonoBehaviour:
   _endPanel: {fileID: 125205696}
   _fadeDuration: 0.5
   _moveXDistance: 20
+  _endingVoice: voice_ending
 --- !u!1001 &692709918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1180,7 +1181,7 @@ MonoBehaviour:
   _skillTutorialClearCount: 1
   _attackIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u653B\u6483\uFF01"
   _skillIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u30B9\u30AD\u30EB\u767A\u52D5\uFF01"
-  _enemyIndicatorText: "L1/R1\u30DC\u30BF\u30F3\u3067\u56DE\u907F\uFF01"
+  _enemyIndicatorText: "LB/RB\u30DC\u30BF\u30F3\u3067\u56DE\u907F\uFF01"
   _chargeIndicatorText1: "A\u30DC\u30BF\u30F3\u3092\u9577\u62BC\u3057\uFF01"
   _chargeIndicatorText2: "A\u30DC\u30BF\u30F3\u3092\u653E\u305B\uFF01"
   _ringNormalSound: Ring_Normal
