@@ -27,6 +27,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
         public event Action OnPerfectAttack;
         public event Action OnGoodAttack;
+        public event Action OnMissAttack;
 
         public event Action OnStartChargeAttack
         {
@@ -34,8 +35,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             remove => _onStartChargeAttack.Event -= value;
         }
         public event Action OnShootChargeAttack;
-        public event Action OnFullChargeAttack;
-        public event Action OnNonFullChargeAttack;
+        public event Action OnChargeAttack;
+        public event Action OnMissChargeAttack;
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid
@@ -57,6 +58,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
         public event Action OnPerfectSkill;
         public event Action OnGoodSkill;
+        public event Action OnMissedSkill;
 
         public event Action OnFinisher;
         #endregion
@@ -404,6 +406,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_isBattle) return;
             if (!_data) return;
             if (_isThisBeatInputed) return; //連打防止
+            if (_target == null) return;
 
             ChartData.ChartDataElement[] chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
@@ -441,6 +444,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             const ChartKindEnum CHARGE_ATTACK_ENUM = ChartKindEnum.Charge;
 
             if (!_isBattle) return;
+            if (_target == null) return;
 
             //タイミングや時間を取得
             ChartData chart = _target.EnemyData
@@ -482,6 +486,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (!_isBattle) return;
             if (_isThisBeatInputed) return; //連打防止
+            if (_target == null) return;
 
             SymphonyDebugLogger.AddText(
                 $"[{nameof(PlayerManager)}]" +
@@ -564,6 +569,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 PerfectAttack();
             }
+
+            MissedChart();
         }
 
         /// <summary>
@@ -691,7 +698,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             else
             {
-                _comboSystem?.ComboReset();
+                MissAttack();
             }
 
             SymphonyDebugLogger.TextLog();
@@ -717,7 +724,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isPerfect) { OnPerfectSkill?.Invoke(); }
             else if (isGood) { OnGoodSkill?.Invoke(); }
-            else { _comboSystem?.ComboReset(); }
+            else { MissSkill(); }
 
 
             _onSkill?.Invoke();
@@ -758,6 +765,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             AttackEnemy(_data.ComboAttackPower);
         }
 
+        /// <summary>
+        ///    ミスした際の処理
+        /// </summary>
+        private void MissAttack()
+        {
+            Debug.Log("miss attack");
+            _comboSystem.ComboReset();
+        }
+
+        /// <summary>
+        ///    成功時の共通処理
+        /// </summary>
         private void BothComboAttack()
         {
             _onShootComboAttack?.Invoke();
@@ -768,6 +787,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target.NormalAttackRandomHit();
             SoundEffectManager.PlaySoundEffect(_comboAttackSound);
         }
+
+        private void MissSkill()
+        {
+            Debug.Log("miss skill");
+            _comboSystem?.ComboReset();
+            OnMissedSkill?.Invoke();
+        }
+
 
         /// <summary>
         ///     チャージ攻撃の溜め
@@ -814,11 +841,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             OnShootChargeAttack?.Invoke();
 
-            //フルチャージかどうか
+            //成功かどうか
             if (isGood || isPerfect)
             {
                 Debug.Log($"{_data.Name} is full charge attacking");
-                OnFullChargeAttack?.Invoke();
+                OnChargeAttack?.Invoke();
 
                 SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
                 VoiceManager.PlayVoice(_chargeShootVoice);
@@ -828,11 +855,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             else
             {
-                Debug.Log($"{_data.Name} is non full charge attacking");
-                OnNonFullChargeAttack?.Invoke();
+                MissedChargeAttack();
             }
         }
 
+        private void MissedChargeAttack()
+        {
+            Debug.Log("miss charge attack");
+            OnMissChargeAttack?.Invoke();
+            _comboSystem.ComboReset();
+        }
 
         /// <summary>
         ///     敵に攻撃を行う
@@ -899,6 +931,75 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength;
             return _phaseManager.IsAnotherPhaseByTiming(startTiming);
+        }
+
+        /// <summary>
+        ///     見逃したチャートの処理
+        /// </summary>
+        private async void MissedChart()
+        {
+            if (_target == null) return;
+
+            int timing = MusicEngineHelper.GetBeatSinceStart();
+            Debug.Log($"timing : {timing}");
+            ChartData chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
+            ChartKindEnum kind = chart[timing].AttackKind;
+
+            if (kind == ChartKindEnum.None) return;
+
+            _ringIndicatorData.TryGetRingData(kind, out RingData data);
+            float duration = data.EffectLength * (float)MusicEngineHelper.DurationOfBeat;
+
+            bool isCanceled = false;
+
+            Action action = null;
+            if (kind == ChartKindEnum.Attack)
+            {
+                action = () =>
+                {
+                    isCanceled = true;
+                    OnShootComboAttack -= action;
+                };
+                OnShootComboAttack += action;
+            }
+            else if (kind == ChartKindEnum.Charge)
+            {
+                action = () =>
+                {
+                    isCanceled = true;
+                    OnChargeAttack -= action;
+                };
+                OnChargeAttack += action;
+            }
+            else if (kind == ChartKindEnum.Skill)
+            {
+                action = () =>
+                {
+                    isCanceled = true;
+                    OnSkill -= action;
+                };
+                OnSkill += action;
+            }
+
+            await Awaitable.WaitForSecondsAsync(duration, destroyCancellationToken);
+
+            if (isCanceled) return;
+
+            switch (kind)
+            {
+                case ChartKindEnum.Attack:
+                    MissAttack();
+                    break;
+
+                case ChartKindEnum.Charge:
+                    MissedChargeAttack();
+                    break;
+                
+                case ChartKindEnum.Skill:
+                    MissSkill();
+                    break;
+            }
         }
 
 # if UNITY_EDITOR
