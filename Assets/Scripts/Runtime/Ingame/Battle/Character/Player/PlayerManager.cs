@@ -331,6 +331,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+            _phaseManager = phaseManager;
             if (phaseManager)
             {
                 phaseManager.CurrentPhaseProp
@@ -949,6 +950,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (kind == ChartKindEnum.None) return;
 
             _ringIndicatorData.TryGetRingData(kind, out RingData data);
+            if (data == null) return;
+
             float duration = data.EffectLength * (float)MusicEngineHelper.DurationOfBeat;
 
             bool isCanceled = false;
