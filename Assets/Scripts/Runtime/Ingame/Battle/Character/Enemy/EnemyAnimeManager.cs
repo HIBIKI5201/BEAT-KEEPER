@@ -16,14 +16,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void PreChargeAttack() => _animator?.SetTrigger(_chargeAttackHash);
         public void ChargeAttack() => _animator?.SetTrigger(_chargeAttackEndHash);
 
-        public void StopAnime()
-        {
-            _animeSpeed = _animator.speed;
-            Debug.Log($"Enemy StopAnime: {_animeSpeed}");
-            _animator.speed = 0;
-        }
-        public void ResumeAnime() => _animator.speed = _animeSpeed;
-
         private readonly int _knockBackHash = Animator.StringToHash("KnockBack");
         private readonly int _attackHash = Animator.StringToHash("Attack");
         private readonly int _preAttackHash = Animator.StringToHash("PreAttack");
