@@ -221,6 +221,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     case ChartKindEnum.Normal:
                         SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
                         _enemyAnimeManager.PreAttack();
+                        StartCoroutine(EnemyDelayAnimation());
                         break;
                     case ChartKindEnum.Charge:
                         //チャージ攻撃はほかのものより２倍のインターバルをかける
@@ -353,6 +354,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat);
             ringIndicatorBase.End();
+        }
+
+        private IEnumerator EnemyDelayAnimation()
+        {
+            yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 4);
+            _enemyAnimeManager.Attack();
         }
 
         #endregion
@@ -542,12 +549,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _enemyAnimeManager.PreAttack();
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
-                _enemyAnimeManager.StopAnime();
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_enemyIndicatorText, _inputBuffer.Avoid);
                 _playerManager.FlowZoneSystem.SuccessResonance();
                 _playerAnimeManager.Avoid();
-                _enemyAnimeManager.ResumeAnime();
+                _enemyAnimeManager.Attack();
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
