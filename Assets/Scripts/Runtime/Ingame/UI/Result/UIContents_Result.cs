@@ -6,17 +6,23 @@ namespace BeatKeeper
     /// <summary>
     /// リザルトのコンボ数やPerfect数などを表示するUIを管理するクラス
     /// </summary>
+    [RequireComponent(typeof(CanvasGroup))]
     public class UIContents_Result : MonoBehaviour
     {
         [SerializeField] private Text _amountText; // 値が入力されるテキストの参照
 
-        private void Start()
+        private CanvasGroup _canvasGroup;
+        public CanvasGroup CanvasGroup => _canvasGroup;
+        
+        private void Awake()
         {
             if (_amountText == null)
             {
                 Debug.LogWarning($"Textコンポーネントがアサインされていませんでした。2つ目の子オブジェクトから自動取得します: {this}");
                 _amountText = transform.GetChild(1).GetComponent<Text>();
             }
+
+            _canvasGroup = GetComponent<CanvasGroup>();
         }
         
         /// <summary>

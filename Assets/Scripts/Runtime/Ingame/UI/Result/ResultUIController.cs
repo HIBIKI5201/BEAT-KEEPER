@@ -52,7 +52,7 @@ namespace BeatKeeper
 
         [Header("演出関連の設定")] 
         [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
-        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 3f;
+        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 0.5f;
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
@@ -65,6 +65,17 @@ namespace BeatKeeper
         private void Start()
         {
             ValidateReferences();
+
+            if (_scoreText != null)
+            {
+                // 0を8桁埋めて表示を初期化
+                _scoreText.text = "00000000";
+            }
+
+            if (_rankImage != null)
+            {
+                _rankImage.enabled = false;
+            }
         }
 
         /// <summary>
@@ -92,8 +103,11 @@ namespace BeatKeeper
             // ボイス再生中にスコアのアニメーションと最大コンボ数などの枠のスライドインアニメーションを再生
             _resultSequence.Append(CreateScoreTween());
             _resultSequence.Join(CreateRecordsTween());
-            _resultSequence.Join(DOVirtual.DelayedCall(_rankRevealDelay, () => { }));
 
+            // 少し待機
+            _resultSequence.AppendInterval(_rankRevealDelay);
+
+            // ランク表示
             _resultSequence.Append(CreateRankTween());
             _resultSequence.Join(DOVirtual.DelayedCall(_rankRevealDelay, () => { }));
             
@@ -115,11 +129,7 @@ namespace BeatKeeper
         /// </summary>
         private Tween CreateScoreTween()
         {
-            if(_scoreText == null) 
-                return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
-
-            // 0を8桁埋めて表示を初期化
-            _scoreText.text = "00000000";
+            if(_scoreText == null) return DOVirtual.DelayedCall(0f, () => { });
             
             // スコアを先に取得しておく
             var targetScore = _scoreManager.Score;
@@ -151,24 +161,26 @@ namespace BeatKeeper
         private Tween CreateRankTween()
         {
             if(_rankImage == null) 
-                return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
+                return DOVirtual.DelayedCall(0f, () => { });
             
             // スコアを元にランクを算出
             var rank = _gradeEvaluator.EvaluateRank(_scoreManager.Score);
 
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _rankVoice);
-            VoiceManager.PlayVoice(voice);
-            
-            // ランクの文字列とサフィックスを連結して、スプライトをロードしてくる
-            var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
 
-            if (rankSprite != null)
+            return DOVirtual.DelayedCall(0.01f, () =>
             {
-                _rankImage.sprite = rankSprite;
-            }
+                VoiceManager.PlayVoice(voice);
 
-            return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
+                // ランクの文字列とサフィックスを連結して、スプライトをロードしてくる
+                var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
+                if (rankSprite != null)
+                {
+                    _rankImage.sprite = rankSprite;
+                    _rankImage.enabled = true;
+                }
+            });
         }
 
         /// <summary>
@@ -176,13 +188,36 @@ namespace BeatKeeper
         /// </summary>
         private Tween CreateRecordsTween()
         {
-            // TODO: 演出をつける
+            var elements = new[] { _maxCombo, _perfectCount, _goodCount, _missCount };
+    
+            // 初期化
+            foreach (var element in elements)
+            {
+                element.CanvasGroup.alpha = 0f;
+                element.transform.localPosition += Vector3.left * 80f;
+            }
+    
+            // スコア設定
             _maxCombo.SetAmount(_scoreManager.MaxCombo);
             _perfectCount.SetAmount(_scoreManager.AccuracyTracker.PerfectCount);
             _goodCount.SetAmount(_scoreManager.AccuracyTracker.GoodCount);
             _missCount.SetAmount(_scoreManager.AccuracyTracker.MissCount);
-            
-            return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
+    
+            // アニメーション
+            var sequence = DOTween.Sequence();
+    
+            for (int i = 0; i < elements.Length; i++)
+            {
+                var element = elements[i];
+                var targetPos = element.transform.localPosition + Vector3.right * 80f;
+        
+                sequence.Insert(i * 0.06f, element.CanvasGroup.DOFade(1f, 0.3f).SetEase(Ease.OutQuad));
+                sequence.Insert(i * 0.06f, element.transform.DOLocalMove(targetPos, 0.4f).SetEase(Ease.OutCubic));
+            }
+    
+            sequence.SetDelay(0.15f);
+
+            return sequence;
         }
 
         /// <summary>
