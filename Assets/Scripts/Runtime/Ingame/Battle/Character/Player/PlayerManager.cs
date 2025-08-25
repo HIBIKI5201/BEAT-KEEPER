@@ -942,7 +942,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_target == null) return;
 
             int timing = MusicEngineHelper.GetBeatSinceStart();
-            Debug.Log($"timing : {timing}");
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             ChartKindEnum kind = chart[timing].AttackKind;
@@ -952,7 +951,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _ringIndicatorData.TryGetRingData(kind, out RingData data);
             if (data == null) return;
 
-            float duration = data.EffectLength * (float)MusicEngineHelper.DurationOfBeat;
+            float duration = kind switch
+            {
+                ChartKindEnum.Attack => _data.ComboGoodRange,
+                ChartKindEnum.Charge => _data.ChargeStartGoodRange,
+                ChartKindEnum.Skill => _data.GoodSkillRange,
+                _ => 0
+            } / 2 * (float)MusicEngineHelper.DurationOfBeat;
 
             bool isCanceled = false;
 
