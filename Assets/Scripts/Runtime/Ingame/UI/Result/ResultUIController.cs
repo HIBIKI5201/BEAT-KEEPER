@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.U2D;
 using System;
+using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.System;
@@ -14,11 +15,16 @@ namespace BeatKeeper
     public class ResultUIController : MonoBehaviour
     {
         /// <summary>
-        /// リザルトの数字を設定する
+        /// リザルト演出を開始する
         /// </summary>
-        /// <returns></returns>
         public void SetResult()
         {
+            // 参照に不備がある場合return
+            if (!IsValidState()) return;
+            
+            // ランクを計算
+            _currentRank = _gradeEvaluator.EvaluateRank(_scoreManager.Score);
+            
             // 演出開始
             StartPerformance();
         }
@@ -45,41 +51,54 @@ namespace BeatKeeper
         [SerializeField] private RankVoice[] _resultVoice = new RankVoice[4];
 
         [Header("演出関連の設定")] 
-        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankDuration = 3f;
+        [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
+        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 3f;
         
+        private BattleGradeEnum _currentRank; // 今回のランク
+        private Sequence _resultSequence;
+
+        #region Life cycle
+
         /// <summary>
         /// Start
         /// </summary>
         private void Start()
         {
-            // nullチェックをして警告を出しておく
-            if (_scoreManager == null)
-            {
-                Debug.LogError($"{typeof(ResultUIController)}: スコアマネージャーがアサインされていません");
-            }
-
-            if (_gradeEvaluator == null)
-            {
-                Debug.LogError($"{typeof(ResultUIController)}: {typeof(BattleGradeEvaluator)}がアサインされていません");
-            }
+            ValidateReferences();
         }
 
+        /// <summary>
+        /// Destroy
+        /// </summary>
+        private void OnDestroy()
+        {
+            _resultSequence?.Kill();
+        }
+
+        #endregion
+        
         /// <summary>
         /// 演出を開始する
         /// </summary>
         private void StartPerformance()
         {
-            ShowCanvas();
+            // 既存のシーケンスがあれば停止する
+            _resultSequence?.Kill();
+            _resultSequence = DOTween.Sequence();
             
-            // ボイス再生中にスコアのアニメーションと記録のアニメーションを再生
-            SetScore();
-            SetRecords();
+            // 初期表示とボイス再生「今回のバトルレポートを確認するわ」
+            _resultSequence.AppendCallback(ShowCanvas);
             
-            // ボイス再生とアニメーションが終わるまで待つ（_rankDuration）
-            SetRank();
+            // ボイス再生中にスコアのアニメーションと最大コンボ数などの枠のスライドインアニメーションを再生
+            _resultSequence.Append(CreateScoreTween());
+            _resultSequence.Join(CreateRecordsTween());
+            _resultSequence.Join(DOVirtual.DelayedCall(_rankRevealDelay, () => { }));
+
+            _resultSequence.Append(CreateRankTween());
+            _resultSequence.Join(DOVirtual.DelayedCall(_rankRevealDelay, () => { }));
             
             // ランク読み上げを待ってから賞賛ボイスを再生
-            PlayPraiseVoice();
+            _resultSequence.AppendCallback(PlayPraiseVoice);
         }
 
         /// <summary>
@@ -88,28 +107,51 @@ namespace BeatKeeper
         private void ShowCanvas()
         {
             // NOTE: CanvasGroupの不透明度は現状ResultManagerから変更しているのでその処理は書いてない
-            
-            // ボイスを再生「今回のバトルレポートを確認するわ」
             VoiceManager.PlayVoice(_resultCueName);
         }
         
         /// <summary>
         /// スコアの値を設定する
         /// </summary>
-        private void SetScore()
+        private Tween CreateScoreTween()
         {
-            if(_scoreManager == null || _scoreText == null) return;
+            if(_scoreText == null) 
+                return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
+
+            // 0を8桁埋めて表示を初期化
+            _scoreText.text = "00000000";
             
-            // TODO: アニメーションをつける
-            _scoreText.text = _scoreManager.Score.ToString("D8");
+            // スコアを先に取得しておく
+            var targetScore = _scoreManager.Score;
+            
+            // 目標スコアまでアニメーション
+            return DOTween.To(
+                    () => 0,
+                    SetScore, // キャッシュしたデリゲートを使用
+                    targetScore, // 目標値 
+                    _scoreAnimationDuration) // 時間
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() => 
+                {
+                    SetScore(targetScore); // アニメーション完了時に確実に目標値を表示
+                });
+        }
+
+        /// <summary>
+        /// Textコンポーネントを更新
+        /// </summary>
+        private void SetScore(int amount)
+        {
+            _scoreText.text = amount.ToString("D8");
         }
 
         /// <summary>
         /// ランクの画像を設定する
         /// </summary>
-        private void SetRank()
+        private Tween CreateRankTween()
         {
-            if(_scoreManager == null || _gradeEvaluator == null || _rankImage == null) return;
+            if(_rankImage == null) 
+                return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
             
             // スコアを元にランクを算出
             var rank = _gradeEvaluator.EvaluateRank(_scoreManager.Score);
@@ -125,18 +167,22 @@ namespace BeatKeeper
             {
                 _rankImage.sprite = rankSprite;
             }
+
+            return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
         }
 
         /// <summary>
         /// コンボ数やPerfect数などの記録UIを設定する
         /// </summary>
-        private void SetRecords()
+        private Tween CreateRecordsTween()
         {
             // TODO: 演出をつける
             _maxCombo.SetAmount(_scoreManager.MaxCombo);
             _perfectCount.SetAmount(_scoreManager.AccuracyTracker.PerfectCount);
             _goodCount.SetAmount(_scoreManager.AccuracyTracker.GoodCount);
             _missCount.SetAmount(_scoreManager.AccuracyTracker.MissCount);
+            
+            return DOVirtual.DelayedCall(_scoreAnimationDuration, () => { });
         }
 
         /// <summary>
@@ -167,6 +213,35 @@ namespace BeatKeeper
     
             Debug.LogWarning($"{typeof(ResultUIController)}: ランク {rank} に対応するボイスが見つかりません");
             return string.Empty;
+        }
+        
+        /// <summary>
+        /// 必要な参照の検証を行う
+        /// </summary>
+        private void ValidateReferences()
+        {
+            if (_scoreManager == null)
+            {
+                Debug.LogWarning($"{this}: スコアマネージャーがアサインされていません");
+            }
+
+            if (_gradeEvaluator == null)
+            {
+                Debug.LogWarning($"{this}: BattleGradeEvaluatorがアサインされていません");
+            }
+            
+            if (_rankSpriteAtlas == null)
+            {
+                Debug.LogWarning($"{this}: ランクスプライトアトラスがアサインされていません");
+            }
+        }
+        
+        /// <summary>
+        /// 有効な状態かどうかを確認する
+        /// </summary>
+        private bool IsValidState()
+        {
+            return _scoreManager != null && _gradeEvaluator != null;
         }
 
         [Serializable]
