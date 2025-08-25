@@ -38,14 +38,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Update() { }
 
         // 各コンボボイスのcueName
-        private static readonly Dictionary<int, string[]> _comboVoiceMap = new()
+        private static readonly Dictionary<int, string> _comboVoiceMap = new()
         {
-            { 10, new[] { "voice_combo_10_01", "voice_combo_10_02" } },
-            { 30, new[] { "voice_combo_30_01", "voice_combo_30_02" } },
-            { 50, new[] { "voice_combo_50_01", "voice_combo_50_02" } },
-            { 100, new[] { "voice_combo_100_01", "voice_combo_100_02" } }
+            { 10, "voice_combo_10"},
+            { 30, "voice_combo_30"},
+            { 50, "voice_combo_50"},
+            { 100, "voice_combo_100"}
         };
-        private readonly string[] _highComboVoices = {"voice_combo_high_01", "voice_combo_high_02"};
+        private readonly string _highComboVoices = "voice_combo_high";
         
         private readonly PlayerData _data;
         private ReactiveProperty<int> _comboCount = new();
@@ -56,27 +56,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void CheckAndPlayComboVoice(int combo)
         {
             // 特定のコンボ数のボイスをチェック
-            if (_comboVoiceMap.TryGetValue(combo, out string[] voices))
+            if (_comboVoiceMap.TryGetValue(combo, out string voice))
             {
-                PlayRandomVoice(voices);
+                VoiceManager.PlayVoice(voice);
                 return;
             }
 
             // 100コンボ以降で50の倍数の場合
             if (combo > 100 && combo % 50 == 0)
             {
-                PlayRandomVoice(_highComboVoices);
+                VoiceManager.PlayVoice(_highComboVoices);
             }
-        }
-        
-        /// <summary>
-        /// ボイスを再生する
-        /// </summary>
-        private void PlayRandomVoice(string[] voiceArray)
-        {
-            var rand = Random.Range(0, voiceArray.Length);
-            var cueName = voiceArray[rand];
-            VoiceManager.PlayVoice(cueName);
         }
     }
 }
