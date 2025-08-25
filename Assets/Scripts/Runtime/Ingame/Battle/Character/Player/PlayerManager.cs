@@ -446,11 +446,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
-            int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
             
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
+
+                    int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
                     if (chart[chargeAttackRange + timing].AttackKind != CHARGE_ATTACK_ENUM) return;
 
                     ChargeAttackCharging();
@@ -779,6 +780,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
+            _scoreManager.AddScore(_data.ChargeStartScore);
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
@@ -811,16 +813,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             OnShootChargeAttack?.Invoke();
-            SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
-            VoiceManager.PlayVoice(_chargeShootVoice);
-            AttackEnemy(_data.ChargeAttackPower, nockback: true);
 
             //フルチャージかどうか
-            if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
-                < Time.time)
+            if (isGood || isPerfect)
             {
                 Debug.Log($"{_data.Name} is full charge attacking");
                 OnFullChargeAttack?.Invoke();
+
+                SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+                VoiceManager.PlayVoice(_chargeShootVoice);
+                AttackEnemy(_data.ChargeAttackPower, nockback: true);
+                _scoreManager.AddScore(_data.ChargeEndScore);
+                _comboSystem.Attack();
             }
             else
             {
