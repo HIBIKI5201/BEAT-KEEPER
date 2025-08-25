@@ -233,6 +233,25 @@ MonoBehaviour:
   _missCount: {fileID: 1071247687753604473}
   _rankSpriteAtlas: {fileID: 100100200, guid: 93e35356181195640bce4bd390d5c0f1, type: 3}
   _rankSpriteSuffix: _rank
+  _resultCueName: voice_result
+  _rankVoice:
+  - _rank: 0
+    _cueName: voice_rank_s
+  - _rank: 1
+    _cueName: voice_rank_a
+  - _rank: 2
+    _cueName: voice_rank_b
+  - _rank: 3
+    _cueName: voice_rank_c
+  _resultVoice:
+  - _rank: 0
+    _cueName: voice_result_s
+  - _rank: 1
+    _cueName: voice_result_a
+  - _rank: 2
+    _cueName: voice_result_b
+  - _rank: 3
+    _cueName: voice_result_c
 --- !u!1 &776649170675205362
 GameObject:
   m_ObjectHideFlags: 0
