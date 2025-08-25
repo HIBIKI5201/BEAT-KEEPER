@@ -19,6 +19,11 @@ namespace BeatKeeper
         private Tweener _fadeTween;
         private Tweener _moveTween;
 
+        /// <summary>
+        /// CanvasGroup
+        /// </summary>
+        public CanvasGroup CanvasGroup => _canvasGroup;
+        
         private void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
@@ -42,6 +47,11 @@ namespace BeatKeeper
             KillTweens();
             _fadeTween = _canvasGroup.DOFade(0f, _hideDuration);
             _moveTween = transform.DOLocalMove(_hiddenPosition, _hideDuration).SetEase(Ease.InQuad);
+        }
+
+        public void SetDefaultPosition()
+        {
+            transform.localPosition = _defaultPosition;
         }
 
         /// <summary>

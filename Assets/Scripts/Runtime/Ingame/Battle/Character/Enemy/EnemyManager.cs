@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
@@ -33,6 +34,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Dispose()
         {
             InputUnregister();
+            _disposeCancellationToken?.Cancel();
+        }
+
+        public EnemyAnimeManager GetEnemyAnimeManager()
+        {
+            return _animeManager;
         }
 
         /// <summary>
@@ -74,12 +81,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SetActiveModel(true);
 
+            _disposeCancellationToken = new();
+            
             //フェーズ変更時のイベント登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
                 .Skip(1) // 初期フェーズをスキップ
                 .Subscribe(OnPhaseChange)
-                .AddTo(destroyCancellationToken);
+                .AddTo(_disposeCancellationToken.Token);
             _phaseManager = phaseManager;
         }
 
@@ -125,7 +134,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Transform target = _normalAttackHitPositions[index];
 
             if (_normalAttackHitPerticle != null)
-                { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
+            { Instantiate(_normalAttackHitPerticle, target.position, target.rotation); }
 
             return target;
         }
@@ -161,6 +170,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
 
+        private CancellationTokenSource _disposeCancellationToken = new CancellationTokenSource();
+
         protected override async void Awake()
         {
             Animator animator = GetComponentInChildren<Animator>();
@@ -175,7 +186,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _healthSystem = new(_data);
 
-            _normalAttackLength = 
+            _normalAttackLength =
                 _indicatorData.GetRingData(ChartKindEnum.Normal).RingPrefab
                     .GetComponent<RingIndicatorBase>()
                     .EffectLength;
@@ -216,7 +227,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void OnAttack()
         {
             if (!_bgmManager) return;
-            if (_isKnockback) return; //ノックバック中は攻撃しない
 
             if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない
 
@@ -242,15 +252,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 if (attackKind == ChartKindEnum.Normal) //ノーマルアタック
                 {
+                    if (_isKnockback) return; //ノックバック中は攻撃しない
+
                     _target.HitAttack(new AttackData(1));
                     OnShootNormalAttack?.Invoke();
                     _animeManager.Attack();
                 }
                 else if (attackKind == ChartKindEnum.Charge) //チャージアタック
                 {
-                    _target.HitAttack(new AttackData(1, true));
-                    OnShootChargeAttack?.Invoke();
-                    _animeManager.ChargeAttackEnd();
+                    if (!_isKnockback) //ノックバック中でない場合のみチャージアタックを行う
+                    {
+                        _target.HitAttack(new AttackData(1, true));
+                        OnShootChargeAttack?.Invoke();
+                    }
+
+                    _animeManager.ChargeAttack();
                 }
             }
         }
@@ -268,8 +284,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             else if (chartData[timing + _chargeAttackLength].AttackKind == ChartKindEnum.Charge) //チャージアタックでない場合は何もしない
             {
-                _animeManager.ChargeAttackStart();
-                _animeManager.ChargeAttackCancel(_isKnockback);
+                _animeManager.PreChargeAttack();
             }
 
         }
@@ -297,9 +312,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private async void Nockback()
         {
             _isKnockback = true;
-            _animeManager?.KnockBack();
+            _animeManager?.KnockBack(_isKnockback);
             await Awaitable.WaitForSecondsAsync(_data.NockbackTime, destroyCancellationToken);
             _isKnockback = false;
+            _animeManager?.KnockBack(_isKnockback);
         }
     }
 }

@@ -46,6 +46,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (!string.IsNullOrEmpty(_apperanceSoundCueName))
             { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
         }
+        
+        // 長押しノーツ用のオーバーロード
+        public virtual void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
+        {
+            // 終了フラグをリセット
+            _isEnded = false;
+
+            UIInitialized();
+
+            _onEndAction = onEndAction;
+            _timing = timing;
+
+            _count = 0;
+
+            CheckRemainTime();
+
+            if (!string.IsNullOrEmpty(_apperanceSoundCueName))
+            { SoundEffectManager.PlaySoundEffect(_apperanceSoundCueName); }
+        }
 
         /// <summary>
         ///     リングの実行を終了する

@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
@@ -11,6 +12,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
     public class ChargeIndicator : RingIndicatorBase
     {
         public override int EffectLength => 5;
+
+		public override void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
+		{
+			base.OnGet(onEndAction, startPosition, endPosition, timing);
+
+			// 始点リングの位置を設定
+			_startPositionRing.rectTransform.position = startPosition
+                                                + new Vector2(Screen.width / 2, Screen.height / 2);
+
+			// 終点リングの位置を設定
+			_endPositionRing.rectTransform.position = endPosition
+                                                + new Vector2(Screen.width / 2, Screen.height / 2);
+		}
 
         /// <summary>
         /// エフェクトを再生
@@ -103,9 +117,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             var sequence = DOTween.Sequence()
                 
-                // パンチアニメーション
-                .Append(_startPositionRing.rectTransform.DOPunchScale(Vector3.one * 0.2f, beatDuration * 0.2f, 3, 0.8f))
-                
                 // 縮小開始（完全には収縮しきらないようにする）
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
@@ -157,16 +168,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[i]?.Kill();
             }
-
+            
+            HandleCenterImage(true);
             // 色とテキストが変更されていない場合、念のためここで変えておく
             ResetRingsColor(_newColor, _newColor);
 
             var sequence = DOTween.Sequence()
 
                 // 拡大
-                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
 
                 // フェードアウト
                 .Join(CreateFadeSequence(_fadeDuration))
@@ -245,15 +257,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _tweens[i]?.Kill();
             }
             
+            HandleCenterImage(true);
             // 色とテキストが変更されていない場合、念のためここで変えておく
             ResetRingsColor(_newColor, _newColor);
            
             var sequence = DOTween.Sequence()
                 
                 // 拡大
-                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.8f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.5f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 
                 // フェードアウト
                 .Join(CreateFadeSequence(_fadeDuration))

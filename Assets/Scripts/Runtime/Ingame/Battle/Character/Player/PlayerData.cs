@@ -16,6 +16,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float ComboResetTime => _comboRisetTime;
         public float ChargeAttackPower => _chargeAttackPower;
         public float ChargeAttackTime => _chargeAttackTime;
+        public int ChargeStartScore => _chargeStartScore;
+        public int ChargeEndScore => _chargeEndScore;
 
         public float ComboPerfectRange => _comboPerfectRange;
         public float ComboGoodRange => _comboGoodRange;
@@ -74,6 +76,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _chargeAttackPower = 500;
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
+        [SerializeField,Tooltip("チャージ開始時のスコア")]
+        private int _chargeStartScore = 100;
+        [SerializeField, Tooltip("チャージ終了時のスコア")]
+        private int _chargeEndScore = 200;
 
         [Space(5), DisplayText("攻撃の成功範囲")]
         [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]

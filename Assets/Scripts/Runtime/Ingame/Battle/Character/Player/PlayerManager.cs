@@ -446,11 +446,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
-            int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
             
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
+
+                    int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
                     if (chart[chargeAttackRange + timing].AttackKind != CHARGE_ATTACK_ENUM) return;
 
                     ChargeAttackCharging();
@@ -595,6 +596,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #endregion
 
+        public PlayerAnimeManager GetPlayerAnimeManager()
+        {
+            return _animeManager;
+        }
+
         /// <summary>
         ///     システムの初期化処理
         /// </summary>
@@ -696,8 +702,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
-            if (_isThisBeatInputed) return; //連打防止
-
             bool isPerfect = MusicEngineHelper
                 .IsTimingWithinAcceptableRange(_data.PerfectSkillRange);
             bool isGood = MusicEngineHelper
@@ -776,6 +780,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
+            _scoreManager.AddScore(_data.ChargeStartScore);
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
@@ -808,16 +813,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             OnShootChargeAttack?.Invoke();
-            SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
-            VoiceManager.PlayVoice(_chargeShootVoice);
-            AttackEnemy(_data.ChargeAttackPower);
 
             //フルチャージかどうか
-            if (_chargeAttackTimer + MusicEngineHelper.DurationOfBeat * _data.ChargeAttackTime
-                < Time.time)
+            if (isGood || isPerfect)
             {
                 Debug.Log($"{_data.Name} is full charge attacking");
                 OnFullChargeAttack?.Invoke();
+
+                SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+                VoiceManager.PlayVoice(_chargeShootVoice);
+                AttackEnemy(_data.ChargeAttackPower, nockback: true);
+                _scoreManager.AddScore(_data.ChargeEndScore);
+                _comboSystem.Attack();
             }
             else
             {
@@ -831,7 +838,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         ///     敵に攻撃を行う
         /// </summary>
         /// <param name="damageScale"></param>
-        private void AttackEnemy(float power, float damageScale = 1)
+        private void AttackEnemy(float power, float damageScale = 1, bool nockback = false)
         {
             power *= damageScale;
 
@@ -859,7 +866,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             power *= _damageScale;
 
-            _target.HitAttack(new(power));
+            _target.HitAttack(new(power, nockback));
 
             // スコア計算
             float score = power * _data.ComboScoreScale
