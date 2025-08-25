@@ -307,7 +307,7 @@ RectTransform:
   - {fileID: 8660652905368522210}
   - {fileID: 8642587792102381231}
   - {fileID: 8853481878240913587}
-  m_Father: {fileID: 302145706440026476}
+  m_Father: {fileID: 7405516482665855513}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -334,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6d4b2fcfbd0c84bb5e76c568030048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreManager: {fileID: 0}
   _scoreText: {fileID: 4097051169465662113}
   _containerCanvasGroup: {fileID: 2460981176171706542}
   _plusSignTransform: {fileID: 2916538748084853600}
@@ -1058,6 +1059,7 @@ RectTransform:
   m_Children:
   - {fileID: 8578347418150699550}
   - {fileID: 8130419390631652754}
+  - {fileID: 1269339717808239343}
   m_Father: {fileID: 302145706440026476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -2194,7 +2196,6 @@ RectTransform:
   - {fileID: 1749425771523293512}
   - {fileID: 7405516482665855513}
   - {fileID: 2916375148089893408}
-  - {fileID: 1269339717808239343}
   - {fileID: 5020823783569968095}
   - {fileID: 3343023035188979881}
   - {fileID: 1116584958319909152}
