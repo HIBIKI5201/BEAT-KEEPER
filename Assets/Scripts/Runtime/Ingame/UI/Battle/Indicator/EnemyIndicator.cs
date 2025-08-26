@@ -140,6 +140,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			contractionSequence.Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear));
 			contractionSequence.Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
 
+            // シーケンスが中断されなかった場合はミス。失敗演出を行う
+            contractionSequence.OnComplete(() => PlayFailEffect());
+            
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
             {
@@ -208,6 +211,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void PlayFailEffect()
         {
+            if(_tweens != null)
+            {
+                _tweens[0]?.Kill();
+            }
+            
             // 回避失敗フラグを立てる
             _isFailed = true;
 
@@ -223,6 +231,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             failSequence.Join(CreateFadeSequence(_fadeDuration));
 
             failSequence.OnComplete(End);
+            
+            _tweens[0] = failSequence;
         }
 
         #region Reset
