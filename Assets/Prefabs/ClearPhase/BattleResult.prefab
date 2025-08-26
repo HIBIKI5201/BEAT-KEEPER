@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1092309141342781209}
   - component: {fileID: 4707237333655340668}
   - component: {fileID: 6559278163978428502}
+  - component: {fileID: 7368081649803368690}
   m_Layer: 5
   m_Name: MaxCombo
   m_TagString: Untagged
@@ -91,6 +92,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _amountText: {fileID: 4966932115747383050}
+--- !u!225 &7368081649803368690
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108102815918423867}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &173391638242732181
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +246,28 @@ MonoBehaviour:
   _missCount: {fileID: 1071247687753604473}
   _rankSpriteAtlas: {fileID: 100100200, guid: 93e35356181195640bce4bd390d5c0f1, type: 3}
   _rankSpriteSuffix: _rank
+  _resultCueName: voice_result
+  _rankVoice:
+  - _rank: 0
+    _cueName: voice_rank_s
+  - _rank: 1
+    _cueName: voice_rank_a
+  - _rank: 2
+    _cueName: voice_rank_b
+  - _rank: 3
+    _cueName: voice_rank_c
+  _resultVoice:
+  - _rank: 0
+    _cueName: voice_result_s
+  - _rank: 1
+    _cueName: voice_result_a
+  - _rank: 2
+    _cueName: voice_result_b
+  - _rank: 3
+    _cueName: voice_result_c
+  _scoreAnimationDuration: 2
+  _rankRevealDelay: 1
+  _resultRevealDelay: 2.3
 --- !u!1 &776649170675205362
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,6 +359,7 @@ GameObject:
   - component: {fileID: 711923266560243445}
   - component: {fileID: 4784362565974905003}
   - component: {fileID: 1071247687753604473}
+  - component: {fileID: 3892975535761822148}
   m_Layer: 5
   m_Name: Miss
   m_TagString: Untagged
@@ -403,6 +439,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _amountText: {fileID: 5090563534941256809}
+--- !u!225 &3892975535761822148
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946098379456882542}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &989640557567712845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,6 +1280,7 @@ GameObject:
   - component: {fileID: 8679015729470447028}
   - component: {fileID: 6299066505265074953}
   - component: {fileID: 7047120852346443159}
+  - component: {fileID: 1769527453606942587}
   m_Layer: 5
   m_Name: Perfect
   m_TagString: Untagged
@@ -1311,6 +1360,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _amountText: {fileID: 6634466091068582851}
+--- !u!225 &1769527453606942587
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5548709390980421872}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7009481446362322731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1438,6 +1499,7 @@ GameObject:
   - component: {fileID: 4070126157872837563}
   - component: {fileID: 8180072519690390100}
   - component: {fileID: 1683138294846311537}
+  - component: {fileID: 5523885832006577825}
   m_Layer: 5
   m_Name: Good
   m_TagString: Untagged
@@ -1517,6 +1579,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _amountText: {fileID: 8062071772628744823}
+--- !u!225 &5523885832006577825
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387260555610154766}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7752780621237488823
 GameObject:
   m_ObjectHideFlags: 0
