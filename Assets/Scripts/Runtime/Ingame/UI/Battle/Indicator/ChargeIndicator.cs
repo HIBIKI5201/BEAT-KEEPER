@@ -98,43 +98,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected override void InitializeComponents()
         {
             ResetAllComponents();
+            SetAllAlpha(1f);
             
             _tweens = new Tween[5];
 
             _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
             _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
             _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
-        }
-        
-        /// <summary>
-        /// 始点リングの縮小演出
-        /// </summary>
-        protected virtual void StartContractionEffect()
-        {
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
-            // 表示
-            SetAllAlpha(1f);
-            
-            var sequence = DOTween.Sequence()
-                
-                // 縮小開始（完全には収縮しきらないようにする）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
-                // Just判定後も縮小を続ける
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                
-                .OnComplete(() => PlayFailEffect());
-            
-            _tweens[0] = sequence;
-            
-            // ブラーリングのパルス
-            var blurPulseSequence = DOTween.Sequence()
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .SetLoops(-1, LoopType.Restart);
-            
-            _tweens[2] = blurPulseSequence;
         }
 
         /// <summary>
@@ -183,7 +153,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
                 .OnComplete(OnChargeComplete);
             
-            _tweens[1] = sequence;
+            _tweens[0] = sequence;
         }
 
         /// <summary>
@@ -240,7 +210,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // 色変更
                 .Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration))
                 
-                // フェードアウト
+                // フェードアウト NOTE: 他のノーツと違いここの連結をJoinとしている
                 .Join(CreateFadeSequence(_fadeDuration))
                 
                 .OnComplete(End);
@@ -360,7 +330,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (_decorationImage != null)
             {
                 // Kill the pulse animation and set the alpha to a static value.
-                _tweens[2]?.Kill();
+                _tweens[1]?.Kill();
                 var color = _decorationImage.color;
                 color.a = _translucentDefaultColor.a;
                 _decorationImage.color = color;
@@ -378,7 +348,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
                     .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
                     .SetLoops(-1, LoopType.Restart);
-                _tweens[2] = blurPulseSequence;
+                _tweens[1] = blurPulseSequence;
             }
         }
 
