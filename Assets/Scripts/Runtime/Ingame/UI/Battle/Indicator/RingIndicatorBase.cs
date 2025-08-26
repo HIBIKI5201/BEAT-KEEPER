@@ -121,7 +121,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             return true;
         }
         
-        #region ノーツの演出メソッド
+        #region ノーツの演出（チュートリアル用publicメソッド）
         
         /// <summary>
         /// 失敗演出
@@ -168,6 +168,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 tween?.Play();
             }
         }
+        
+        #region 変数宣言
 
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
@@ -223,6 +225,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
         private const float RECEPTION_TIME = 0.45f;
         
+        #endregion
+        
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
@@ -234,8 +238,24 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             _defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
+            
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
 
+        /// <summary>
+        /// コンポーネントの初期化
+        /// </summary>
+        protected virtual void InitializeComponents()
+        {
+            // 2種類のTweenを使用するため、配列も2つ分確保する
+            _tweens = new Tween[2];
+            
+            // スケールと色を初期化
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
+        }
+        
         /// <summary>
         /// UIの初期化処理
         /// オブジェクトプールのOnGet()処理の中で呼び出される
@@ -359,7 +379,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
-            OnPlayerSuccess(isPerfect);
+            OnPlayerSuccessForced(isPerfect);
         }
 
         /// <summary>

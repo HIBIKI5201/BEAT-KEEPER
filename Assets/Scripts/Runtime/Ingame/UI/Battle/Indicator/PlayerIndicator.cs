@@ -62,25 +62,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
 
-        private void Start()
-        {
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-        
-        /// <summary>
-        /// コンポーネントの初期化
-        /// </summary>
-        private void InitializeComponents()
-        {
-            // 2種類のTweenを使用するため、配列も2つ分確保する
-            _tweens = new Tween[2];
-            
-            // スケールと色を初期化
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-        
         protected override void HandlePerfect() => OnPlayerSuccess(true);
         protected override void HandleGood() => OnPlayerSuccess(false);
     }

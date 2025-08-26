@@ -94,7 +94,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
-        private void InitializeComponents()
+        protected virtual void InitializeComponents()
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[3];
@@ -105,6 +105,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初回のフィニッシャー状態をチェックしてUI更新
             UpdateRingState();
         }
+        
+        #region 演出メソッド
         
         /// <summary>
         /// リングの縮小
@@ -173,6 +175,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             base.PlayFailEffect();
         }
+        
+        #endregion
 
         #region スキル/フィニッシャーの切り替え
         

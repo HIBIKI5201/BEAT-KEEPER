@@ -65,29 +65,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
 
-        [Header("追加の色設定")]
-        [SerializeField] private Color _warningColor = Color.red;
-
-        private void Start()
-        {
-			_centerImage.enabled = true;
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-
-        /// <summary>
-        /// コンポーネントの初期化
-        /// </summary>
-        private void InitializeComponents()
-        {
-            // Tweenの配列を作成
-            _tweens = new Tween[3];
-
-            // 初期状態の設定
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-
 		protected override void HandlePerfect() => OnPlayerSuccess(true);
         protected override void HandleGood() => OnPlayerSuccess(false);
     }

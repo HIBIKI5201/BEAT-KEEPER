@@ -82,7 +82,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
-        private void InitializeComponents()
+        protected virtual void InitializeComponents()
         {
             ResetAllComponents();
             
