@@ -120,6 +120,54 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             return true;
         }
+        
+        #region ノーツの演出メソッド
+        
+        /// <summary>
+        /// 失敗演出
+        /// NOTE: チャージのみ使用しているコンポーネントが多いためオーバーライドして実装が必要
+        /// </summary>
+        public virtual void PlayFailEffect()
+        {
+            if (_tweens != null)
+            {
+                // 念のためキルしておく
+                _tweens[0]?.Kill();
+            }
+            
+            // 中央のImageのスプライトとサイズをMissのものに変える
+            SetMissImage();
+            
+            var failSequence = DOTween.Sequence();
+            
+            // 色変更とフェードアウト
+            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
+            failSequence.Join(CreateFadeSequence(_fadeDuration));
+            
+            failSequence.OnComplete(End);
+            
+            _tweens[0] = failSequence;
+        }
+        
+        #endregion
+        
+        public virtual void Pause()
+        {
+            if (_tweens == null) return;
+            foreach (var tween in _tweens)
+            {
+                tween?.Pause();
+            }
+        }
+
+        public virtual void Resume()
+        {
+            if (_tweens == null) return;
+            foreach (var tween in _tweens)
+            {
+                tween?.Play();
+            }
+        }
 
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
@@ -170,25 +218,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         protected Color _defaultColor => _colorSettings.DefaultColor;
         protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
-
-        public virtual void Pause()
-        {
-            if (_tweens == null) return;
-            foreach (var tween in _tweens)
-            {
-                tween?.Pause();
-            }
-        }
-
-        public virtual void Resume()
-        {
-            if (_tweens == null) return;
-            foreach (var tween in _tweens)
-            {
-                tween?.Play();
-            }
-        }
-
 
         private void Awake()
         {

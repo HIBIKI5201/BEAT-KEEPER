@@ -108,32 +108,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             _tweens[0] = successSequence;
         }
-
-
-        /// <summary>
-        /// 失敗演出
-        /// </summary>
-        public void PlayFailEffect()
-        {
-			if(_tweens != null)
-			{
-				_tweens[0]?.Kill();
-			}
-
-            // 中央のImageのスプライトとサイズをMissのものに変える
-            SetMissImage();
-
-            var failSequence = DOTween.Sequence();
-
-            // 色変更とフェードアウト
-            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
-            failSequence.Join(CreateFadeSequence(_fadeDuration));
-
-            failSequence.OnComplete(End);
-
-            _tweens[0] = failSequence;
-        }
-
+        
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする

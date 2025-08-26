@@ -190,29 +190,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
-        /// <summary>
-        /// プレイヤーが回避に失敗したときのアニメーション
-        /// </summary>
-        public void PlayFailEffect()
-        {
-            if(_tweens != null)
-            {
-                _tweens[0]?.Kill();
-            }
-			
-			SetMissImage();
-			
-            var failSequence = DOTween.Sequence();
-
-            // 色変更とフェードアウト
-            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
-            failSequence.Join(CreateFadeSequence(_fadeDuration));
-
-            failSequence.OnComplete(End);
-            
-            _tweens[0] = failSequence;
-        }
-
 		protected override void HandlePerfect() => OnPlayerAvoidSuccess(true);
         protected override void HandleGood() => OnPlayerAvoidSuccess(false);
     }

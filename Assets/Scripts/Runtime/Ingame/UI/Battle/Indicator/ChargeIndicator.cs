@@ -279,7 +279,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 失敗演出（チャージ完了前に終了）
         /// </summary>
-        public void PlayFailEffect()
+        public override void PlayFailEffect()
         {
             for (int i = 0; i < 3; i++)
             {
