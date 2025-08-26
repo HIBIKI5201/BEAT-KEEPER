@@ -41,10 +41,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnGoodAttack -= HandleGood;
 
 			base.End();
-            
-            // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
 
         #region チュートリアル用のメソッド

@@ -84,6 +84,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             _onEndAction?.Invoke();
+            
+            // UIのリセット
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
 
         public void AddCount()

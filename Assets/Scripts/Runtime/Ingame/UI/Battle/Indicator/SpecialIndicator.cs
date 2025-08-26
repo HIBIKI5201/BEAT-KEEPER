@@ -50,9 +50,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             base.End();
             
-            // NOTE: InitializeComponents()より先に表示されてしまうのでここでも初期化を行う
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
             UpdateRingState();
         }
         

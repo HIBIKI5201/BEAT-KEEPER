@@ -45,10 +45,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnFailedAvoid -= PlayFailEffect;
 
             base.End();
-            
-            // UIのリセット
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
 
             //敵攻撃はノックバックを与えるので確認
             _chartRingManager.CheckAllRingIndicatorRemainTime();
