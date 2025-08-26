@@ -49,8 +49,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // イベントの購読解除
             _player.OnStartChargeAttack -= OnPlayerCharge;
-            _player.OnFullChargeAttack -= OnPlayerAttackSuccess;
-            _player.OnNonFullChargeAttack -= PlayFailEffect;
+            _player.OnChargeAttack -= OnPlayerAttackSuccess;
+            _player.OnMissChargeAttack -= PlayFailEffect;
             
             // Tweens配列をクリア
             if (_tweens != null)
@@ -91,8 +91,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens = new Tween[5];
 
             _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
-            _player.OnFullChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
-            _player.OnNonFullChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
+            _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
+            _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
         }
 
         #region ベースとなる演出

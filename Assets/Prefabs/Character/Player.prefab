@@ -11934,7 +11934,7 @@ MonoBehaviour:
   _battleBuffData: {fileID: 11400000, guid: c6122e1c9553b36458f86d2b23be5d29, type: 2}
   _comboShootPerticle: {fileID: 0}
   _muzzle: {fileID: 0}
-  _ringIndicatorData: {fileID: 0}
+  _ringIndicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
   _modelParent: {fileID: 8991426660756910790}
   _comboAttackSound: NormalGunshot
   _chargeAttackStartSound: Charging
@@ -12089,8 +12089,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8720405364707376600}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.4067072, y: 0.00000020914572, z: 0.00000016169088, w: 0.9135586}
-  m_LocalPosition: {x: -0.05100006, y: 0.45699984, z: 0.8329999}
+  m_LocalRotation: {x: -0.40670735, y: 0.00000017106703, z: 0.00000007615738, w: 0.9135585}
+  m_LocalPosition: {x: -0.05100063, y: 0.45699996, z: 0.8330002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12240,7 +12240,7 @@ Transform:
   m_GameObject: {fileID: 9004331703646122493}
   serializedVersion: 2
   m_LocalRotation: {x: -0.027587462, y: 0.025110653, z: 0.0006930348, w: 0.9993037}
-  m_LocalPosition: {x: 0.051000178, y: -0.013001084, z: 0.17300011}
+  m_LocalPosition: {x: 0.051000014, y: -0.013001144, z: 0.17299965}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

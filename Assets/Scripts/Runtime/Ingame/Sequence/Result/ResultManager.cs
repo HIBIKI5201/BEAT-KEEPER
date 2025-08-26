@@ -16,6 +16,9 @@ namespace BeatKeeper
         [SerializeField] private CanvasGroup _endPanel;
         [SerializeField] private float _fadeDuration = 0.5f;
 		[SerializeField] private float _moveXDistance = 20f;
+		
+		[Header("ボイスの設定")]
+		[SerializeField] private string _endingVoice = "voice_ending";
 
         private InputBuffer _inputBuffer;
 		private Vector3 _originalResultPanelPosition; 
@@ -101,7 +104,9 @@ namespace BeatKeeper
                 // パネルを入れ替える
                 _resultPanel.DOFade(0, _fadeDuration);
                 _endPanel.DOFade(1, _fadeDuration);
-                return;
+                
+				VoiceManager.PlayVoice(_endingVoice);
+				return;
             }
             
             // 最後のパネルが表示済みだったらロードアウト処理を実行
