@@ -31,20 +31,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 3拍目　スキル発動の演出を行う
                 case 2:
-                    _player.OnPerfectSkill += HandlePerfectSkill;
-                    _player.OnGoodSkill += HandleGoodSkill;
+                    _player.OnPerfectSkill += HandlePerfect;
+                    _player.OnGoodSkill += HandleGood;
                     
                     // TODO: 仮
-                    _player.OnFinisher += HandlePerfectSkill;
+                    _player.OnFinisher += HandlePerfect;
                     break;
             }
         }
         
         public override void End()
         {
-            _player.OnPerfectSkill -= HandlePerfectSkill;
-            _player.OnGoodSkill -= HandleGoodSkill;
-            _player.OnFinisher -= HandlePerfectSkill;
+            _player.OnPerfectSkill -= HandlePerfect;
+            _player.OnGoodSkill -= HandleGood;
+            _player.OnFinisher -= HandlePerfect;
             
             // フィニッシャー状態の監視を解除
             StopFinisherMonitoring();
@@ -384,7 +384,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// フェードアウトシーケンスを作成
         /// </summary>
-        private DG.Tweening.Sequence CreateFadeSequence(float duration)
+        protected override DG.Tweening.Sequence CreateFadeSequence(float duration)
         {
             var fadeSequence = DOTween.Sequence();
             
@@ -411,7 +411,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 色変更シーケンスを作成
         /// </summary>
-        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
+        protected override DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
         {
             var colorSequence = DOTween.Sequence();
             
@@ -435,7 +435,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             return colorSequence;
         }
         
-        private void HandlePerfectSkill() => PlaySuccessEffect(true);
-        private void HandleGoodSkill() => PlaySuccessEffect(false);
+        protected override void HandlePerfect() => PlaySuccessEffect(true);
+        protected override void HandleGood() => PlaySuccessEffect(false);
     }
 }

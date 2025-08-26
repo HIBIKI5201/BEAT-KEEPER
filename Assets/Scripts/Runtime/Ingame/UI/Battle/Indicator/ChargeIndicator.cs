@@ -365,7 +365,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// フェードアウトシーケンスを作成
         /// </summary>
-        private DG.Tweening.Sequence CreateFadeSequence(float duration)
+        protected override DG.Tweening.Sequence CreateFadeSequence(float duration)
         {
             var fadeSequence = DOTween.Sequence();
             
@@ -381,7 +381,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 色変更シーケンスを作成
         /// </summary>
-        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor,
+        protected override DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor,
             float duration)
         {
             var colorSequence = DOTween.Sequence();

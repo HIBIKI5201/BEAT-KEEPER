@@ -38,8 +38,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 				
 				// 	誤反応対策として念のために直前にイベント登録を行う
 				case 2:
-					_player.OnPerfectAvoid += HandlePerfectAvoid;
-					_player.OnGoodAvoid += HandleGoodAvoid;
+					_player.OnPerfectAvoid += HandlePerfect;
+					_player.OnGoodAvoid += HandleGood;
                     _player.OnFailedAvoid += PlayFailEffect;
 					break;
             }
@@ -53,8 +53,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetAllTween();
 
             // イベント購読解除
-            _player.OnPerfectAvoid -= HandlePerfectAvoid;
-            _player.OnGoodAvoid -= HandleGoodAvoid;
+            _player.OnPerfectAvoid -= HandlePerfect;
+            _player.OnGoodAvoid -= HandleGood;
             _player.OnFailedAvoid -= PlayFailEffect;
 
             base.End();
@@ -276,40 +276,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         #endregion
 
-        #region Create Sequence
-
-        /// <summary>
-        /// フェードアウトシーケンスを作成
-        /// </summary>
-        private DG.Tweening.Sequence CreateFadeSequence(float duration)
-        {
-            var fadeSequence = DOTween.Sequence();
-			
-			fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
-			fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
-			fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
-			fadeSequence.Join(_centerImage.DOFade(0f, duration).SetEase(Ease.Linear));
-
-            return fadeSequence;
-        }
-
-        /// <summary>
-        /// 色変更シーケンスを作成
-        /// </summary>
-        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
-        {
-            var colorSequence = DOTween.Sequence();
-
-			colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-			colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-			colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-
-            return colorSequence;
-        }
-
-		private void HandlePerfectAvoid() => OnPlayerAvoidSuccess(true);
-        private void HandleGoodAvoid() => OnPlayerAvoidSuccess(false);
-
-        #endregion
+		protected override void HandlePerfect() => OnPlayerAvoidSuccess(true);
+        protected override void HandleGood() => OnPlayerAvoidSuccess(false);
     }
 }

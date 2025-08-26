@@ -270,6 +270,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _hitImage.sprite = _commonSprite.HitLine;
         }
         
+        #region PlayerManagerのイベント登録用
+        
         /// <summary>
         /// Perfect判定時の処理
         /// </summary>
@@ -280,5 +282,39 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         protected virtual void HandleGood(){ }
         
+        #endregion
+        
+        #region シーケンス作成メソッド（通常攻撃/回避で使用。スキル/チャージは継承したもの）
+        
+        /// <summary>
+        /// フェードアウトシーケンスを作成
+        /// </summary>
+        protected virtual DG.Tweening.Sequence CreateFadeSequence(float duration)
+        {
+            var fadeSequence = DOTween.Sequence();
+			
+            fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
+            // fadeSequence.Join(_centerImage.DOFade(0f, duration).SetEase(Ease.Linear));
+
+            return fadeSequence;
+        }
+
+        /// <summary>
+        /// 色変更シーケンスを作成
+        /// </summary>
+        protected virtual DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
+        {
+            var colorSequence = DOTween.Sequence();
+
+            colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+            colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
+			
+            return colorSequence;
+        }
+        
+        #endregion
     }
 }

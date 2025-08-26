@@ -254,34 +254,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_hitImage != null) _hitImage.color = color;
         }
         
-        /// <summary>
-        /// フェードアウトシーケンスを作成
-        /// </summary>
-        private DG.Tweening.Sequence CreateFadeSequence(float duration)
-        {
-            var fadeSequence = DOTween.Sequence();
-            
-            if (_ringImage != null) fadeSequence.Join(_ringImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_decorationImage != null) fadeSequence.Join(_decorationImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            if (_hitImage != null) fadeSequence.Join(_hitImage.DOFade(0f, duration).SetEase(Ease.Linear));
-            
-            return fadeSequence;
-        }
-        
-        /// <summary>
-        /// 色変更シーケンスを作成
-        /// </summary>
-        private DG.Tweening.Sequence CreateColorChangeSequence(Color targetColor, Color translucentColor, float duration)
-        {
-            var colorSequence = DOTween.Sequence();
-            
-            if (_ringImage != null) colorSequence.Join(_ringImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_decorationImage != null) colorSequence.Join(_decorationImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            if (_hitImage != null) colorSequence.Join(_hitImage.DOColor(targetColor, duration).SetEase(Ease.OutFlash));
-            
-            return colorSequence;
-        }
-        
         protected override void HandlePerfect() => OnPlayerAttackSuccess(true);
         protected override void HandleGood() => OnPlayerAttackSuccess(false);
     }
