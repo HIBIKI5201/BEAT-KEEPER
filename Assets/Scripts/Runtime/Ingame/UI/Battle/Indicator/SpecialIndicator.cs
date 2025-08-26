@@ -381,6 +381,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
         
+        #region シーケンス作成メソッド
+        
         /// <summary>
         /// フェードアウトシーケンスを作成
         /// </summary>
@@ -434,6 +436,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             return colorSequence;
         }
+        
+        #endregion
         
         protected override void HandlePerfect() => PlaySuccessEffect(true);
         protected override void HandleGood() => PlaySuccessEffect(false);

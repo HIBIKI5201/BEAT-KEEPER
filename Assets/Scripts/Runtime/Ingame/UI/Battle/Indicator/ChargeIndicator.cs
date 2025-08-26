@@ -360,7 +360,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
 
-        #region Create Tween
+        #region シーケンス作成メソッド
 
         /// <summary>
         /// フェードアウトシーケンスを作成

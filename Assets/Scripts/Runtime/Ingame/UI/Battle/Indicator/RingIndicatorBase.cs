@@ -284,7 +284,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
         
-        #region シーケンス作成メソッド（通常攻撃/回避で使用。スキル/チャージは継承したもの）
+        #region シーケンス作成メソッド（通常攻撃/回避で使用。スキル/チャージはオーバーライドしてそれぞれ独自処理を実装する）
         
         /// <summary>
         /// フェードアウトシーケンスを作成
