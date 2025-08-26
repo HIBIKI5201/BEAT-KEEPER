@@ -56,6 +56,22 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
             UpdateRingState();
         }
+        
+        #region チュートリアル用のメソッド
+        
+        /// <summary>
+        /// 発動エフェクト
+        /// </summary>
+        public void PlaySuccessEffectPublic()
+        {
+            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+            // フィニッシャーノーツのリングの操作。ベースクラスの処理に含まれないのでここで行う
+            _ringImages[0].rectTransform.localScale = Vector3.one;
+
+            base.OnPlayerSuccessForced(true);
+        }
+        
+        #endregion
 
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
@@ -135,37 +151,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .SetLoops(-1, LoopType.Restart);
             
             _tweens[1] = blurPulseSequence;
-        }
-
-        /// <summary>
-        /// 発動エフェクト
-        /// </summary>
-        public void PlaySuccessEffectPublic()
-        {
-            if(_tweens != null)
-            {
-                _tweens[0]?.Kill();
-            }
-            
-            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-            _ringImage.rectTransform.localScale = Vector3.one;
-
-            HandleCenterImage(true);
-            ChangeRingsImage();
-            
-            var successSequence = DOTween.Sequence();
-
-            // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
-
-            // フェードアウト
-            successSequence.Append(CreateFadeSequence(_fadeDuration));
-
-            // エフェクトが完了したらEnd処理を実行
-            successSequence.OnComplete(End);
-
-            _tweens[0] = successSequence;
         }
 
         /// <summary>

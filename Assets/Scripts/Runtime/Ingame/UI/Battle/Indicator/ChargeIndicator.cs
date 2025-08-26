@@ -78,8 +78,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
-
-        
         
         /// <summary>
         /// コンポーネントの初期化

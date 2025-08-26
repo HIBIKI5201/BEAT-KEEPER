@@ -303,6 +303,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         /// <summary>
         /// 成功エフェクト
+        /// NOTE: スキルノーツ、チャージノーツはオーバーライドして実装
         /// </summary>
         protected virtual void OnPlayerSuccess(bool isPerfect)
         {
@@ -311,7 +312,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
+            OnPlayerSuccess(isPerfect);
+        }
 
+        /// <summary>
+        /// タイミングチェックなしで強制的に成功エフェクトを再生
+        /// </summary>
+        protected virtual void OnPlayerSuccessForced(bool isPerfect)
+        {
             // 成功した場合はリングの縮小演出は不要になるのでキル
             if(_tweens != null)
             {

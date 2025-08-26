@@ -49,67 +49,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         #region チュートリアル用のメソッド
-        
+
         /// <summary>
         /// Perfect判定時のエフェクト
         /// </summary>
-        public void PlayPerfectEffect()
-        {
-            if(_tweens != null)
-			{
-				_tweens[0]?.Kill();
-			}
-
-            // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-            _ringImage.rectTransform.localScale = Vector3.one;
-
-            // 中央のImageのスプライトとサイズをPerfectのものに変える
-            HandleCenterImage(true);
-			ChangeRingsImage();
-
-            var successSequence = DOTween.Sequence();
-
-            // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
-
-            // フェードアウト
-            successSequence.Append(CreateFadeSequence(_fadeDuration));
-
-            // エフェクトが完了したらEnd処理を実行
-            successSequence.OnComplete(End);
-
-            _tweens[0] = successSequence;
-        }
+        public void PlayPerfectEffect() => OnPlayerSuccessForced(true);
 
         /// <summary>
         /// Good判定時のエフェクト
         /// </summary>
-        public void PlayGoodEffect()
-        {
-            if(_tweens != null)
-			{
-				_tweens[0]?.Kill();
-			}
-
-            // 中央のImageのスプライトとサイズをGoodのものに変える
-            HandleCenterImage(false);
-			ChangeRingsImage();
-
-            var successSequence = DOTween.Sequence();
-
-            // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
-
-            // フェードアウト
-            successSequence.Append(CreateFadeSequence(_fadeDuration));
-
-            // エフェクトが完了したらEnd処理を実行
-            successSequence.OnComplete(End);
-
-            _tweens[0] = successSequence;
-        }
+        public void PlayGoodEffect() => OnPlayerSuccessForced(false);
         
         #endregion
         
