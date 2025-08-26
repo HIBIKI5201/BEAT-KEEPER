@@ -60,7 +60,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _tutorialAttackStartVoice;
         [SerializeField] private string _tutorialSuccess2;
         [SerializeField] private string _tutorialField;
-        [SerializeField] private string _tutorialAvoidSuccess;
         [SerializeField] private string _chargeStartVoice;
         [SerializeField] private string _chargingVoice;
         [SerializeField] private string _chargeCompleteVoice;

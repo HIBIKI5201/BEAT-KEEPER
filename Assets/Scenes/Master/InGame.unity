@@ -1172,7 +1172,7 @@ MonoBehaviour:
   _tutorialText: {fileID: 2908268678855267499}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
-  _indicatorGenerateCount: 6
+  _indicatorGenerateCount: 4
   _goodRange: 0.9
   _perfectRange: 0.7
   _playTutorial: 1
@@ -1197,7 +1197,6 @@ MonoBehaviour:
   _tutorialAttackStartVoice: voice_tutorial_normal_attack_03
   _tutorialSuccess2: voice_tutorial_normal_attack_encourage_02
   _tutorialField: voice_tutorial_common_encourage
-  _tutorialAvoidSuccess: voice_tutorial_avoid_04
   _chargeStartVoice: voice_tutorial_charge_attack_03
   _chargingVoice: voice_tutorial_charge_attack_04
   _chargeCompleteVoice: voice_tutorial_charge_attack_05
