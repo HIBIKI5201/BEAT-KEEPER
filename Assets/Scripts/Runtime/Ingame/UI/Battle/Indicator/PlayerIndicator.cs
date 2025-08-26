@@ -48,6 +48,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
         }
 
+        #region チュートリアル用のメソッド
+        
         /// <summary>
         /// Perfect判定時のエフェクト
         /// </summary>
@@ -109,6 +111,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens[0] = successSequence;
         }
         
+        #endregion
+        
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
@@ -163,54 +167,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             _tweens[1] = blurPulseSequence;
         }
-
-        /// <summary>
-        /// 当たりエフェクト（プレイヤーが攻撃に成功したときに再生）
-        /// </summary>
-        private void OnPlayerAttackSuccess(bool isPerfect)
-        {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
-            {
-                // ノーツのタイミングより前なら処理はスキップ
-                return;
-            }
-
-            // 成功した場合はリングの縮小演出は不要になるのでキル
-            if(_tweens != null)
-			{
-				_tweens[0]?.Kill();
-			}
-            
-            if (isPerfect)
-            {
-                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImage.rectTransform.localScale = Vector3.one;
-            }
-
-            // 中央の画像を判定用の画像に変更
-            HandleCenterImage(isPerfect);
-
-			// 白色のSpriteに変更
-			ChangeRingsImage();
-            
-            var successSequence = DOTween.Sequence();
-
-            // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
-            
-            // フェードアウト
-            successSequence.Append(CreateFadeSequence(_fadeDuration));
-
-            // エフェクトが完了したらEnd処理を実行
-            successSequence.OnComplete(End);
-
-            _tweens[0] = successSequence;
-        }
-
-		
         
-        protected override void HandlePerfect() => OnPlayerAttackSuccess(true);
-        protected override void HandleGood() => OnPlayerAttackSuccess(false);
+        protected override void HandlePerfect() => OnPlayerSuccess(true);
+        protected override void HandleGood() => OnPlayerSuccess(false);
     }
 }

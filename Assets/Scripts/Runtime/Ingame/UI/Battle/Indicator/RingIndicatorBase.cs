@@ -299,6 +299,54 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _hitImage.sprite = _commonSprite.HitLine;
         }
         
+        #region ノーツの演出（protectedメソッド）
+        
+        /// <summary>
+        /// 成功エフェクト
+        /// </summary>
+        protected virtual void OnPlayerSuccess(bool isPerfect)
+        {
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
+            {
+                // ノーツのタイミングより前なら処理はスキップ
+                return;
+            }
+
+            // 成功した場合はリングの縮小演出は不要になるのでキル
+            if(_tweens != null)
+            {
+                _tweens[0]?.Kill();
+            }
+            
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                _ringImage.rectTransform.localScale = Vector3.one;
+            }
+
+            // 中央の画像を判定用の画像に変更
+            HandleCenterImage(isPerfect);
+
+            // 白色のSpriteに変更
+            ChangeRingsImage();
+            
+            var successSequence = DOTween.Sequence();
+
+            // パンチスケールと色変更
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
+            
+            // フェードアウト
+            successSequence.Append(CreateFadeSequence(_fadeDuration));
+
+            // エフェクトが完了したらEnd処理を実行
+            successSequence.OnComplete(End);
+
+            _tweens[0] = successSequence;
+        }
+        
+        #endregion
+        
         #region リングのコンポーネント全てのScale、色のリセット
         
         /// <summary>

@@ -177,39 +177,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
-            }   
-            
-            // 成功した場合はリングの縮小演出は不要になるのでキル
-            if(_tweens != null)
-            {
-                _tweens[0]?.Kill();
             }
 
             if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImage.rectTransform.localScale = Vector3.one;
+                // フィニッシャーノーツのリングの操作。ベースクラスの処理に含まれないのでここで行う
                 _ringImages[0].rectTransform.localScale = Vector3.one;
             }
-
-            // 中央の画像を判定用の画像に変更
-            // NOTE: この処理を呼ばないと、この後に使用される「_newColor」が更新されない
-            HandleCenterImage(isPerfect);
-            ChangeRingsImage();
-           
-            var successSequence = DOTween.Sequence();
-
-            // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-			successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));            
-
-            // フェードアウト
-            successSequence.Append(CreateFadeSequence(_fadeDuration));
-
-            // エフェクトが完了したらEnd処理を実行
-            successSequence.OnComplete(End);
-
-            _tweens[0] = successSequence;
+            
+            base.PlayFailEffect();
         }
 
         #region スキル/フィニッシャーの切り替え
@@ -418,7 +395,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
         
-        protected override void HandlePerfect() => PlaySuccessEffect(true);
-        protected override void HandleGood() => PlaySuccessEffect(false);
+        protected override void HandlePerfect() => OnPlayerSuccess(true);
+        protected override void HandleGood() => OnPlayerSuccess(false);
     }
 }
