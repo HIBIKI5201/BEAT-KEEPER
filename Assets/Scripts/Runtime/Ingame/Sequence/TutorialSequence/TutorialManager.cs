@@ -173,7 +173,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (_chargeAttackWaiting)
             {
                 _enemyAnimeManager.ChargeAttack();
-                _enemyAnimeManager.PreChargeAttack();
             }
 
             while (_activeIndicatorBaseQue.Count > 0)
