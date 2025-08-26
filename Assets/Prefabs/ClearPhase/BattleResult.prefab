@@ -267,6 +267,7 @@ MonoBehaviour:
     _cueName: voice_result_c
   _scoreAnimationDuration: 2
   _rankRevealDelay: 1
+  _resultRevealDelay: 2.3
 --- !u!1 &776649170675205362
 GameObject:
   m_ObjectHideFlags: 0

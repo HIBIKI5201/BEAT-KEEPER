@@ -52,7 +52,9 @@ namespace BeatKeeper
 
         [Header("演出関連の設定")] 
         [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
-        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 0.5f;
+        [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 1f;
+        [SerializeField, Tooltip("賞賛ボイスまでの待機時間")] private float _resultRevealDelay = 2f;
+        
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
@@ -109,7 +111,7 @@ namespace BeatKeeper
 
             // ランク表示
             _resultSequence.Append(CreateRankTween());
-            _resultSequence.Join(DOVirtual.DelayedCall(_rankRevealDelay, () => { }));
+            _resultSequence.Join(DOVirtual.DelayedCall(_resultRevealDelay, () => { }));
             
             // ランク読み上げを待ってから賞賛ボイスを再生
             _resultSequence.AppendCallback(PlayPraiseVoice);
