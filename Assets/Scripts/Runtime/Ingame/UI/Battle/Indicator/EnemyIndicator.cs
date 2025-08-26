@@ -21,12 +21,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             base.Effect(count);
 
-            if (_isFailed)
-            {
-                // 回避失敗していたらreturn
-                return;
-            }
-
             switch (count)
             {
                 // 1拍目　点滅して表示 -> 1拍目から縮小するように修正
@@ -47,11 +41,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public override void End()
         {
-            // フラグリセット
-            _isFailed = false;
-
-            ResetAllTween();
-
             // イベント購読解除
             _player.OnPerfectAvoid -= HandlePerfect;
             _player.OnGoodAvoid -= HandleGood;
@@ -73,8 +62,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
-
-        private bool _isFailed; // 回避失敗フラグ
 
         private void Start()
         {
@@ -173,9 +160,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 				_tweens[0]?.Kill();
 			}
 
-            // 他のアニメーションが再生されていたらキャンセル
-            ResetAllTween();
-
 			if (isPerfect)
             {
                 // パーフェクト判定の場合は収縮するリングのScaleを1に補正
@@ -215,12 +199,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[0]?.Kill();
             }
-            
-            // 回避失敗フラグを立てる
-            _isFailed = true;
-
-            // 回避失敗したときに他のTweenが再生されていたら中断
-            ResetAllTween();
 			
 			SetMissImage();
 			
@@ -234,24 +212,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             _tweens[0] = failSequence;
         }
-
-        #region Reset
-
-        /// <summary>
-        /// Tweens配列をクリア
-        /// </summary>
-        private void ResetAllTween()
-        {
-            if (_tweens != null)
-            {
-                for (int i = 0; i < _tweens.Length; i++)
-                {
-                    _tweens[i] = null;
-                }
-            }
-        }
-
-        #endregion
 
 		protected override void HandlePerfect() => OnPlayerAvoidSuccess(true);
         protected override void HandleGood() => OnPlayerAvoidSuccess(false);
