@@ -233,26 +233,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens[0] = successSequence;
         }
 
-		/// <summary>
-        /// 各リングの拡大率を変更する
-        /// </summary>
-		private void ResetRingsScale()
-		{
-			if(_selfImage != null) _selfImage.rectTransform.localScale = Vector3.one;
-			if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-			if(_decorationImage != null) _decorationImage.rectTransform.localScale = _centerRingsScale;
-			if(_hitImage != null) _hitImage.rectTransform.localScale = _centerRingsScale;
-		}
-        
-        /// <summary>
-        /// 各リングの色を変更する
-        /// </summary>
-        private void ResetRingsColor(Color color, Color translucentColor)
-        {
-            if(_ringImage != null) _ringImage.color = color;
-            if(_decorationImage != null) _decorationImage.color = color;
-            if(_hitImage != null) _hitImage.color = color;
-        }
+		
         
         protected override void HandlePerfect() => OnPlayerAttackSuccess(true);
         protected override void HandleGood() => OnPlayerAttackSuccess(false);

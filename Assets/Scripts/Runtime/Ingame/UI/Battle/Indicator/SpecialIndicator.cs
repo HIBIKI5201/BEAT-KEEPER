@@ -332,11 +332,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
         
         #endregion
-
+        
+        /// <summary>
+        /// 個別リングのスケール設定（nullチェック付き）
+        /// </summary>
+        private void SetRingScale(Image ring, Vector3 scale)
+        {
+            if (ring != null) ring.rectTransform.localScale = scale;
+        }
+        
+        #region リングのコンポーネント全てのScale、色のリセット
+        
         /// <summary>
         /// 各リングの拡大率を変更する
         /// </summary>
-        private void ResetRingsScale()
+        protected override void ResetRingsScale()
         {
             // 収縮を行うリング
             SetRingScale(_ringImage, Vector3.one * _initialScale);
@@ -354,17 +364,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
         
         /// <summary>
-        /// 個別リングのスケール設定（nullチェック付き）
-        /// </summary>
-        private void SetRingScale(Image ring, Vector3 scale)
-        {
-            if (ring != null) ring.rectTransform.localScale = scale;
-        }
-        
-        /// <summary>
         /// 各リングの色を変更する
         /// </summary>
-        private void ResetRingsColor(Color color, Color translucentColor)
+        protected override void ResetRingsColor(Color color, Color translucentColor)
         {
             _ringImage.color = color;
             _hitImage.color = color;
@@ -380,6 +382,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 ring.color = translucentColor;
             }
         }
+        
+        #endregion
         
         #region シーケンス作成メソッド
         

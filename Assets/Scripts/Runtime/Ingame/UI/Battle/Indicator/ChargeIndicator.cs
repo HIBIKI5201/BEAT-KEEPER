@@ -298,8 +298,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens[0] = sequence;
         }
 
-        #region Reset
-
+        /// <summary>
+        /// 全要素のアルファ値設定
+        /// </summary>
+        private void SetAllAlpha(float alpha)
+        {
+            if(_ringImage != null) _ringImage.color = new Color(_ringImage.color.r, _ringImage.color.g, _ringImage.color.b, alpha);
+            if(_startPositionRing != null) _startPositionRing.color = new Color(_startPositionRing.color.r, _startPositionRing.color.g, _startPositionRing.color.b, alpha);
+            if(_endPositionRing != null) _endPositionRing.color = new Color(_endPositionRing.color.r, _endPositionRing.color.g, _endPositionRing.color.b, alpha);
+            if(_decorationImage != null) _decorationImage.color = new Color(_decorationImage.color.r, _decorationImage.color.g, _decorationImage.color.b, alpha);
+            if(_centerImage != null) _centerImage.color = new Color(_centerImage.color.r, _centerImage.color.g, _centerImage.color.b, alpha);
+        }
+        
         /// <summary>
         /// 全コンポーネントの完全初期化
         /// </summary>
@@ -317,10 +327,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			_startPositionRing.transform.position = transform.position;
         }
         
+        #region リングのコンポーネント全てのScale、色のリセット
+        
         /// <summary>
         /// 各リングの拡大率を変更する
         /// </summary>
-        private void ResetRingsScale()
+        protected override void ResetRingsScale()
         {
             // 収縮する一番外側のリング
             if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
@@ -336,7 +348,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 各リングの色を変更する
         /// </summary>
-        private void ResetRingsColor(Color color, Color translucentColor)
+        protected override void ResetRingsColor(Color color, Color translucentColor)
         {
             // NOTE: マスクの画像は色を変える必要がないのでここには書いていない
             if(_ringImage != null) _ringImage.color = color;
@@ -346,18 +358,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_centerImage != null) _centerImage.color = Color.white;
         }
 
-        /// <summary>
-        /// 全要素のアルファ値設定
-        /// </summary>
-        private void SetAllAlpha(float alpha)
-        {
-            if(_ringImage != null) _ringImage.color = new Color(_ringImage.color.r, _ringImage.color.g, _ringImage.color.b, alpha);
-            if(_startPositionRing != null) _startPositionRing.color = new Color(_startPositionRing.color.r, _startPositionRing.color.g, _startPositionRing.color.b, alpha);
-            if(_endPositionRing != null) _endPositionRing.color = new Color(_endPositionRing.color.r, _endPositionRing.color.g, _endPositionRing.color.b, alpha);
-            if(_decorationImage != null) _decorationImage.color = new Color(_decorationImage.color.r, _decorationImage.color.g, _decorationImage.color.b, alpha);
-            if(_centerImage != null) _centerImage.color = new Color(_centerImage.color.r, _centerImage.color.g, _centerImage.color.b, alpha);
-        }
-        
         #endregion
 
         #region シーケンス作成メソッド

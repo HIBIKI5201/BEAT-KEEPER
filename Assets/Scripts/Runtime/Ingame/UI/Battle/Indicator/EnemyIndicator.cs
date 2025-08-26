@@ -251,29 +251,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
         }
 
-        /// <summary>
-        /// 各リングの拡大率をリセット
-        /// </summary>
-        private void ResetRingsScale()
-        {
-            if (_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
-            if (_decorationImage != null) _decorationImage.rectTransform.localScale = Vector3.one;
-            if (_hitImage != null) _hitImage.rectTransform.localScale = Vector3.one;
-        }
-
-        /// <summary>
-        /// 各リングの色を変更する
-        /// </summary>
-        private void ResetRingsColor(Color color, Color translucentColor)
-        {
-			_ringImage.color = color;
-			_hitImage.color = color;
-			_decorationImage.color = color;
-			
-			//  フェードアウトしているのでここでリセットをかける
-			_centerImage.color = Color.white;
-        }
-
         #endregion
 
 		protected override void HandlePerfect() => OnPlayerAvoidSuccess(true);

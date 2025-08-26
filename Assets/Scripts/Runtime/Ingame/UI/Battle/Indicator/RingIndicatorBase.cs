@@ -270,6 +270,30 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _hitImage.sprite = _commonSprite.HitLine;
         }
         
+        #region リングのコンポーネント全てのScale、色のリセット
+        
+        /// <summary>
+        /// 各リングの拡大率を変更する
+        /// </summary>
+        protected virtual void ResetRingsScale()
+        {
+            if(_ringImage != null) _ringImage.rectTransform.localScale = Vector3.one * _initialScale;
+            if(_decorationImage != null) _decorationImage.rectTransform.localScale = _centerRingsScale;
+            if(_hitImage != null) _hitImage.rectTransform.localScale = _centerRingsScale;
+        }
+        
+        /// <summary>
+        /// 各リングの色を変更する
+        /// </summary>
+        protected virtual void ResetRingsColor(Color color, Color translucentColor)
+        {
+            if(_ringImage != null) _ringImage.color = color;
+            if(_decorationImage != null) _decorationImage.color = color;
+            if(_hitImage != null) _hitImage.color = color;
+        }
+        
+        #endregion
+        
         #region PlayerManagerのイベント登録用
         
         /// <summary>
