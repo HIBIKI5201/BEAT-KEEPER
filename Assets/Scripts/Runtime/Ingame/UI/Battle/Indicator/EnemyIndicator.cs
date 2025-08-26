@@ -154,6 +154,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public void OnPlayerAvoidSuccess(bool isPerfect)
         {
+            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
+            {
+                // ノーツのタイミングより前なら処理はスキップ
+                return;
+            }
+            
 			// 成功した場合はリングの縮小演出は不要になるのでキル
             if(_tweens != null)
 			{
@@ -173,8 +179,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // パンチスケール
             successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
-
-            // 色変更とフェードアウト
             successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
 
 			// フェードアウト
@@ -183,11 +187,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // エフェクトが完了したらEnd処理を実行
             successSequence.OnComplete(End);
 
-            // Tweenを配列に保存
-            if (_tweens != null && _tweens.Length > 2)
-            {
-                _tweens[2] = successSequence;
-            }
+            _tweens[0] = successSequence;
         }
 
 		protected override void HandlePerfect() => OnPlayerAvoidSuccess(true);
