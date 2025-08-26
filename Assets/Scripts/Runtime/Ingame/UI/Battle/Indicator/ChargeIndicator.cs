@@ -63,6 +63,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetAllComponents();
         }
         
+        #region チュートリアル用のメソッド
+        
+        /// <summary>
+        /// チャージ演出
+        /// </summary>
+        public void OnPlayerChargeTutorial() => OnPlayerChargeForced();
+
+        /// <summary>
+        /// 長押し成功演出
+        /// </summary>
+        public void OnPlayerAttackSuccessTutorial() => OnPlayerAttackSuccessForced();
+        
+        #endregion
+        
         private const float CONTRACTION_SPEED = 2; // 始点リングの収束にかける拍数
         private const float CHARGE_TIME = 2; // チャージにかかる拍
         private const float RECEPTION_TIME = 0.45f; // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
@@ -91,8 +105,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
             _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
         }
-
-        #region ベースとなる演出
         
         /// <summary>
         /// 始点リングの縮小演出
@@ -125,66 +137,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens[2] = blurPulseSequence;
         }
 
-        #endregion
-
-        public void OnPlayerChargeTutorial()
-        {
-            if (_tweens != null)
-            {
-                // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
-                _tweens[0]?.Kill();
-            }
-
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            var totalDuration = beatDuration * CHARGE_TIME;
-
-            // マスクのスケールを外側リングの大きさに合わせる
-            _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
-
-            var sequence = DOTween.Sequence()
-
-                // 色変更（チャージ開始時）
-                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
-                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
-                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
-
-                // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
-
-                // 必要に応じて位置も調整
-                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
-
-                .OnComplete(OnChargeComplete);
-
-            _tweens[1] = sequence;
-        }
-        public void OnPlayerAttackSuccessTutorial()
-        {
-            // 他のすべてのTweenをキル
-            for (int i = 0; i < _tweens.Length; i++)
-            {
-                _tweens[i]?.Kill();
-            }
-            
-            HandleCenterImage(true);
-            // 色とテキストが変更されていない場合、念のためここで変えておく
-            ResetRingsColor(_newColor, _newColor);
-
-            var sequence = DOTween.Sequence()
-
-                // 拡大
-                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-                .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
-
-                // フェードアウト
-                .Join(CreateFadeSequence(_fadeDuration))
-
-                .OnComplete(End);
-
-            _tweens[3] = sequence;
-        }
-
         /// <summary>
         /// チャージ中の演出
         /// </summary>
@@ -195,7 +147,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
+            
+            OnPlayerChargeForced();
+        }
 
+        /// <summary>
+        /// 強制的にチャージ演出を実行
+        /// </summary>
+        private void OnPlayerChargeForced()
+        {
             if (_tweens != null)
             {
                 // 進行中の縮小以外の演出を停止。最終値に到達させた状態にする
@@ -211,17 +171,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var sequence = DOTween.Sequence()
                 
                 // 色変更（チャージ開始時）
- 	     	 	.Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
-	    	    .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
- 	       		.Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
+                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
+                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
+                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
         
-        		// メインのリング移動アニメーション（外側リングから内側リングへ）
-        		.Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
+                // メインのリング移動アニメーション（外側リングから内側リングへ）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
         
-       			// 必要に応じて位置も調整
-        		.Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
+                // 必要に応じて位置も調整
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
 
-		        .OnComplete(OnChargeComplete);
+                .OnComplete(OnChargeComplete);
             
             _tweens[1] = sequence;
         }
@@ -247,16 +207,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
-            
+
+            OnPlayerAttackSuccessForced();
+        }
+
+        /// <summary>
+        /// 当たりエフェクトを強制再生
+        /// TODO: 後に長押しノーツの判定のPlayerManager側が完成したら修正するかも
+        /// </summary>
+        private void OnPlayerAttackSuccessForced()
+        {
             // 他のすべてのTweenをキル
             for (int i = 0; i < _tweens.Length; i++)
             {
                 _tweens[i]?.Kill();
             }
             
+            // 中央の画像を判定用の画像に変更
+            // TODO: 判定に合わせて引数に渡す変数を変更する
             HandleCenterImage(true);
-            // 色とテキストが変更されていない場合、念のためここで変えておく
-            ResetRingsColor(_newColor, _newColor);
+            
+            // 色変更前に白色のSpriteに変更
+            ChangeRingsImage();
            
             var sequence = DOTween.Sequence()
                 
@@ -264,6 +236,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                
+                // 色変更
+                .Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration))
                 
                 // フェードアウト
                 .Join(CreateFadeSequence(_fadeDuration))
@@ -302,12 +277,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void ResetAllComponents()
         {
-            // スケールをリセット
-            ResetRingsScale();
-            
-            // 色をデフォルトに設定
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-            
             SetAllAlpha(0f);
 
 			// 移動するオブジェクトの位置を変更
