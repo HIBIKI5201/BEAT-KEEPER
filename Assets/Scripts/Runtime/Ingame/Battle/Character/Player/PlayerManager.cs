@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
+using SymphonyFrameWork.Utility;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -136,7 +137,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <returns></returns>
         public bool IsFinisherable()
         {
-            if(_target == null) return false; //ターゲットがいなければフィニッシャーはできない
+            if (_target == null) return false; //ターゲットがいなければフィニッシャーはできない
             return _target.IsFinisherable;
         }
 
@@ -413,7 +414,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
             int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
             ChartKindEnum kind = chart[timing].AttackKind;
-            
+
             if (IsAnotherPhaseByChartKind(kind)) return; //別のフェーズなら何もしない
 
             if (kind == ChartKindEnum.Attack)
@@ -451,7 +452,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
-            
+
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
@@ -517,6 +518,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //敵が攻撃しないならミス
             if (!chartData.IsEnemyAttack(timing))
             {
+                MissedAvoid();
+
                 SymphonyDebugLogger.AddText($"Enemy not attack at timing {timing}");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -530,7 +533,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!isGood && !isPerfect)
             {
                 //失敗時の処理
-                OnFailedAvoid?.Invoke();
+                MissedAvoid();
 
                 SymphonyDebugLogger.AddText("avoid result : failed");
                 SymphonyDebugLogger.TextLog();
@@ -570,8 +573,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 PerfectAttack();
             }
-
-            MissedChart();
         }
 
         /// <summary>
@@ -584,6 +585,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isThisBeatInputed) //拍内での連打防止フラグをリセット
             {
                 _isThisBeatInputed = false;
+            }
+
+            if (_isBattle)
+            {
+                MissedChart();
             }
         }
 
@@ -922,6 +928,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _lastAvoidSuccessTiming = Time.time;
         }
 
+        private void MissedAvoid()
+        {
+            OnFailedAvoid?.Invoke();
+        }
+
         private bool IsAnotherPhaseByChartKind(ChartKindEnum kind)
         {
             if (kind == ChartKindEnum.None) return false;
@@ -941,7 +952,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_target == null) return;
 
-            int timing = MusicEngineHelper.GetBeatSinceStart();
+            int timing = MusicEngineHelper.GetBeatSinceStart() + 1;
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             ChartKindEnum kind = chart[timing].AttackKind;
@@ -951,22 +962,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _ringIndicatorData.TryGetRingData(kind, out RingData data);
             if (data == null) return;
 
-            float duration = kind switch
-            {
-                ChartKindEnum.Attack => _data.ComboGoodRange,
-                ChartKindEnum.Charge => _data.ChargeStartGoodRange,
-                ChartKindEnum.Skill => _data.GoodSkillRange,
-                _ => 0
-            } / 2 * (float)MusicEngineHelper.DurationOfBeat;
+            float duration = (float)MusicEngineHelper.DurationOfBeat;
 
-            bool isCanceled = false;
-
+            bool missedFlag = false;
             Action action = null;
+
             if (kind == ChartKindEnum.Attack)
             {
                 action = () =>
                 {
-                    isCanceled = true;
+                    missedFlag = true;
                     OnShootComboAttack -= action;
                 };
                 OnShootComboAttack += action;
@@ -975,37 +980,53 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 action = () =>
                 {
-                    isCanceled = true;
+                    missedFlag = true;
                     OnChargeAttack -= action;
                 };
                 OnChargeAttack += action;
+            }
+            else if (kind == ChartKindEnum.Normal)
+            {
+                action = () =>
+                {
+                    missedFlag = true;
+                    OnSuccessAvoid -= action;
+                };
+                OnSuccessAvoid += action;
             }
             else if (kind == ChartKindEnum.Skill)
             {
                 action = () =>
                 {
-                    isCanceled = true;
+                    missedFlag = true;
                     OnSkill -= action;
                 };
                 OnSkill += action;
             }
 
-            await Awaitable.WaitForSecondsAsync(duration, destroyCancellationToken);
+            float timer = Time.time + duration;
+            await SymphonyTask.WaitUntil(() => timer < Time.time || missedFlag);
 
-            if (isCanceled) return;
+            if (kind == ChartKindEnum.Attack) OnShootComboAttack -= action;
+            else if (kind == ChartKindEnum.Charge) OnChargeAttack -= action;
+            else if (kind == ChartKindEnum.Normal) OnSuccessAvoid -= action;
+            else if (kind == ChartKindEnum.Skill) OnSkill -= action;
+
+            if (missedFlag) return; //成功していたら何もしない
 
             switch (kind)
             {
                 case ChartKindEnum.Attack:
                     MissAttack();
                     break;
-
                 case ChartKindEnum.Charge:
                     MissedChargeAttack();
                     break;
-                
                 case ChartKindEnum.Skill:
                     MissSkill();
+                    break;
+                case ChartKindEnum.Normal:
+                    MissedAvoid();
                     break;
             }
         }
