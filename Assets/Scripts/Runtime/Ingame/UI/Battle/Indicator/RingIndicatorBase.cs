@@ -34,6 +34,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
 
+            // 初期化
+            InitializeComponents();
             UIInitialized();
 
             _onEndAction = onEndAction;
@@ -53,6 +55,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 終了フラグをリセット
             _isEnded = false;
 
+            // 初期化
             UIInitialized();
 
             _onEndAction = onEndAction;
@@ -244,43 +247,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
-        /// コンポーネントの初期化
-        /// </summary>
-        protected virtual void InitializeComponents()
-        {
-            // 2種類のTweenを使用するため、配列も2つ分確保する
-            _tweens = new Tween[2];
-            
-            // スケールと色を初期化
-            ResetRingsScale();
-            ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-        
-        /// <summary>
-        /// UIの初期化処理
-        /// オブジェクトプールのOnGet()処理の中で呼び出される
-        /// </summary>
-        protected virtual void UIInitialized()
-        {
-            if (_hitLine == null && _decoration == null && _ring == null)
-            {
-                // 初期画像を取得する
-                _hitLine = _ringImage.sprite;
-                _decoration = _decorationImage.sprite;
-                _ring = _hitImage.sprite;
-            }
-
-            // 中央のリングの画像を操作方法のものに差し替える
-            _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
-
-            // デフォルトのスプライトを設定する
-            _ringImage.sprite = _hitLine;
-            _decorationImage.sprite = _decoration;
-            _hitImage.sprite = _ring;
-        }
-
-        /// <summary>
         /// Perfect/Goodの色変更用にSpriteを白色のものに変更する
         /// </summary>
         protected virtual void ChangeRingsImage()
@@ -422,7 +388,45 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
         
-        #region リングのコンポーネント全てのScale、色のリセット
+        #region リングのコンポーネント全てのScale、色の初期化・リセット
+        
+        /// <summary>
+        /// コンポーネントの初期化
+        /// NOTE: スキル、チャージノーツはオーバーライドして実装
+        /// </summary>
+        protected virtual void InitializeComponents()
+        {
+            // 2種類のTweenを使用するため、配列も2つ分確保する
+            _tweens = new Tween[2];
+            
+            // スケールと色を初期化
+            ResetRingsScale();
+            ResetRingsColor(_defaultColor, _translucentDefaultColor);
+        }
+        
+        /// <summary>
+        /// UIの初期化処理
+        /// オブジェクトプールのOnGet()処理の中で呼び出される
+        /// </summary>
+        protected virtual void UIInitialized()
+        {
+            if (_hitLine == null && _decoration == null && _ring == null)
+            {
+                // 初期画像を取得する
+                _hitLine = _ringImage.sprite;
+                _decoration = _decorationImage.sprite;
+                _ring = _hitImage.sprite;
+            }
+
+            // 中央のリングの画像を操作方法のものに差し替える
+            _centerImage.sprite = _guide.Sprite;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+
+            // デフォルトのスプライトを設定する
+            _ringImage.sprite = _hitLine;
+            _decorationImage.sprite = _decoration;
+            _hitImage.sprite = _ring;
+        }
         
         /// <summary>
         /// 各リングの拡大率を変更する

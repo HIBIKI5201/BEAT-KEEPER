@@ -24,7 +24,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // 1拍目　縮小エフェクトを開始する
                 case 1:
-                    InitializeComponents();
                     StartContractionEffect();
                     break;
                 

@@ -23,10 +23,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             switch (count)
             {
-                // 1拍目　点滅して表示 -> 1拍目から縮小するように修正
+                // 1拍目　縮小エフェクトを開始する
                 case 1:
-                    InitializeComponents();
-                    // StartBlinkEffect(); // 警告のような点滅アニメーション
                     StartContractionEffect(); // 収縮アニメーション
                     break;
 				

@@ -25,7 +25,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // 1拍目　縮小エフェクトを開始する
                 case 1:
-                    InitializeComponents();
                     StartContractionEffect();
                     break;
                 
@@ -94,7 +93,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
-        protected virtual void InitializeComponents()
+        protected override void InitializeComponents()
         {
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[3];
@@ -239,6 +238,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void SwitchCanvasGroup()
         {
+            if (_tweens == null || _tweens.Length < 3) return;
+            
             if(_tweens != null)
             {
                 // 既にTweenがあったらKill

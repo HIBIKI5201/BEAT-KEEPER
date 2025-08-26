@@ -16,7 +16,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		public override void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
 		{
 			base.OnGet(onEndAction, startPosition, endPosition, timing);
-
+            
 			// 始点リングの位置を設定
 			_startPositionRing.rectTransform.position = startPosition
                                                 + new Vector2(Screen.width / 2, Screen.height / 2);
@@ -37,7 +37,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 // 縮小エフェクトを開始する
                 case 1:
-                    InitializeComponents();
                     StartContractionEffect();
                     break;
             }
@@ -82,7 +81,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>
-        protected virtual void InitializeComponents()
+        protected override void InitializeComponents()
         {
             ResetAllComponents();
             
