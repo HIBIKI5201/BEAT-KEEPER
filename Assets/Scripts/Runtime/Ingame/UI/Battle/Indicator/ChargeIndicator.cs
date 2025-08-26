@@ -285,17 +285,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 _tweens[i]?.Kill();
             }
-            
-            var sequence = DOTween.Sequence()
-                
-                .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 0.6f, _fadeDuration * 0.3f).SetEase(Ease.InQuad))
-                .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 0.7f, _fadeDuration * 0.3f).SetEase(Ease.InQuad))
-                
-                // フェードアウト
-                .Append(CreateFadeSequence(_fadeDuration * 0.7f))
-                .OnComplete(End);
-            
-            _tweens[0] = sequence;
+            base.PlayFailEffect();
         }
 
         /// <summary>
