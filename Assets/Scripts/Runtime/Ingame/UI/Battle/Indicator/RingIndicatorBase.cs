@@ -269,5 +269,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _decorationImage.sprite = _commonSprite.Decoration;
             _hitImage.sprite = _commonSprite.HitLine;
         }
+        
+        /// <summary>
+        /// Perfect判定時の処理
+        /// </summary>
+        protected virtual void HandlePerfect(){ }
+        
+        /// <summary>
+        /// Good判定時の処理
+        /// </summary>
+        protected virtual void HandleGood(){ }
+        
     }
 }

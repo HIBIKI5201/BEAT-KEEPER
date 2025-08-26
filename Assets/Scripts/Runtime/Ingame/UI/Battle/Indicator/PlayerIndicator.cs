@@ -30,16 +30,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 2拍目　念のため判定が始まる2拍目のタイミングでアクション登録を行う
                 case 2:
-                    _player.OnPerfectAttack += HandlePerfectAttack;
-                    _player.OnGoodAttack += HandleGoodAttack;
+                    _player.OnPerfectAttack += HandlePerfect;
+                    _player.OnGoodAttack += HandleGood;
                     break;
             }
         }
 
         public override void End()
         {
-            _player.OnPerfectAttack -= HandlePerfectAttack;
-            _player.OnGoodAttack -= HandleGoodAttack;
+            _player.OnPerfectAttack -= HandlePerfect;
+            _player.OnGoodAttack -= HandleGood;
 
 			base.End();
             
@@ -282,7 +282,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             return colorSequence;
         }
         
-        private void HandlePerfectAttack() => OnPlayerAttackSuccess(true);
-        private void HandleGoodAttack() => OnPlayerAttackSuccess(false);
+        protected override void HandlePerfect() => OnPlayerAttackSuccess(true);
+        protected override void HandleGood() => OnPlayerAttackSuccess(false);
     }
 }
