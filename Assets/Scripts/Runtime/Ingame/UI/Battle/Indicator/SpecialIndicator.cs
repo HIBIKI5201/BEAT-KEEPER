@@ -109,7 +109,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// リングの縮小
         /// </summary>
-        private void StartContractionEffect()
+        protected virtual void StartContractionEffect()
         {
             // 一拍が何秒か、アニメーションのために値をキャッシュしておく
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;

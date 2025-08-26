@@ -208,7 +208,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // 判定に合わせて適用する色を変えるための変数
         protected Color _newColor;
         protected Color _newTranslucentColor;
-
         protected bool _isEnded = false;
         protected int _timing;
         protected int _count;
@@ -219,6 +218,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected Color _defaultColor => _colorSettings.DefaultColor;
         protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
+        // Justタイミングは2拍後
+        private const float CONTRACTION_SPEED = 2;
+        // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
+        private const float RECEPTION_TIME = 0.45f;
+        
         private void Awake()
         {
             _selfImage = GetComponent<Image>();
@@ -230,38 +234,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             }
 
             _defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
-        }
-
-        /// <summary>
-        /// 中央のイメージを操作する
-        /// </summary>
-        protected void HandleCenterImage(bool isPerfect)
-        {
-            var hitResult = isPerfect ? _hitResult.Perfect : _hitResult.Good;
-
-            // 中央のImageのスプライト変更とサイズ変更
-            _centerImage.sprite = hitResult.Sprite;
-            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
-
-            if (isPerfect)
-            {
-                _newColor = _colorSettings.PerfectColor;
-                _newTranslucentColor = _colorSettings.TranslucentPerfectColor;
-            }
-            else
-            {
-                _newColor = _colorSettings.GoodColor;
-                _newTranslucentColor = _colorSettings.TranslucentGoodColor;
-            }
-        }
-
-        /// <summary>
-        /// 中央のイメージをMiss判定のものに差し替える
-        /// </summary>
-        protected void SetMissImage()
-        {
-            _centerImage.sprite = _hitResult.Miss.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
         }
 
         /// <summary>
@@ -299,7 +271,82 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _hitImage.sprite = _commonSprite.HitLine;
         }
         
+        #region 中央画像の操作（操作アイコン・判定の画像）
+        
+        /// <summary>
+        /// 中央のイメージを操作する
+        /// </summary>
+        protected void HandleCenterImage(bool isPerfect)
+        {
+            var hitResult = isPerfect ? _hitResult.Perfect : _hitResult.Good;
+
+            // 中央のImageのスプライト変更とサイズ変更
+            _centerImage.sprite = hitResult.Sprite;
+            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
+
+            if (isPerfect)
+            {
+                _newColor = _colorSettings.PerfectColor;
+                _newTranslucentColor = _colorSettings.TranslucentPerfectColor;
+            }
+            else
+            {
+                _newColor = _colorSettings.GoodColor;
+                _newTranslucentColor = _colorSettings.TranslucentGoodColor;
+            }
+        }
+
+        /// <summary>
+        /// 中央のイメージをMiss判定のものに差し替える
+        /// </summary>
+        protected void SetMissImage()
+        {
+            _centerImage.sprite = _hitResult.Miss.Sprite;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+        }
+        
+        #endregion
+        
         #region ノーツの演出（protectedメソッド）
+
+        /// <summary>
+        /// 縮小演出
+        /// </summary>
+        protected virtual void StartContractionEffect()
+        {
+            // 一拍が何秒か、アニメーションのために値をキャッシュしておく
+            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+
+            var contractionSequence = DOTween.Sequence()
+
+                // Just判定まで縮小を行う
+                .Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                
+                // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
+                .Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
+                
+                // シーケンスが中断されなかった場合はミス。失敗演出を行う
+                .OnComplete(() => PlayFailEffect());
+            
+            // Tweenを配列に保存
+            if (_tweens != null && _tweens.Length > 1)
+            {
+                _tweens[0] = contractionSequence;
+            }
+
+            // ブラーリングのパルス
+            var blurPulseSequence = DOTween.Sequence()
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .SetLoops(-1, LoopType.Restart);
+
+            // Tweenを配列に保存
+            if (_tweens != null && _tweens.Length > 1)
+            {
+                _tweens[1] = blurPulseSequence;
+            }
+        }
         
         /// <summary>
         /// 成功エフェクト

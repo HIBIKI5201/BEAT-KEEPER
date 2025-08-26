@@ -98,21 +98,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 始点リングの縮小演出
         /// </summary>
-        private void StartContractionEffect()
+        protected virtual void StartContractionEffect()
         {
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             
             // 表示
             SetAllAlpha(1f);
             
-            // ブラーリングのパルス
-            var blurPulseSequence = DOTween.Sequence()
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .SetLoops(-1, LoopType.Restart);
-            
-            _tweens[2] = blurPulseSequence;
-
             var sequence = DOTween.Sequence()
                 
                 // 縮小開始（完全には収縮しきらないようにする）
@@ -124,6 +116,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .OnComplete(() => PlayFailEffect());
             
             _tweens[0] = sequence;
+            
+            // ブラーリングのパルス
+            var blurPulseSequence = DOTween.Sequence()
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
+                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
+                .SetLoops(-1, LoopType.Restart);
+            
+            _tweens[2] = blurPulseSequence;
         }
 
         #endregion

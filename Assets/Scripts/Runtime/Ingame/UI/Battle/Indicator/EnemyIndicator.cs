@@ -60,14 +60,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         public void OnPlayerAvoidSuccess(bool isPerfect)
         {
-            OnPlayerSuccess(isPerfect);
+            OnPlayerSuccessForced(isPerfect);
         }
         
         #endregion
-
-        private const float CONTRACTION_SPEED = 2; // 収縮にかける拍
-		// Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
-        private const float RECEPTION_TIME = 0.45f;
 
         [Header("追加の色設定")]
         [SerializeField] private Color _warningColor = Color.red;
@@ -90,72 +86,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初期状態の設定
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
-        }
-
-        /// <summary>
-        /// 1拍目　点滅シーケンス
-        /// </summary>
-        private void StartBlinkEffect()
-        {
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-
-            var blinkSequence = DOTween.Sequence()
-
-                // 3回点滅
-                .Append(_ringImage.DOColor(_warningColor, _blinkDuration).SetLoops(3, LoopType.Yoyo))
-
-                // デフォルト色に戻す
-                .Append(_ringImage.DOColor(_defaultColor, 0.2f).SetEase(Ease.OutQuint));
-
-            // Tweenを配列に保存
-            if (_tweens != null && _tweens.Length > 0)
-            {
-                _tweens[0] = blinkSequence;
-            }
-        }
-
-        /// <summary>
-        ///リングの縮小
-        /// </summary>
-        private void StartContractionEffect()
-        {
-			if(_tweens != null)
-			{
-				// 点滅シーケンスをキル
-            	_tweens[0]?.Kill();
-			}
-
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-
-            var contractionSequence = DOTween.Sequence();
-
-            // 縮小エフェクト
-            contractionSequence.Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear));
-            
-			// Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-			contractionSequence.Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear));
-			contractionSequence.Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
-
-            // シーケンスが中断されなかった場合はミス。失敗演出を行う
-            contractionSequence.OnComplete(() => PlayFailEffect());
-            
-            // Tweenを配列に保存
-            if (_tweens != null && _tweens.Length > 1)
-            {
-                _tweens[0] = contractionSequence;
-            }
-
-            // ブラーリングのパルス
-            var blurPulseSequence = DOTween.Sequence()
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                .SetLoops(-1, LoopType.Restart);
-
-            // Tweenを配列に保存
-            if (_tweens != null && _tweens.Length > 1)
-            {
-                _tweens[1] = blurPulseSequence;
-            }
         }
 
 		protected override void HandlePerfect() => OnPlayerSuccess(true);
