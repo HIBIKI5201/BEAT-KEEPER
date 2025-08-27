@@ -112,6 +112,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         private void Convert()
         {
             Array.Resize(ref _chart, CHART_LENGTH);
+            Array.Resize(ref _visible, CHART_LENGTH);
         }
 #endif
     }
