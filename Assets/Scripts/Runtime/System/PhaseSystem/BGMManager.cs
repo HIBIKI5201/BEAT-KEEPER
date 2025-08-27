@@ -39,7 +39,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         #endregion
 
-
         #region BGMの管理
 
         /// <summary>
@@ -108,6 +107,25 @@ namespace BeatKeeper.Runtime.Ingame.System
         }
 
         #endregion
+
+        public async void Subscribe()
+        {
+            // 既に登録されているものがあれば解除
+            _disposable?.Dispose();
+            _disposable = null;
+            
+            _disposable = new CompositeDisposable();
+            
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
+            _flowZoneSystem = playerManager.FlowZoneSystem;
+
+            // リズム共鳴のリアクティブプロパティを購読
+            _flowZoneSystem.ResonanceCount
+                .Subscribe(OnChangeResonanceCount)
+                .AddTo(_disposable);
+        }
 
         #region タイミングアクション追加
 
@@ -290,17 +308,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         private int _lastJustBeat;
         private int _lastNearBeat;
 
-        private async void Start()
+        private void Start()
         {
-            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-
-            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
-            _flowZoneSystem = playerManager.FlowZoneSystem;
-
-            // リズム共鳴のリアクティブプロパティを購読
-            _flowZoneSystem.ResonanceCount
-                .Subscribe(OnChangeResonanceCount)
-                .AddTo(_disposable);
+            // フローゾーン増加時のリアクティブプロパティを購読
+            Subscribe();
         }
 
         private void OnChangeResonanceCount(int value)
