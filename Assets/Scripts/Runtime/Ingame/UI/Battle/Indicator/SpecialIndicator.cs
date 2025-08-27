@@ -94,16 +94,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var sequence = DOTween.Sequence()
                 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // 中央のリング
-                .Join(_hitImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -145,9 +145,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             if (isPerfect)
             {
-                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                // パーフェクト判定の場合は収縮するリングのScaleを補正
                 // フィニッシャーノーツのリングの操作。ベースクラスの処理に含まれないのでここで行う
-                _ringImages[0].rectTransform.localScale = Vector3.one;
+                _ringImages[0].rectTransform.localScale = _centerRingsScale;
             }
             
             base.PlayFailEffect();

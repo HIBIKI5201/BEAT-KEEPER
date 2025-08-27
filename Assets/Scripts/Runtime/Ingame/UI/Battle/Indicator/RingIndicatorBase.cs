@@ -56,6 +56,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _isEnded = false;
 
             // 初期化
+            InitializeComponents();
             UIInitialized();
 
             _onEndAction = onEndAction;
@@ -151,10 +152,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
 			Unsubscribe();
 
+            // Tweens配列をクリア
             if (_tweens != null)
             {
-                // 念のためキルしておく
-                _tweens[0]?.Kill();
+                for (int i = 0; i < _tweens.Length; i++)
+                {
+                    _tweens[i]?.Kill();
+                }
             }
             
             // 中央のImageのスプライトとサイズをMissのものに変える
@@ -196,6 +200,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("基本設定")]
         [SerializeField] protected float _initialScale = 3.5f;
         [SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
+		[SerializeField] protected Vector3 _contractionScale = new Vector3(0.95f, 0.95f, 0.95f);
         [SerializeField] protected IndicatorSpriteDataSO _commonSprite; // Perfect/Good判定で色を変更するための白色リング
 
         [Header("リングのImageコンポーネントの設定")]
@@ -339,10 +344,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var contractionSequence = DOTween.Sequence()
 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -398,8 +403,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             if (isPerfect)
             {
-                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
-                _ringImage.rectTransform.localScale = Vector3.one;
+                // パーフェクト判定の場合は収縮するリングのScaleを補正
+                _ringImage.rectTransform.localScale = _contractionScale;
             }
 
             // 中央の画像を判定用の画像に変更
