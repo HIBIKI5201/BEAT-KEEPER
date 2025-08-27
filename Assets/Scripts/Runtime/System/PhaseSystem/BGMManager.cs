@@ -85,7 +85,16 @@ namespace BeatKeeper.Runtime.Ingame.System
 
 				// イントロ分の16拍を引いて、BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
 				int position = (Mathf.FloorToInt(beat) - 16) % 64;
+			
+				// ループ内での節を計算
+				// position 0: 1小節目 (特別ケース)
+				// position 1-16: 2小節目
+				// position 17-32: 3小節目  
+				// position 33-48: 4小節目
+				// position 49-63: 1小節目 (次ループ)
 				int section = position == 0 ? 0 : (Mathf.FloorToInt((position - 1) / 16f) + 1) % 4;
+				
+				// 小節番号を4n+1形式のレイヤーIDに変換 (5, 9, 13, 17)
 				int layer = section * 4 + 5;
 
                 //遷移先のレイヤー名を取得
