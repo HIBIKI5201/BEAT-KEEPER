@@ -11,7 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.System
     [CreateAssetMenu(fileName = "ChartData", menuName = "BeatKeeper/ChartData", order = 1)]
     public partial class ChartData : ScriptableObject
     {
-        private const int CHART_LENGTH = 64;
+        private const int CHART_LENGTH = 128;
 
         private void Awake()
         {
