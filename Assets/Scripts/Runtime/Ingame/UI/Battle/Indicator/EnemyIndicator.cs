@@ -13,37 +13,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
     {
         public override int EffectLength => 3;
 
-        /// <summary>
-        /// ビートごとに実行される処理
-        /// </summary>
-        /// <param name="count"></param>
-        public override void Effect(int count)
-        {
-            base.Effect(count);
-
-            switch (count)
-            {
-                // 1拍目　縮小エフェクトを開始する
-                case 1:
-                    StartContractionEffect(); // 収縮アニメーション
-                    break;
-				
-				// 	誤反応対策として念のために直前にイベント登録を行う
-				case 2:
-					_player.OnPerfectAvoid += HandlePerfect;
-					_player.OnGoodAvoid += HandleGood;
-                    _player.OnFailedAvoid += PlayFailEffect;
-					break;
-            }
-        }
-
         public override void End()
         {
-            // イベント購読解除
-            _player.OnPerfectAvoid -= HandlePerfect;
-            _player.OnGoodAvoid -= HandleGood;
-            _player.OnFailedAvoid -= PlayFailEffect;
-
             base.End();
 
             //敵攻撃はノックバックを与えるので確認
@@ -59,6 +30,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
 
+        protected override void Subscribe()
+        {
+            _player.OnPerfectAvoid += HandlePerfect;
+            _player.OnGoodAvoid += HandleGood;
+            _player.OnFailedAvoid += PlayFailEffect;
+        }
+		
+        protected override void Unsubscribe()
+        {
+            _player.OnPerfectAvoid -= HandlePerfect;
+            _player.OnGoodAvoid -= HandleGood;
+            _player.OnFailedAvoid -= PlayFailEffect;
+        }
+        
 		protected override void HandlePerfect() => OnPlayerSuccess(true);
         protected override void HandleGood() => OnPlayerSuccess(false);
     }

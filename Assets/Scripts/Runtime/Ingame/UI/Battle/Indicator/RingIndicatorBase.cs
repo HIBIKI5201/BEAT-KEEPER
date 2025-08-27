@@ -101,6 +101,19 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             //残り時間がないなら終了する
             if (!CheckRemainTime()) return;
+
+			switch (count)
+            {
+                // 1拍目　縮小エフェクトを開始する
+                case 1:
+                    StartContractionEffect();
+                    break;
+                
+                // 2拍目　念のため判定が始まる2拍目のタイミングでPlayerManagerのイベント購読を行う
+                case 2:
+                    Subscribe();
+                    break;
+            }
         }
 
         /// <summary>
@@ -136,6 +149,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public virtual void PlayFailEffect()
         {
+			Unsubscribe();
+
             if (_tweens != null)
             {
                 // 念のためキルしておく
@@ -260,6 +275,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _decorationImage.sprite = _commonSprite.Decoration;
             _hitImage.sprite = _commonSprite.HitLine;
         }
+
+		#region イベント購読・解除（継承先で実装する）
+
+		/// <summary>
+        /// イベント購読
+        /// </summary>
+		protected abstract void Subscribe();
+
+		/// <summary>
+        /// イベント購読解除
+        /// </summary>
+		protected abstract void Unsubscribe();
+
+		#endregion
         
         #region 中央画像の操作（操作アイコン・判定の画像）
         
@@ -349,6 +378,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
+
+			// 連続押し対策としてイベント購読を解除
+			Unsubscribe();
+
             OnPlayerSuccessForced(isPerfect);
         }
 

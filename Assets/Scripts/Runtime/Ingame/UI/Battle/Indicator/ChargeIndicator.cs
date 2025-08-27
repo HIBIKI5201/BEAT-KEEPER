@@ -25,31 +25,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			_endPositionRing.rectTransform.position = endPosition
                                                 + new Vector2(Screen.width / 2, Screen.height / 2);
 		}
-
-        /// <summary>
-        /// エフェクトを再生
-        /// </summary>
-        public override void Effect(int count)
-        {
-            base.Effect(count);
-
-            switch (count)
-            {
-                // 縮小エフェクトを開始する
-                case 1:
-                    StartContractionEffect();
-                    break;
-            }
-        }
         
         public override void End()
         {
             base.End();
-            
-            // イベントの購読解除
-            _player.OnStartChargeAttack -= OnPlayerCharge;
-            _player.OnChargeAttack -= OnPlayerAttackSuccess;
-            _player.OnMissChargeAttack -= PlayFailEffect;
             
             // Tweens配列をクリア
             if (_tweens != null)
@@ -101,10 +80,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             SetAllAlpha(1f);
             
             _tweens = new Tween[5];
-
-            _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
-            _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
-            _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
         }
 
         /// <summary>
@@ -177,6 +152,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // ノーツのタイミングより前なら処理はスキップ
                 return;
             }
+
+            Unsubscribe();
 
             OnPlayerAttackSuccessForced();
         }
@@ -322,6 +299,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         #endregion
 
+        protected override void Subscribe()
+        {
+            _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
+            _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
+            _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
+        }
+		
+        protected override void Unsubscribe()
+        {
+            _player.OnStartChargeAttack -= OnPlayerCharge;
+            _player.OnChargeAttack -= OnPlayerAttackSuccess;
+            _player.OnMissChargeAttack -= PlayFailEffect;
+        }
+        
         #region Overrides for Tutorial
 
         public override void Pause()
