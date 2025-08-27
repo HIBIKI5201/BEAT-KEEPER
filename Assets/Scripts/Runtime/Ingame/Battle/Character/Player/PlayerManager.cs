@@ -164,7 +164,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.HitAttack(data);
             _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
             SoundEffectManager.PlaySoundEffect(_hitSound);
-            VoiceManager.PlayVoice(_hitVoice);
+            VoiceManager.PlayVoice(_avoidFailedVoice);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
@@ -257,14 +257,27 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         #region ボイス
         [Header("Voice")]
-        [SerializeField, Tooltip("コンボ攻撃のボイス")]
-        private string _comboShootVoice;
+        [SerializeField, Tooltip("コンボ攻撃のボイス1")]
+        private string _comboShootVoice1;
+        [SerializeField, Tooltip("コンボ攻撃のボイス2")]
+        private string _comboShootVoice2;
+        [SerializeField, Tooltip("コンボ攻撃のボイス3")]
+        private string _comboShootVoice3;
+        [SerializeField, Tooltip("コンボ攻撃のコンプリート")]
+        private string _comboShootCompleteVoice;
 
-        [SerializeField, Tooltip("チャージ攻撃のボイス")]
-        private string _chargeShootVoice;
+        [SerializeField, Tooltip("チャージ攻撃開始のボイス")]
+        private string _chargeStartShootVoice;
+        [SerializeField, Tooltip("チャージ攻撃終了のボイス")]
+        private string _chargeEndShootVoice;
 
-        [SerializeField, Tooltip("ヒット時のボイス")]
-        private string _hitVoice;
+        [SerializeField, Tooltip("回避成功時のボイス")]
+        private string _avoidSuccessVoice;
+        [SerializeField, Tooltip("回避失敗時のボイス")]
+        private string _avoidFailedVoice;
+
+        [SerializeField, Tooltip("スキルのボイス")]
+        private string _skillVoice;
 
         [SerializeField, Tooltip("スタン解除時のボイス")]
         private string _stunEndVoice;
@@ -685,7 +698,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                VoiceManager.PlayVoice(_comboShootVoice);
+                VoiceManager.PlayVoice(_comboShootVoice1);
 
                 if (isPerfectHit)
                 {
@@ -855,7 +868,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnChargeAttack?.Invoke();
 
                 SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
-                VoiceManager.PlayVoice(_chargeShootVoice);
+                VoiceManager.PlayVoice(_chargeEndShootVoice);
                 AttackEnemy(_data.ChargeAttackPower, nockback: true);
                 _scoreManager.AddScore(_data.ChargeEndScore);
                 _comboSystem.Attack();
