@@ -107,6 +107,12 @@ namespace BeatKeeper.Runtime.Ingame.System
 #if UNITY_EDITOR
         [SerializeField, HideInInspector]
         private bool[] _visible = new bool[CHART_LENGTH];
+
+        [ContextMenu("Convert")]
+        private void Convert()
+        {
+            Array.Resize(ref _chart, CHART_LENGTH);
+        }
 #endif
     }
 }
