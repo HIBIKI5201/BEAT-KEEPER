@@ -742,16 +742,27 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLogger.AddText($"{_data.Name} do skill");
 
-            if (isPerfect) { OnPerfectSkill?.Invoke(); }
-            else if (isGood) { OnGoodSkill?.Invoke(); }
+            if (isPerfect) 
+            {
+                SuccessSkill();
+                OnPerfectSkill?.Invoke(); 
+            }
+            else if (isGood) 
+            {
+                SuccessSkill();
+                OnGoodSkill?.Invoke();
+            }
             else { MissSkill(); }
 
+            SymphonyDebugLogger.TextLog();
+        }
 
+        private void SuccessSkill()
+        {
             _onSkill?.Invoke();
             _animeManager.Skill();
             _skillSystem.StartSkill();
-
-            SymphonyDebugLogger.TextLog();
+            VoiceManager.PlayVoice(_skillVoice);
         }
 
         /// <summary>
