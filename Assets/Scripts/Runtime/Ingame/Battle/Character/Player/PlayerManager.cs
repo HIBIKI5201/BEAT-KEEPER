@@ -164,7 +164,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             base.HitAttack(data);
             _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
             SoundEffectManager.PlaySoundEffect(_hitSound);
-            VoiceManager.PlayVoice(_avoidFailedVoice);
+            VoiceManager.PlayVoice(data.IsNockback ? _chargeDamagedVoice : _avoidDamagedVoice);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
             _stunEndTiming = Time.time + stunTime * (float)MusicEngineHelper.DurationOfBeat; //スタン時間を更新する
@@ -270,11 +270,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private string _chargeStartShootVoice;
         [SerializeField, Tooltip("チャージ攻撃終了のボイス")]
         private string _chargeEndShootVoice;
+        [SerializeField, Tooltip("チャージ攻撃失敗のボイス")]
+        private string _chargeDamagedVoice;
 
         [SerializeField, Tooltip("回避成功時のボイス")]
         private string _avoidSuccessVoice;
         [SerializeField, Tooltip("回避失敗時のボイス")]
-        private string _avoidFailedVoice;
+        private string _avoidDamagedVoice;
 
         [SerializeField, Tooltip("スキルのボイス")]
         private string _skillVoice;
