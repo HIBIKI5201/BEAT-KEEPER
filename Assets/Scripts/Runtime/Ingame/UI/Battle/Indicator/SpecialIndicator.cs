@@ -367,8 +367,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			_player.OnPerfectSkill += HandlePerfect;
             _player.OnGoodSkill += HandleGood;
-                    
-            // TODO: 仮
+            _player.OnMissedSkill += PlayFailEffect;
             _player.OnFinisher += HandlePerfect;
 		}
 		
@@ -376,6 +375,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			_player.OnPerfectSkill -= HandlePerfect;
             _player.OnGoodSkill -= HandleGood;
+            _player.OnMissedSkill -= PlayFailEffect;
             _player.OnFinisher -= HandlePerfect;
 		}        
 

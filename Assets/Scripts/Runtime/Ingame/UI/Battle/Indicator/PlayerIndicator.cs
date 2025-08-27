@@ -31,12 +31,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			_player.OnPerfectAttack += HandlePerfect;
             _player.OnGoodAttack += HandleGood;
+            _player.OnMissAttack += PlayFailEffect;
 		}
 		
 		protected override void Unsubscribe()
 		{
 			_player.OnPerfectAttack -= HandlePerfect;
             _player.OnGoodAttack -= HandleGood;
+            _player.OnMissAttack -= PlayFailEffect;
 		}
 
         protected override void HandlePerfect() => OnPlayerSuccess(true);
