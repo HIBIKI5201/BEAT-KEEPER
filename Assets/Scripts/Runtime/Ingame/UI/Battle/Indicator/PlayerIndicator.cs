@@ -13,36 +13,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
     {
         public override int EffectLength => 3;
 
-        /// <summary>
-        /// エフェクトを再生
-        /// </summary>
-        public override void Effect(int count)
-        {
-            base.Effect(count);
-
-            switch (count)
-            {
-                // 1拍目　縮小エフェクトを開始する
-                case 1:
-                    StartContractionEffect();
-                    break;
-                
-                // 2拍目　念のため判定が始まる2拍目のタイミングでアクション登録を行う
-                case 2:
-                    _player.OnPerfectAttack += HandlePerfect;
-                    _player.OnGoodAttack += HandleGood;
-                    break;
-            }
-        }
-
-        public override void End()
-        {
-            _player.OnPerfectAttack -= HandlePerfect;
-            _player.OnGoodAttack -= HandleGood;
-
-			base.End();
-        }
-
         #region チュートリアル用のメソッド
 
         /// <summary>
@@ -56,6 +26,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
         public void PlayGoodEffect() => OnPlayerSuccessForced(false);
         
         #endregion
+
+		protected override void Subscribe()
+		{
+			_player.OnPerfectAttack += HandlePerfect;
+            _player.OnGoodAttack += HandleGood;
+            _player.OnMissAttack += PlayFailEffect;
+		}
+		
+		protected override void Unsubscribe()
+		{
+			_player.OnPerfectAttack -= HandlePerfect;
+            _player.OnGoodAttack -= HandleGood;
+            _player.OnMissAttack -= PlayFailEffect;
+		}
 
         protected override void HandlePerfect() => OnPlayerSuccess(true);
         protected override void HandleGood() => OnPlayerSuccess(false);
