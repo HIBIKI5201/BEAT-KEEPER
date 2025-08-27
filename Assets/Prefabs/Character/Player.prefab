@@ -11955,8 +11955,9 @@ MonoBehaviour:
   _comboShootCompleteVoice: voice_combo_complete
   _chargeStartShootVoice: voice_charge_attack_charge
   _chargeEndShootVoice: voice_charge_attack_charge
+  _chargeDamagedVoice: voice_charge_attack_damaged
   _avoidSuccessVoice: voice_charge_attack_charge
-  _avoidFailedVoice: voice_avoid_damaged
+  _avoidDamagedVoice: voice_avoid_damaged
   _skillVoice: voice_skill
   _stunEndVoice: voice_recover
   _damageScale: 1
