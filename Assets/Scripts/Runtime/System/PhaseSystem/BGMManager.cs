@@ -70,26 +70,26 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeSelectLayer(int index)
         {
-            StringBuilder label = new(_selectorLabelName);
+            StringBuilder label = new();
 
-            if (index <= 4) //レイヤーを変更する
+            if (index <= 4) //レイヤーのみ変更する
             {
+				// レイヤー0~4の場合 = フローゾーン以外
+                label.Append(_selectorLabelName);
                 label.Append(index.ToString("0"));
             }
             else
             {
+				// フローゾーン突入
                 float beat = MusicEngineHelper.GetBeatSinceStart();
 
-                //今の範囲を計算
-                int layer =
-                    (Mathf.CeilToInt(
-                        (beat - 16) //イントロの分を減らす
-                        % 64f //ループ分を削る
-                        / 16f) //拍から節に変換
-                    + 1) // 最低でも1以上になる
-                    * 4 + 1; //レイヤー値の4n+1に合わせる
+				// イントロ分の16拍を引いて、BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
+				int position = (Mathf.FloorToInt(beat) - 16) % 64;
+				int section = position == 0 ? 0 : (Mathf.FloorToInt((position - 1) / 16f) + 1) % 4;
+				int layer = section * 4 + 5;
 
                 //遷移先のレイヤー名を取得
+				label.Append(_selectorFlowZoneLabelName);
                 label.Append(layer.ToString("0"));
             }
 
