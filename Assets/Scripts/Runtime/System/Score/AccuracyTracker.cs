@@ -46,12 +46,12 @@ namespace BeatKeeper
             // 通常攻撃
             _playerManager.OnPerfectAttack += RecordPerfect;
             _playerManager.OnGoodAttack += RecordGood;
-            // TODO: 通常攻撃のミス判定
+            _playerManager.OnMissAttack += RecordMiss;
             
             // スキル
             _playerManager.OnPerfectSkill += RecordPerfect;
             _playerManager.OnGoodSkill += RecordGood;
-            // TODO: スキルのミス判定
+            _playerManager.OnMissedSkill += RecordMiss;
             
             // 回避
             _playerManager.OnPerfectAvoid += RecordPerfect;
