@@ -842,6 +842,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _chargeAttackTimer = Time.time; //チャージ開始時間を記録
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
+            VoiceManager.PlayVoice(_chargeStartShootVoice);
             _animeManager.ChargeShoot();
 
             try
@@ -946,6 +947,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _onSuccessAvoid?.Invoke();
             SoundEffectManager.PlaySoundEffect(_avoidSound);
+            VoiceManager.PlayVoice(_avoidSuccessVoice);
 
             _animeManager.Avoid();
             _flowZoneSystem.SuccessResonance();
