@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
+using System.Collections;
+using System.Collections.Generic;
+
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     /// <summary>
@@ -29,15 +32,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         public override void End()
         {
             base.End();
-            
-            // Tweens配列をクリア
-            if (_tweens != null)
-            {
-                for (int i = 0; i < _tweens.Length; i++)
-                {
-                    _tweens[i]?.Kill();
-                }
-            }
             
             ResetAllComponents();
         }
@@ -113,6 +107,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // マスクのスケールを外側リングの大きさに合わせる
             _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
 
+            // アーチのパスを作成
+            Vector3 startPos = _startPositionRing.transform.position;
+            Vector3 endPos = _endPositionRing.transform.position;
+    
+            // アーチの頂点を計算（中間点から上方向にオフセット）
+            Vector3 midPoint = (startPos + endPos) * 0.5f;
+            Vector3 archTop = midPoint + Vector3.up * Vector3.Distance(startPos, endPos) * 0.15f; // 高さを計算
+    
+            Vector3[] pathPoints = { startPos, archTop, endPos };
+            
             var sequence = DOTween.Sequence()
                 
                 // 色変更（チャージ開始時）
@@ -123,8 +127,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
         
-                // 必要に応じて位置も調整
-                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
+                // アーチの動きを表現
+                .Join(_startPositionRing.rectTransform.DOPath(pathPoints, totalDuration * 0.9f, PathType.CatmullRom).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
             
@@ -185,10 +189,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 
                 // 色変更
-                .Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration))
+                .Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _blinkDuration * 0.4f))
                 
                 // フェードアウト NOTE: 他のノーツと違いここの連結をJoinとしている
-                .Join(CreateFadeSequence(_fadeDuration))
+                .Append(CreateFadeSequence(_fadeDuration))
                 
                 .OnComplete(End);
 
