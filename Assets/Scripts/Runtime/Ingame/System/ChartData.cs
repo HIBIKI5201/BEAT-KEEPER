@@ -11,7 +11,7 @@ namespace BeatKeeper.Runtime.Ingame.System
     [CreateAssetMenu(fileName = "ChartData", menuName = "BeatKeeper/ChartData", order = 1)]
     public partial class ChartData : ScriptableObject
     {
-        private const int CHART_LENGTH = 64;
+        private const int CHART_LENGTH = 128;
 
         private void Awake()
         {
@@ -107,6 +107,13 @@ namespace BeatKeeper.Runtime.Ingame.System
 #if UNITY_EDITOR
         [SerializeField, HideInInspector]
         private bool[] _visible = new bool[CHART_LENGTH];
+
+        [ContextMenu("Convert")]
+        private void Convert()
+        {
+            Array.Resize(ref _chart, CHART_LENGTH);
+            Array.Resize(ref _visible, CHART_LENGTH);
+        }
 #endif
     }
 }
