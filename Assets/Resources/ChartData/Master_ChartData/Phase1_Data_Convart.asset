@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00eea894381a8374eb7be1a9619d606d, type: 3}
-  m_Name: Phase1_Data
+  m_Name: Phase1_Data_Convart
   m_EditorClassIdentifier: 
   _chart:
   - AttackKind: 1
@@ -141,9 +141,138 @@ MonoBehaviour:
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
   _rangeEndPositions:
-    keys: 1400000024000000
+    keys: 140000002400000040000000
     values:
     - {x: 375, y: 0}
     - {x: 375, y: 0}
-  _visible: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    - {x: 200, y: 0}
+  _visible: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
