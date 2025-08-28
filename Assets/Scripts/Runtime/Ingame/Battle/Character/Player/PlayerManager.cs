@@ -294,7 +294,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _isBattle;
         [Tooltip("スタンが終了するタイミング")] private float _stunEndTiming;
         private CancellationTokenSource _stunTokenSource;
-        private float _chargeAttackTimer;
+        private ReactiveProperty<int> _comboAttackCounter;
         private CancellationTokenSource _chargeAttackChargingTokenSource;
         [Tooltip("最後の回避成功のタイミング")] private float _lastAvoidSuccessTiming;
         [Tooltip("パーフェクト攻撃の予約")] private bool _willPerfectAttack;
@@ -588,6 +588,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 PerfectAttack();
             }
+
+            if (IsResetComboAttackCounter())
+            {
+                _comboAttackCounter.Value = 0;
+            }
         }
 
         /// <summary>
@@ -676,7 +681,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //コンボとアニメーターを同期
             if (_comboSystem != null && _animeManager != null)
             {
-                _comboSystem.ComboCount
+                _comboAttackCounter
                     .Subscribe(n => _animeManager.Combo(n))
                     .AddTo(destroyCancellationToken);
             }
@@ -700,8 +705,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (isGoodHit) //最低でもGood以上ならヒット
             {
-                VoiceManager.PlayVoice(_comboShootVoice1);
-
                 if (isPerfectHit)
                 {
                     if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
@@ -819,6 +822,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animeManager.Shoot();
             _target.NormalAttackRandomHit();
             SoundEffectManager.PlaySoundEffect(_comboAttackSound);
+            VoiceManager.PlayVoice(
+                (_comboAttackCounter.Value % 3) switch
+                {
+                    0 => _comboShootVoice1,
+                    1 => _comboShootVoice2,
+                    2 => _comboShootVoice3,
+                    _ => string.Empty
+                });
+
+            if (2 <= _comboAttackCounter.Value)
+            {
+                PlayComboCompleteVoice();
+            }
+
+            _comboAttackCounter.Value = ++_comboAttackCounter.Value % 3;
+        }
+
+        private async void PlayComboCompleteVoice()
+        {
+            await Awaitable.WaitForSecondsAsync((float)MusicEngineHelper.DurationOfBeat, destroyCancellationToken);
+
+            VoiceManager.PlayVoice(_comboShootCompleteVoice);
         }
 
         private void MissSkill()
@@ -842,7 +867,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _chargeAttackChargingTokenSource = new();
             _scoreManager.AddScore(_data.ChargeStartScore);
 
-            _chargeAttackTimer = Time.time; //チャージ開始時間を記録
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
             VoiceManager.PlayVoice(_chargeStartShootVoice);
             _animeManager.ChargeShoot();
@@ -936,7 +960,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             // スコア計算
             float score = power * _data.ComboScoreScale
-                [_comboSystem.ComboCount.CurrentValue % _data.ComboScoreScale.Length];
+                [_comboAttackCounter.Value % _data.ComboScoreScale.Length];
             _scoreManager?.AddScore(Mathf.FloorToInt(power)); // スコアを加算。小数点以下は切り捨てる
         }
 
@@ -1057,6 +1081,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     MissedAvoid();
                     break;
             }
+        }
+
+        private bool IsResetComboAttackCounter()
+        {
+            int timing = MusicEngineHelper.GetBeatSinceStart();
+            ChartData chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
+            ChartKindEnum kind = chart[timing].AttackKind;
+
+            return kind != ChartKindEnum.Attack;
         }
 
 # if UNITY_EDITOR
