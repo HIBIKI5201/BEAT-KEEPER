@@ -294,7 +294,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _isBattle;
         [Tooltip("スタンが終了するタイミング")] private float _stunEndTiming;
         private CancellationTokenSource _stunTokenSource;
-        private ReactiveProperty<int> _comboAttackCounter;
+        private ReactiveProperty<int> _comboAttackCounter = new();
         private CancellationTokenSource _chargeAttackChargingTokenSource;
         [Tooltip("最後の回避成功のタイミング")] private float _lastAvoidSuccessTiming;
         [Tooltip("パーフェクト攻撃の予約")] private bool _willPerfectAttack;
@@ -588,11 +588,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
                 PerfectAttack();
             }
-
-            if (IsResetComboAttackCounter())
-            {
-                _comboAttackCounter.Value = 0;
-            }
         }
 
         /// <summary>
@@ -610,6 +605,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isBattle)
             {
                 MissedChart();
+            }
+
+            if (IsResetComboAttackCounter())
+            {
+                _comboAttackCounter.Value = 0;
             }
         }
 
@@ -1085,10 +1085,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private bool IsResetComboAttackCounter()
         {
-            int timing = MusicEngineHelper.GetBeatSinceStart();
+            if (_target == null) return false;
+
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart();
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             ChartKindEnum kind = chart[timing].AttackKind;
+
+            if (kind == ChartKindEnum.None) return false;
+
+            Debug.Log($"<color=red>current chart kind : {kind} {kind != ChartKindEnum.Attack}</color>");
 
             return kind != ChartKindEnum.Attack;
         }
