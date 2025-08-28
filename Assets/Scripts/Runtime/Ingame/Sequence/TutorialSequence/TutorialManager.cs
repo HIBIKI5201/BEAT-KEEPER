@@ -60,9 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _tutorialAttackStartVoice;
         [SerializeField] private string _tutorialSuccess2;
         [SerializeField] private string _tutorialField;
-        [SerializeField] private string _tutorialAvoidSuccess;
         [SerializeField] private string _chargeStartVoice;
-        [SerializeField] private string _chargingVoice;
         [SerializeField] private string _chargeCompleteVoice;
 
         private ChartKindEnum _chartKindEnum;
@@ -570,7 +568,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _inputBuffer.Interact.canceled += OnWaitInput;
                 VoiceManager.PlayVoice(_chargeStartVoice);
                 yield return ShowTutorialMessage(_chargeIndicatorText1, _inputBuffer.Interact);
-                VoiceManager.PlayVoice(_chargingVoice);
                 SoundEffectManager.PlaySoundEffect(_charging);
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();

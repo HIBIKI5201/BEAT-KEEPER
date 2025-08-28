@@ -20,31 +20,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             // フィニッシャーが発動できるか監視を行う。前回の変更時と状態が変化したときだけ、見た目を切り替えるTweenを発火する
             StartFinisherMonitoring();
-            
-            switch (count)
-            {
-                // 1拍目　縮小エフェクトを開始する
-                case 1:
-                    StartContractionEffect();
-                    break;
-                
-                // 3拍目　スキル発動の演出を行う
-                case 2:
-                    _player.OnPerfectSkill += HandlePerfect;
-                    _player.OnGoodSkill += HandleGood;
-                    
-                    // TODO: 仮
-                    _player.OnFinisher += HandlePerfect;
-                    break;
-            }
         }
         
         public override void End()
-        {
-            _player.OnPerfectSkill -= HandlePerfect;
-            _player.OnGoodSkill -= HandleGood;
-            _player.OnFinisher -= HandlePerfect;
-            
+        {           
             // フィニッシャー状態の監視を解除
             StopFinisherMonitoring();
 
@@ -107,7 +86,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// リングの縮小
         /// </summary>
-        protected virtual void StartContractionEffect()
+        protected override void StartContractionEffect()
         {
             // 一拍が何秒か、アニメーションのために値をキャッシュしておく
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
@@ -115,16 +94,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var sequence = DOTween.Sequence()
                 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // 中央のリング
-                .Join(_hitImage.rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[1].rectTransform.DOScale(Vector3.one, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
+                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
                 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(Vector3.one * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
                 
                 // シーケンスが中断されなかった場合はミス。失敗演出を行う
@@ -162,11 +141,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 return;
             }
 
+			Unsubscribe();
+
             if (isPerfect)
             {
-                // パーフェクト判定の場合は収縮するリングのScaleを1に補正
+                // パーフェクト判定の場合は収縮するリングのScaleを補正
                 // フィニッシャーノーツのリングの操作。ベースクラスの処理に含まれないのでここで行う
-                _ringImages[0].rectTransform.localScale = Vector3.one;
+                _ringImages[0].rectTransform.localScale = _centerRingsScale;
             }
             
             base.PlayFailEffect();
@@ -381,7 +362,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
         
         #endregion
-        
+
+		protected override void Subscribe()
+		{
+			_player.OnPerfectSkill += HandlePerfect;
+            _player.OnGoodSkill += HandleGood;
+            _player.OnMissedSkill += PlayFailEffect;
+            _player.OnFinisher += HandlePerfect;
+		}
+		
+		protected override void Unsubscribe()
+		{
+			_player.OnPerfectSkill -= HandlePerfect;
+            _player.OnGoodSkill -= HandleGood;
+            _player.OnMissedSkill -= PlayFailEffect;
+            _player.OnFinisher -= HandlePerfect;
+		}        
+
         protected override void HandlePerfect() => OnPlayerSuccess(true);
         protected override void HandleGood() => OnPlayerSuccess(false);
     }
