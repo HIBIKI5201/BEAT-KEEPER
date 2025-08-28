@@ -294,7 +294,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private bool _isBattle;
         [Tooltip("スタンが終了するタイミング")] private float _stunEndTiming;
         private CancellationTokenSource _stunTokenSource;
-        private ReactiveProperty<int> _comboAttackCounter = new();
+        private ReactiveProperty<int> _comboAttackCounter = new(1);
         private CancellationTokenSource _chargeAttackChargingTokenSource;
         [Tooltip("最後の回避成功のタイミング")] private float _lastAvoidSuccessTiming;
         [Tooltip("パーフェクト攻撃の予約")] private bool _willPerfectAttack;
@@ -609,7 +609,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (IsResetComboAttackCounter())
             {
-                _comboAttackCounter.Value = 0;
+                _comboAttackCounter.Value = 1;
             }
         }
 
@@ -808,7 +808,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log("miss attack");
             _comboSystem.ComboReset();
-            _comboAttackCounter.Value = 0; //コンボカウンターをリセット
+            _comboAttackCounter.Value = 1; //コンボカウンターをリセット
         }
 
         /// <summary>
@@ -816,6 +816,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void BothComboAttack()
         {
+            _comboAttackCounter.Value = (_comboAttackCounter.Value % 3) + 1;
+
             _onShootComboAttack?.Invoke();
             if (_comboShootPerticle != null && _muzzle != null)
             { Instantiate(_comboShootPerticle, _muzzle.position, _muzzle.rotation); }
@@ -823,21 +825,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animeManager.Shoot();
             _target.NormalAttackRandomHit();
             SoundEffectManager.PlaySoundEffect(_comboAttackSound);
-            VoiceManager.PlayVoice(
-                (_comboAttackCounter.Value % 3) switch
+            VoiceManager.PlayVoice(_comboAttackCounter.Value switch
                 {
-                    0 => _comboShootVoice1,
-                    1 => _comboShootVoice2,
-                    2 => _comboShootVoice3,
+                    1 => _comboShootVoice1,
+                    2 => _comboShootVoice2,
+                    3 => _comboShootVoice3,
                     _ => string.Empty
                 });
 
-            if (2 <= _comboAttackCounter.Value)
+            if (3 <= _comboAttackCounter.Value)
             {
                 PlayComboCompleteVoice();
             }
-
-            _comboAttackCounter.Value = ++_comboAttackCounter.Value % 3;
         }
 
         private async void PlayComboCompleteVoice()
@@ -961,7 +960,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             // スコア計算
             float score = power * _data.ComboScoreScale
-                [_comboAttackCounter.Value % _data.ComboScoreScale.Length];
+                [--_comboAttackCounter.Value % _data.ComboScoreScale.Length];
             _scoreManager?.AddScore(Mathf.FloorToInt(power)); // スコアを加算。小数点以下は切り捨てる
         }
 
