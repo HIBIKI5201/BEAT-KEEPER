@@ -9,7 +9,7 @@ namespace BeatKeeper.Runtime.Ingame.System
     /// </summary>
     public class InGameSceneManager : SceneManagerB
     {
-        private void Start()
+        private async void Start()
         {
             var multiScene = ServiceLocator.GetInstance<MultiSceneManager>();
             multiScene.SceneLoad(SceneListEnum.Stage);
@@ -23,6 +23,9 @@ namespace BeatKeeper.Runtime.Ingame.System
                 await Awaitable.EndOfFrameAsync();
                 SceneLoader.SetActiveScene(SceneListEnum.Stage.ToString());
             }
+            
+            var bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
+            bgmManager.Subscribe();
         }
     }
 }

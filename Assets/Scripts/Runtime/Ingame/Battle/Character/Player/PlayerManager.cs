@@ -924,7 +924,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SoundEffectManager.PlaySoundEffect(_avoidSound);
 
             _animeManager.Avoid();
-            _flowZoneSystem.SuccessResonance();
             _lastAvoidSuccessTiming = Time.time;
         }
 
