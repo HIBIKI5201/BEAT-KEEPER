@@ -568,7 +568,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _inputBuffer.Interact.canceled += OnWaitInput;
                 VoiceManager.PlayVoice(_chargeStartVoice);
                 yield return ShowTutorialMessage(_chargeIndicatorText1, _inputBuffer.Interact);
-                SoundEffectManager.PlaySoundEffect(_charging);
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
 
