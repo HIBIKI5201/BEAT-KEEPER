@@ -11949,9 +11949,16 @@ MonoBehaviour:
   _flowZone4: Flowzonegauge04
   _flowZoneStartSound: Flowzone_In
   _flowZoneEndSound: Flowzone_Out
-  _comboShootVoice: voice_attack_normal1
-  _chargeShootVoice: voice_charge_attack_fire
-  _hitVoice: voice_avoid_damaged
+  _comboShootVoice1: voice_attack_normal1
+  _comboShootVoice2: voice_attack_normal2
+  _comboShootVoice3: voice_attack_normal3
+  _comboShootCompleteVoice: voice_combo_complete
+  _chargeStartShootVoice: voice_charge_attack_charge
+  _chargeEndShootVoice: voice_charge_attack_charge
+  _chargeDamagedVoice: voice_charge_attack_damaged
+  _avoidSuccessVoice: voice_charge_attack_charge
+  _avoidDamagedVoice: voice_avoid_damaged
+  _skillVoice: voice_skill
   _stunEndVoice: voice_recover
   _damageScale: 1
   _particleSystem: {fileID: 5368706015596788293}
