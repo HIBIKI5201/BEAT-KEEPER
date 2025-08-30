@@ -29,6 +29,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField, Tooltip("何拍ごとにインジケーターを出すか")] private int _indicatorGenerateCount;
         [SerializeField] private float _goodRange = 0.8f;
         [SerializeField] private float _perfectRange = 0.5f;
+        [SerializeField, Range(0f, 1f)] private float _indicatorSpeed = 1.0f;
+        [SerializeField] private AnimationCurve _indicatorPosition;
 
         [Header("チュートリアルの設定")]
         [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
@@ -74,6 +76,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
+        private int _allBeat;
         private float _indicatorTimer;
         private bool _isCharging;
         private bool _nextTutorial;
@@ -184,6 +187,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// </summary>
         public void OnBeat()
         {
+            _allBeat++;
             if (_activeIndicatorBaseQue.Count > 0 && !_activeIndicatorBaseQue.Peek().CheckRemainTime())
                 EndIndicator(_activeIndicatorBaseQue.Dequeue());
 
@@ -202,7 +206,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return;
                 }
 
-                var ringObj = _chartRingManager.GenerateRing(_chartKindEnum, Vector2.zero, 0);
+                var ringPosition = new Vector2(_indicatorPosition.Evaluate((_allBeat * _indicatorSpeed) % 10), 0);
+                var ringObj = _chartRingManager.GenerateRing(_chartKindEnum, ringPosition, 0);
                 var ringIndicator = ringObj.GetComponent<RingIndicatorBase>();
                 if (ringIndicator) _activeIndicatorBaseQue.Enqueue(ringIndicator);
 
