@@ -7,6 +7,7 @@ using SymphonyFrameWork.System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -58,6 +59,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _chargeGunshot;
 
         [Header("ボイス")]
+        [SerializeField] private GameObject _textBox;
+        [SerializeField] private TextMeshProUGUI _textMeshPro;
         [SerializeField] private string _tutorialSuccess1;
         [SerializeField] private string _tutorialAttackStartVoice;
         [SerializeField] private string _tutorialSuccess2;
@@ -107,9 +110,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _director.Play();
         }
 
-        public void PlayVoice(string cueName)
+        public void PlayVoice(string cueName, string text)
         {
             VoiceManager.PlayVoice(cueName);
+            _textBox.SetActive(true);
+            _textMeshPro.text = text;
 #if UNITY_EDITOR
             if (!_playTutorial)
             {

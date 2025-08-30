@@ -6,6 +6,7 @@ namespace BeatKeeper
     public class CriAtomSequenceBehaviour : PlayableBehaviour
     {
         public string CueName;
+        public string Text;
         public GameObject Owner;
         private bool _isPlayed;
 
@@ -18,7 +19,7 @@ namespace BeatKeeper
                 var tutorialManager = Owner.GetComponent<TutorialManager>();
                 if (tutorialManager)
                 {
-                    tutorialManager.PlayVoice(CueName);
+                    tutorialManager.PlayVoice(CueName,Text);
                 }
             }
         }
