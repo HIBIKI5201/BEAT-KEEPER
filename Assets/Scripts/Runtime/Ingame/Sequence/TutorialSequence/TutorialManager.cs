@@ -60,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         [Header("ボイス")]
         [SerializeField] private GameObject _textBox;
-        [SerializeField] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] private Text _textMeshPro;
         [SerializeField] private string _tutorialSuccess1;
         [SerializeField] private string _tutorialAttackStartVoice;
         [SerializeField] private string _tutorialSuccess2;
@@ -113,8 +113,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void PlayVoice(string cueName, string text)
         {
             VoiceManager.PlayVoice(cueName);
-            _textBox.SetActive(true);
-            _textMeshPro.text = text;
+            TextUpdate(text);
 #if UNITY_EDITOR
             if (!_playTutorial)
             {
@@ -139,6 +138,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _chartKindEnum = chartKindEnum;
             _director.Pause();
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
+        }
+
+        public void PauseTimeline()
+        {
+            if (_operationTutorialPlaying)
+                _director.Pause();
+        }
+
+        private void TextUpdate(string text)
+        {
+            _textBox.SetActive(true);
+            _textMeshPro.text = text;
         }
 
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
@@ -564,6 +575,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
+                Debug.Log($"Resume----------------------------------------------------{_director.state}");
+                _director.Resume();
+                Debug.Log($"Resume----------------------------------------------------{_director.state}");
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
             {
