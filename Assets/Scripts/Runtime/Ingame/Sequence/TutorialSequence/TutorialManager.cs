@@ -60,13 +60,19 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         [Header("ボイス")]
         [SerializeField] private GameObject _textBox;
-        [SerializeField] private Text _textMeshPro;
+        [SerializeField] private Text _tutorialVoiceText;
         [SerializeField] private string _tutorialSuccess1;
+        [SerializeField] private string _tutorialSuccess1Text;
         [SerializeField] private string _tutorialAttackStartVoice;
+        [SerializeField] private string _tutorialAttackStartVoiceText;
         [SerializeField] private string _tutorialSuccess2;
+        [SerializeField] private string _tutorialSuccess2Text;
         [SerializeField] private string _tutorialField;
+        [SerializeField] private string _tutorialFieldText;
         [SerializeField] private string _chargeStartVoice;
+        [SerializeField] private string _chargeStartVoiceText;
         [SerializeField] private string _chargeCompleteVoice;
+        [SerializeField] private string _chargeCompleteVoiceText;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -90,6 +96,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private async void Start()
         {
             _tutorialUi.SetActive(false);
+            _textBox.SetActive(false);
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
@@ -103,6 +110,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void OnDestroy()
         {
             TutorialUnRegister();
+        }
+
+        public void EndTutorial()
+        {
+            _textBox.SetActive(false);
+            _tutorialUi.SetActive(false);
         }
 
         public void StartTutorial()
@@ -149,14 +162,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void TextUpdate(string text)
         {
             _textBox.SetActive(true);
-            _textMeshPro.text = text;
+            _tutorialVoiceText.text = text;
         }
 
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
         {
+            Debug.Log("5498654654986549685749865746857498657498657");
             yield return new WaitUntil(() => !_operationTutorialPlaying);
             if (chartKindEnum == ChartKindEnum.Attack)
-                VoiceManager.PlayVoice(_tutorialAttackStartVoice);
+                PlayVoice(_tutorialAttackStartVoice, _tutorialAttackStartVoiceText);
             switch (chartKindEnum)
             {
                 case ChartKindEnum.Attack:
@@ -261,7 +275,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     CheckTutorialClear(_attackTutorialClearCount, () =>
                     {
                         _inputBuffer.Attack.started -= OnShot;
-                        VoiceManager.PlayVoice(_tutorialSuccess2);
+                        PlayVoice(_tutorialSuccess2, _tutorialSuccess2Text);
                     })
             ;
                     break;
@@ -413,7 +427,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ind =>
                 {
                     ind.PlayFailEffect();
-                    VoiceManager.PlayVoice(_tutorialField);
+                    PlayVoice(_tutorialField, _tutorialFieldText);
                     _indicatorGenerate = false;
                 }
             );
@@ -544,7 +558,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
-                VoiceManager.PlayVoice(_tutorialSuccess1);
+                PlayVoice(_tutorialSuccess1, _tutorialSuccess1Text);
             }
             else if (chartKindEnum == ChartKindEnum.Skill)
             {
@@ -590,13 +604,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Pause();
                 _inputBuffer.Interact.started += OnWaitInput;
                 _inputBuffer.Interact.canceled += OnWaitInput;
-                VoiceManager.PlayVoice(_chargeStartVoice);
+                PlayVoice(_chargeStartVoice, _chargeStartVoice);
                 yield return ShowTutorialMessage(_chargeIndicatorText1, _inputBuffer.Interact);
+                SoundEffectManager.PlaySoundEffect(_charging);
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
 
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 3);
-                VoiceManager.PlayVoice(_chargeCompleteVoice);
+                PlayVoice(_chargeCompleteVoice, _chargeCompleteVoiceText);
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _chargeIndicatorText2;
                 SoundEffectManager.PlaySoundEffect(_chargeComplete);
@@ -615,6 +630,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2.5f);
 
+            Debug.Log("Explanation End----------------------------------------------------");
             _operationTutorialPlaying = false;
             ring.GetComponent<RingIndicatorBase>().End();
         }
