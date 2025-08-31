@@ -21,6 +21,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [Header("UI")]
         [SerializeField] private GameObject _tutorialUi;
         [SerializeField] private Text _tutorialText;
+        [SerializeField] private Image _tutorialFocusImage;
 
         [Header("Playable")]
         [SerializeField] private PlayableDirector _director;
@@ -32,6 +33,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private float _perfectRange = 0.5f;
         [SerializeField, Range(0f, 1f)] private float _indicatorSpeed = 1.0f;
         [SerializeField] private AnimationCurve _indicatorPosition;
+        [SerializeField] private Vector2 _tutorialFocusFlow;
 
         [Header("チュートリアルの設定")]
         [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
@@ -82,6 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayerManager _playerManager;
         private PlayerAnimeManager _playerAnimeManager;
         private EnemyAnimeManager _enemyAnimeManager;
+        private Vector2 _defaultFocusPosition;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -97,6 +100,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             _tutorialUi.SetActive(false);
             _textBox.SetActive(false);
+            _tutorialFocusImage.enabled = false;
+            _defaultFocusPosition = _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition;
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
@@ -150,6 +155,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             _chartKindEnum = chartKindEnum;
             _director.Pause();
+            _tutorialFocusImage.enabled = false;
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
         }
 
@@ -342,9 +348,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private IEnumerator ShowTutorialMessage(string message, InputAction inputAction)
         {
             _tutorialUi.SetActive(true);
+            _tutorialFocusImage.enabled = true;
+            _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _defaultFocusPosition;
             _tutorialText.text = message;
             inputAction.started += OnWaitInput;
             yield return new WaitUntil(() => _nextTutorial);
+            _tutorialFocusImage.enabled = false;
             inputAction.started -= OnWaitInput;
             _tutorialUi.SetActive(false);
             _nextTutorial = false;
@@ -589,9 +598,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
-                Debug.Log($"Resume----------------------------------------------------{_director.state}");
                 _director.Resume();
-                Debug.Log($"Resume----------------------------------------------------{_director.state}");
+                _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _tutorialFocusFlow;
+                _tutorialFocusImage.enabled = true;
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
             {
@@ -604,7 +613,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Pause();
                 _inputBuffer.Interact.started += OnWaitInput;
                 _inputBuffer.Interact.canceled += OnWaitInput;
-                PlayVoice(_chargeStartVoice, _chargeStartVoice);
+                PlayVoice(_chargeStartVoice, _chargeStartVoiceText);
                 yield return ShowTutorialMessage(_chargeIndicatorText1, _inputBuffer.Interact);
                 SoundEffectManager.PlaySoundEffect(_charging);
                 ringObj.Resume();
