@@ -325,7 +325,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private bool CheckGood()
         {
             //インジケーターが生成されるのは_currentIndicatorCountが4の際
-            if (_currentIndicatorCount == 2)
+            if (_currentIndicatorCount == 2 && _generateInterval == 0)
             {
                 var normalizedTimingFromJust = (float)Music.UnitFromJust;
                 if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
