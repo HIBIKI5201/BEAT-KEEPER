@@ -747,12 +747,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLogger.AddText($"{_data.Name} do skill");
 
-            if (isPerfect) 
+            if (isPerfect)
             {
                 SuccessSkill();
-                OnPerfectSkill?.Invoke(); 
+                OnPerfectSkill?.Invoke();
             }
-            else if (isGood) 
+            else if (isGood)
             {
                 SuccessSkill();
                 OnGoodSkill?.Invoke();
@@ -863,6 +863,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isPerfecet = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
 
+            //チャージ攻撃失敗
+            if (!isGood || !isPerfecet)
+            {
+                SymphonyDebugLogger.AddText("charge attack start is failed");
+                SymphonyDebugLogger.TextLog();
+                return;
+            }
+
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
             _chargeAttackChargingTokenSource = new();
@@ -896,26 +904,25 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
 
+            //チャージ攻撃失敗
+            if (!isGood || !isPerfect)
+            {
+                MissedChargeAttack();
+                return;
+            }
+
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             OnShootChargeAttack?.Invoke();
 
-            //成功かどうか
-            if (isGood || isPerfect)
-            {
-                Debug.Log($"{_data.Name} is full charge attacking");
-                OnChargeAttack?.Invoke();
+            Debug.Log($"{_data.Name} is full charge attacking");
+            OnChargeAttack?.Invoke();
 
-                SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
-                VoiceManager.PlayVoice(_chargeEndShootVoice);
-                AttackEnemy(_data.ChargeAttackPower, nockback: true);
-                _scoreManager.AddScore(_data.ChargeEndScore);
-                _comboSystem.Attack();
-            }
-            else
-            {
-                MissedChargeAttack();
-            }
+            SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+            VoiceManager.PlayVoice(_chargeEndShootVoice);
+            AttackEnemy(_data.ChargeAttackPower, nockback: true);
+            _scoreManager.AddScore(_data.ChargeEndScore);
+            _comboSystem.Attack();
         }
 
         private void MissedChargeAttack()
