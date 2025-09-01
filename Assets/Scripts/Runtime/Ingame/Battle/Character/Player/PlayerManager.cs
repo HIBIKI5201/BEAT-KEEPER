@@ -35,9 +35,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             add => _onStartChargeAttack.Event += value;
             remove => _onStartChargeAttack.Event -= value;
         }
-        public event Action OnShootChargeAttack;
         public event Action OnChargeAttack;
         public event Action OnMissChargeAttack;
+        public event Action OnCharging;
+        public event Action OnMissedCharging;
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid
@@ -912,8 +913,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
-
-            OnShootChargeAttack?.Invoke();
 
             Debug.Log($"{_data.Name} is full charge attacking");
             OnChargeAttack?.Invoke();
