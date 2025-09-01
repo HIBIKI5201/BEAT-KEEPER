@@ -155,7 +155,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             _chartKindEnum = chartKindEnum;
             _director.Pause();
-            _tutorialFocusImage.enabled = false;
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
         }
 
@@ -173,7 +172,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
         {
-            Debug.Log("5498654654986549685749865746857498657498657");
             yield return new WaitUntil(() => !_operationTutorialPlaying);
             if (chartKindEnum == ChartKindEnum.Attack)
                 PlayVoice(_tutorialAttackStartVoice, _tutorialAttackStartVoiceText);
