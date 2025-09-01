@@ -174,6 +174,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
         {
             yield return new WaitUntil(() => !_operationTutorialPlaying);
+            _tutorialFocusImage.enabled = false;
             if (chartKindEnum == ChartKindEnum.Attack)
             {
                 PlayVoice(_tutorialAttackStartVoice, _tutorialAttackStartVoiceText);
