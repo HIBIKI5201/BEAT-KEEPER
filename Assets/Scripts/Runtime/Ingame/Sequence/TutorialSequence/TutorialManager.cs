@@ -63,6 +63,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [Header("ボイス")]
         [SerializeField] private GameObject _textBox;
         [SerializeField] private Text _tutorialVoiceText;
+        [SerializeField] private bool _useSubtitle = true;
         [SerializeField] private string _tutorialSuccess1;
         [SerializeField] private string _tutorialSuccess1Text;
         [SerializeField] private string _tutorialAttackStartVoice;
@@ -94,7 +95,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private bool _nextTutorial;
         private bool _operationTutorialPlaying;
         private bool _chargeAttackWaiting;
-        private bool _indicatorGenerate = true;
+        private int _generateInterval;
 
         private async void Start()
         {
@@ -131,7 +132,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void PlayVoice(string cueName, string text)
         {
             VoiceManager.PlayVoice(cueName);
-            TextUpdate(text);
+            if (_useSubtitle) TextUpdate(text);
 #if UNITY_EDITOR
             if (!_playTutorial)
             {
@@ -174,7 +175,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             yield return new WaitUntil(() => !_operationTutorialPlaying);
             if (chartKindEnum == ChartKindEnum.Attack)
+            {
                 PlayVoice(_tutorialAttackStartVoice, _tutorialAttackStartVoiceText);
+                _generateInterval = 2;
+            }
             switch (chartKindEnum)
             {
                 case ChartKindEnum.Attack:
@@ -230,13 +234,16 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 indicator.AddCount();
             }
+            _currentIndicatorCount++;
 
             //インジケーターを生成
             if (_indicatorGenerateCount <= _currentIndicatorCount)
             {
-                if (!_indicatorGenerate)
+                _currentIndicatorCount = 0;
+
+                if (_generateInterval > 0)
                 {
-                    _indicatorGenerate = true;
+                    _generateInterval--;
                     return;
                 }
 
@@ -245,7 +252,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var ringIndicator = ringObj.GetComponent<RingIndicatorBase>();
                 if (ringIndicator) _activeIndicatorBaseQue.Enqueue(ringIndicator);
 
-                _currentIndicatorCount = 0;
                 switch (_chartKindEnum)
                 {
                     case ChartKindEnum.Attack:
@@ -264,11 +270,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         SoundEffectManager.PlaySoundEffect(_chargeSound);
                         _enemyAnimeManager.PreChargeAttack();
                         _chargeAttackWaiting = true;
-                        _indicatorGenerate = false;
+                        _generateInterval = 1;
                         break;
                 }
             }
-            _currentIndicatorCount++;
 
             if (_isCharging) _currentChargeBeat++;
 
@@ -320,16 +325,22 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private bool CheckGood()
         {
             //インジケーターが生成されるのは_currentIndicatorCountが4の際
-            if (_currentIndicatorCount == 3)
+            if (_currentIndicatorCount == 2)
             {
                 var normalizedTimingFromJust = (float)Music.UnitFromJust;
-                return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2;
+                if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
+                {
+                    return true;
+                }
             }
+
+            PlayVoice(_tutorialField, _tutorialFieldText);
+            _generateInterval = 2;
             return false;
         }
         private bool CheckPerfect()
         {
-            if (_currentIndicatorCount == 3)
+            if (_currentIndicatorCount == 2)
             {
                 var normalizedTimingFromJust = (float)Music.UnitFromJust;
                 return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _perfectRange / 2;
@@ -392,7 +403,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private IEnumerator EndIndicator(RingIndicatorBase ringIndicatorBase)
         {
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat);
-            ringIndicatorBase.End();
+            ringIndicatorBase.AddCount();
+            //ringIndicatorBase.End();
         }
 
         private IEnumerator EnemyDelayAnimation()
@@ -434,8 +446,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ind =>
                 {
                     ind.PlayFailEffect();
-                    PlayVoice(_tutorialField, _tutorialFieldText);
-                    _indicatorGenerate = false;
                 }
             );
         }
