@@ -36,8 +36,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
             remove => _onStartChargeAttack.Event -= value;
         }
         public event Action OnChargeAttack;
+        public event Action OnPerfectChargeAttack;
+        public event Action OnGoodChargeAttack;
         public event Action OnMissChargeAttack;
+
         public event Action OnCharging;
+        public event Action OnPerfectCharging;
+        public event Action OnGoodCharging;
         public event Action OnMissedCharging;
 
         public event Action OnFailedAvoid;
@@ -878,6 +883,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
+            if (isPerfecet) { OnPerfectCharging?.Invoke(); }
+            else if (isGood) { OnGoodCharging?.Invoke(); }
+
             _chargeAttackChargingTokenSource = new();
             _scoreManager.AddScore(_data.ChargeStartScore);
 
@@ -926,6 +934,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             Debug.Log($"{_data.Name} is full charge attacking");
             OnChargeAttack?.Invoke();
+
+            if (isPerfect) { OnPerfectChargeAttack?.Invoke(); }
+            else if (isGood) { OnGoodChargeAttack?.Invoke(); }
 
             SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
             VoiceManager.PlayVoice(_chargeEndShootVoice);
