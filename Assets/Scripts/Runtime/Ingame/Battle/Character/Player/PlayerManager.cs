@@ -480,17 +480,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     break;
 
                 case InputActionPhase.Canceled: //発動
+                    // チャージ中でなければ何もしない
+                    if (_chargeAttackChargingTokenSource == null) break;
 
                     if (IsAnotherPhaseByChartKind(CHARGE_ATTACK_ENUM))
                     {
                         SymphonyDebugLogger.AddText(
                             $"[{nameof(PlayerManager)}] {CHARGE_ATTACK_ENUM} is in another phase");
                         SymphonyDebugLogger.TextLog();
-                        return;
+
+                        break;
                     }
 
-                    if (chart[timing].AttackKind != CHARGE_ATTACK_ENUM) return;
-
+                    // 成功判定へ
                     ChargeAttackActivation();
                     break;
             }
@@ -865,8 +867,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
 
             //チャージ攻撃失敗
-            if (!isGood || !isPerfecet)
+            if (!isPerfecet && !isGood)
             {
+                MissedCharging();
+
                 SymphonyDebugLogger.AddText("charge attack start is failed");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -897,22 +901,28 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SoundEffectManager.PlaySoundEffect(_chargeAttackEndSound);
         }
 
+        private void MissedCharging()
+        {
+            OnMissedCharging?.Invoke();
+        }
+
         /// <summary>
         ///     チャージ攻撃を発動する
         /// </summary>
         private void ChargeAttackActivation()
         {
+            _chargeAttackChargingTokenSource?.Cancel();
+            _chargeAttackChargingTokenSource = null;
+
             bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
 
             //チャージ攻撃失敗
-            if (!isGood || !isPerfect)
+            if (!isPerfect && !isGood)
             {
                 MissedChargeAttack();
                 return;
             }
-
-            _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
 
             Debug.Log($"{_data.Name} is full charge attacking");
             OnChargeAttack?.Invoke();
@@ -991,6 +1001,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnFailedAvoid?.Invoke();
         }
 
+        /// <summary>
+        ///     指定されたノーツ種が開始されたのが別フェーズかを判定する
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         private bool IsAnotherPhaseByChartKind(ChartKindEnum kind)
         {
             if (kind == ChartKindEnum.None) return false;
