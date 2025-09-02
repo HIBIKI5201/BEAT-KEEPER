@@ -474,10 +474,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
 
+
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
-
                     int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
                     if (chart[chargeAttackRange + timing].AttackKind != CHARGE_ATTACK_ENUM) return;
 
@@ -495,6 +495,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
                         SymphonyDebugLogger.TextLog();
 
                         break;
+                    }
+
+                    _chargeAttackChargingTokenSource?.Cancel();
+                    _chargeAttackChargingTokenSource = null;
+
+                    //現在がチャージ攻撃のタイミングでなければ失敗
+                    if (chart[timing].AttackKind != ChartKindEnum.Charge)
+                    {
+                        MissedChargeAttack();
+                        return;
                     }
 
                     // 成功判定へ
@@ -919,9 +929,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void ChargeAttackActivation()
         {
-            _chargeAttackChargingTokenSource?.Cancel();
-            _chargeAttackChargingTokenSource = null;
-
             bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
 
