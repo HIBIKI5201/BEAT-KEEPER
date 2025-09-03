@@ -7,6 +7,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Playables;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
@@ -21,6 +22,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayableDirector _playableDirector;
         
         private PhaseManager _phaseManager;
+        private StageEnemyAdmin _enemyAdmin;
 
         private void Awake()
         {
@@ -50,9 +52,21 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             
             _phaseManager = ServiceLocator.GetInstance<PhaseManager>();
+
+            _enemyAdmin = enemyAdmin;
         }
 
         private void OnNextEnemyActive(EnemyManager enemy)
+        {
+            //最後の敵でなければ登録
+            //最後の敵はフィニッシャーシーケンスで登録されるため
+            if (_enemyAdmin.Enemies.Last() != enemy)
+            {
+                EnemyDeathEventRegister(enemy);
+            }
+        }
+
+        private void EnemyDeathEventRegister(EnemyManager enemy)
         {
             enemy.HealthSystem.OnDeath += OnEnemyDeath;
         }

@@ -19,12 +19,14 @@ namespace BeatKeeper
                     return SequenceBehaviourBase.CreatePlayable<OperationSequenceBehaviour_3>(graph, owner);
                 case 4:
                     return SequenceBehaviourBase.CreatePlayable<OperationSequenceBehaviour_4>(graph, owner);
+                case 5:
+                    return SequenceBehaviourBase.CreatePlayable<OperationSequenceBehaviour_5>(graph, owner);
                 default:
                     return Playable.Null;
             }
         }
 
-        [SerializeField, Range(1, 5)] private int _tutorialPhase;
+        [SerializeField, Range(1, 6)] private int _tutorialPhase;
     }
 }
 

@@ -22,6 +22,8 @@ MonoBehaviour:
   _comboRisetTime: 3
   _chargeAttackPower: 500
   _chargeAttackTime: 2
+  _chargeStartScore: 100
+  _chargeEndScore: 200
   _comboPerfectRange: 0.5
   _comboGoodRange: 0.8
   _chargeStartPerfectRange: 0.5
@@ -29,12 +31,12 @@ MonoBehaviour:
   _chargeEndPerfectRange: 0.5
   _chargeEndGoodRange: 0.8
   _flowZoneThreshold: 10
-  _flowZoneDuration: 16
+  _flowZoneDuration: 32
   _perfectAvoidRange: 0.7
   _goodAvoidRange: 0.9
   _avoidInvincibilityTime: 1
-  _hitStunTime: 5
-  _chargeHitStunTime: 2
+  _hitStunTime: 0
+  _chargeHitStunTime: 0
   _avoidScore: 100
   _avoidPerfectScoreScale: 1
   _perfectSkillRange: 0.7

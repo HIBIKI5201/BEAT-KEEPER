@@ -16,7 +16,7 @@ namespace BeatKeeper
                 TutorialManager tutorialManager = _owner.GetComponent<TutorialManager>();
                 if (tutorialManager)
                 {
-                    tutorialManager.TutorialRegister(ChartKindEnum.Charge);
+                    tutorialManager.EndTutorial();
                 }
             }
         }
