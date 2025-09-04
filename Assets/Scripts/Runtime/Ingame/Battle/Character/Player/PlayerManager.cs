@@ -1140,8 +1140,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (kind == ChartKindEnum.None) return false;
 
-            Debug.Log($"<color=red>current chart kind : {kind} {kind != ChartKindEnum.Attack}</color>");
-
             return kind != ChartKindEnum.Attack;
         }
 
