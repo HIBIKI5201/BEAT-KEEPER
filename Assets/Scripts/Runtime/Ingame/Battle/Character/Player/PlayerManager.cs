@@ -1091,8 +1091,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 {
                     missedFlag = true;
                     OnSkill -= action;
+                    OnFinisher -= action;
                 };
                 OnSkill += action;
+                OnFinisher += action;
             }
 
             float timer = Time.time + duration;
@@ -1100,7 +1102,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (kind == ChartKindEnum.Attack) OnShootComboAttack -= action;
             else if (kind == ChartKindEnum.Charge) OnChargeAttack -= action;
-            else if (kind == ChartKindEnum.Normal) OnSuccessAvoid -= action;
+            else if (kind == ChartKindEnum.Normal)
+            {
+                OnSuccessAvoid -= action;
+                OnFinisher -= action;
+            }
+
             else if (kind == ChartKindEnum.Skill) OnSkill -= action;
 
             if (missedFlag) return; //成功していたら何もしない
@@ -1132,8 +1139,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartKindEnum kind = chart[timing].AttackKind;
 
             if (kind == ChartKindEnum.None) return false;
-
-            Debug.Log($"<color=red>current chart kind : {kind} {kind != ChartKindEnum.Attack}</color>");
 
             return kind != ChartKindEnum.Attack;
         }
