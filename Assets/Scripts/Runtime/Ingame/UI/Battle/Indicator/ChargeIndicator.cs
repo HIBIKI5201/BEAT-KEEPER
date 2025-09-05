@@ -107,16 +107,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // マスクのスケールを外側リングの大きさに合わせる
             _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
 
-            // アーチのパスを作成
-            Vector3 startPos = _startPositionRing.transform.position;
-            Vector3 endPos = _endPositionRing.transform.position;
-    
-            // アーチの頂点を計算（中間点から上方向にオフセット）
-            Vector3 midPoint = (startPos + endPos) * 0.5f;
-            Vector3 archTop = midPoint + Vector3.up * Vector3.Distance(startPos, endPos) * 0.15f; // 高さを計算
-    
-            Vector3[] pathPoints = { startPos, archTop, endPos };
-            
             var sequence = DOTween.Sequence()
                 
                 // 色変更（チャージ開始時）
@@ -126,9 +116,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
                 .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
-        
+                
                 // アーチの動きを表現
-                .Join(_startPositionRing.rectTransform.DOPath(pathPoints, totalDuration * 0.9f, PathType.CatmullRom).SetEase(Ease.Linear))
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
             
