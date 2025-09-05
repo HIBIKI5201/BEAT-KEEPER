@@ -1,32 +1,31 @@
 using UnityEngine;
+using System;
 
 namespace BeatKeeper
 {
     /// <summary>
     /// ボイスと字幕のデータ
     /// </summary>
+	[Serializable]
     public class DialogueData
     {
         private string _cueName;
-        private string[] _subtitles;
+		private string _japaneseMessage;
+		private string _englishMessage;
         
         /// <summary>
         /// CRIでのボイス再生に使用するキューネーム
         /// </summary>
         public string CueName => _cueName;
         
-        /// <summary>
-        /// 字幕の配列
+		/// <summary>
+        /// 日本語テキスト
         /// </summary>
-        public string[] Subtitles => _subtitles;
+		public string JapaneseMessage => _japaneseMessage;
 
-        /// <summary>
-        /// コンストラクタ
+		/// <summary>
+        /// 英語テキスト
         /// </summary>
-        public DialogueData(string cueName, string[] subtitles)
-        {
-            _cueName = cueName;
-            _subtitles = subtitles;
-        }
+		public string EnglishMessage => _englishMessage;
     }
 }
