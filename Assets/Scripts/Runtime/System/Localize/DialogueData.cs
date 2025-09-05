@@ -9,9 +9,9 @@ namespace BeatKeeper
 	[Serializable]
     public class DialogueData
     {
-        private string _cueName;
-		private string _japaneseMessage;
-		private string _englishMessage;
+        [SerializeField] private string _cueName;
+		[SerializeField] private string _japaneseMessage;
+		[SerializeField] private string _englishMessage;
         
         /// <summary>
         /// CRIでのボイス再生に使用するキューネーム
