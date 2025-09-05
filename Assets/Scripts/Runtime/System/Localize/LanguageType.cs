@@ -15,6 +15,6 @@ namespace BeatKeeper
         /// <summary>
         /// 英語
         /// </summary>
-        Englich,
+        English,
     }
 }
