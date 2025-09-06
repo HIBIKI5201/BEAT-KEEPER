@@ -30,6 +30,9 @@ namespace BeatKeeper.Runtime.System
         public InputAction AnyKey => _anyKey;
         private InputAction _anyKey;
 
+        public InputAction Navigation => _navigation;
+        private InputAction _navigation;
+
         #endregion
 
         private void Awake()
@@ -46,6 +49,7 @@ namespace BeatKeeper.Runtime.System
                 _avoid = _playerInput.actions["Avoid"];
                 _quit = _playerInput.actions["Quit"];
                 _anyKey = _playerInput.actions["AnyKey"];
+                _navigation = _playerInput.actions["Navigation"];
             }
             else
             {
