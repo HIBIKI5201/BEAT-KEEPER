@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428afafbb64a76b4ab5e7640c9bd901b, type: 3}
+  m_Name: LocalizeData_TutorialOperations
+  m_EditorClassIdentifier: 
+  _dialogues:
+  - _cueName: attackIndicatorText
+    _japaneseMessage: "B\u30DC\u30BF\u30F3\u3067\u653B\u6483\uFF01"
+    _englishMessage: Press B to Attack!
+  - _cueName: skillIndicatorText
+    _japaneseMessage: "B\u30DC\u30BF\u30F3\u3067\u30B9\u30AD\u30EB\u767A\u52D5\uFF01"
+    _englishMessage: Press B to Activate Skill!
+  - _cueName: enemyIndicatorText
+    _japaneseMessage: "LB/RB\u30DC\u30BF\u30F3\u3067\u56DE\u907F\uFF01"
+    _englishMessage: Press LB/RB to Dodge!
+  - _cueName: chargeIndicatorText1
+    _japaneseMessage: "A\u30DC\u30BF\u30F3\u3092\u9577\u62BC\u3057\uFF01"
+    _englishMessage: Hold A Button!
+  - _cueName: chargeIndicatorText2
+    _japaneseMessage: "A\u30DC\u30BF\u30F3\u3092\u653E\u305B\uFF01"
+    _englishMessage: Release A Button!
