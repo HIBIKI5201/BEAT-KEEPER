@@ -16,5 +16,10 @@ namespace BeatKeeper
         /// 英語
         /// </summary>
         English,
+        
+        /// <summary>
+        /// 設定なし
+        /// </summary>
+        None,
     }
 }
