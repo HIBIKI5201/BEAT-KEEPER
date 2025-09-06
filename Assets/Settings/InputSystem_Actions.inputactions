@@ -52,9 +52,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Navigation",
+                    "name": "NavigationL",
                     "type": "Button",
                     "id": "4ef06f79-2e00-4928-b81c-0bdf871b8677",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NavigationR",
+                    "type": "Button",
+                    "id": "403a134f-0e85-4f8d-88e4-d012fff8a2c2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -350,23 +359,12 @@
                 },
                 {
                     "name": "",
-                    "id": "8d88d3cf-7ef8-4c90-9f9c-701baee1371b",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Navigation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "af6d7668-8cc3-4e31-9ae2-ec239b6fabe3",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigation",
+                    "action": "NavigationL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -377,18 +375,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f18b742f-247d-4a11-9f3b-7118eb0e9ba1",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Navigation",
+                    "action": "NavigationL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -399,18 +386,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fd75cca5-5bb6-4b0f-a4ea-5553b3e93dac",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Navigation",
+                    "action": "NavigationL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -421,18 +397,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigation",
+                    "action": "NavigationL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "d7e424b2-613c-4e30-8f5e-164e9b5c72a5",
+                    "id": "ab333dc4-2b8e-4d43-b7e9-38fbf2e30098",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigationR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c32f4b8-80c8-47e3-bf99-0e64312448b3",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigationR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f563cbe9-6cf1-47e2-8a25-5fde16e6199f",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NavigationR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0ddb9370-a4fa-4e36-b1dc-c781edb3985f",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigation",
+                    "action": "NavigationR",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
