@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 571ec7b6c9dd3024cbd6ed66d5ca41a3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6d8f62bd0619c4240acd345c9fa8cf01, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52470ab58983e1c43aa4375ef6da3992, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30bc58d5fe79b254095a696f1f98fe73, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -317,7 +317,7 @@ PrefabInstance:
     - target: {fileID: 5061960755056945525, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e9617797f78691f4e9006bbb96f4505a, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 5061960755056945525, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -377,7 +377,7 @@ PrefabInstance:
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6d587512aa1e77446bbf9c3aed8a38d7, type: 3}
+      objectReference: {fileID: 21300000, guid: 38b83a2df2ff98747b117afadd86b748, type: 3}
     - target: {fileID: 7366717805746631515, guid: 60b4b70322a53a54896c20fd78d33d03, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -438,7 +438,7 @@ MonoBehaviour:
   _fadeDuration: 0.2
   _centerImage: {fileID: 2479790196635966107}
   _guide:
-    Sprite: {fileID: 21300000, guid: 1cf1e7c8a6156864da3dbb4433916820, type: 3}
+    Sprite: {fileID: 21300000, guid: 747a312e367b99442aff1f1e57c6c81f, type: 3}
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Avoid

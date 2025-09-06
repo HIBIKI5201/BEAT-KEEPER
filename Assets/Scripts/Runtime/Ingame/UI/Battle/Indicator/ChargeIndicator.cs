@@ -60,7 +60,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("追加の色設定")] 
         [SerializeField] private Color _chargeColor = Color.cyan;
-        [SerializeField] private Color _criticalColor = Color.red;
+
+        [Header("追加の画像設定")]
+        [SerializeField] private Sprite _defaultEndRingSprite;
 
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
@@ -107,17 +109,20 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // マスクのスケールを外側リングの大きさに合わせる
             _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
 
+            // 色変更用にリングを白色のものに変更
+            //ChargeStart();
+            
             var sequence = DOTween.Sequence()
                 
-                // 色変更（チャージ開始時）
-                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
-                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
-                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
+                // 色変更（チャージ開始時）NOTE: 戻す可能性があるのでコメントアウト
+                // .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
+                // .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
+                // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
         
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration).SetEase(Ease.OutQuart))
                 
-                // アーチの動きを表現
+                // 終点リングへ移動
                 .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
@@ -222,6 +227,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			// 移動するオブジェクトの位置を変更
 			_startPositionRing.transform.position = transform.position;
+
+            _startPositionRing.sprite = _defaultEndRingSprite;
+            _endPositionRing.sprite = _defaultEndRingSprite;
+        }
+
+        private void ChargeStart()
+        {
+            _startPositionRing.sprite = _commonSprite.Ring;
+            base.ChangeRingsImage();
+        }
+        
+        /// <summary>
+        /// Perfect/Goodの色変更用にSpriteを白色のものに変更する
+        /// </summary>
+        protected override void ChangeRingsImage()
+        {
+            _startPositionRing.sprite = _commonSprite.Ring;
+            _endPositionRing.sprite = _commonSprite.Ring;
+            base.ChangeRingsImage();
         }
         
         #region リングのコンポーネント全てのScale、色のリセット

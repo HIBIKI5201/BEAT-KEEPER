@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0adbcfb33b5ec6408d6ea4c4ddf9c0b, type: 3}
   m_Name: IndicatorSpriteData
   m_EditorClassIdentifier: 
-  _hitLine: {fileID: 21300000, guid: b6acce6d4d659fd458924e9188d27519, type: 3}
-  _decoration: {fileID: 21300000, guid: 4671e72ef688ca046921d3e65f747572, type: 3}
-  _ring: {fileID: 21300000, guid: 248c42b83e1847f4189aca8dc743457b, type: 3}
+  _hitLine: {fileID: 21300000, guid: fbc34db05d11ba748aa495841196ab38, type: 3}
+  _decoration: {fileID: 21300000, guid: 7bdcd7331e8405c498382d100396bbdf, type: 3}
+  _ring: {fileID: 21300000, guid: ffca95df17be02345bde059e7905e871, type: 3}
