@@ -39,12 +39,6 @@ namespace BeatKeeper.Runtime.Outgame.System
         private InputBuffer _inputBuffer;
         private bool _look;
         
-        // 言語設定が終了したか
-        private bool _finishedLanguageSetting = false;
-        
-        // 字幕設定が終了したか
-        private bool _finishedSubtitleSetting = false;
-        
         // ローカライズ用のテキストデータを管理するマネージャー
         private LocalizeTextManager _localizeTextManager; 
         
@@ -88,6 +82,9 @@ namespace BeatKeeper.Runtime.Outgame.System
             // 言語設定キャンバスを開く
             _currentState = GameState.LanguageSetting;
             _outGameUIManager.ShowSettingCanvas();
+            
+            // 不要になるため入力購読を解除
+            _inputBuffer.AnyKey.started -= OnAnyKeyInput;
         }
 
         /// <summary>
@@ -116,11 +113,19 @@ namespace BeatKeeper.Runtime.Outgame.System
         /// <summary>
         /// ナビゲーションキーの入力を受け取ったときに呼び出されるメソッド
         /// </summary>
-        private void OnNavigationKeyInput(InputAction.CallbackContext callbackContext)
+        private void OnLeftNavigationKeyInput(InputAction.CallbackContext callbackContext)
         {
-            Debug.Log($"OnNavigationKeyInput called - Current State: {_currentState}");
-            
-            // TODO: ナビゲーション処理を実装する
+            bool isLanguageSetting = _currentState == GameState.LanguageSetting;
+            _outGameUIManager.Next(isLanguageSetting, -1);
+        }
+        
+        /// <summary>
+        /// ナビゲーションキーの入力を受け取ったときに呼び出されるメソッド
+        /// </summary>
+        private void OnRightNavigationKeyInput(InputAction.CallbackContext callbackContext)
+        {
+            bool isLanguageSetting = _currentState == GameState.LanguageSetting;
+            _outGameUIManager.Next(isLanguageSetting, 1);
         }
         
         /// <summary>
@@ -131,7 +136,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             _currentState = GameState.SubtitleSetting;
             
             // 言語設定を確定
-            _localizeTextManager.ChangeLanguage(LanguageType.English);
+            _localizeTextManager.ChangeLanguage((LanguageType)_outGameUIManager.LanguageId);
             
             // UI更新
             _outGameUIManager.ShowSubtitleCanvas();
@@ -147,7 +152,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             try
             {
                 // 字幕設定を確定
-                _localizeTextManager.ChangeSubtitleLanguage(LanguageType.English);
+                _localizeTextManager.ChangeSubtitleLanguage((LanguageType)_outGameUIManager.SubtitleId);
                 
                 // SE再生
                 _criAtomSourceSE?.Play();
@@ -184,7 +189,8 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void RegisterInputEvents()
         {
             _inputBuffer.AnyKey.started += OnAnyKeyInput;
-            _inputBuffer.Navigation.started += OnNavigationKeyInput;
+            _inputBuffer.LeftNavigation.started += OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.started += OnRightNavigationKeyInput;
             _inputBuffer.Attack.started += OnAttackKeyInput;
         }
         
@@ -196,7 +202,8 @@ namespace BeatKeeper.Runtime.Outgame.System
             if (_inputBuffer == null) return;
             
             _inputBuffer.AnyKey.started -= OnAnyKeyInput;
-            _inputBuffer.Navigation.started -= OnNavigationKeyInput;
+            _inputBuffer.LeftNavigation.started -= OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.started -= OnRightNavigationKeyInput;
             _inputBuffer.Attack.started -= OnAttackKeyInput;
         }
     }
