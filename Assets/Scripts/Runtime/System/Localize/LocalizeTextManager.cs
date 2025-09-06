@@ -47,9 +47,9 @@ namespace BeatKeeper
         /// <summary>
         /// チュートリアル操作方法用のデータからメッセージを取得する
         /// </summary>
-        public string GetTutorialOperationMessage(string cueName)
+        public string GetTutorialOperationMessage(string key)
         {
-            return _tutorialOperationData.GetMessage(cueName, _currentLanguage);
+            return _tutorialOperationData.GetMessage(key, _currentLanguage);
         }
 
         /// <summary>
