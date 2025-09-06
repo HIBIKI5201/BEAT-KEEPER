@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428afafbb64a76b4ab5e7640c9bd901b, type: 3}
+  m_Name: LocalizeData_StartMovie
+  m_EditorClassIdentifier: 
+  _dialogues:
+  - _cueName: voice_start_02
+    _japaneseMessage: "\u3053\u3061\u3089\u30EA\u30F3\u30CF\u3002\u5730\u4E0A\u306B\u51FA\u307E\u3057\u305F\u3002"
+    _englishMessage: This is Rinha. I've reached the surface.
+  - _cueName: voice_start_03
+    _japaneseMessage: "\u3053\u308C\u3088\u308A\u3001\u6551\u51FA\u4F5C\u6226\u3092\u958B\u59CB\u3057\u307E\u2014\u2014"
+    _englishMessage: "Now beginning the rescue operation\u2014"
+  - _cueName: voice_start_04
+    _japaneseMessage: "\u3063\uFF01\uFF1F"
+    _englishMessage: Huh!?
+  - _cueName: voice_start_05
+    _japaneseMessage: "\u3042\u308C\u304C\u6575\u306E\u65B0\u578B\uFF1F"
+    _englishMessage: Is that the enemy's new model?
+  - _cueName: voice_start_06
+    _japaneseMessage: "......\u65E9\u901F\u304A\u51FA\u307E\u3057\u3063\u3066\u308F\u3051\u306D\u3002"
+    _englishMessage: ...So they're showing up right away.
+  - _cueName: voice_start_07
+    _japaneseMessage: "\u898B\u9003\u3057\u3066\u306F\u304F\u308C\u306A\u305D\u3046\u306D......"
+    _englishMessage: Doesn't look like they'll let me pass...
+  - _cueName: voice_start_08
+    _japaneseMessage: "\u3053\u3061\u3089\u30EA\u30F3\u30CF\u3002\u3053\u308C\u3088\u308A\u6575\u6027\u30E6\u30CB\u30C3\u30C8\u3068\u306E\u4EA4\u6226\u3092\u958B\u59CB\u3057\u307E\u3059\uFF01"
+    _englishMessage: This is Rinha. Now beginning combat with hostile units!
+  - _cueName: voice_start_09
+    _japaneseMessage: "\u3055\u3066......\u90AA\u9B54\u3092\u3059\u308B\u306A\u3089\u5BB9\u8D66\u306F\u3057\u306A\u3044\u308F\u3088\uFF01"
+    _englishMessage: Well then... if you're going to get in my way, I won't show
+      any mercy!
+  - _cueName: enemyvoice02
+    _japaneseMessage: "\u30AD\u30B1\u30F3\u30AD\u30B1\u30F3 \u30DF\u30C0\u30EC\u30BF\u30EA\u30BA\u30E0
+      \u30CF\u30A4\u30B8\u30E7\u30B7\u30DE\u30B9"
+    _englishMessage: DANGER DANGER DISRUPTED RHYTHM ELIMINATING
+  - _cueName: voice_start_01
+    _japaneseMessage: "\u3084\u3051\u306B\u9759\u304B\u306D......"
+    _englishMessage: It's unusually quiet...
