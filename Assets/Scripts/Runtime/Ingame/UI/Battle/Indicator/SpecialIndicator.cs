@@ -53,10 +53,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングのあとの判定受付時間
         private const float RECEPTION_TIME = 0.45f;
 
+        [Header("スキルノーツ特殊デコレーション")]
+        [SerializeField] private Image _skillDecorationImage;
+
+        [SerializeField] private Sprite _defalutDecoration;
+        [SerializeField] private Sprite _grayDecoration;
+        
         [Header("スキル/フィニッシャーノーツ切り替え用の設定")]
         [SerializeField] private CanvasGroup _skillGroup; // スキルノーツのCanvasGroup
         [SerializeField] private CanvasGroup _finisherGroup; // フィニッシャーノーツのCanvasGroup
         [SerializeField] private float _changeDuration = 0.2f; // 切り替えにかける秒数
+        [SerializeField] private Sprite _guideIcon; // フィニッシャー用の操作アイコン
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
 
@@ -149,8 +156,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // フィニッシャーノーツのリングの操作。ベースクラスの処理に含まれないのでここで行う
                 _ringImages[0].rectTransform.localScale = _centerRingsScale;
             }
-            
-            base.PlayFailEffect();
+
+            base.OnPlayerSuccessForced(isPerfect);
         }
         
         #endregion
@@ -231,12 +238,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // フィニッシャーが可能なときはフィニッシャーノーツを表示する
                 sequence.Append(_finisherGroup.DOFade(1, _changeDuration));
                 sequence.Join(_skillGroup.DOFade(0, _changeDuration));
+                _centerImage.sprite = _guideIcon;
             }
             else
             {
                 // フィニッシャーが不可能なときはスキルノーツを表示する
                 sequence.Append(_skillGroup.DOFade(1, _changeDuration));
                 sequence.Join(_finisherGroup.DOFade(0, _changeDuration));
+                _centerImage.sprite = _guide.Sprite;
             }
 
             _tweens[2] = sequence;
@@ -259,6 +268,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void SetRingScale(Image ring, Vector3 scale)
         {
             if (ring != null) ring.rectTransform.localScale = scale;
+        }
+        
+        /// <summary>
+        /// 色変更用にSpriteを白色のものに変更する
+        /// </summary>
+        protected override void ChangeRingsImage()
+        {
+            _skillDecorationImage.sprite = _grayDecoration;
+            base.ChangeRingsImage();
         }
         
         #region リングのコンポーネント全てのScale、色のリセット
