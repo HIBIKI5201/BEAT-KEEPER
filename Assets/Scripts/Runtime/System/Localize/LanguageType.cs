@@ -7,8 +7,6 @@ namespace BeatKeeper
     /// </summary>
     public enum LanguageType
     {
-        None,
-        
         /// <summary>
         /// 日本語
         /// </summary>
@@ -18,5 +16,10 @@ namespace BeatKeeper
         /// 英語
         /// </summary>
         English,
+        
+        /// <summary>
+        /// 設定なし
+        /// </summary>
+        None,
     }
 }

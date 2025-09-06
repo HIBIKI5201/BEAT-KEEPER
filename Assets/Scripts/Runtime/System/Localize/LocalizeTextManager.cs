@@ -18,6 +18,16 @@ namespace BeatKeeper
         /// 現在設定されている言語タイプ
         /// </summary>
         private LanguageType _currentLanguage = LanguageType.Japanese;
+        
+        /// <summary>
+        /// 現在設定されている字幕用の言語タイプ
+        /// </summary>
+        private LanguageType _currentSubtitleLanguage = LanguageType.Japanese;
+
+        /// <summary>
+        /// 字幕を使うか
+        /// </summary>
+        public bool DontUseSubtitle => _currentSubtitleLanguage == LanguageType.None;
 
         /// <summary>
         /// Awake
@@ -33,7 +43,13 @@ namespace BeatKeeper
         /// </summary>
         public string GetStartMovieMessage(string cueName)
         {
-            return _startMovieData.GetMessage(cueName, _currentLanguage);
+            if (DontUseSubtitle)
+            {
+                Debug.LogWarning($"字幕を使用しない設定です");
+                return string.Empty;
+            }
+            
+            return _startMovieData.GetMessage(cueName, _currentSubtitleLanguage);
         }
         
         /// <summary>
@@ -41,7 +57,13 @@ namespace BeatKeeper
         /// </summary>
         public string GetTutorialSubtitleMessage(string cueName)
         {
-            return _tutorialSubtitleData.GetMessage(cueName, _currentLanguage);
+            if (DontUseSubtitle)
+            {
+                Debug.LogWarning($"字幕を使用しない設定です");
+                return string.Empty;
+            }
+            
+            return _tutorialSubtitleData.GetMessage(cueName, _currentSubtitleLanguage);
         }
 
         /// <summary>
@@ -57,7 +79,13 @@ namespace BeatKeeper
         /// </summary>
         public string GetClearMovieMessage(string cueName)
         {
-            return _clearMovieData.GetMessage(cueName, _currentLanguage);
+            if (DontUseSubtitle)
+            {
+                Debug.LogWarning($"字幕を使用しない設定です");
+                return string.Empty;
+            }
+
+            return _clearMovieData.GetMessage(cueName, _currentSubtitleLanguage);
         }
 
         /// <summary>
@@ -65,7 +93,13 @@ namespace BeatKeeper
         /// </summary>
         public string GetResultMessage(string cueName)
         {
-            return _resultData.GetMessage(cueName, _currentLanguage);
+            if (DontUseSubtitle)
+            {
+                Debug.LogWarning($"字幕を使用しない設定です");
+                return string.Empty;
+            }
+
+            return _resultData.GetMessage(cueName, _currentSubtitleLanguage);
         }
 
         /// <summary>
@@ -75,6 +109,15 @@ namespace BeatKeeper
         {
             _currentLanguage = languageType;
             Debug.Log($"言語設定変更: {languageType}");
+        }
+        
+        /// <summary>
+        /// 字幕設定を変更する
+        /// </summary>
+        public void ChangeSubtitleLanguage(LanguageType languageType)
+        {
+            _currentSubtitleLanguage = languageType;
+            Debug.Log($"字幕言語設定変更: {languageType}");
         }
     }
 }
