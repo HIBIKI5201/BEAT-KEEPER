@@ -81,6 +81,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 2種類のTweenを使用するため、配列も2つ分確保する
             _tweens = new Tween[3];
             
+            _skillDecorationImage.sprite = _defalutDecoration;
+            
             // 初期化
             ResetRingsScale();
             
