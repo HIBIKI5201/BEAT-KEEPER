@@ -7,6 +7,8 @@ namespace BeatKeeper
     /// </summary>
     public enum LanguageType
     {
+        None,
+        
         /// <summary>
         /// 日本語
         /// </summary>
