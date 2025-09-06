@@ -116,7 +116,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void OnLeftNavigationKeyInput(InputAction.CallbackContext callbackContext)
         {
             bool isLanguageSetting = _currentState == GameState.LanguageSetting;
-            _outGameUIManager.Next(isLanguageSetting, -1);
+            _outGameUIManager.MoveSelection(isLanguageSetting, -1);
         }
         
         /// <summary>
@@ -125,7 +125,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void OnRightNavigationKeyInput(InputAction.CallbackContext callbackContext)
         {
             bool isLanguageSetting = _currentState == GameState.LanguageSetting;
-            _outGameUIManager.Next(isLanguageSetting, 1);
+            _outGameUIManager.MoveSelection(isLanguageSetting, 1);
         }
         
         /// <summary>

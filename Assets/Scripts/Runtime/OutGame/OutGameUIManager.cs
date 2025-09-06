@@ -15,6 +15,9 @@ namespace BeatKeeper.Runtime.Outgame.UI
         [SerializeField, Tooltip("シーン起動時にフェード院にかける時間")] private float _fadeInDuration = 1f;
         [SerializeField, Tooltip("ゲーム開始時にフェードアウトにかかる時間")] private float _fadeOutDuration = 3f;
         
+        [Header("初期状態で表示されているロゴ・ボタンのキャンバス")]
+        [SerializeField] private CanvasGroup _baseCanvasGroup;
+        
         [Header("言語・字幕設定")]
         [SerializeField] private CanvasGroup _mainCanvasGroup;
         [SerializeField] private CanvasGroup _languageCanvasGroup;
@@ -33,6 +36,10 @@ namespace BeatKeeper.Runtime.Outgame.UI
         {
             _curtainImage.color = new Color(0f, 0f, 0f, 1f);
             _curtainImage.DOFade(0f, _fadeInDuration);
+
+            // ベースキャンバスのみ表示。他は非表示にしておく
+            IsActiveCanvas(true, _baseCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _mainCanvasGroup, 0.3f);
         }
 
         private void FixedUpdate()
@@ -50,15 +57,15 @@ namespace BeatKeeper.Runtime.Outgame.UI
             }
         }
 
-        public void Next(bool isLanguageSetting, int direction)
+        public void MoveSelection(bool isLanguageSetting, int direction)
         {
             if (isLanguageSetting)
             {
-                _languageButton.Next(direction);
+                _languageButton.MoveSelection(direction);
             }
             else
             {
-                _subtitleButton.Next(direction);
+                _subtitleButton.MoveSelection(direction);
             }
         }
         
@@ -67,7 +74,8 @@ namespace BeatKeeper.Runtime.Outgame.UI
         /// </summary>
         public void ShowSettingCanvas()
         {
-            _mainCanvasGroup.DOFade(1f, 0.3f);
+            IsActiveCanvas(true, _mainCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _baseCanvasGroup, 0.3f);
             
             // 言語設定キャンバスを表示。字幕は非表示
             IsActiveCanvas(true, _languageCanvasGroup, 0.3f);

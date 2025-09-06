@@ -8,6 +8,7 @@ namespace BeatKeeper
     {
         [SerializeField] private Button[] _buttons;
         [SerializeField] private int _defaultButtonIndex = 0;
+        [SerializeField] private float _selectedScaleMultiplier = 1.05f;
         
         private int _currentButtonIndex = 0;
         
@@ -16,29 +17,37 @@ namespace BeatKeeper
         /// </summary>
         public int CurrentButtonIndex => _currentButtonIndex;
 
+        /// <summary>
+        /// デフォルトボタンを選択状態に
+        /// </summary>
         public void Setup()
         {
             _currentButtonIndex = _defaultButtonIndex;
-            Select();
+            UpdateButtonSelection();
         }
 
-        public void Next(int direction)
+        /// <summary>
+        /// ボタン切り替え
+        /// </summary>
+        public void MoveSelection(int direction)
         {
             int newIndex = ((_currentButtonIndex + direction) % _buttons.Length + _buttons.Length) % _buttons.Length;
             _currentButtonIndex = newIndex;
-            Select();
+            UpdateButtonSelection();
         }
 
-        private void Select()
+        /// <summary>
+        /// ボタンの選択状態
+        /// </summary>
+        private void UpdateButtonSelection()
         {
             for (int i = 0; i < _buttons.Length; i++)
             {
-                _buttons[i].transform.localScale = Vector3.one;
+                if (_buttons[i] == null) continue;
                 
-                if (i == _currentButtonIndex)
-                {
-                    _buttons[i].transform.localScale = Vector3.one * 1.05f;
-                }
+                var isSelected = (i == _currentButtonIndex);
+                var targetScale = isSelected ? _selectedScaleMultiplier : 1f;
+                _buttons[i].transform.localScale = Vector3.one * targetScale;
             }
         }
     }
