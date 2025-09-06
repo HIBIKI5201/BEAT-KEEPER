@@ -287,17 +287,11 @@ Transform:
   - {fileID: 1102409120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &728775317 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4644901135980416482, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
+--- !u!225 &589101033 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 942992441401104921, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
   m_PrefabInstance: {fileID: 4592714788396025812}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &789693824
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,27 +420,38 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 7292177397176798855, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
   m_PrefabInstance: {fileID: 4592714788396025812}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1421699755 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4538269229247553236, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
-  m_PrefabInstance: {fileID: 4592714788396025812}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!225 &1497603409 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 175901771404888284, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
   m_PrefabInstance: {fileID: 4592714788396025812}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1497603410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7233516689422866744, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
+  m_PrefabInstance: {fileID: 4592714788396025812}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86206c28ef1616b488d340fb0fa9910b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!225 &1591170968 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 5784268174268019912, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
   m_PrefabInstance: {fileID: 4592714788396025812}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1591170969 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5502012340371685991, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
+  m_PrefabInstance: {fileID: 4592714788396025812}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86206c28ef1616b488d340fb0fa9910b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1982149412
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,11 +535,12 @@ MonoBehaviour:
   _onStartColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
   _fadeInDuration: 0.5
   _fadeOutDuration: 1
+  _baseCanvasGroup: {fileID: 589101033}
   _mainCanvasGroup: {fileID: 1228509995}
   _languageCanvasGroup: {fileID: 1497603409}
   _subtitleCanvasGroup: {fileID: 1591170968}
-  _languageButton: {fileID: 728775317}
-  _subtitleButton: {fileID: 1421699755}
+  _languageButton: {fileID: 1497603410}
+  _subtitleButton: {fileID: 1591170969}
 --- !u!114 &2065141580 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 483457316557612727, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
@@ -557,18 +563,6 @@ PrefabInstance:
     - target: {fileID: 5675509901910257941, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
       propertyPath: m_Name
       value: OutGameCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 5784268174268019912, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5784268174268019912, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5784268174268019912, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
-      propertyPath: m_BlocksRaycasts
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6754109416136879934, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}
       propertyPath: m_Pivot.x
