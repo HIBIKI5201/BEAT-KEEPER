@@ -1380,7 +1380,7 @@ MonoBehaviour:
   _chargeGunshot: ChargeGunshot
   _textBox: {fileID: 528571310}
   _tutorialVoiceText: {fileID: 1624924549}
-  _useSubtitle: 1
+  _useSubtitle: 0
   _tutorialSuccess1: voice_tutorial_normal_attack_encourage_01
   _tutorialSuccess1Text: "\u305D\u3046\uFF01\u3044\u3044\u611F\u3058\uFF01"
   _tutorialAttackStartVoice: voice_tutorial_normal_attack_03

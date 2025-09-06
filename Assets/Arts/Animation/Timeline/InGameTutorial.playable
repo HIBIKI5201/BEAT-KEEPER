@@ -240,7 +240,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: CriAtomSequenceAsset
   - m_Version: 1
-    m_Start: 8.233333333333333
+    m_Start: 8.416666666666666
     m_ClipIn: 0
     m_Asset: {fileID: -3753179015033780745}
     m_Duration: 2.75
