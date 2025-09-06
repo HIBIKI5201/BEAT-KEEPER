@@ -7,6 +7,7 @@ using SymphonyFrameWork.System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 namespace BeatKeeper.Runtime.Outgame.System
 {
@@ -15,6 +16,18 @@ namespace BeatKeeper.Runtime.Outgame.System
     /// </summary>
     public class OutGameManager : MonoBehaviour
     {
+        /// <summary>
+        /// ゲーム状態の列挙型
+        /// </summary>
+        private enum GameState
+        {
+            WaitingForStart,     // スタート待ち（Press Any Key状態）
+            LanguageSetting,     // 言語設定中
+            SubtitleSetting,     // 字幕設定中
+            GameStarting,        // ゲーム開始処理中
+            Finished             // 完了
+        }
+        
         private const SceneListEnum OutGameScene = SceneListEnum.OutGame;
         private const SceneListEnum InGameScene = SceneListEnum.InGame;
         private const SceneListEnum StageScene = SceneListEnum.Stage;
@@ -25,6 +38,18 @@ namespace BeatKeeper.Runtime.Outgame.System
 
         private InputBuffer _inputBuffer;
         private bool _look;
+        
+        // 言語設定が終了したか
+        private bool _finishedLanguageSetting = false;
+        
+        // 字幕設定が終了したか
+        private bool _finishedSubtitleSetting = false;
+        
+        // ローカライズ用のテキストデータを管理するマネージャー
+        private LocalizeTextManager _localizeTextManager; 
+        
+        // 現在の状態
+        private GameState _currentState = GameState.WaitingForStart;
 
         private async void Awake()
         {
@@ -32,18 +57,23 @@ namespace BeatKeeper.Runtime.Outgame.System
             await SceneLoader.LoadScene(StageScene.ToString());
             var bgmManager = ServiceLocator.GetInstance<BGMManager>();
             bgmManager.ChangeBGM(_bgmName);
+
+            // サービスロケーターから取得（Systemシーンが読み込まれるまで待つ）
+            _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
         }
 
         private void Start()
         {
             Debug.Log("OutGameManager Start");
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-            _inputBuffer.AnyKey.started += OnAnyKeyInput;
+            
+            // 入力イベントの購読
+            RegisterInputEvents();
         }
-
+        
         private void OnDisable()
         {
-            _inputBuffer.AnyKey.started -= OnAnyKeyInput;
+            UnregisterInputEvents();
         }
 
         /// <summary>
@@ -52,21 +82,122 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
             Debug.Log("OnAnyKeyInput called");
-            if (_look) return;
-            _look = true;
-            _ = LoadInGameSceneAsync();
+            
+            if (_currentState != GameState.WaitingForStart) return;
+            
+            // 言語設定キャンバスを開く
+            _currentState = GameState.LanguageSetting;
+            _outGameUIManager.ShowSettingCanvas();
         }
 
         /// <summary>
-        /// インゲームシーンを読み込むメソッド
+        /// アタックキー＝決定キーの入力を受け取ったときに呼び出されるメソッド
         /// </summary>
-        private async Task LoadInGameSceneAsync()
+        private async void OnAttackKeyInput(InputAction.CallbackContext callbackContext)
         {
-            _criAtomSourceSE.Play();
-            await _outGameUIManager.GameStart();
+            Debug.Log($"OnAttackKeyInput called - Current State: {_currentState}");
+
+            switch (_currentState)
+            {
+                case GameState.LanguageSetting: // 言語設定
+                    HandleLanguageSettingConfirm();
+                    break;
+                    
+                case GameState.SubtitleSetting: // 字幕設定
+                    await HandleSubtitleSettingConfirm();
+                    break;
+                    
+                default:
+                    // その他の状態では何もしない
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// ナビゲーションキーの入力を受け取ったときに呼び出されるメソッド
+        /// </summary>
+        private void OnNavigationKeyInput(InputAction.CallbackContext callbackContext)
+        {
+            Debug.Log($"OnNavigationKeyInput called - Current State: {_currentState}");
+            
+            // TODO: ナビゲーション処理を実装する
+        }
+        
+        /// <summary>
+        /// 言語設定の確定処理
+        /// </summary>
+        private void HandleLanguageSettingConfirm()
+        {
+            _currentState = GameState.SubtitleSetting;
+            
+            // 言語設定を確定
+            _localizeTextManager.ChangeLanguage(LanguageType.English);
+            
+            // UI更新
+            _outGameUIManager.ShowSubtitleCanvas();
+        }
+
+        /// <summary>
+        /// 字幕設定の確定処理とゲーム開始
+        /// </summary>
+        private async Task HandleSubtitleSettingConfirm()
+        {
+            _currentState = GameState.GameStarting;
+            
+            try
+            {
+                // 字幕設定を確定
+                _localizeTextManager.ChangeSubtitleLanguage(LanguageType.English);
+                
+                // SE再生
+                _criAtomSourceSE?.Play();
+                
+                // ゲーム開始処理
+                await _outGameUIManager.GameStart();
+                
+                // シーン遷移
+                await TransitionToInGameScene();
+                
+                _currentState = GameState.Finished;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"ゲーム開始処理中にエラーが発生しました: {ex}");
+                // エラー時は状態を戻す
+                _currentState = GameState.SubtitleSetting;
+            }
+        }
+
+        /// <summary>
+        /// インゲームシーンへの遷移処理
+        /// </summary>
+        private async Task TransitionToInGameScene()
+        {
             await SceneLoader.UnloadScene(OutGameScene.ToString());
             await SceneLoader.LoadScene(InGameScene.ToString());
             SceneLoader.SetActiveScene(InGameScene.ToString());
+        }
+        
+        /// <summary>
+        /// 入力イベントを購読する
+        /// </summary>
+        private void RegisterInputEvents()
+        {
+            _inputBuffer.AnyKey.started += OnAnyKeyInput;
+            _inputBuffer.Navigation.started += OnNavigationKeyInput;
+            _inputBuffer.Attack.started += OnAttackKeyInput;
+        }
+        
+        /// <summary>
+        /// 入力イベントの購読を解除する
+        /// </summary>
+        private void UnregisterInputEvents()
+        {
+            if (_inputBuffer == null) return;
+            
+            _inputBuffer.AnyKey.started -= OnAnyKeyInput;
+            _inputBuffer.Navigation.started -= OnNavigationKeyInput;
+            _inputBuffer.Attack.started -= OnAttackKeyInput;
         }
     }
 }
