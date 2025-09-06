@@ -7,7 +7,7 @@ namespace BeatKeeper
     /// <summary>
     /// Perfect/Good/Missなどの精度記録用のクラス
     /// </summary>
-    public class AccuracyTracker
+    public class AccuracyTracker : IDisposable
     {
         private PlayerManager _playerManager; // 各アクション購読用のPlayerManagerの参照
         private int _perfectCount = 0; // Perfect判定の回数
@@ -37,30 +37,6 @@ namespace BeatKeeper
             _playerManager = playerManager;
             Subscribe();
         }
-        
-        /// <summary>
-        /// PlayerManagerの各アクションの購読を行う
-        /// </summary>
-        private void Subscribe()
-        {
-            // 通常攻撃
-            _playerManager.OnPerfectAttack += RecordPerfect;
-            _playerManager.OnGoodAttack += RecordGood;
-            _playerManager.OnMissAttack += RecordMiss;
-            
-            // スキル
-            _playerManager.OnPerfectSkill += RecordPerfect;
-            _playerManager.OnGoodSkill += RecordGood;
-            _playerManager.OnMissedSkill += RecordMiss;
-            
-            // 回避
-            _playerManager.OnPerfectAvoid += RecordPerfect;
-            _playerManager.OnGoodAvoid += RecordGood;
-            _playerManager.OnFailedAvoid += RecordMiss;
-            
-            // ため攻撃
-            // TODO: ため攻撃のイベント登録
-        }
 
         /// <summary>
         /// Perfectの回数を記録
@@ -84,6 +60,65 @@ namespace BeatKeeper
         private void RecordMiss()
         {
             _missCount++;
+        }
+        
+        /// <summary>
+        /// PlayerManagerの各アクションの購読を行う
+        /// </summary>
+        private void Subscribe()
+        {
+            // 通常攻撃
+            _playerManager.OnPerfectAttack += RecordPerfect;
+            _playerManager.OnGoodAttack += RecordGood;
+            _playerManager.OnMissAttack += RecordMiss;
+            
+            // スキル
+            _playerManager.OnPerfectSkill += RecordPerfect;
+            _playerManager.OnGoodSkill += RecordGood;
+            _playerManager.OnMissedSkill += RecordMiss;
+            
+            // 回避
+            _playerManager.OnPerfectAvoid += RecordPerfect;
+            _playerManager.OnGoodAvoid += RecordGood;
+            _playerManager.OnFailedAvoid += RecordMiss;
+            
+            // ため攻撃発動
+            _playerManager.OnPerfectChargeAttack += RecordPerfect;
+            _playerManager.OnGoodChargeAttack += RecordGood;
+            _playerManager.OnMissChargeAttack += RecordMiss;
+            
+            // ため攻撃チャージ開始
+            _playerManager.OnPerfectCharging += RecordPerfect;
+            _playerManager.OnGoodCharging += RecordGood;
+            _playerManager.OnMissedCharging += RecordMiss;
+        }
+
+        public void Dispose()
+        {
+            // 通常攻撃
+            _playerManager.OnPerfectAttack -= RecordPerfect;
+            _playerManager.OnGoodAttack -= RecordGood;
+            _playerManager.OnMissAttack -= RecordMiss;
+            
+            // スキル
+            _playerManager.OnPerfectSkill -= RecordPerfect;
+            _playerManager.OnGoodSkill -= RecordGood;
+            _playerManager.OnMissedSkill -= RecordMiss;
+            
+            // 回避
+            _playerManager.OnPerfectAvoid -= RecordPerfect;
+            _playerManager.OnGoodAvoid -= RecordGood;
+            _playerManager.OnFailedAvoid -= RecordMiss;
+            
+            // ため攻撃発動
+            _playerManager.OnPerfectChargeAttack -= RecordPerfect;
+            _playerManager.OnGoodChargeAttack -= RecordGood;
+            _playerManager.OnMissChargeAttack -= RecordMiss;
+            
+            // ため攻撃チャージ開始
+            _playerManager.OnPerfectCharging -= RecordPerfect;
+            _playerManager.OnGoodCharging -= RecordGood;
+            _playerManager.OnMissedCharging -= RecordMiss;
         }
     }
 }
