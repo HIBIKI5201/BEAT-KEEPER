@@ -14,8 +14,20 @@ namespace BeatKeeper.Runtime.Outgame.UI
         [SerializeField, Tooltip("ボタンを押した際にPressAnyButtonがどのような色になるのか")] private Color _onStartColor;
         [SerializeField, Tooltip("シーン起動時にフェード院にかける時間")] private float _fadeInDuration = 1f;
         [SerializeField, Tooltip("ゲーム開始時にフェードアウトにかかる時間")] private float _fadeOutDuration = 3f;
+        
+        [Header("言語・字幕設定")]
+        [SerializeField] private CanvasGroup _mainCanvasGroup;
+        [SerializeField] private CanvasGroup _languageCanvasGroup;
+        [SerializeField] private CanvasGroup _subtitleCanvasGroup;
+        
+        [SerializeField] private SettingUIManager _languageButton;
+        [SerializeField] private SettingUIManager _subtitleButton;
 
         private bool _isGameStarted = false;
+
+        public int LanguageId => _languageButton.CurrentButtonIndex;
+        
+        public int SubtitleId => _subtitleButton.CurrentButtonIndex;
 
         private void Start()
         {
@@ -38,6 +50,43 @@ namespace BeatKeeper.Runtime.Outgame.UI
             }
         }
 
+        public void Next(bool isLanguageSetting, int direction)
+        {
+            if (isLanguageSetting)
+            {
+                _languageButton.Next(direction);
+            }
+            else
+            {
+                _subtitleButton.Next(direction);
+            }
+        }
+        
+        /// <summary>
+        /// 設定Canvasを表示する
+        /// </summary>
+        public void ShowSettingCanvas()
+        {
+            _mainCanvasGroup.DOFade(1f, 0.3f);
+            
+            // 言語設定キャンバスを表示。字幕は非表示
+            IsActiveCanvas(true, _languageCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _subtitleCanvasGroup, 0.3f);
+            
+            _languageButton.Setup();
+        }
+        
+        /// <summary>
+        /// 字幕設定キャンバスを表示。言語設定キャンバスを非表示
+        /// </summary>
+        public void ShowSubtitleCanvas()
+        {
+            IsActiveCanvas(true, _subtitleCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _languageCanvasGroup, 0.3f);
+
+            _subtitleButton.Setup();
+        }
+        
         /// <summary>
         /// スタートした際に呼び出されるメソッド。
         /// </summary>
@@ -51,6 +100,16 @@ namespace BeatKeeper.Runtime.Outgame.UI
                 _pressAnyButtonImage.color = color;
             }
             await _curtainImage.DOFade(1f, _fadeOutDuration).AsyncWaitForCompletion();
+        }
+        
+        /// <summary>
+        /// キャンバスグループの表示・非表示をDOFadeで切り替える
+        /// </summary>
+        private void IsActiveCanvas(bool isActive, CanvasGroup canvasGroup, float duration)
+        {
+            canvasGroup.DOFade(isActive ? 1f : 0f, duration);
+            canvasGroup.interactable = isActive;
+            canvasGroup.blocksRaycasts = isActive;
         }
     }
 }
