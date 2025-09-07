@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     /// コンボ数によるスコア倍率を設定するためのスクリプタブルオブジェクト
@@ -9,14 +9,15 @@ namespace BeatKeeper
     public class ComboBonusSettingsSO : ScriptableObject
     {
         [Header("コンボ数の低い順に設定してください")]
-        [SerializeField] private ComboThreshold[] _thresholds = {
+        [SerializeField]
+        private ComboThreshold[] _thresholds = {
             new ComboThreshold(10, 1.2f),
             new ComboThreshold(30, 1.5f),
             new ComboThreshold(50, 2.0f),
             new ComboThreshold(100, 3.0f),
         };
         public ComboThreshold[] Thresholds => _thresholds;
-        
+
         /// <summary>
         /// 指定されたコンボ数に基づいてボーナス倍率を返す
         /// </summary>
@@ -30,7 +31,7 @@ namespace BeatKeeper
                     return _thresholds[i].Multiplier;
                 }
             }
-           
+
             return 1.0f;
         }
     }

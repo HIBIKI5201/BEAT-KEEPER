@@ -1,19 +1,18 @@
-using BeatKeeper.Runtime.Ingame.Character;
+﻿using System.Collections.Generic;
 using R3;
 using UnityEngine;
+using BeatKeeper.Runtime.System;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///    プレイヤーのコンボシステムを管理するクラス
+    /// </summary>
     public class ComboSystem
     {
-        private PlayerData _data;
-        
-        public ReadOnlyReactiveProperty<int> ComboCount => _comboCount;
-        private ReactiveProperty<int> _comboCount = new();
-        
-        private float _lastAttackTime = Time.time;
-
         public ComboSystem(PlayerData data) => _data = data;
+
+        public ReadOnlyReactiveProperty<int> ComboCount => _comboCount;
 
         /// <summary>
         ///     攻撃時にコンボカウントを増やす
@@ -21,20 +20,52 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Attack()
         {
             _comboCount.Value++;
-            _lastAttackTime = Time.time;
+            CheckAndPlayComboVoice(_comboCount.Value);
         }
 
         /// <summary>
         ///     コンボをリセットする
         /// </summary>
-        public void ComboReset() => _comboCount.Value = 0;
-
-        public void Update()
+        public void ComboReset() 
         {
-            //コンボ維持時間が終了するとリセット
-            if (Time.time > _lastAttackTime + _data.ComboResetTime)
+            if (_comboCount.Value == 0) return;
+
+            _comboCount.Value = 0;
+            Debug.Log("Combo Reset");
+        }
+
+        // NOTE: 使用しなくなったが、互換性のためにメソッドは残してある
+        public void Update() { }
+
+        // 各コンボボイスのcueName
+        private static readonly Dictionary<int, string> _comboVoiceMap = new()
+        {
+            { 10, "voice_combo_10"},
+            { 30, "voice_combo_30"},
+            { 50, "voice_combo_50"},
+            { 100, "voice_combo_100"}
+        };
+        private readonly string _highComboVoices = "voice_combo_high";
+        
+        private readonly PlayerData _data;
+        private ReactiveProperty<int> _comboCount = new();
+
+        /// <summary>
+        /// コンボ数に応じてボイスを再生する
+        /// </summary>
+        private void CheckAndPlayComboVoice(int combo)
+        {
+            // 特定のコンボ数のボイスをチェック
+            if (_comboVoiceMap.TryGetValue(combo, out string voice))
             {
-                ComboReset();
+                VoiceManager.PlayVoice(voice);
+                return;
+            }
+
+            // 100コンボ以降で50の倍数の場合
+            if (combo > 100 && combo % 50 == 0)
+            {
+                VoiceManager.PlayVoice(_highComboVoices);
             }
         }
     }

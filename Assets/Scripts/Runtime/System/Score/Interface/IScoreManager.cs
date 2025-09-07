@@ -1,6 +1,6 @@
-using R3;
+﻿using R3;
 
-namespace BeatKeeper
+namespace BeatKeeper.Runtime.Ingame.System
 {
     /// <summary>
     /// ScoreManagerのインターフェース
@@ -22,7 +22,7 @@ namespace BeatKeeper
         /// バトル開始時にスコアを保存する
         /// </summary>
         public void SavePreBattleScore();
-        
+
         /// <summary>
         /// バトル中に獲得したスコアを計算する
         /// </summary>

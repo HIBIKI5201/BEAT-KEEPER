@@ -1,7 +1,8 @@
-using UnityEngine;
-
-namespace BeatKeeper.Runtime.Ingame.Battle
+﻿namespace BeatKeeper.Runtime.Ingame.Battle
 {
+    /// <summary>
+    /// 　　攻撃時に渡されるデータ
+    /// </summary>
     public struct AttackData
     {
         public AttackData(float damage, bool nockback = false)
@@ -10,11 +11,10 @@ namespace BeatKeeper.Runtime.Ingame.Battle
             _isNockback = nockback;
         }
 
-        private float _damage;
         public float Damage => _damage;
-
-
-        private bool _isNockback;
         public bool IsNockback => _isNockback;
+
+        private float _damage;
+        private bool _isNockback;
     }
 }

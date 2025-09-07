@@ -8,8 +8,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     /// </summary>
     public class BreakMovieSequenceAsset : PlayableAsset
     {
-        [SerializeField, Range(1, 1)] private int _behaviour;
-
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
             switch (_behaviour)
@@ -19,5 +17,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
             return Playable.Null;
         }
+
+        [SerializeField, Range(1, 1)] private int _behaviour;
     }
 }

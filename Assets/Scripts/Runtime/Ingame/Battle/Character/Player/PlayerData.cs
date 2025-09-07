@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
+    /// <summary>
+    ///     プレイヤーのデータクラス
+    /// </summary>
     [CreateAssetMenu(fileName = "PlayerData", menuName = CHARACTER_DATA_DIRECTORY + "PlayerData")]
     public class PlayerData : CharacterData
     {
@@ -11,22 +14,43 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public float PerfectCriticalDamage => _perfectCriticalDamage;
         public float[] ComboScoreScale => _comboScoreScale;
         public float ComboResetTime => _comboRisetTime;
+        public float ChargeAttackPower => _chargeAttackPower;
         public float ChargeAttackTime => _chargeAttackTime;
+        public int ChargeStartScore => _chargeStartScore;
+        public int ChargeEndScore => _chargeEndScore;
+
+        public float ComboPerfectRange => _comboPerfectRange;
+        public float ComboGoodRange => _comboGoodRange;
+
+        public float ChargeStartPerfectRange => _chargeStartPerfectRange;
+        public float ChargeStartGoodRange => _chargeStartGoodRange;
+        public float ChargeEndPerfectRange => _chargeEndPerfectRange;
+        public float ChargeEndGoodRange => _chargeEndGoodRange;
         #endregion
 
         #region リズムパラメータ
-        public float PerfectRange => _perfectRange;
-        public float GoodRange => _goodRange;
         public float FlowZoneThreshold => _flowZoneThreshold;
         public int FlowZoneDuration => _flowZoneDuration;
         #endregion
 
         #region 回避パラメータ
-        public float AvoidRange => _avoidRange;
+        public float PerfectAvoidRnage => _perfectAvoidRange;
+        public float GoodAvoidRange => _goodAvoidRange;
         public float AvoidInvincibilityTime => _avoidInvincibilityTime;
 
         public float HitStunTime => _hitStunTime;
         public float ChargeHitStunTime => _chargeHitStunTime;
+
+        public int AvoidScore => _avoidScore;
+        public float AvoidPerfectScoreScale => _avoidPerfectScoreScale;
+        #endregion
+
+        #region スキルパラメータ
+        public float PerfectSkillRange => _perfectSkillRange;
+        public float GoodSkillRange => _goodSkillRange;
+
+        public float SkillDuration => _skillDuration;
+        public float SkillStrangth => _skillStrangth;
         #endregion
 
         [Header("攻撃 パラメータ")]
@@ -48,16 +72,31 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private float _comboRisetTime = 3;
 
         [Space(5), DisplayText("チャージ攻撃")]
+        [SerializeField, Tooltip("チャージの攻撃力")]
+        private float _chargeAttackPower = 500;
         [SerializeField, Tooltip("最大チャージになるまでの拍数")]
         private float _chargeAttackTime = 3;
+        [SerializeField,Tooltip("チャージ開始時のスコア")]
+        private int _chargeStartScore = 100;
+        [SerializeField, Tooltip("チャージ終了時のスコア")]
+        private int _chargeEndScore = 200;
+
+        [Space(5), DisplayText("攻撃の成功範囲")]
+        [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
+        private float _comboPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
+        private float _comboGoodRange = 0.5f;
+        [Space(3)]
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のパーフェクトヒットの範囲")]
+        private float _chargeStartPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ開始時のグッドヒットの範囲")]
+        private float _chargeStartGoodRange = 0.5f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のパーフェクトヒットの範囲")]
+        private float _chargeEndPerfectRange = 0.1f;
+        [SerializeField, Range(0, 1), Tooltip("チャージ終了時のグッドヒットの範囲")]
+        private float _chargeEndGoodRange = 0.5f;
 
         [Header("リズム パラメータ")]
-
-        [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
-        private float _perfectRange = 0.1f;
-
-        [SerializeField, Range(0, 1), Tooltip("パーフェクトヒットの範囲")]
-        private float _goodRange = 0.5f;
 
         [SerializeField, Min(1), Tooltip("フローゾーン突入の敷居")]
         private float _flowZoneThreshold = 10;
@@ -68,14 +107,45 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [Header("回避 パラメータ")]
 
         [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
-        private float _avoidRange = 0.5f;
+        private float _perfectAvoidRange = 0.3f;
+
+        [SerializeField, Range(0, 1), Tooltip("回避の範囲")]
+        private float _goodAvoidRange = 0.5f;
 
         [SerializeField, Tooltip("無敵時間の拍数")]
         private float _avoidInvincibilityTime = 2;
-        
+
         [SerializeField, Tooltip("ヒット時のスタン時間")]
         private float _hitStunTime = 1f;
         [SerializeField, Tooltip("チャージヒット時のスタン時間")]
         private float _chargeHitStunTime = 2f;
+
+        [SerializeField, Tooltip("回避時のスコア")]
+        private int _avoidScore = 100;
+        [SerializeField, Range(1, 2), Tooltip("パーフェクト回避スコア倍率")]
+        private float _avoidPerfectScoreScale;
+
+        [Header("スキル パラメータ")]
+        [SerializeField, Range(0, 1)]
+        private float _perfectSkillRange = 0.5f;
+        [SerializeField, Range(0, 1)]
+        private float _goodSkillRange = 0.7f;
+
+        [SerializeField, Tooltip("スキルの効果時間")]
+        private float _skillDuration = 5f;
+
+        [SerializeField, Tooltip("スキルの効果量"), Min(1)]
+        private float _skillStrangth = 1.5f;
+
+        private void OnValidate()
+        {
+            //パーフェクトがグッドを超えないようにする
+            _chargeEndPerfectRange = Mathf.Min(_chargeEndPerfectRange, _chargeEndGoodRange);
+            _chargeStartPerfectRange = Mathf.Min(_chargeStartPerfectRange, _chargeStartGoodRange);
+            _chargeStartPerfectRange = Mathf.Min(_chargeStartPerfectRange, _comboPerfectRange);
+            _perfectSkillRange = Mathf.Min(_perfectSkillRange, _goodSkillRange);
+            _comboPerfectRange = Mathf.Min(_comboPerfectRange, _comboGoodRange);
+            _perfectAvoidRange = Mathf.Min(_perfectAvoidRange, _goodAvoidRange);
+        }
     }
 }

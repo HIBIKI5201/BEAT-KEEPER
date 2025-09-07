@@ -1,17 +1,14 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using SymphonyFrameWork.System;
 using System;
-using Cysharp.Threading.Tasks;
-using R3;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Playables;
-using UnityEngine.UI;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
 {
-    [RequireComponent(typeof(PlayableDirector))]
     public class FinisherSequenceManager : MonoBehaviour
     {
         public event Action OnFinisherSequenceEnd;
@@ -21,103 +18,92 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField, Tooltip("フィニッシャー時の加算スコア")]
         private int _finisherScore = 2000;
 
-        private InputBuffer _inputBuffer;
-        private EnemyManager _registeredEnemy;
+        [SerializeField]
+        private PlayableAsset _playableAsset;
+
         private PlayableDirector _playableDirector;
 
-        private void Awake()
+        private async void Start()
         {
-            _playableDirector = GetComponent<PlayableDirector>();
-            if (!_playableDirector)
-            {
-                Debug.LogWarning("PlayableDirector component is missing on FinisherSequence.");
-            }
-        }
+            var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
+            _playableDirector = movieManager.GetDirector(_playableAsset);
 
-        private void Start()
-        {
             if (_playableDirector)
             {
                 _playableDirector.stopped += OnPlayableDirectorStopped;
             }
 
-            _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-            
-            //フェーズ変更時のイベントを登録
-            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            if (phaseManager)
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            var enemyAdmin = battleSceneManager.EnemyAdmin;
+            var lastEnemy = enemyAdmin.Enemies.Last();
+
+            // 最後の敵がアクティブになったら、プレイヤーのフィニッシャーイベントを解除して、敵のフィニッシャーイベントを登録する
+            enemyAdmin.OnNextEnemyActive += enemy =>
             {
-                phaseManager.CurrentPhaseProp
-                    .Subscribe(OnPhaseChanged)
-                    .AddTo(destroyCancellationToken);
-            }
+                if (enemy == lastEnemy)
+                {
+                    PlayerFinisherEventUnregister();
+                    EnemyFinisherEventRegister();
+                }
+            };
+
+            PlayerFinisherEventRegister();
         }
 
         private void OnDestroy()
         {
-            if (_registeredEnemy != null)
-                _registeredEnemy.OnFinisherable -= OnFinisherable;
-
-            if (_inputBuffer)
-                _inputBuffer.Finishier.started -= Finisher;
-
             if (_playableDirector)
+            {
                 _playableDirector.stopped -= OnPlayableDirectorStopped;
-        }
-
-        /// <summary>
-        ///     フェーズが変わった時のイベント
-        /// </summary>
-        /// <param name="phase"></param>
-        private void OnPhaseChanged(PhaseEnum phase)
-        {
-            FinisherEventRegister();
-        }
-
-        /// <summary>
-        ///     Finisher可能時のイベントを購買する
-        /// </summary>
-        public async void FinisherEventRegister()
-        {
-            if (_registeredEnemy) //既に登録されていたら解除
-            {
-                _registeredEnemy.OnFinisherable -= OnFinisherable;
             }
-            
-            //アクティブな敵を登録
-            var battleScene = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
-            _registeredEnemy = battleScene.EnemyAdmin.GetActiveEnemy();
-            _registeredEnemy.OnFinisherable += OnFinisherable;
         }
 
         /// <summary>
-        ///     Finisher可能になったらフィニッシャー入力を受け付ける
+        ///     Finisher時のイベントを購買する
         /// </summary>
-        private void OnFinisherable()
+        private async void PlayerFinisherEventRegister()
         {
-            _inputBuffer.Finishier.started += Finisher;
-
-            var player = ServiceLocator.GetInstance<PlayerManager>();
-            if (player)
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            if (playerManager == null)
             {
-                player.InputUnregister(); // プレイヤーの入力を一時的に無効化
+                Debug.LogWarning("PlayerManager is not found.");
+                return;
             }
 
-            var text = GetComponentInChildren<Text>();
-            if (text)
-                text.color = Color.white; // テキストの色を白に変更
+            playerManager.OnFinisher += Finisher;
+        }
+
+        private async void PlayerFinisherEventUnregister()
+        {
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            if (playerManager == null)
+            {
+                Debug.LogWarning("PlayerManager is not found.");
+                return;
+            }
+            playerManager.OnFinisher -= Finisher;
+        }
+
+        private async void EnemyFinisherEventRegister()
+        {
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            StageEnemyAdmin enemyAdmin = battleSceneManager.EnemyAdmin;
+            if (enemyAdmin == null)
+            {
+                Debug.LogWarning("StageEnemyAdmin is not found.");
+                return;
+            }
+
+            EnemyManager enemy = enemyAdmin.GetActiveEnemy();
+            enemy.HealthSystem.OnDeath += Finisher;
         }
 
         /// <summary>
         ///     Finisher入力を受け取った際の処理
         /// </summary>
         /// <param name="context"></param>
-        private void Finisher(InputAction.CallbackContext context)
+        private void Finisher()
         {
-            Debug.Log("Finisher Sequence Start");
-
-            _inputBuffer.Finishier.started -= Finisher;
-
             _playableDirector.Play();
         }
 

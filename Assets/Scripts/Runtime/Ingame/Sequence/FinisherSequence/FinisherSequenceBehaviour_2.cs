@@ -1,6 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
 using SymphonyFrameWork.System;
-using UnityEngine;
 using UnityEngine.Playables;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
