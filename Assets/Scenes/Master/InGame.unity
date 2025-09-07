@@ -1176,7 +1176,8 @@ MonoBehaviour:
   _tutorialUi: {fileID: 1118848472}
   _tutorialText: {fileID: 2908268678855267499}
   _tutorialFocusImage: {fileID: 1877079637}
-  _defaultFocusPosition: {x: -2, y: -350}
+  _defaultFocusPosition: {x: -4, y: -350}
+  _chargeEndFocusPosition: {x: 340, y: -284}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
   _indicatorGenerateCount: 4
@@ -1748,6 +1749,10 @@ PrefabInstance:
     - target: {fileID: 8657256012943704732, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667768923710143415, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3005
       objectReference: {fileID: 0}
     - target: {fileID: 9100631615109704522, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
