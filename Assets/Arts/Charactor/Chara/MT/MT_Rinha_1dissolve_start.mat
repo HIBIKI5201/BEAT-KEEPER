@@ -659,7 +659,7 @@ Material:
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 0.045780223, g: 1.1444297, b: 1.7488049, a: 1}
     - _DissolveNoiseMask_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
-    - _DissolveParams: {r: 1, g: 0, b: 2, a: 0.499}
+    - _DissolveParams: {r: 1, g: 0, b: 1.5, a: 0.499}
     - _DissolvePos: {r: 0, g: 0, b: 0, a: 0}
     - _DistanceFade: {r: 0.1, g: 0.01, b: 0, a: 0}
     - _DistanceFadeColor: {r: 0, g: 0, b: 0, a: 1}
