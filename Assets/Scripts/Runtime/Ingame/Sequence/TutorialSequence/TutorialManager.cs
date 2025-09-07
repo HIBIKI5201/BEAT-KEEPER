@@ -557,6 +557,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _playerAnimeManager.FatalHit();
                     _chargeAttackWaiting = false;
                     StartCoroutine(EndIndicator(_activeIndicatorBaseQue.Dequeue()));
+                    PlayVoice(_tutorialField, _tutorialFieldText);
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -580,6 +581,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.ChargeAttack();
                         _enemyAnimeManager.KnockBack(false);
                         _playerAnimeManager.FatalHit();
+                        PlayVoice(_tutorialField, _tutorialFieldText);
                     }
                 }
                 else
@@ -588,6 +590,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _enemyAnimeManager.ChargeAttack();
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
+                    PlayVoice(_tutorialField, _tutorialFieldText);
                 }
                 StartCoroutine(EndIndicator(_activeIndicatorBaseQue.Dequeue()));
                 _isCharging = false;
