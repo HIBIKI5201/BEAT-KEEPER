@@ -35,9 +35,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
             add => _onStartChargeAttack.Event += value;
             remove => _onStartChargeAttack.Event -= value;
         }
-        public event Action OnShootChargeAttack;
         public event Action OnChargeAttack;
+        public event Action OnPerfectChargeAttack;
+        public event Action OnGoodChargeAttack;
         public event Action OnMissChargeAttack;
+
+        public event Action OnCharging;
+        public event Action OnPerfectCharging;
+        public event Action OnGoodCharging;
+        public event Action OnMissedCharging;
 
         public event Action OnFailedAvoid;
         public event Action OnSuccessAvoid
@@ -468,10 +474,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             int timing = MusicEngineHelper.GetBeatNearerSinceStart();
 
+
             switch (context.phase)
             {
                 case InputActionPhase.Started: //チャージ開始
-
                     int chargeAttackRange = Mathf.RoundToInt(_data.ChargeAttackTime); //チャージ攻撃可能な拍数
                     if (chart[chargeAttackRange + timing].AttackKind != CHARGE_ATTACK_ENUM) return;
 
@@ -479,17 +485,29 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     break;
 
                 case InputActionPhase.Canceled: //発動
+                    // チャージ中でなければ何もしない
+                    if (_chargeAttackChargingTokenSource == null) break;
 
                     if (IsAnotherPhaseByChartKind(CHARGE_ATTACK_ENUM))
                     {
                         SymphonyDebugLogger.AddText(
                             $"[{nameof(PlayerManager)}] {CHARGE_ATTACK_ENUM} is in another phase");
                         SymphonyDebugLogger.TextLog();
+
+                        break;
+                    }
+
+                    _chargeAttackChargingTokenSource?.Cancel();
+                    _chargeAttackChargingTokenSource = null;
+
+                    //現在がチャージ攻撃のタイミングでなければ失敗
+                    if (chart[timing].AttackKind != ChartKindEnum.Charge)
+                    {
+                        MissedChargeAttack();
                         return;
                     }
 
-                    if (chart[timing].AttackKind != CHARGE_ATTACK_ENUM) return;
-
+                    // 成功判定へ
                     ChargeAttackActivation();
                     break;
             }
@@ -747,12 +765,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLogger.AddText($"{_data.Name} do skill");
 
-            if (isPerfect) 
+            if (isPerfect)
             {
                 SuccessSkill();
-                OnPerfectSkill?.Invoke(); 
+                OnPerfectSkill?.Invoke();
             }
-            else if (isGood) 
+            else if (isGood)
             {
                 SuccessSkill();
                 OnGoodSkill?.Invoke();
@@ -863,8 +881,21 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isPerfecet = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
 
+            //チャージ攻撃失敗
+            if (!isPerfecet && !isGood)
+            {
+                MissedCharging();
+
+                SymphonyDebugLogger.AddText("charge attack start is failed");
+                SymphonyDebugLogger.TextLog();
+                return;
+            }
+
             Debug.Log($"{_data.Name} start charge attack");
             _onStartChargeAttack?.Invoke();
+            if (isPerfecet) { OnPerfectCharging?.Invoke(); }
+            else if (isGood) { OnGoodCharging?.Invoke(); }
+
             _chargeAttackChargingTokenSource = new();
             _scoreManager.AddScore(_data.ChargeStartScore);
 
@@ -888,6 +919,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SoundEffectManager.PlaySoundEffect(_chargeAttackEndSound);
         }
 
+        private void MissedCharging()
+        {
+            OnMissedCharging?.Invoke();
+        }
+
         /// <summary>
         ///     チャージ攻撃を発動する
         /// </summary>
@@ -896,26 +932,24 @@ namespace BeatKeeper.Runtime.Ingame.Character
             bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
 
-            _chargeAttackChargingTokenSource?.Cancel(); //チャージ中のタスクをキャンセル
-
-            OnShootChargeAttack?.Invoke();
-
-            //成功かどうか
-            if (isGood || isPerfect)
-            {
-                Debug.Log($"{_data.Name} is full charge attacking");
-                OnChargeAttack?.Invoke();
-
-                SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
-                VoiceManager.PlayVoice(_chargeEndShootVoice);
-                AttackEnemy(_data.ChargeAttackPower, nockback: true);
-                _scoreManager.AddScore(_data.ChargeEndScore);
-                _comboSystem.Attack();
-            }
-            else
+            //チャージ攻撃失敗
+            if (!isPerfect && !isGood)
             {
                 MissedChargeAttack();
+                return;
             }
+
+            Debug.Log($"{_data.Name} is full charge attacking");
+            OnChargeAttack?.Invoke();
+
+            if (isPerfect) { OnPerfectChargeAttack?.Invoke(); }
+            else if (isGood) { OnGoodChargeAttack?.Invoke(); }
+
+            SoundEffectManager.PlaySoundEffect(_chargeAttackSound);
+            VoiceManager.PlayVoice(_chargeEndShootVoice);
+            AttackEnemy(_data.ChargeAttackPower, nockback: true);
+            _scoreManager.AddScore(_data.ChargeEndScore);
+            _comboSystem.Attack();
         }
 
         private void MissedChargeAttack()
@@ -985,6 +1019,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnFailedAvoid?.Invoke();
         }
 
+        /// <summary>
+        ///     指定されたノーツ種が開始されたのが別フェーズかを判定する
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         private bool IsAnotherPhaseByChartKind(ChartKindEnum kind)
         {
             if (kind == ChartKindEnum.None) return false;
@@ -1052,8 +1091,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 {
                     missedFlag = true;
                     OnSkill -= action;
+                    OnFinisher -= action;
                 };
                 OnSkill += action;
+                OnFinisher += action;
             }
 
             float timer = Time.time + duration;
@@ -1061,7 +1102,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             if (kind == ChartKindEnum.Attack) OnShootComboAttack -= action;
             else if (kind == ChartKindEnum.Charge) OnChargeAttack -= action;
-            else if (kind == ChartKindEnum.Normal) OnSuccessAvoid -= action;
+            else if (kind == ChartKindEnum.Normal)
+            {
+                OnSuccessAvoid -= action;
+                OnFinisher -= action;
+            }
+
             else if (kind == ChartKindEnum.Skill) OnSkill -= action;
 
             if (missedFlag) return; //成功していたら何もしない
@@ -1093,8 +1139,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartKindEnum kind = chart[timing].AttackKind;
 
             if (kind == ChartKindEnum.None) return false;
-
-            Debug.Log($"<color=red>current chart kind : {kind} {kind != ChartKindEnum.Attack}</color>");
 
             return kind != ChartKindEnum.Attack;
         }

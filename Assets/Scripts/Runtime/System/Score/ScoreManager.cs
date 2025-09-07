@@ -80,6 +80,9 @@ namespace BeatKeeper
         {
             // コンボ数のリアクティブプロパティの購読をやめる
             _disposable?.Dispose();
+            
+            // プレイヤーの入力判定イベントの購読解除
+            _accuracyTracker?.Dispose();
         }
         
         /// <summary>

@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428afafbb64a76b4ab5e7640c9bd901b, type: 3}
+  m_Name: LocalizeData_TutorialSubtitles
+  m_EditorClassIdentifier: 
+  _dialogues:
+  - _cueName: voice_tutorial_common_sign
+    _japaneseMessage: "\u4ECA\u3088\uFF01"
+    _englishMessage: Now!
+  - _cueName: voice_tutorial_common_encourage
+    _japaneseMessage: "\u3061\u3087\u3063\u3068\u30BF\u30A4\u30DF\u30F3\u30B0\u304C\u5408\u308F\u306A\u304B\u3063\u305F\u308F\u306D\u3002\u3082\u3046\u4E00\u56DE\u3084\u3063\u3066\u307F\u307E\u3057\u3087\uFF01"
+    _englishMessage: Ah, the timing was a bit off. Let's try that again!
+  - _cueName: voice_tutorial_normal_attack_01
+    _japaneseMessage: "\u6700\u521D\u306F\u901A\u5E38\u653B\u6483\u304B\u3089\uFF01"
+    _englishMessage: Start with a basic attack!
+  - _cueName: voice_tutorial_normal_attack_02
+    _japaneseMessage: "\u30EA\u30F3\u30B0\u304C\u91CD\u306A\u308B\u30BF\u30A4\u30DF\u30F3\u30B0\u3092\u72D9\u3063\u3066\uFF01"
+    _englishMessage: Aim for when the rings overlap!
+  - _cueName: voice_tutorial_normal_attack_encourage_01
+    _japaneseMessage: "\u305D\u3046\uFF01\u3044\u3044\u611F\u3058\uFF01"
+    _englishMessage: Yes! That's perfect!
+  - _cueName: voice_tutorial_normal_attack_03
+    _japaneseMessage: "\u6B21\u306F\u9023\u7D9A\u3067\u653B\u6483\u3057\u3066\u307F\u307E\u3057\u3087\u3046\uFF01\u884C\u304F\u308F\u3088\uFF01"
+    _englishMessage: Now let's try attacking consecutively! Here we go!
+  - _cueName: voice_tutorial_normal_attack_encourage_02
+    _japaneseMessage: "\u3044\u3044\u308F\u306D\u3001\u305D\u306E\u8ABF\u5B50\uFF01"
+    _englishMessage: Nice, keep it up!
+  - _cueName: voice_tutorial_skill
+    _japaneseMessage: "\u4ECA\u5EA6\u306F\u30B9\u30AD\u30EB\u3088\uFF01\u3055\u3063\u304D\u307F\u305F\u3044\u306B\u30BF\u30A4\u30DF\u30F3\u30B0\u3092\u5408\u308F\u305B\u3066\uFF01"
+    _englishMessage: Now it's time for a skill! Match the timing just like before!
+  - _cueName: voice_tutorial_avoid_01
+    _japaneseMessage: "\u5371\u306A\u3044\uFF01\u6575\u304C\u653B\u6483\u3057\u3066\u304F\u308B\uFF01"
+    _englishMessage: Look out! The enemy is attacking!
+  - _cueName: voice_tutorial_avoid_02
+    _japaneseMessage: "\u30BF\u30A4\u30DF\u30F3\u30B0\u3092\u5408\u308F\u305B\u3066\u56DE\u907F\u3088\uFF01"
+    _englishMessage: Match the timing and dodge!
+  - _cueName: voice_tutorial_avoid_03
+    _japaneseMessage: "\u4ECA\u5EA6\u306F\u30DC\u30BF\u30F3\u304C\u9055\u3046\u304B\u3089\u306D\uFF01"
+    _englishMessage: The button is different this time!
+  - _cueName: voice_tutorial_avoid_04
+    _japaneseMessage: "\u3046\u307E\u304F\u907F\u3051\u3089\u308C\u305F\u308F\u306D\uFF01"
+    _englishMessage: You dodged it perfectly!
+  - _cueName: voice_tutorial_flow_zone_01
+    _japaneseMessage: "\u898B\u3066\uFF01\u30B2\u30FC\u30B8\u304C\u6E9C\u307E\u3063\u305F\u3053\u3068\u306B\u6C17\u4ED8\u3044\u305F\uFF1F"
+    _englishMessage: Look! Did you notice the gauge filled up?
+  - _cueName: voice_tutorial_flow_zone_02
+    _japaneseMessage: "\u3053\u308C\u3092\u5168\u3066\u6E9C\u3081\u308B\u3068\u3001\u6B66\u5668\u306E\u5168\u3066\u306E\u529B\u3092\u5F15\u304D\u51FA\u305B\u308B\u30D5\u30ED\u30FC\u30BE\u30FC\u30F3\u306B\u5165\u308C\u308B\u306E\uFF01"
+    _englishMessage: When you fill this completely, you can enter the Flow Zone where
+      you can draw out all of your weapon's power!
+  - _cueName: voice_tutorial_flow_zone_03
+    _japaneseMessage: "\u30EA\u30BA\u30E0\u306B\u5408\u308F\u305B\u3066\u3001\u6575\u306E\u653B\u6483\u306F\u3057\u3063\u304B\u308A\u56DE\u907F\u3057\u3066\u3044\u304D\u307E\u3057\u3087\u3046\uFF01"
+    _englishMessage: Stay in rhythm and make sure to dodge all the enemy's attacks!
+  - _cueName: voice_tutorial_charge_attack_01
+    _japaneseMessage: "\u3082\u3063\u3068\u5371\u967A\u305D\u3046\u306A\u653B\u6483\u306E\u6E96\u5099\u3092\u3057\u3066\u308B\u307F\u305F\u3044\u306D...\uFF01"
+    _englishMessage: It looks like they're preparing an even more dangerous attack...!
+  - _cueName: voice_tutorial_charge_attack_02
+    _japaneseMessage: "\u30C1\u30E3\u30FC\u30B8\u30B7\u30E7\u30C3\u30C8\u3067\u76F8\u624B\u306E\u52D5\u304D\u3092\u5C01\u3058\u3066\u3057\u307E\u3044\u307E\u3057\u3087\u3046\uFF01"
+    _englishMessage: Let's seal their movement with a Charge Shot!
+  - _cueName: voice_tutorial_charge_attack_03
+    _japaneseMessage: "\u30DC\u30BF\u30F3\u3092\u9577\u62BC\u3057\u3057\u3066\u30C1\u30E3\u30FC\u30B8\u3088\uFF01"
+    _englishMessage: Hold the button down to charge!
+  - _cueName: voice_tutorial_charge_attack_04
+    _japaneseMessage: "\u30DC\u30BF\u30F3\u3092\u62BC\u3057\u7D9A\u3051\u3066\uFF01"
+    _englishMessage: Keep holding the button!
+  - _cueName: voice_tutorial_charge_attack_05
+    _japaneseMessage: "\u30C1\u30E3\u30FC\u30B8\u5B8C\u4E86\uFF01\u30DC\u30BF\u30F3\u3092\u653E\u3057\u3066\uFF01"
+    _englishMessage: Charge complete! Release the button!
+  - _cueName: voice_tutorial_end_01
+    _japaneseMessage: "\u6C7A\u307E\u3063\u305F\u308F\uFF01"
+    _englishMessage: Got them!
+  - _cueName: voice_tutorial_end_02
+    _japaneseMessage: "\u3055\u3042\u3063\u3001\u672C\u756A\u3068\u3044\u304D\u307E\u3057\u3087\u3046\uFF01"
+    _englishMessage: Alright, let's get to the real thing!
+  - _cueName: voice_tutorial_end_03
+    _japaneseMessage: "\u3044\u304F\u308F\u3088\uFF01"
+    _englishMessage: Here we go!
+  - _cueName: voice_tutorial_end_04
+    _japaneseMessage: "\u30D3\u30FC\u30C8\u30B7\u30F3\u30AB\u30FC\u3001\u30AA\u30F3\u30B9\u30C6\u30FC\u30B8\uFF01"
+    _englishMessage: Beat Syncer, on stage!
+  - _cueName: voice_tutorial_start
+    _japaneseMessage: "\u307E\u305A\u306F\u3053\u306E\u529B\u306E\u304A\u3055\u3089\u3044\u306D\u2026\uFF01"
+    _englishMessage: First, let's review those moves...!

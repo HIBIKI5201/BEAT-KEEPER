@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 428afafbb64a76b4ab5e7640c9bd901b, type: 3}
+  m_Name: LocalizeData_Result
+  m_EditorClassIdentifier: 
+  _dialogues:
+  - _cueName: voice_rank_c
+    _japaneseMessage: "\u30E9\u30F3\u30AFC\uFF01"
+    _englishMessage: Rank C!
+  - _cueName: voice_result_c
+    _japaneseMessage: "\u624B\u3054\u308F\u3044\u76F8\u624B\u3060\u3063\u305F\u308F...\u3067\u3082\u6B21\u306F\u3001\u304D\u3063\u3068\u697D\u52DD\u306D\uFF01"
+    _englishMessage: That was a tough opponent... but next time will definitely be
+      a breeze!
+  - _cueName: voice_rank_b
+    _japaneseMessage: "\u30E9\u30F3\u30AFB\uFF01"
+    _englishMessage: Rank B!
+  - _cueName: voice_result_b
+    _japaneseMessage: "\u3075\u3075\u3063\u3001\u79C1\u306B\u304B\u304B\u308C\u3070\u3053\u3093\u306A\u3082\u306E\u3088\uFF01"
+    _englishMessage: Hehe, this is nothing when it comes to me!
+  - _cueName: voice_rank_a
+    _japaneseMessage: "\u30E9\u30F3\u30AFA\uFF01"
+    _englishMessage: Rank A!
+  - _cueName: voice_result_a
+    _japaneseMessage: "\u5B8C\u74A7\uFF01\u3055\u3059\u304C\u79C1\u306D\uFF01"
+    _englishMessage: Perfect! That's me alright!
+  - _cueName: voice_rank_s
+    _japaneseMessage: "\u30E9\u30F3\u30AFS\uFF01"
+    _englishMessage: Rank S!
+  - _cueName: voice_result_s
+    _japaneseMessage: "\u3059\u3054\u3044\uFF01\u3053\u3093\u306A\u611F\u899A\u521D\u3081\u3066\uFF01\u4ECA\u306A\u3089\u3069\u3093\u306A\u6575\u306B\u3082\u8CA0\u3051\u308B\u6C17\u304C\u3057\u306A\u3044\u308F\uFF01"
+    _englishMessage: Amazing! I've never felt like this before! Right now I feel
+      like I couldn't lose to any enemy!
+  - _cueName: voice_ending
+    _japaneseMessage: "\u904A\u3093\u3067\u304F\u308C\u3066\u3042\u308A\u304C\u3068\u3046\uFF01\u307E\u305F\u3001\u3042\u306A\u305F\u3068\u6226\u3048\u308B\u65E5\u3092\u697D\u3057\u307F\u306B\u3057\u3066\u3044\u308B\u308F\u3002"
+    _englishMessage: Thank you for playing! I'm looking forward to the day I can
+      fight alongside you again.
+  - _cueName: voice_result
+    _japaneseMessage: "\u4ECA\u56DE\u306E\u30D0\u30C8\u30EB\u30EC\u30DD\u30FC\u30C8\u3092\u78BA\u8A8D\u3059\u308B\u308F\u3002"
+    _englishMessage: Let me check this battle's report.
