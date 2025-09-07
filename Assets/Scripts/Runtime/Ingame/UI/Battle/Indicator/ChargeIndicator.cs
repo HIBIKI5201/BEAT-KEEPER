@@ -60,7 +60,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("追加の色設定")] 
         [SerializeField] private Color _chargeColor = Color.cyan;
-        [SerializeField] private Color _criticalColor = Color.red;
+
+        [Header("追加の画像設定")]
+        [SerializeField] private Sprite _defaultEndRingSprite;
 
 		// 譜面の長さ
         private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
@@ -107,28 +109,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // マスクのスケールを外側リングの大きさに合わせる
             _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
 
-            // アーチのパスを作成
-            Vector3 startPos = _startPositionRing.transform.position;
-            Vector3 endPos = _endPositionRing.transform.position;
-    
-            // アーチの頂点を計算（中間点から上方向にオフセット）
-            Vector3 midPoint = (startPos + endPos) * 0.5f;
-            Vector3 archTop = midPoint + Vector3.up * Vector3.Distance(startPos, endPos) * 0.15f; // 高さを計算
-    
-            Vector3[] pathPoints = { startPos, archTop, endPos };
+            // 色変更用にリングを白色のものに変更
+            //ChargeStart();
             
             var sequence = DOTween.Sequence()
                 
-                // 色変更（チャージ開始時）
-                .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
-                .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
-                .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
+                // 色変更（チャージ開始時）NOTE: 戻す可能性があるのでコメントアウト
+                // .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
+                // .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
+                // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
         
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * 0.9f).SetEase(Ease.OutQuart))
-        
-                // アーチの動きを表現
-                .Join(_startPositionRing.rectTransform.DOPath(pathPoints, totalDuration * 0.9f, PathType.CatmullRom).SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration).SetEase(Ease.OutQuart))
+                
+                // 終点リングへ移動
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
             
@@ -232,6 +227,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			// 移動するオブジェクトの位置を変更
 			_startPositionRing.transform.position = transform.position;
+
+            _startPositionRing.sprite = _defaultEndRingSprite;
+            _endPositionRing.sprite = _defaultEndRingSprite;
+        }
+
+        private void ChargeStart()
+        {
+            _startPositionRing.sprite = _commonSprite.Ring;
+            base.ChangeRingsImage();
+        }
+        
+        /// <summary>
+        /// Perfect/Goodの色変更用にSpriteを白色のものに変更する
+        /// </summary>
+        protected override void ChangeRingsImage()
+        {
+            _startPositionRing.sprite = _commonSprite.Ring;
+            _endPositionRing.sprite = _commonSprite.Ring;
+            base.ChangeRingsImage();
         }
         
         #region リングのコンポーネント全てのScale、色のリセット
@@ -316,37 +330,5 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnChargeAttack -= OnPlayerAttackSuccess;
             _player.OnMissChargeAttack -= PlayFailEffect;
         }
-        
-        #region Overrides for Tutorial
-
-        public override void Pause()
-        {
-            base.Pause();
-            if (_decorationImage != null)
-            {
-                // Kill the pulse animation and set the alpha to a static value.
-                _tweens[1]?.Kill();
-                var color = _decorationImage.color;
-                color.a = _translucentDefaultColor.a;
-                _decorationImage.color = color;
-            }
-        }
-
-        public override void Resume()
-        {
-            base.Resume();
-            if (_decorationImage != null)
-            {
-                // Recreate and play the pulse animation.
-                var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-                var blurPulseSequence = DOTween.Sequence()
-                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                    .SetLoops(-1, LoopType.Restart);
-                _tweens[1] = blurPulseSequence;
-            }
-        }
-
-        #endregion
     }
 }

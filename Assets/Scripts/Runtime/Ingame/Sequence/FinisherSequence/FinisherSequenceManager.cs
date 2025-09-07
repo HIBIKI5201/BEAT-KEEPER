@@ -42,7 +42,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 if (enemy == lastEnemy)
                 {
-                    PlayerFinisherEventUnregister();
                     EnemyFinisherEventRegister();
                 }
             };
@@ -71,17 +70,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             playerManager.OnFinisher += Finisher;
-        }
-
-        private async void PlayerFinisherEventUnregister()
-        {
-            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-            if (playerManager == null)
-            {
-                Debug.LogWarning("PlayerManager is not found.");
-                return;
-            }
-            playerManager.OnFinisher -= Finisher;
         }
 
         private async void EnemyFinisherEventRegister()

@@ -11886,8 +11886,6 @@ Transform:
   - {fileID: 9168063345633126247}
   - {fileID: 7235514391187131802}
   - {fileID: 8614302262108629116}
-  - {fileID: 3490549908627751379}
-  - {fileID: 7111579755307536525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6630069945058443533
@@ -11954,9 +11952,9 @@ MonoBehaviour:
   _comboShootVoice3: voice_attack_normal3
   _comboShootCompleteVoice: voice_combo_complete
   _chargeStartShootVoice: voice_charge_attack_charge
-  _chargeEndShootVoice: voice_charge_attack_charge
+  _chargeEndShootVoice: voice_charge_attack_fire
   _chargeDamagedVoice: voice_charge_attack_damaged
-  _avoidSuccessVoice: voice_charge_attack_charge
+  _avoidSuccessVoice: voice_avoid_success
   _avoidDamagedVoice: voice_avoid_damaged
   _skillVoice: voice_skill
   _stunEndVoice: voice_recover
@@ -12103,7 +12101,7 @@ Transform:
   m_Children:
   - {fileID: 6355367341024008047}
   - {fileID: 2053884499908464601}
-  m_Father: {fileID: 6271943180603376666}
+  m_Father: {fileID: 8614302262108629116}
   m_LocalEulerAnglesHint: {x: -47.996, y: 0, z: 0}
 --- !u!1773428102 &3058231430207677971
 ParentConstraint:
@@ -12253,7 +12251,7 @@ Transform:
   m_Children:
   - {fileID: 9093439857774712109}
   - {fileID: 4571321218042788256}
-  m_Father: {fileID: 6271943180603376666}
+  m_Father: {fileID: 8614302262108629116}
   m_LocalEulerAnglesHint: {x: -3.163, y: 2.879, z: 0}
 --- !u!1773428102 &6987941009267209768
 ParentConstraint:
@@ -12346,6 +12344,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2475c7a5d596c84694f77d950e9c6c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6352730796907816496}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2475c7a5d596c84694f77d950e9c6c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3490549908627751379}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d2475c7a5d596c84694f77d950e9c6c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7111579755307536525}
     - targetCorrespondingSourceObject: {fileID: 5597574104573226864, guid: d2475c7a5d596c84694f77d950e9c6c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1434185688902696892}
