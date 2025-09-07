@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 100a56e1ca91a824cafbc4264154039e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f98d1a0bab1962642bad345c26d2428f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
+  _contractionScale: {x: 0.99, y: 0.99, z: 0.99}
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _hitImage: {fileID: 1064944501665903157}
   _decorationImage: {fileID: 3762512124363481143}
@@ -178,7 +179,7 @@ MonoBehaviour:
   _fadeDuration: 0.15
   _centerImage: {fileID: 4567844889534955088}
   _guide:
-    Sprite: {fileID: 21300000, guid: def046d3c88feec429e62c8a68c666cf, type: 3}
+    Sprite: {fileID: 21300000, guid: fef731ca17e4aa844a8c63e4eceb6198, type: 3}
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Normal
@@ -322,7 +323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1677502634cb95749be74aa4fc2bf311, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93722631ea8f2a142aab6eee7f6d6bd8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -397,7 +398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7f9dc13e474fb674cb536c5dde33e716, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5b96e52e900bf554c938d9d2deace9e5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

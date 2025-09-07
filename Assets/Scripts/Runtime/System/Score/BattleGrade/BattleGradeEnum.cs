@@ -5,8 +5,6 @@
     /// </summary>
     public enum BattleGradeEnum
     {
-        SSS,
-        SS,
         S,
         A,
         B,

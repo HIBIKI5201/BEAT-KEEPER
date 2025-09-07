@@ -39,7 +39,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         #endregion
 
-
         #region BGMの管理
 
         /// <summary>
@@ -70,26 +69,35 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeSelectLayer(int index)
         {
-            StringBuilder label = new(_selectorLabelName);
+            StringBuilder label = new();
 
-            if (index <= 4) //レイヤーを変更する
+            if (index <= 4) //レイヤーのみ変更する
             {
+				// レイヤー0~4の場合 = フローゾーン以外
+                label.Append(_selectorLabelName);
                 label.Append(index.ToString("0"));
             }
             else
             {
+				// フローゾーン突入
                 float beat = MusicEngineHelper.GetBeatSinceStart();
 
-                //今の範囲を計算
-                int layer =
-                    (Mathf.CeilToInt(
-                        (beat - 16) //イントロの分を減らす
-                        % 64f //ループ分を削る
-                        / 16f) //拍から節に変換
-                    + 1) // 最低でも1以上になる
-                    * 4 + 1; //レイヤー値の4n+1に合わせる
+				// イントロ分の16拍を引いて、BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
+				int position = (Mathf.FloorToInt(beat) - 16) % 64;
+			
+				// ループ内での節を計算
+				// position 0: 1小節目 (特別ケース)
+				// position 1-16: 2小節目
+				// position 17-32: 3小節目  
+				// position 33-48: 4小節目
+				// position 49-63: 1小節目 (次ループ)
+				int section = position == 0 ? 0 : (Mathf.FloorToInt((position - 1) / 16f) + 1) % 4;
+				
+				// 小節番号を4n+1形式のレイヤーIDに変換 (5, 9, 13, 17)
+				int layer = section * 4 + 5;
 
                 //遷移先のレイヤー名を取得
+				label.Append(_selectorFlowZoneLabelName);
                 label.Append(layer.ToString("0"));
             }
 
@@ -99,6 +107,25 @@ namespace BeatKeeper.Runtime.Ingame.System
         }
 
         #endregion
+
+        public async void Subscribe()
+        {
+            // 既に登録されているものがあれば解除
+            _disposable?.Dispose();
+            _disposable = null;
+            
+            _disposable = new CompositeDisposable();
+            
+            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
+            _flowZoneSystem = playerManager.FlowZoneSystem;
+
+            // リズム共鳴のリアクティブプロパティを購読
+            _flowZoneSystem.ResonanceCount
+                .Subscribe(OnChangeResonanceCount)
+                .AddTo(_disposable);
+        }
 
         #region タイミングアクション追加
 
@@ -281,17 +308,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         private int _lastJustBeat;
         private int _lastNearBeat;
 
-        private async void Start()
+        private void Start()
         {
-            PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
-
-            await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
-            _flowZoneSystem = playerManager.FlowZoneSystem;
-
-            // リズム共鳴のリアクティブプロパティを購読
-            _flowZoneSystem.ResonanceCount
-                .Subscribe(OnChangeResonanceCount)
-                .AddTo(_disposable);
+            // フローゾーン増加時のリアクティブプロパティを購読
+            Subscribe();
         }
 
         private void OnChangeResonanceCount(int value)

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 84457a795acdf9340b2d49710bcd6b44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 209ea3a7e9cdbc84aafcb73c0f0c35a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a5ab0aa0f93933e4ab7d4105a942784f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f193d9d0a395ba8429e1955629f49de3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e9704d5eead3e54fb493a9ea206ec4f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 094c2a4c2e9d7234ea9ee7646220fbaa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e9704d5eead3e54fb493a9ea206ec4f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 094c2a4c2e9d7234ea9ee7646220fbaa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e9704d5eead3e54fb493a9ea206ec4f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 094c2a4c2e9d7234ea9ee7646220fbaa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -470,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
+  _contractionScale: {x: 0.99, y: 0.99, z: 0.99}
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _hitImage: {fileID: 9076401914382325685}
   _decorationImage: {fileID: 2752318165461998402}
@@ -479,11 +480,11 @@ MonoBehaviour:
   _fadeDuration: 0.2
   _centerImage: {fileID: 6851541169836843214}
   _guide:
-    Sprite: {fileID: 21300000, guid: f5f3aaa49cd35af41a0f7284214c3488, type: 3}
+    Sprite: {fileID: 21300000, guid: 0f6e4794e7462eb49b91dbfca0f66350, type: 3}
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Charge
   _startPositionRing: {fileID: 9076401914382325685}
   _endPositionRing: {fileID: 2486665361135006193}
-  _chargeColor: {r: 0, g: 1, b: 1, a: 1}
-  _criticalColor: {r: 1, g: 0, b: 0, a: 1}
+  _chargeColor: {r: 1, g: 0.6745098, b: 0.7458095, a: 1}
+  _defaultEndRingSprite: {fileID: 21300000, guid: 094c2a4c2e9d7234ea9ee7646220fbaa, type: 3}

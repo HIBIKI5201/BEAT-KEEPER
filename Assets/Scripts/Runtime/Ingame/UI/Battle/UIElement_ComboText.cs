@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 using System;
+using DG.Tweening;
 
 namespace BeatKeeper
 {
@@ -20,6 +21,10 @@ namespace BeatKeeper
         [SerializeField] private SpriteAtlas[] _numberSpriteAtlas; // 数字のSpriteAtlas。コンボの段階に応じて複数存在する
         [SerializeField] private ViewData[] _differenceViewData; // 差分設定データ
         [SerializeField] private int _showThreshold = 5; // コンボを表示するしきい値
+        
+        [Header("コンボ数変更時に少しだけ揺れるアニメーションの設定")]
+        [SerializeField] private Vector3 _moveDistance = new Vector3(0.2f, 0.2f, 0f);
+        [SerializeField] private float _moveDuration = 0.05f;
 
         private int _differenceIndex; // SpriteAtlasの差分使用用のIndex。コンボが一定のしきい値以上になった時に変更される
         private PlayerManager _playerManager; // ComboSystem取得用
@@ -66,6 +71,9 @@ namespace BeatKeeper
             // 数字の更新処理
             UpdateNumberDisplay(comboCount);
             
+            // UIを揺らす
+            NumbersUIShacked();
+            
             if (comboCount == 0)
             {
                 // コンボがゼロになったら非表示にする
@@ -77,7 +85,7 @@ namespace BeatKeeper
                 Show();
             }
         }
-
+        
         /// <summary>
         /// コンボ上昇による表記差分を適用する
         /// </summary>
@@ -122,6 +130,25 @@ namespace BeatKeeper
             SetSprite(_numberImages[0], GetNumberSprite(hundreds));
             SetSprite(_numberImages[1], GetNumberSprite(tens));
             SetSprite(_numberImages[2], GetNumberSprite(ones));
+        }
+        
+        /// <summary>
+        /// コンボ変更時にコンボ数の数字を少し揺らすようなTween
+        /// </summary>
+        private void NumbersUIShacked()
+        {
+            for (int i = 0; i < _numberImages.Length; i++)
+            {
+                var image = _numberImages[i];
+        
+                // 各数字を少しずつ遅延させて波のような効果
+                image.transform.DOPunchPosition(
+                    new Vector3(0, _moveDistance.y, 0), 
+                    _moveDuration, 
+                    6, // 振動回数
+                    0.5f // 弾力性
+                ).SetEase(Ease.OutQuad);
+            }
         }
 
         /// <summary>

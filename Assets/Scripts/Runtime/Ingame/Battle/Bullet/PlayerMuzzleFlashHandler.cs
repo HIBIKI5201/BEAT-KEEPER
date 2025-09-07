@@ -12,17 +12,27 @@ namespace BeatKeeper.Runtime.Ingame
         [SerializeField] private MuzzleFlashController _muzzleFlash = new MuzzleFlashController();
         private PlayerManager _playerManager;
         
-        private void Start()
+        private async void Start()
         {
-            _playerManager = ServiceLocator.GetInstance<PlayerManager>();
-            
-            // プレイヤーが攻撃したタイミングでマズルフラッシュのエフェクトが再生されるようにする
-            _playerManager.OnShootComboAttack += _muzzleFlash.Fire;
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+
+            if (_playerManager != null)
+            {
+                // プレイヤーが攻撃したタイミングでマズルフラッシュのエフェクトが再生されるようにする
+                _playerManager.OnShootComboAttack += _muzzleFlash.Fire;
+            }
+            else
+            {
+                Debug.LogError($"{typeof(PlayerMuzzleFlashHandler)} PlayerManagerが取得できませんでした。マズルフラッシュエフェクトが再生できません");
+            }
         }
 
         private void OnDestroy()
         {
-            _playerManager.OnShootComboAttack -= _muzzleFlash.Fire;
+            if (_playerManager != null)
+            {
+                _playerManager.OnShootComboAttack -= _muzzleFlash.Fire;
+            }
         }
     }
 }
