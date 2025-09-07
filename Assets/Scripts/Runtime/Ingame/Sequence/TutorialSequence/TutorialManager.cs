@@ -477,7 +477,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ind =>
                 {
                     ind.PlayFailEffect();
-                    _playerAnimeManager.Hit();
                 }
             );
         }
@@ -520,7 +519,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _playerAnimeManager.Avoid();
                     _playerManager.FlowZoneSystem.SuccessResonance();
                 },
-                ind => ind.PlayFailEffect()
+                ind =>
+                {
+                    ind.PlayFailEffect();
+                    _playerAnimeManager.Hit();
+                }
             );
         }
 
@@ -664,7 +667,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
 
-                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 3);
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
                 PlayVoice(_chargeCompleteVoice, _chargeCompleteVoiceText);
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _chargeIndicatorText2;
