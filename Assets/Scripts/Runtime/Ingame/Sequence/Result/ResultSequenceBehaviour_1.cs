@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Sequence;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -10,13 +11,12 @@ namespace BeatKeeper
         {
             Debug.Log("ResultSequenceActivate");
             base.OnBehaviourPlay(playable, info);
-            if (_owner)
+
+            ResultManager resultManager = ServiceLocator.GetInstance<ResultManager>();
+
+            if (resultManager)
             {
-                var resultManager = _owner.GetComponent<ResultManager>();
-                if (resultManager)
-                {
-                    resultManager.ResultShow();
-                }
+                resultManager.ResultShow();
             }
         }
     }
