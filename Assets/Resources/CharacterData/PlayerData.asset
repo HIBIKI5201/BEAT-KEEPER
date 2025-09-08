@@ -20,7 +20,7 @@ MonoBehaviour:
   - 100
   - 100
   _comboRisetTime: 3
-  _chargeAttackPower: 500
+  _chargeAttackPower: 300
   _chargeAttackTime: 2
   _chargeStartScore: 100
   _chargeEndScore: 200
