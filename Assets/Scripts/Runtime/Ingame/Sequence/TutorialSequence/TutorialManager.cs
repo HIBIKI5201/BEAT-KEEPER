@@ -22,6 +22,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private Image _tutorialFocusImage;
         [SerializeField] private Vector2 _defaultFocusPosition;
         [SerializeField] private Vector2 _chargeEndFocusPosition;
+        [SerializeField] private SubTitleManager _subTitleManager;
 
         [Header("Playable")]
         [SerializeField] private PlayableDirector _director;
@@ -61,8 +62,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _chargeGunshot;
 
         [Header("ボイス")]
-        [SerializeField] private GameObject _textBox;
-        [SerializeField] private Text _tutorialVoiceText;
         [SerializeField] private bool _useSubtitle = true;
         [SerializeField] private string _tutorialSuccess1;
         [SerializeField] private string _tutorialAttackStartVoice;
@@ -96,7 +95,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private async void Start()
         {
             _tutorialUi.SetActive(false);
-            _textBox.SetActive(false);
             _tutorialFocusImage.enabled = false;
             _chartKindEnum = ChartKindEnum.None;
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
@@ -116,7 +114,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         public void EndTutorial()
         {
-            _textBox.SetActive(false);
             _tutorialUi.SetActive(false);
         }
 
@@ -128,7 +125,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void PlayVoice(string cueName)
         {
             VoiceManager.PlayVoice(cueName);
-            if (!_localizeTextManager.DontUseSubtitle) TextUpdate(_localizeTextManager.GetTutorialSubtitleMessage(cueName));
+            if (!_localizeTextManager.DontUseSubtitle) _subTitleManager.TutorialSubtitleTextShow(cueName);
             if (cueName == _flowZone1)
             {
                 _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _tutorialFocusFlow;
@@ -164,12 +161,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (_operationTutorialPlaying)
                 _director.Pause();
-        }
-
-        private void TextUpdate(string text)
-        {
-            _textBox.SetActive(true);
-            _tutorialVoiceText.text = text;
         }
 
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)

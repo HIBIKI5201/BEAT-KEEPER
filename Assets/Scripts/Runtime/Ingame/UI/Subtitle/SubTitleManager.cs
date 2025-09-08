@@ -9,15 +9,16 @@ namespace BeatKeeper
     {
         [SerializeField, Header("最短のテキスト表示時間")] private float _shortestDisplayTime = 2f;
         [SerializeField, Header("一文字ごとの表示時間の係数")] private float _perCharacterTimeMultiplier = 0.2f;
+        [SerializeField, Header("テキストボックスおよびテキストのオブジェクト")]private Image _textBox;
+        [SerializeField]private Text _subTitleText;
         private LocalizeTextManager _localizeTextManager;
-        private Image _textBox;
-        private Text _subTitleText;
         private float _currentTime = 0f;
 
         private async void Awake()
         {
             StartCoroutine(TextHide());
             _textBox.enabled = false;
+            _subTitleText.enabled = false;
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
         }
 
@@ -46,6 +47,7 @@ namespace BeatKeeper
         private void TextShow(string text)
         {
             _textBox.enabled = true;
+            _subTitleText.enabled = false;
             _subTitleText.text = text;
             _currentTime = Mathf.Max(Time.time + _shortestDisplayTime, Time.time + _perCharacterTimeMultiplier);
         }
@@ -61,6 +63,7 @@ namespace BeatKeeper
                 if (_currentTime <= Time.time)
                 {
                     _textBox.enabled = false;
+                    _subTitleText.enabled = false;
                 }
                 yield return null;
             }

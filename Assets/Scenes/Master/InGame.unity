@@ -1101,11 +1101,17 @@ Transform:
   - {fileID: 634489668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1215655901 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9017836608223850946, guid: b76d99356d60d9b40998617976859451, type: 3}
+--- !u!114 &1215655903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8383385582489861674, guid: b76d99356d60d9b40998617976859451, type: 3}
   m_PrefabInstance: {fileID: 2908268678855267497}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1325421708 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9020171153741558029, guid: b76d99356d60d9b40998617976859451, type: 3}
@@ -1186,6 +1192,7 @@ MonoBehaviour:
   _tutorialFocusImage: {fileID: 1877079637}
   _defaultFocusPosition: {x: -4, y: -350}
   _chargeEndFocusPosition: {x: 340, y: -284}
+  _subTitleManager: {fileID: 0}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
   _indicatorGenerateCount: 4
@@ -1236,8 +1243,6 @@ MonoBehaviour:
   _charging: Charging
   _chargeComplete: ChargeCOmplete
   _chargeGunshot: ChargeGunshot
-  _textBox: {fileID: 1215655901}
-  _tutorialVoiceText: {fileID: 1852328611}
   _useSubtitle: 1
   _tutorialSuccess1: voice_tutorial_normal_attack_encourage_01
   _tutorialAttackStartVoice: voice_tutorial_normal_attack_03
@@ -1380,6 +1385,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8f4e89822407349b16ce75af9cc3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shortestDisplayTime: 2
+  _perCharacterTimeMultiplier: 0.2
+  _textBox: {fileID: 1215655903}
+  _subTitleText: {fileID: 1852328611}
 --- !u!4 &1640088185
 Transform:
   m_ObjectHideFlags: 0
