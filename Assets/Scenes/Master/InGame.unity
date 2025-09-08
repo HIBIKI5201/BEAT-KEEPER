@@ -1220,7 +1220,7 @@ MonoBehaviour:
   _playTutorial: 0
   _attackTutorialClearCount: 4
   _skillTutorialClearCount: 2
-  _missCount: 0
+  _missCount: 2
   _attackIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u653B\u6483\uFF01"
   _skillIndicatorText: "B\u30DC\u30BF\u30F3\u3067\u30B9\u30AD\u30EB\u767A\u52D5\uFF01"
   _enemyIndicatorText: "LB/RB\u30DC\u30BF\u30F3\u3067\u56DE\u907F\uFF01"

@@ -346,6 +346,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             PlayVoice(_tutorialField, _tutorialFieldText);
+            foreach (var indicator in _activeIndicatorBaseQue)
+            {
+                StartCoroutine(EndIndicator(indicator));
+            }
             _generateInterval = 2;
             return false;
         }
