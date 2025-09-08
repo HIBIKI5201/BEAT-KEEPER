@@ -66,6 +66,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Sprite _guideIcon; // フィニッシャー用の操作アイコン
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
+        [SerializeField] private string _skillApperanceSoundCueName = "Ring_Skill"; // フィニッシャーノーツ表示SE
+        [SerializeField] private string _finisherApperanceSoundCueName = "Ring_Finisher"; // フィニッシャーノーツ表示SE
 
         private CancellationTokenSource _cts; // フィニッシャー発動可能か監視する非同期処理のキャンセル用
         private bool _isFinisherable; // フィニッシャー可能か
@@ -224,6 +226,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 変数を上書き
             _isFinisherable = _player.IsFinisherable();
+
+            // 再生するノーツ出現SEのCueNameを変更
+            _apperanceSoundCueName = _isFinisherable ? _finisherApperanceSoundCueName : _skillApperanceSoundCueName;
             
             SwitchCanvasGroup();
             ApplyCurrentColors();
