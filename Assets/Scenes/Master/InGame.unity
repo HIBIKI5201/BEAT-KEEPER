@@ -1192,7 +1192,7 @@ MonoBehaviour:
   _tutorialFocusImage: {fileID: 1877079637}
   _defaultFocusPosition: {x: -4, y: -350}
   _chargeEndFocusPosition: {x: 340, y: -284}
-  _subTitleManager: {fileID: 0}
+  _subTitleManager: {fileID: 1640088184}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
   _indicatorGenerateCount: 4
