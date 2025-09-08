@@ -49,6 +49,14 @@ namespace BeatKeeper
         [SerializeField] private string _resultCueName;
         [SerializeField] private RankVoice[] _rankVoice = new RankVoice[4];
         [SerializeField] private RankVoice[] _resultVoice = new RankVoice[4];
+        
+        [Header("SEのCueNameの設定")]
+        [SerializeField] private string _rankSSe = "Rank_S";
+        [SerializeField] private string _rankASe = "Rank_A";
+        [SerializeField] private string _rankBSe = "Rank_B";
+        [SerializeField] private string _rankCSe = "Rank_C";
+        [SerializeField] private string _counterSe = "ResultCounter";
+        [SerializeField] private string _slideInSe = "FrameSlideIn";
 
         [Header("演出関連の設定")] 
         [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
@@ -133,6 +141,9 @@ namespace BeatKeeper
         {
             if(_scoreText == null) return DOVirtual.DelayedCall(0f, () => { });
             
+            // SE再生
+            SoundEffectManager.PlaySoundEffect(_counterSe);
+            
             // スコアを先に取得しておく
             var targetScore = _scoreManager.Score;
             
@@ -171,6 +182,9 @@ namespace BeatKeeper
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _rankVoice);
 
+            // ランクSE再生
+            SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
+
             return DOVirtual.DelayedCall(0.01f, () =>
             {
                 VoiceManager.PlayVoice(voice);
@@ -204,17 +218,29 @@ namespace BeatKeeper
             _perfectCount.SetAmount(_scoreManager.AccuracyTracker.PerfectCount);
             _goodCount.SetAmount(_scoreManager.AccuracyTracker.GoodCount);
             _missCount.SetAmount(_scoreManager.AccuracyTracker.MissCount);
-    
+            
             // アニメーション
             var sequence = DOTween.Sequence();
-    
+
             for (int i = 0; i < elements.Length; i++)
             {
                 var element = elements[i];
                 var targetPos = element.transform.localPosition + Vector3.right * 80f;
-        
+
+                // 最初の要素だけ即座にSE再生
+                if (i == 0)
+                {
+                    SoundEffectManager.PlaySoundEffect(_slideInSe);
+                }
+
                 sequence.Insert(i * 0.06f, element.CanvasGroup.DOFade(1f, 0.3f).SetEase(Ease.OutQuad));
                 sequence.Insert(i * 0.06f, element.transform.DOLocalMove(targetPos, 0.4f).SetEase(Ease.OutCubic));
+    
+                // 2番目以降の要素は遅延してSE再生
+                if (i > 0)
+                {
+                    sequence.InsertCallback(i * 0.06f, () => SoundEffectManager.PlaySoundEffect(_slideInSe));
+                }
             }
     
             sequence.SetDelay(0.15f);
@@ -250,6 +276,21 @@ namespace BeatKeeper
     
             Debug.LogWarning($"{typeof(ResultUIController)}: ランク {rank} に対応するボイスが見つかりません");
             return string.Empty;
+        }
+
+        /// <summary>
+        /// 指定したランクのSEのCueNameを取得する
+        /// </summary>
+        private string GetRankSeCueName(BattleGradeEnum rank)
+        {
+            return rank switch
+            {
+                BattleGradeEnum.S => _rankSSe,
+                BattleGradeEnum.A => _rankASe,
+                BattleGradeEnum.B => _rankBSe,
+                BattleGradeEnum.C => _rankCSe,
+                _ => ""
+            };
         }
         
         /// <summary>

@@ -141,6 +141,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             return true;
         }
+
+        public bool IsExpired()
+        {
+            var remainTime = (EffectLength - _count) * MusicEngineHelper.DurationOfBeat;
+            return remainTime < 0;
+        }
         
         #region ノーツの演出（チュートリアル用publicメソッド）
         
