@@ -89,6 +89,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初回のフィニッシャー状態をチェックしてUI更新
             UpdateRingState();
         }
+
+        /// <summary>
+        /// UIの初期化処理
+        /// オブジェクトプールのOnGet()処理の中で呼び出される
+        /// </summary>
+        protected override void UIInitialized()
+        {
+            base.UIInitialized();
+            
+            // 初回のフィニッシャー状態をチェックしてUI更新
+            UpdateRingState();
+        }
         
         #region 演出メソッド
         
