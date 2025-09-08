@@ -1049,6 +1049,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             ChartKindEnum kind = chart[timing].AttackKind;
 
             if (kind == ChartKindEnum.None) return;
+            if (IsAnotherPhaseByChartKind(kind)) return;
 
             _ringIndicatorData.TryGetRingData(kind, out RingData data);
             if (data == null) return;
