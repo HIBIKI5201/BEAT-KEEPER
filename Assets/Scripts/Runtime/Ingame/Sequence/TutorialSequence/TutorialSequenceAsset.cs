@@ -18,11 +18,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_1>(graph, owner);
                 case 2:
                     return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_2>(graph, owner);
-                    break;
                 case 3:
-                    break;
+                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_3>(graph, owner);
                 case 4:
-                    break;
+                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_4>(graph, owner);
+                case 5:
+                    return SequenceBehaviourBase.CreatePlayable<TutorialSequenceBehaviour_5>(graph, owner);
                 default:
                     return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
@@ -30,6 +31,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             return Playable.Null;
         }
 
-        [SerializeField, Range(1, 5)] private int _tutorialPhase;
+        [SerializeField, Range(1, 6)] private int _tutorialPhase;
     }
 }
