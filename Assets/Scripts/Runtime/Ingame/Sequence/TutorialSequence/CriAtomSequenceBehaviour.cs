@@ -19,7 +19,7 @@ namespace BeatKeeper
                 var tutorialManager = Owner.GetComponent<TutorialManager>();
                 if (tutorialManager)
                 {
-                    tutorialManager.PlayVoice(CueName,Text);
+                    tutorialManager.PlayVoice(CueName);
                 }
             }
         }

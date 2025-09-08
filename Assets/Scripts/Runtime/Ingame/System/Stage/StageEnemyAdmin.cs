@@ -37,8 +37,6 @@ namespace BeatKeeper.Runtime.Ingame.Battle
 
             if (nextIndex >= _enemies.Length) return;
             
-            _activeEnemyIndex = nextIndex;
-
             // 次の敵をアクティブに設定
             SetActiveEnemy(nextIndex);
             // イベントを発火

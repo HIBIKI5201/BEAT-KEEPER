@@ -330,37 +330,5 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnChargeAttack -= OnPlayerAttackSuccess;
             _player.OnMissChargeAttack -= PlayFailEffect;
         }
-        
-        #region Overrides for Tutorial
-
-        public override void Pause()
-        {
-            base.Pause();
-            if (_decorationImage != null)
-            {
-                // Kill the pulse animation and set the alpha to a static value.
-                _tweens[1]?.Kill();
-                var color = _decorationImage.color;
-                color.a = _translucentDefaultColor.a;
-                _decorationImage.color = color;
-            }
-        }
-
-        public override void Resume()
-        {
-            base.Resume();
-            if (_decorationImage != null)
-            {
-                // Recreate and play the pulse animation.
-                var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-                var blurPulseSequence = DOTween.Sequence()
-                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a * 1.5f, beatDuration * 0.5f).SetEase(Ease.OutSine))
-                    .Append(_decorationImage.DOFade(_translucentDefaultColor.a, beatDuration * 0.5f).SetEase(Ease.InSine))
-                    .SetLoops(-1, LoopType.Restart);
-                _tweens[1] = blurPulseSequence;
-            }
-        }
-
-        #endregion
     }
 }

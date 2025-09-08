@@ -20,6 +20,9 @@ namespace BeatKeeper
 		[Header("ボイスの設定")]
 		[SerializeField] private string _endingVoice = "voice_ending";
 
+		[Header("SEの設定")]
+		[SerializeField] private string _operationSe = "Result_Operation";
+
         private InputBuffer _inputBuffer;
 		private Vector3 _originalResultPanelPosition; 
         private bool _isEndPanelOpen;
@@ -95,6 +98,8 @@ namespace BeatKeeper
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
             Debug.Log("Any key input detected in ResultManager.");
+
+			SoundEffectManager.PlaySoundEffect(_operationSe);
 
             // もし最後のパネルが表示されていない・かつ2枚のパネルの参照が取得できている場合
             if (!_isEndPanelOpen && _isValid)
