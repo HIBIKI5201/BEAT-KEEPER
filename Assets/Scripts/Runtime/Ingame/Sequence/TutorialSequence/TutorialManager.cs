@@ -54,6 +54,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _comboAttackSound;
         [SerializeField] private string _perfectAttackSound;
         [SerializeField] private string _ringSkillSound;
+        [SerializeField] private string _skillSuccessSound;
         [SerializeField] private string _ringAvoidSound;
         [SerializeField] private string _dodgeSound;
         [SerializeField] private string _chargeSound;
@@ -225,7 +226,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void OnBeat()
         {
             _allBeat++;
-            if (_chartKindEnum == ChartKindEnum.Charge && _activeIndicatorBaseQue.Count > 0 && _activeIndicatorBaseQue.Peek().IsExpired())
+            if (_activeIndicatorBaseQue.Count > 0 && _activeIndicatorBaseQue.Peek().IsExpired())
             {
                 StartCoroutine(EndIndicator(_activeIndicatorBaseQue.Dequeue()));
             }
@@ -491,6 +492,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                     VoiceManager.PlayVoice(_skillVoiceName);
                     ind.PlaySuccessEffectPublic();
                     _playerAnimeManager.Skill();
@@ -615,12 +617,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
                 ringObj.Pause();
+                yield return new WaitForSeconds(0.5f);
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_attackIndicatorKey), _inputBuffer.Attack);
                 _playerAnimeManager.Shoot();
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
                 PlayVoice(_tutorialSuccess1);
+                yield return new WaitForSeconds(3f);
             }
             else if (chartKindEnum == ChartKindEnum.Skill)
             {
@@ -632,6 +636,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
                 _playerAnimeManager.Skill();
+                SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                 ringObj.Resume();
                 ringObj.PlaySuccessEffectPublic();
             }
@@ -690,9 +695,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 SoundEffectManager.PlaySoundEffect(_chargeGunshot);
             }
             _tutorialFocusImage.enabled = false;
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2.5f);
 
-            Debug.Log("Explanation End----------------------------------------------------");
             _operationTutorialPlaying = false;
             ring.GetComponent<RingIndicatorBase>().End();
         }

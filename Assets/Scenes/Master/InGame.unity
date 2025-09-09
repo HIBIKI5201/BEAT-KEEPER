@@ -1238,6 +1238,7 @@ MonoBehaviour:
   _comboAttackSound: NormalGunshot1
   _perfectAttackSound: Perfect
   _ringSkillSound: Ring_Skill
+  _skillSuccessSound: Skill
   _ringAvoidSound: Ring_Avoid
   _dodgeSound: Dodge
   _chargeSound: Ring_Charge
