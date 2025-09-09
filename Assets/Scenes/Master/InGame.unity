@@ -803,7 +803,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &712200585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1760,6 +1760,22 @@ PrefabInstance:
       propertyPath: '_numberSpriteAtlas.Array.data[2]'
       value: 
       objectReference: {fileID: 100100200, guid: e8a55790c1b448045b8d06c90de55cb9, type: 3}
+    - target: {fileID: 3272895625840884379, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272895625840884379, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272895625840884379, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272895625840884379, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 3933645836938242451, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
