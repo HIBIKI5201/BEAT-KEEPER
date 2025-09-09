@@ -183,6 +183,7 @@ MonoBehaviour:
     SizeDelta: {x: 430, y: 430}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Normal
+  _4kPlay: 1
 --- !u!1 &3667238757349569663
 GameObject:
   m_ObjectHideFlags: 0
