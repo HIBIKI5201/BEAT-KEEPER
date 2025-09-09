@@ -638,12 +638,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
                 ringObj.Pause();
-                yield return new WaitForSeconds(0.5f);
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_attackIndicatorKey), _inputBuffer.Attack);
                 _playerAnimeManager.Shoot();
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+                yield return new WaitForSeconds(0.5f);
                 PlayVoice(_tutorialSuccess1);
                 yield return new WaitForSeconds(3f);
             }
