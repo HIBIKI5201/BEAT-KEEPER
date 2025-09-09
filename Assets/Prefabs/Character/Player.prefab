@@ -13928,12 +13928,10 @@ MonoBehaviour:
   _ringIndicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
   _modelParent: {fileID: 8991426660756910790}
   _comboAttackSound: NormalGunshot
-  _skillSound: Skill
   _chargeAttackStartSound: Charging
   _chargeAttackEndSound: ChargeComplete
   _chargeAttackSound: ChargeGunshot
   _avoidSound: Dodge
-  _finisherSound: Finishernotes
   _hitSound: PlayerHit
   _perfectSound: Perfect
   _flowZone1: Flowzonegauge01
