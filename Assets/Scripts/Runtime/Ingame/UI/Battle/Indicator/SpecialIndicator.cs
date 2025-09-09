@@ -115,22 +115,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var sequence = DOTween.Sequence()
-                
+
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+
                 // 中央のリング
-                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
+                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
-                
-                // シーケンスが中断されなかった場合はミス。失敗演出を行う
-                .OnComplete(() => PlayFailEffect());
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME)
+                    .SetEase(Ease.Linear))
+                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
             
             _tweens[0] = sequence;
             
