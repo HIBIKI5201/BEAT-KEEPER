@@ -66,6 +66,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Sprite _guideIcon; // フィニッシャー用の操作アイコン
         [SerializeField] private Image[] _ringImages;
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
+        [SerializeField] private string _skillApperanceSoundCueName = "Ring_Skill"; // フィニッシャーノーツ表示SE
+        [SerializeField] private string _finisherApperanceSoundCueName = "Ring_Finisher"; // フィニッシャーノーツ表示SE
+        [SerializeField] private float _centerImageMultiply = 2f; // 中央画像の拡大率
 
         private CancellationTokenSource _cts; // フィニッシャー発動可能か監視する非同期処理のキャンセル用
         private bool _isFinisherable; // フィニッシャー可能か
@@ -89,6 +92,18 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初回のフィニッシャー状態をチェックしてUI更新
             UpdateRingState();
         }
+
+        /// <summary>
+        /// UIの初期化処理
+        /// オブジェクトプールのOnGet()処理の中で呼び出される
+        /// </summary>
+        protected override void UIInitialized()
+        {
+            base.UIInitialized();
+            
+            // 初回のフィニッシャー状態をチェックしてUI更新
+            UpdateRingState();
+        }
         
         #region 演出メソッド
         
@@ -101,22 +116,28 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
 
             var sequence = DOTween.Sequence()
-                
+
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+
                 // 中央のリング
-                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
+                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
-                
-                // シーケンスが中断されなかった場合はミス。失敗演出を行う
-                .OnComplete(() => PlayFailEffect());
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME)
+                    .SetEase(Ease.Linear))
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME)
+                    .SetEase(Ease.Linear))
+                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
+            
+            // TODO: PlayerManagerの修正が終わり次第とる
+            sequence.OnComplete(() => PlayFailEffect());
             
             _tweens[0] = sequence;
             
@@ -212,6 +233,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 変数を上書き
             _isFinisherable = _player.IsFinisherable();
+
+            // 再生するノーツ出現SEのCueNameを変更
+            _apperanceSoundCueName = _isFinisherable ? _finisherApperanceSoundCueName : _skillApperanceSoundCueName;
             
             SwitchCanvasGroup();
             ApplyCurrentColors();
@@ -241,6 +265,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 sequence.Append(_finisherGroup.DOFade(1, _changeDuration));
                 sequence.Join(_skillGroup.DOFade(0, _changeDuration));
                 _centerImage.sprite = _guideIcon;
+                
+                // 中央の操作イメージのサイズも変更する
+                _centerImage.rectTransform.sizeDelta *= _centerImageMultiply;
             }
             else
             {
@@ -248,6 +275,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 sequence.Append(_skillGroup.DOFade(1, _changeDuration));
                 sequence.Join(_finisherGroup.DOFade(0, _changeDuration));
                 _centerImage.sprite = _guide.Sprite;
+                
+                // 通常サイズ
+                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
             }
 
             _tweens[2] = sequence;
