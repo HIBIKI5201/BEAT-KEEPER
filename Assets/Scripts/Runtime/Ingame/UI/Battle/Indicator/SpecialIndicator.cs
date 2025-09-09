@@ -68,6 +68,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Image[] _translucentRingImages; // 半透明リング
         [SerializeField] private string _skillApperanceSoundCueName = "Ring_Skill"; // フィニッシャーノーツ表示SE
         [SerializeField] private string _finisherApperanceSoundCueName = "Ring_Finisher"; // フィニッシャーノーツ表示SE
+        [SerializeField] private float _centerImageMultiply = 2f; // 中央画像の拡大率
 
         private CancellationTokenSource _cts; // フィニッシャー発動可能か監視する非同期処理のキャンセル用
         private bool _isFinisherable; // フィニッシャー可能か
@@ -263,7 +264,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _centerImage.sprite = _guideIcon;
                 
                 // 中央の操作イメージのサイズも変更する
-                _centerImage.rectTransform.sizeDelta = new Vector2(_centerImage.rectTransform.sizeDelta.x * 2, _centerImage.rectTransform.sizeDelta.y * 2);
+                _centerImage.rectTransform.sizeDelta *= _centerImageMultiply;
             }
             else
             {
