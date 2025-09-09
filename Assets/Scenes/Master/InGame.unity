@@ -1235,7 +1235,7 @@ MonoBehaviour:
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
   _ringNormalSound: Ring_Normal
-  _comboAttackSound: NormalGunshot2
+  _comboAttackSound: NormalGunshot
   _perfectAttackSound: Perfect
   _ringSkillSound: Ring_Skill
   _skillSuccessSound: Skill
