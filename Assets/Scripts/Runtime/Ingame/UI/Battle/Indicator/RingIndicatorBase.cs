@@ -31,6 +31,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 終了フラグをリセット
             _isEnded = false;
 
+            if(_4kPlay)
+            {
+                // TODO: 仮の処理 4K画面に合わせるための対応
+                rectPos *= 2;
+            }
+
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
 
@@ -234,6 +240,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         [Header("SE")]
         [SerializeField] protected string _apperanceSoundCueName;
+
+        [Header("仮")]
+        [SerializeField] protected bool _4kPlay = true;
 
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
