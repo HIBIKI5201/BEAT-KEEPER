@@ -825,6 +825,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void MissAttack()
         {
             Debug.Log("miss attack");
+            
+            OnMissAttack?.Invoke();
             _comboSystem.ComboReset();
             _comboAttackCounter.Value = 0; //コンボカウンターをリセット
         }
