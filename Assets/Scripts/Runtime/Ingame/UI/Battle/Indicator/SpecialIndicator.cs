@@ -136,6 +136,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
             
+            // TODO: PlayerManagerの修正が終わり次第とる
+            sequence.OnComplete(() => PlayFailEffect());
+            
             _tweens[0] = sequence;
             
             // ブラーリングのパルス

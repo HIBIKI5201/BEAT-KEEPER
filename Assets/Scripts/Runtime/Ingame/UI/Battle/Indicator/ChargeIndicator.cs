@@ -36,6 +36,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetAllComponents();
         }
         
+        public override void PlayFailEffect()
+        {
+            PlayFailEffectCharging();
+        }
+        
         #region チュートリアル用のメソッド
         
         /// <summary>
@@ -126,6 +131,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 終点リングへ移動
                 .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
+                .Join(_centerImage.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
             
@@ -194,19 +200,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
         
         #endregion
-
-        /// <summary>
-        /// チャージ攻撃失敗時の失敗演出
-        /// </summary>
-        public override void PlayFailEffect()
-        {
-            // for (int i = 0; i < 3; i++)
-            // {
-            //     _tweens[i]?.Kill();
-            // }
-            base.PlayFailEffect();
-        }
-
+        
         /// <summary>
         /// チャージ失敗時の失敗演出
         /// NOTE: ベースクラスで実装がある上のメソッドを使用すると、タイミングより後のミス以外処理がスキップされるため

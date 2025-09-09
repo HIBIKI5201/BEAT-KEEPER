@@ -364,6 +364,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     .SetEase(Ease.Linear))
                 .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
             
+            // TODO: PlayerManagerの修正が終わり次第とる
+            contractionSequence.OnComplete(() => PlayFailEffect());
+            
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
             {
