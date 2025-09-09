@@ -258,6 +258,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 sequence.Append(_finisherGroup.DOFade(1, _changeDuration));
                 sequence.Join(_skillGroup.DOFade(0, _changeDuration));
                 _centerImage.sprite = _guideIcon;
+                
+                // 中央の操作イメージのサイズも変更する
+                _centerImage.rectTransform.sizeDelta = new Vector2(_centerImage.rectTransform.sizeDelta.x * 2, _centerImage.rectTransform.sizeDelta.y * 2);
             }
             else
             {
@@ -265,6 +268,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 sequence.Append(_skillGroup.DOFade(1, _changeDuration));
                 sequence.Join(_finisherGroup.DOFade(0, _changeDuration));
                 _centerImage.sprite = _guide.Sprite;
+                
+                // 通常サイズ
+                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
             }
 
             _tweens[2] = sequence;

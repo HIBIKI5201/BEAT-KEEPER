@@ -122,6 +122,8 @@ MonoBehaviour:
   - {fileID: 2791112836386193321}
   - {fileID: 6510102979477291928}
   _translucentRingImages: []
+  _skillApperanceSoundCueName: Ring_Skill
+  _finisherApperanceSoundCueName: Ring_Finisher
 --- !u!1 &2225135670728700143
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +234,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1782409324661750441
 CanvasRenderer:
@@ -509,7 +511,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &598795666085567313
 CanvasRenderer:
@@ -584,7 +586,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 240, y: 240}
+  m_SizeDelta: {x: 355.6317, y: 355.6317}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2066630295639611868
 CanvasRenderer:
@@ -809,7 +811,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1421722422397237101
 CanvasRenderer:
@@ -884,7 +886,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 270}
+  m_SizeDelta: {x: 400.0857, y: 400.0857}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7073882177844550948
 CanvasRenderer:
