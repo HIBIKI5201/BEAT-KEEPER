@@ -36,6 +36,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetAllComponents();
         }
         
+        public override void PlayFailEffect()
+        {
+            PlayFailEffectCharging();
+        }
+        
         #region チュートリアル用のメソッド
         
         /// <summary>
@@ -46,7 +51,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <summary>
         /// 長押し成功演出
         /// </summary>
-        public void OnPlayerAttackSuccessTutorial() => OnPlayerAttackSuccessForced();
+        public void OnPlayerAttackSuccessTutorial() => OnPlayerSuccessForced(true);
         
         #endregion
         
@@ -78,6 +83,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _tweens = new Tween[5];
         }
 
+        #region チャージ開始（長押し中）の演出
+        
         /// <summary>
         /// チャージ中の演出
         /// </summary>
@@ -120,16 +127,21 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
         
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration).SetEase(Ease.OutQuart))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration).SetEase(Ease.Linear))
                 
                 // 終点リングへ移動
-                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * 0.9f).SetEase(Ease.Linear))
+                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
+                .Join(_centerImage.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
 
                 .OnComplete(OnChargeComplete);
             
             _tweens[0] = sequence;
         }
 
+        #endregion
+        
+        #region チャージ完了演出
+        
         /// <summary>
         /// チャージ完了時の処理
         /// </summary>
@@ -141,27 +153,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ResetRingsColor(_newColor, _newColor);
         }
         
-        /// <summary>
-        /// 当たりエフェクト（プレイヤーが攻撃に成功したときに再生）
-        /// </summary>
-        private void OnPlayerAttackSuccess()
-        {
-            if (MusicEngineHelper.GetBeatNearerSinceStart() != _timing)
-            {
-                // ノーツのタイミングより前なら処理はスキップ
-                return;
-            }
-
-            Unsubscribe();
-
-            OnPlayerAttackSuccessForced();
-        }
+        #endregion
+        
+        #region チャージ攻撃（ボタンを離すタイミング）の演出
 
         /// <summary>
         /// 当たりエフェクトを強制再生
         /// TODO: 後に長押しノーツの判定のPlayerManager側が完成したら修正するかも
         /// </summary>
-        private void OnPlayerAttackSuccessForced()
+        protected override void OnPlayerSuccessForced(bool isPerfect)
         {
             // 他のすべてのTweenをキル
             for (int i = 0; i < _tweens.Length; i++)
@@ -169,9 +169,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _tweens[i]?.Kill();
             }
             
+            if (isPerfect)
+            {
+                // パーフェクト判定の場合は収縮するリングのScaleを補正
+                _ringImage.rectTransform.localScale = _contractionScale;
+            }
+            
             // 中央の画像を判定用の画像に変更
-            // TODO: 判定に合わせて引数に渡す変数を変更する
-            HandleCenterImage(true);
+            HandleCenterImage(isPerfect);
             
             // 色変更前に白色のSpriteに変更
             ChangeRingsImage();
@@ -186,24 +191,46 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // 色変更
                 .Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _blinkDuration * 0.4f))
                 
-                // フェードアウト NOTE: 他のノーツと違いここの連結をJoinとしている
+                // フェードアウト
                 .Append(CreateFadeSequence(_fadeDuration))
                 
                 .OnComplete(End);
 
             _tweens[3] = sequence;
         }
-
+        
+        #endregion
+        
         /// <summary>
-        /// 失敗演出（チャージ完了前に終了）
+        /// チャージ失敗時の失敗演出
+        /// NOTE: ベースクラスで実装がある上のメソッドを使用すると、タイミングより後のミス以外処理がスキップされるため
+        /// 長押しノーツの押し始めなどタイミングより前でミス処理が走った場合に対応していない
         /// </summary>
-        public override void PlayFailEffect()
+        private void PlayFailEffectCharging()
         {
-            for (int i = 0; i < 3; i++)
+            Unsubscribe();
+
+            // Tweens配列をクリア
+            if (_tweens != null)
             {
-                _tweens[i]?.Kill();
+                for (int i = 0; i < _tweens.Length; i++)
+                {
+                    _tweens[i]?.Kill();
+                }
             }
-            base.PlayFailEffect();
+            
+            // 中央のImageのスプライトとサイズをMissのものに変える
+            SetMissImage();
+            
+            var failSequence = DOTween.Sequence();
+            
+            // 色変更とフェードアウト
+            failSequence.Append(CreateColorChangeSequence(Color.darkGray, Color.darkGray, _fadeDuration));
+            failSequence.Join(CreateFadeSequence(_fadeDuration));
+            
+            failSequence.OnComplete(End);
+            
+            _tweens[0] = failSequence;
         }
 
         /// <summary>
@@ -319,16 +346,30 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         protected override void Subscribe()
         {
-            _player.OnStartChargeAttack += OnPlayerCharge; // チャージ開始
-            _player.OnChargeAttack += OnPlayerAttackSuccess; // チャージ完了したあとに攻撃
-            _player.OnMissChargeAttack += PlayFailEffect; // チャージ完了前に攻撃（=チャージ攻撃失敗）
+            // チャージ開始成功
+            _player.OnPerfectCharging += OnPlayerCharge;
+            _player.OnGoodCharging += OnPlayerCharge;
+            
+            // チャージ攻撃成功
+            _player.OnPerfectChargeAttack += HandlePerfect; // Perfect成功
+            _player.OnGoodChargeAttack += HandleGood; // Good成功
+            
+            // チャージ攻撃失敗
+            _player.OnMissedCharging += PlayFailEffectCharging;
+            _player.OnMissChargeAttack += PlayFailEffectCharging;
         }
 		
         protected override void Unsubscribe()
         {
-            _player.OnStartChargeAttack -= OnPlayerCharge;
-            _player.OnChargeAttack -= OnPlayerAttackSuccess;
-            _player.OnMissChargeAttack -= PlayFailEffect;
+            _player.OnPerfectCharging -= OnPlayerCharge;
+            _player.OnGoodCharging -= OnPlayerCharge;
+            _player.OnPerfectChargeAttack -= HandlePerfect;
+            _player.OnGoodChargeAttack -= HandleGood;
+            _player.OnMissedCharging -= PlayFailEffectCharging;
+            _player.OnMissChargeAttack -= PlayFailEffectCharging;
         }
+        
+        protected override void HandlePerfect() => OnPlayerSuccess(true);
+        protected override void HandleGood() => OnPlayerSuccess(false);
     }
 }

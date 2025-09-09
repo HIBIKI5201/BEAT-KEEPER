@@ -224,6 +224,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("汎用的な発砲音（通常攻撃の1段目の発砲音）")]
         private string _comboAttackSound;
 
+        [SerializeField, Tooltip("スキル")]
+        private string _skillSound;
+
         [SerializeField, Tooltip("チャージ中")]
         private string _chargeAttackStartSound;
 
@@ -235,6 +238,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField, Tooltip("回避")]
         private string _avoidSound;
+
+        [SerializeField, Tooltip("フィニッシャー")]
+        private string _finisherSound;
 
         [SerializeField, Tooltip("被弾")]
         private string _hitSound;
@@ -765,6 +771,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SymphonyDebugLogger.AddText($"{_data.Name} do skill");
 
+            SoundEffectManager.PlaySoundEffect(_skillSound);
+
             if (isPerfect)
             {
                 SuccessSkill();
@@ -793,6 +801,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void FinisherFlow()
         {
+            SoundEffectManager.PlaySoundEffect(_finisherSound);
+
             OnFinisher?.Invoke();
             InputUnregister();
         }
@@ -825,6 +835,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void MissAttack()
         {
             Debug.Log("miss attack");
+            
+            OnMissAttack?.Invoke();
             _comboSystem.ComboReset();
             _comboAttackCounter.Value = 0; //コンボカウンターをリセット
         }
@@ -921,6 +933,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private void MissedCharging()
         {
+            Debug.Log("missed charging");
+
+            _comboSystem.ComboReset();
             OnMissedCharging?.Invoke();
         }
 
@@ -1048,11 +1063,23 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             ChartKindEnum kind = chart[timing].AttackKind;
 
-            if (kind == ChartKindEnum.None) return;
+            bool isCharging = false;
+            const int CHARGE_START_BEAT = 3;
+            if (_ringIndicatorData
+                .TryGetRingData(ChartKindEnum.Charge, out RingData chargeRingData))
+            {
+                int chargeStartTiming = chargeRingData.EffectLength - CHARGE_START_BEAT;
+                if (chart[timing + chargeStartTiming].AttackKind == ChartKindEnum.Charge)
+                {
+                    isCharging = true;
+                }
+            }
+
+            if (!isCharging && kind == ChartKindEnum.None) return;
             if (IsAnotherPhaseByChartKind(kind)) return;
 
             _ringIndicatorData.TryGetRingData(kind, out RingData data);
-            if (data == null) return;
+            if (!isCharging && data == null) return;
 
             float duration = (float)MusicEngineHelper.DurationOfBeat;
 
@@ -1077,6 +1104,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 };
                 OnChargeAttack += action;
             }
+            else if (isCharging)
+            {
+                action = () =>
+                {
+                    missedFlag = true;
+                    OnCharging -= action;
+                };
+                OnCharging += action;
+            }
             else if (kind == ChartKindEnum.Normal)
             {
                 action = () =>
@@ -1098,17 +1134,17 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 OnFinisher += action;
             }
 
-            float timer = Time.time + duration;
+            float timer = Time.time + duration; //拍が終わるタイミング
             await SymphonyTask.WaitUntil(() => timer < Time.time || missedFlag);
 
             if (kind == ChartKindEnum.Attack) OnShootComboAttack -= action;
             else if (kind == ChartKindEnum.Charge) OnChargeAttack -= action;
+            else if (isCharging) OnCharging -= action;
             else if (kind == ChartKindEnum.Normal)
             {
                 OnSuccessAvoid -= action;
                 OnFinisher -= action;
             }
-
             else if (kind == ChartKindEnum.Skill) OnSkill -= action;
 
             if (missedFlag) return; //成功していたら何もしない
@@ -1127,6 +1163,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 case ChartKindEnum.Normal:
                     MissedAvoid();
                     break;
+            }
+
+            if (isCharging)
+            {
+                MissedCharging();
             }
         }
 
