@@ -69,7 +69,7 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 4
+  - AttackKind: 1
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -77,7 +77,7 @@ MonoBehaviour:
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
+  - AttackKind: 4
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 4
+  - AttackKind: 1
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -173,7 +173,7 @@ MonoBehaviour:
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
+  - AttackKind: 4
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -197,7 +197,7 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 4
+  - AttackKind: 1
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -205,7 +205,7 @@ MonoBehaviour:
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
+  - AttackKind: 4
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -270,7 +270,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   _rangeEndPositions:
-    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e00000012000000
+    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e000000120000001c000000180000004c0000005c000000
     values:
     - {x: 525, y: 0}
     - {x: 525, y: 0}
@@ -284,4 +284,8 @@ MonoBehaviour:
     - {x: -325, y: 0}
     - {x: 725, y: 0}
     - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
   _visible: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
