@@ -70,6 +70,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _flowZone1;
         [SerializeField] private string _chargeStartVoice;
         [SerializeField] private string _chargeCompleteVoice;
+        [Header("スキル発動ボイス")]
+        [SerializeField] private string _attackNormalVoiceName;
+        [SerializeField] private string _avoidVoiceName;
+        [SerializeField] private string _chargeStartVoiceName;
+        [SerializeField] private string _chargeEndVoiceName;
+        [SerializeField] private string _skillVoiceName;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -451,6 +457,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    VoiceManager.PlayVoice(_attackNormalVoiceName);
                     if (CheckPerfect())
                     {
                         ind.PlayPerfectEffect();
@@ -484,6 +491,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    VoiceManager.PlayVoice(_skillVoiceName);
                     ind.PlaySuccessEffectPublic();
                     _playerAnimeManager.Skill();
                 },
@@ -503,6 +511,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    VoiceManager.PlayVoice(_avoidVoiceName);
                     ind.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
                     _playerAnimeManager.Avoid();
@@ -535,6 +544,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _currentChargeBeat = 0;
                     chargeIndicator.OnPlayerChargeTutorial();
                     SoundEffectManager.PlaySoundEffect(_charging);
+                    VoiceManager.PlayVoice(_chargeStartVoiceName);
                     _playerAnimeManager.ChargeShoot();
                     _chargeAttackWaiting = false;
                 }
@@ -561,6 +571,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _currentTargetClearCount++;
                         chargeIndicator.OnPlayerAttackSuccessTutorial();
                         SoundEffectManager.PlaySoundEffect(_chargeGunshot);
+                        VoiceManager.PlayVoice(_chargeEndVoiceName);
                         _enemyAnimeManager.ChargeAttack();
                         _enemyAnimeManager.KnockBack(true);
                     }
@@ -679,7 +690,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 SoundEffectManager.PlaySoundEffect(_chargeGunshot);
             }
             _tutorialFocusImage.enabled = false;
-            yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2.5f);
+            yield return new WaitForSeconds(3f);
 
             Debug.Log("Explanation End----------------------------------------------------");
             _operationTutorialPlaying = false;
