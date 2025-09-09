@@ -721,6 +721,7 @@ MonoBehaviour:
   _fadeDuration: 0.5
   _moveXDistance: 20
   _endingVoice: voice_ending
+  _operationSe: Result_Operation
 --- !u!1001 &692709918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1224,7 +1225,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _tutorialFocusFlow: {x: 0, y: 540}
-  _playTutorial: 0
+  _playTutorial: 1
   _attackTutorialClearCount: 4
   _skillTutorialClearCount: 2
   _missCount: 2
@@ -1234,9 +1235,10 @@ MonoBehaviour:
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
   _ringNormalSound: Ring_Normal
-  _comboAttackSound: NormalGunshot
+  _comboAttackSound: NormalGunshot2
   _perfectAttackSound: Perfect
   _ringSkillSound: Ring_Skill
+  _skillSuccessSound: Skill
   _ringAvoidSound: Ring_Avoid
   _dodgeSound: Dodge
   _chargeSound: Ring_Charge
@@ -1251,6 +1253,11 @@ MonoBehaviour:
   _flowZone1: voice_tutorial_flow_zone_01
   _chargeStartVoice: voice_tutorial_charge_attack_03
   _chargeCompleteVoice: voice_tutorial_charge_attack_05
+  _attackNormalVoiceName: voice_attack_normal1
+  _avoidVoiceName: voice_avoid_success
+  _chargeStartVoiceName: voice_charge_attack_charge
+  _chargeEndVoiceName: voice_charge_attack_fire
+  _skillVoiceName: voice_skill
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,6 +1548,7 @@ MonoBehaviour:
   _fadeDuration: 0.5
   _moveXDistance: 20
   _endingVoice: voice_ending
+  _operationSe: Result_Operation
 --- !u!4 &1959385957
 Transform:
   m_ObjectHideFlags: 0
@@ -1875,6 +1883,30 @@ PrefabInstance:
     - target: {fileID: 8667768923710143415, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_SizeDelta.x
       value: 3005
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -1820
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007539748045541964, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -980
       objectReference: {fileID: 0}
     - target: {fileID: 9100631615109704522, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchorMax.y
