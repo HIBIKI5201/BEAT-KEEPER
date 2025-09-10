@@ -1225,7 +1225,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _tutorialFocusFlow: {x: 0, y: 540}
-  _playTutorial: 1
+  _playTutorial: 0
   _attackTutorialClearCount: 4
   _skillTutorialClearCount: 2
   _missCount: 2
