@@ -1146,54 +1146,61 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             float timer = Time.time + duration; //拍が終わるタイミング
-            await SymphonyTask.WaitUntil(() => timer < Time.time || missedFlag);
 
-            if (kind == ChartKindEnum.Attack)
+            try
             {
-                OnShootComboAttack -= action;
-                OnMissAttack -= action;
+                await SymphonyTask.WaitUntil(() => timer < Time.time || missedFlag,
+                    destroyCancellationToken);
             }
-            else if (kind == ChartKindEnum.Charge)
+            finally
             {
-                OnChargeAttack -= action;
-                OnMissChargeAttack -= action;
-            }
-            else if (isCharging)
-            {
-                OnCharging -= action;
-                OnMissedCharging -= action;
-            }
-            else if (kind == ChartKindEnum.Normal)
-            {
-                OnSuccessAvoid -= action;
-                OnFailedAvoid -= action;
-            }
-            else if (kind == ChartKindEnum.Skill)
-            {
-                OnSkill -= action;
-                OnMissedSkill -= action;
-                OnFinisher -= action;
+                if (kind == ChartKindEnum.Attack)
+                {
+                    OnShootComboAttack -= action;
+                    OnMissAttack -= action;
+                }
+                else if (kind == ChartKindEnum.Charge)
+                {
+                    OnChargeAttack -= action;
+                    OnMissChargeAttack -= action;
+                }
+                else if (isCharging)
+                {
+                    OnCharging -= action;
+                    OnMissedCharging -= action;
+                }
+                else if (kind == ChartKindEnum.Normal)
+                {
+                    OnSuccessAvoid -= action;
+                    OnFailedAvoid -= action;
+                }
+                else if (kind == ChartKindEnum.Skill)
+                {
+                    OnSkill -= action;
+                    OnMissedSkill -= action;
+                    OnFinisher -= action;
+                }
             }
 
-            if (missedFlag) return; //成功していたら何もしない
+            if (missedFlag) return; // 成功していたら何もしない。
 
             switch (kind)
             {
-                case ChartKindEnum.Attack:
+                case ChartKindEnum.Attack: //コンボ攻撃の時。
                     MissAttack();
                     break;
-                case ChartKindEnum.Charge:
+                case ChartKindEnum.Charge: // チャージ発射の時。
                     MissedChargeAttack();
                     break;
-                case ChartKindEnum.Skill:
+                case ChartKindEnum.Skill: // スキルの時。
                     MissSkill();
                     break;
-                case ChartKindEnum.Normal:
+                case ChartKindEnum.Normal: // 回避の時。
                     MissedAvoid();
                     break;
             }
 
-            if (isCharging)
+            if (isCharging) // チャージ開始の時。
             {
                 MissedCharging();
             }
