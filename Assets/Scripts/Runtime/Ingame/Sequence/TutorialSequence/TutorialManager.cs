@@ -645,6 +645,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+                VoiceManager.PlayVoice(_attackNormalVoiceName);
                 yield return new WaitForSeconds(0.5f);
                 PlayVoice(_tutorialSuccess1);
                 yield return new WaitForSeconds(3f);
@@ -660,6 +661,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
                 _playerAnimeManager.Skill();
                 SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
+                VoiceManager.PlayVoice(_skillVoiceName);
                 ringObj.Resume();
                 ringObj.PlaySuccessEffectPublic();
             }
@@ -679,6 +681,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
+                VoiceManager.PlayVoice(_avoidVoiceName);
                 _director.Resume();
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
@@ -695,6 +698,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_chargeIndicatorKey1), _inputBuffer.Interact);
                 
                 SoundEffectManager.PlaySoundEffect(_charging);
+                VoiceManager.PlayVoice(_chargeStartVoiceName);
                 _inputBuffer.Interact.started -= OnWaitInput;
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
@@ -723,6 +727,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _nextTutorial = false;
                 ringObj.Resume();
                 SoundEffectManager.PlaySoundEffect(_chargeGunshot);
+                VoiceManager.PlayVoice(_chargeEndVoiceName);
             }
             _tutorialFocusImage.enabled = false;
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2.5f);
