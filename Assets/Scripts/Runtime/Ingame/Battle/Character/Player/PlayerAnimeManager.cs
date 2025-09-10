@@ -65,6 +65,19 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animator.SetTrigger(_skill);
         }
 
+        public void PauseAnimator()
+        {
+            if (_animator == null) return;
+            _animatorSpeed = _animator.speed;
+            _animator.speed = 0f;
+        }
+
+        public void ResumeAnimator()
+        {
+            if (_animator == null) return;
+            _animator.speed = _animatorSpeed;
+        }
+
         private readonly int _moveX = Animator.StringToHash("MoveX");
         private readonly int _moveZ = Animator.StringToHash("MoveZ");
 
@@ -77,5 +90,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private readonly int _chargeShoot = Animator.StringToHash("ChargeShoot");
 
         private readonly int _skill = Animator.StringToHash("Skill");
+
+        private float _animatorSpeed;
     }
 }

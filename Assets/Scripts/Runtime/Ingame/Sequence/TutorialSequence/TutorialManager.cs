@@ -689,23 +689,30 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 _inputBuffer.Interact.started += OnWaitInput;
-                _inputBuffer.Interact.canceled += OnWaitInput;
                 PlayVoice(_chargeStartVoice);
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_chargeIndicatorKey1), _inputBuffer.Interact);
+                
                 SoundEffectManager.PlaySoundEffect(_charging);
+                _inputBuffer.Interact.started -= OnWaitInput;
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
-
-                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
+                _playerAnimeManager.ChargeShoot();
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 1.5f);
+                
+                _playerAnimeManager.PauseAnimator();
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 0.5f);
+                
                 PlayVoice(_chargeCompleteVoice);
+                SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _localizeTextManager.GetTutorialOperationMessage(_chargeIndicatorKey2);
-                SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _chargeEndFocusPosition;
                 _tutorialFocusImage.enabled = true;
                 ringObj.Pause();
+                _inputBuffer.Interact.canceled += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
 
+                _playerAnimeManager.ResumeAnimator();
                 _enemyAnimeManager.ChargeAttack();
                 _enemyAnimeManager.KnockBack(true);
                 _tutorialUi.SetActive(false);
