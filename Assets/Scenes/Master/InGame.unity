@@ -1784,6 +1784,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4254970931461325993, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254970931461325993, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -800
+      objectReference: {fileID: 0}
     - target: {fileID: 4546012881941083311, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_Name
       value: InGameUICanvas

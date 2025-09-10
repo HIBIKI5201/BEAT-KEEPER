@@ -50,6 +50,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _chargeIndicatorKey2;
 
         [Header("サウンドエフェクトの名前")]
+        [SerializeField] private string _tutorialSE;
         [SerializeField] private string _ringNormalSound;
         [SerializeField] private string _comboAttackSound;
         [SerializeField] private string _perfectAttackSound;
@@ -378,6 +379,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _tutorialFocusImage.enabled = true;
             _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _defaultFocusPosition;
             _tutorialText.text = message;
+            SoundEffectManager.PlaySoundEffect(_tutorialSE);
             inputAction.started += OnWaitInput;
             yield return new WaitUntil(() => _nextTutorial);
             _tutorialFocusImage.enabled = false;
@@ -643,6 +645,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+                VoiceManager.PlayVoice(_attackNormalVoiceName);
                 yield return new WaitForSeconds(0.5f);
                 PlayVoice(_tutorialSuccess1);
                 yield return new WaitForSeconds(3f);
@@ -658,6 +661,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
                 _playerAnimeManager.Skill();
                 SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
+                VoiceManager.PlayVoice(_skillVoiceName);
                 ringObj.Resume();
                 ringObj.PlaySuccessEffectPublic();
             }
@@ -677,6 +681,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
+                VoiceManager.PlayVoice(_avoidVoiceName);
                 _director.Resume();
             }
             else if (chartKindEnum == ChartKindEnum.Charge)
@@ -689,23 +694,31 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 _inputBuffer.Interact.started += OnWaitInput;
-                _inputBuffer.Interact.canceled += OnWaitInput;
                 PlayVoice(_chargeStartVoice);
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_chargeIndicatorKey1), _inputBuffer.Interact);
+                
                 SoundEffectManager.PlaySoundEffect(_charging);
+                VoiceManager.PlayVoice(_chargeStartVoiceName);
+                _inputBuffer.Interact.started -= OnWaitInput;
                 ringObj.Resume();
                 ringObj.OnPlayerChargeTutorial();
-
-                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
+                _playerAnimeManager.ChargeShoot();
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 1.5f);
+                
+                _playerAnimeManager.PauseAnimator();
+                yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 0.5f);
+                
                 PlayVoice(_chargeCompleteVoice);
+                SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 _tutorialUi.SetActive(true);
                 _tutorialText.text = _localizeTextManager.GetTutorialOperationMessage(_chargeIndicatorKey2);
-                SoundEffectManager.PlaySoundEffect(_chargeComplete);
                 _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _chargeEndFocusPosition;
                 _tutorialFocusImage.enabled = true;
                 ringObj.Pause();
+                _inputBuffer.Interact.canceled += OnWaitInput;
                 yield return new WaitUntil(() => _nextTutorial);
 
+                _playerAnimeManager.ResumeAnimator();
                 _enemyAnimeManager.ChargeAttack();
                 _enemyAnimeManager.KnockBack(true);
                 _tutorialUi.SetActive(false);
@@ -714,6 +727,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _nextTutorial = false;
                 ringObj.Resume();
                 SoundEffectManager.PlaySoundEffect(_chargeGunshot);
+                VoiceManager.PlayVoice(_chargeEndVoiceName);
             }
             _tutorialFocusImage.enabled = false;
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2.5f);
