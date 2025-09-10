@@ -50,6 +50,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _chargeIndicatorKey2;
 
         [Header("サウンドエフェクトの名前")]
+        [SerializeField] private string _tutorialSE;
         [SerializeField] private string _ringNormalSound;
         [SerializeField] private string _comboAttackSound;
         [SerializeField] private string _perfectAttackSound;
@@ -378,6 +379,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _tutorialFocusImage.enabled = true;
             _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _defaultFocusPosition;
             _tutorialText.text = message;
+            SoundEffectManager.PlaySoundEffect(_tutorialSE);
             inputAction.started += OnWaitInput;
             yield return new WaitUntil(() => _nextTutorial);
             _tutorialFocusImage.enabled = false;
