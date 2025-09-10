@@ -629,6 +629,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isBattle)
             {
                 MissedChart();
+                Debug.Log($"on near beat {Time.time} {MusicEngineHelper.GetBeatSinceStart()}");
+            }
+
+            if (_isMissed)
+            {
+                _isMissed = false;
             }
 
             if (IsResetComboAttackCounter())
@@ -717,6 +723,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void AttackFlow()
         {
             if (_target == null) return;
+            if (_isMissed) return;
 
             SymphonyDebugLogger.AddText($"{_data.Name} do attack");
 
@@ -758,6 +765,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void SKillFlow()
         {
+            if (_isMissed) return;
+
             bool isPerfect = MusicEngineHelper
                 .IsTimingWithinAcceptableRange(_data.PerfectSkillRange);
             bool isGood = MusicEngineHelper
@@ -839,6 +848,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             OnMissAttack?.Invoke();
             _comboSystem.ComboReset();
             _comboAttackCounter.Value = 0; //コンボカウンターをリセット
+            _isMissed = true;
         }
 
         /// <summary>
@@ -882,6 +892,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log("miss skill");
             _comboSystem?.ComboReset();
             OnMissedSkill?.Invoke();
+            _isMissed = true;
         }
 
 
@@ -890,6 +901,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private async void ChargeAttackCharging()
         {
+            if (_isMissed) return;
+
             bool isPerfecet = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeStartGoodRange);
 
@@ -937,6 +950,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _comboSystem.ComboReset();
             OnMissedCharging?.Invoke();
+            _isMissed = true;
         }
 
         /// <summary>
@@ -944,6 +958,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         private void ChargeAttackActivation()
         {
+            if (_isMissed) return;
+
             bool isPerfect = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndPerfectRange);
             bool isGood = MusicEngineHelper.IsTimingWithinAcceptableRange(_data.ChargeEndGoodRange);
 
@@ -972,6 +988,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log("miss charge attack");
             OnMissChargeAttack?.Invoke();
             _comboSystem.ComboReset();
+            _isMissed = true;
         }
 
         /// <summary>
@@ -1032,6 +1049,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void MissedAvoid()
         {
             OnFailedAvoid?.Invoke();
+            _isMissed = true;
         }
 
         /// <summary>
@@ -1149,7 +1167,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             float timer = Time.time + duration; //拍が終わるタイミング
-
+            Debug.Log($"miss timer {timer} {timing}");
             try
             {
                 await SymphonyTask.WaitUntil(() => timer < Time.time || missedFlag,
@@ -1187,6 +1205,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
 
             if (missedFlag) return; // 成功していたら何もしない。
+            if (_isMissed) return; // 既にミス処理が行われていたら実行されない。
 
             switch (kind)
             {
