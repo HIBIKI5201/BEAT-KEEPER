@@ -30,17 +30,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public event Action OnGoodAttack;
         public event Action OnMissAttack;
 
-        public event Action OnStartChargeAttack
-        {
-            add => _onStartChargeAttack.Event += value;
-            remove => _onStartChargeAttack.Event -= value;
-        }
         public event Action OnChargeAttack;
         public event Action OnPerfectChargeAttack;
         public event Action OnGoodChargeAttack;
         public event Action OnMissChargeAttack;
 
-        public event Action OnCharging;
+        public event Action OnCharging
+        {
+            add => _onStartChargeAttack.Event += value;
+            remove => _onStartChargeAttack.Event -= value;
+        }
         public event Action OnPerfectCharging;
         public event Action OnGoodCharging;
         public event Action OnMissedCharging;
@@ -318,6 +317,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private FlowZoneSystem _flowZoneSystem;
         private SkillSystem _skillSystem;
 
+        private bool _isMissed = false;
         #endregion
 
         #region 開発用の機能
@@ -1047,7 +1047,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (!_ringIndicatorData.TryGetRingData(kind, out RingData data)) return false;
             int effectLength = data.EffectLength;
 
-            float startTiming = Time.time - (float)MusicEngineHelper.DurationOfBeat * effectLength;
+            float startTiming = Time.time - 
+                (float)MusicEngineHelper.DurationOfBeat 
+                * (effectLength - 1); // 1オリジンのため
             return _phaseManager.IsAnotherPhaseByTiming(startTiming);
         }
 
@@ -1058,7 +1060,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             if (_target == null) return;
 
-            int timing = MusicEngineHelper.GetBeatSinceStart() + 1;
+            // 次のノーツを取得する
+            int timing = MusicEngineHelper.GetBeatSinceStart() + 1; 
             ChartData chart = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
             ChartKindEnum kind = chart[timing].AttackKind;
@@ -1154,6 +1157,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
             finally
             {
+                // イベントの解放処理
                 if (kind == ChartKindEnum.Attack)
                 {
                     OnShootComboAttack -= action;
