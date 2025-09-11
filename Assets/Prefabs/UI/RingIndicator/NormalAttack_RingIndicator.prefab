@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4341324328561036755
 CanvasRenderer:
@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8978833402181130982}
   - component: {fileID: 9105084593778582307}
   - component: {fileID: 8863679517503484876}
+  - component: {fileID: -7827974507395688887}
   m_Layer: 5
   m_Name: NormalAttack_RingIndicator
   m_TagString: Untagged
@@ -115,7 +116,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 300}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8978833402181130982
 CanvasRenderer:
@@ -180,10 +181,22 @@ MonoBehaviour:
   _centerImage: {fileID: 4567844889534955088}
   _guide:
     Sprite: {fileID: 21300000, guid: fef731ca17e4aa844a8c63e4eceb6198, type: 3}
-    SizeDelta: {x: 430, y: 430}
+    SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Normal
   _4kPlay: 1
+--- !u!114 &-7827974507395688887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751697491445142840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786f403b4cdfd43419fcfdf2f00ca0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3667238757349569663
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +232,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 467.421, y: 88.0206}
+  m_SizeDelta: {x: 233.7105, y: 44.0103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7269292862293058255
 CanvasRenderer:
@@ -294,7 +307,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3248881932368144639
 CanvasRenderer:
@@ -369,7 +382,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2058045533736683967
 CanvasRenderer:
