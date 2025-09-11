@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8978833402181130982}
   - component: {fileID: 9105084593778582307}
   - component: {fileID: 7913087880712888201}
+  - component: {fileID: -7537579482647627284}
   m_Layer: 5
   m_Name: Skill_RingIndicator
   m_TagString: Untagged
@@ -107,6 +108,7 @@ MonoBehaviour:
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Skill
+  _4kPlay: 1
   _skillDecorationImage: {fileID: 6510102979477291928}
   _defalutDecoration: {fileID: 21300000, guid: 54622d5540c35e84ab66525ae130e342, type: 3}
   _grayDecoration: {fileID: 21300000, guid: 779f2af3c02b0a54ebfb8d579baa4333, type: 3}
@@ -125,6 +127,18 @@ MonoBehaviour:
   _skillApperanceSoundCueName: Ring_Skill
   _finisherApperanceSoundCueName: Ring_Finisher
   _centerImageMultiply: 2
+--- !u!114 &-7537579482647627284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751697491445142840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786f403b4cdfd43419fcfdf2f00ca0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2225135670728700143
 GameObject:
   m_ObjectHideFlags: 0

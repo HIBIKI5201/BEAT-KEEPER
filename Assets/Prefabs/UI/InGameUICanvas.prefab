@@ -730,13 +730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthBarPrefab: {fileID: 8904241971001950680, guid: d256e58c4cbaa80479e4979b6e5a5214, type: 3}
   _initialPosition: {x: 0, y: -40}
-  _defaultScale: {x: 1, y: 1, z: 1}
   _showDuration: 0.2
   _hideDuration: 0.15
-  _pulseIntensity: 4
-  _decreaseAnimationDuration: 0.15
-  _normalColor: {r: 1, g: 1, b: 1, a: 1}
-  _flashColor: {r: 0.5566038, g: 0, b: 0, a: 1}
 --- !u!1 &971120179346222940
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,12 +987,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 302145706440026476}
+  m_Father: {fileID: 1517865131295371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4345660259998423304
 CanvasRenderer:
@@ -1833,6 +1828,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1116584958319909152}
   - {fileID: 302145706440026476}
   - {fileID: 8657256012943704732}
   - {fileID: 9007539748045541964}
@@ -2354,7 +2350,6 @@ RectTransform:
   - {fileID: 2916375148089893408}
   - {fileID: 5020823783569968095}
   - {fileID: 3343023035188979881}
-  - {fileID: 1116584958319909152}
   - {fileID: 3884830661968032753}
   m_Father: {fileID: 1517865131295371548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

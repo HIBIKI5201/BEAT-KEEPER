@@ -19,6 +19,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		public override void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
 		{
 			base.OnGet(onEndAction, startPosition, endPosition, timing);
+
+            startPosition *= _resolutionMultiply;
+            endPosition *= _resolutionMultiply;
             
 			// 始点リングの位置を設定
 			_startPositionRing.rectTransform.position = startPosition
@@ -355,7 +358,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnGoodChargeAttack += HandleGood; // Good成功
             
             // チャージ攻撃失敗
-            _player.OnMissedCharging += PlayFailEffectCharging;
+            //_player.OnMissedCharging += PlayFailEffectCharging;
             _player.OnMissChargeAttack += PlayFailEffectCharging;
         }
 		
@@ -365,7 +368,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnGoodCharging -= OnPlayerCharge;
             _player.OnPerfectChargeAttack -= HandlePerfect;
             _player.OnGoodChargeAttack -= HandleGood;
-            _player.OnMissedCharging -= PlayFailEffectCharging;
+            //_player.OnMissedCharging -= PlayFailEffectCharging;
             _player.OnMissChargeAttack -= PlayFailEffectCharging;
         }
         
