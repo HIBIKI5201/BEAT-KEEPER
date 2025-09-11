@@ -20,12 +20,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 		{
 			base.OnGet(onEndAction, startPosition, endPosition, timing);
 
-            if (_4kPlay)
-            {
-                // TODO: 仮の処理 4K画面に合わせるための対応
-                startPosition *= 2;
-                endPosition *= 2;
-            }
+            startPosition *= _resolutionMultiply;
+            endPosition *= _resolutionMultiply;
             
 			// 始点リングの位置を設定
 			_startPositionRing.rectTransform.position = startPosition

@@ -23,7 +23,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
@@ -31,11 +31,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 終了フラグをリセット
             _isEnded = false;
 
-            if(_4kPlay)
-            {
-                // TODO: 仮の処理 4K画面に合わせるための対応
-                rectPos *= 2;
-            }
+			// 解像度に合わせる
+            rectPos *= _resolutionMultiply;
 
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
@@ -153,6 +150,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var remainTime = (EffectLength - _count) * MusicEngineHelper.DurationOfBeat;
             return remainTime < 0;
         }
+
+		public void ApplyResolutionMultiply(float multiply)
+		{
+			_resolutionMultiply = multiply;
+		}
         
         #region ノーツの演出（チュートリアル用publicメソッド）
         
@@ -241,8 +243,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("SE")]
         [SerializeField] protected string _apperanceSoundCueName;
 
-        [Header("仮")]
-        [SerializeField] protected bool _4kPlay = true;
+        protected float _resolutionMultiply = 1;
 
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
@@ -263,8 +264,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected int _count;
         protected Tween[] _tweens;
 
-        private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
-
         protected Color _defaultColor => _colorSettings.DefaultColor;
         protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
@@ -284,8 +283,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // スクリプタブルオブジェクトで割り当てられていない場合のみ、子オブジェクトを取得
                 _ringImage = transform.GetChild(0).GetComponent<Image>();
             }
-
-            _defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
             
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -327,7 +324,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のImageのスプライト変更とサイズ変更
             _centerImage.sprite = hitResult.Sprite;
-            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta * _resolutionMultiply;
 
             if (isPerfect)
             {
@@ -347,7 +344,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected void SetMissImage()
         {
             _centerImage.sprite = _hitResult.Miss.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta * _resolutionMultiply;
         }
         
         #endregion
@@ -436,7 +433,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 白色のSpriteに変更
             ChangeRingsImage();
 
-            var multiply = _4kPlay ? 0.325f : 0.65f;
+			// NOTE: CanvasScalerにより演出のscale変更が変わりすぎないようにしたい
+            var multiply = 0.325f * _resolutionMultiply;
             
             var successSequence = DOTween.Sequence();
 
@@ -487,7 +485,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
 
             // デフォルトのスプライトを設定する
             _ringImage.sprite = _hitLine;
