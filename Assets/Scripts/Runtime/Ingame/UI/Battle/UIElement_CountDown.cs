@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
+using BeatKeeper.Runtime.Ingame.Battle;
+using System;
 
 namespace BeatKeeper.Runtime.Ingame.UI
 {
     public class UIElement_CountDown : MonoBehaviour
     {
+        /// <summary>
+        ///　ブレイクムービー終了通知イベント
+        /// </summary>
+        public event Action OnMovieFinished;
+        
         /// <summary>
         /// カウントダウン演出を開始する
         /// </summary>
@@ -114,6 +120,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void StartPerform()
         {
+            OnMovieFinished?.Invoke();
+            
+            //次の敵をアクティブ化する
+            var enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
+            if (enemyAdmin)
+            {
+                enemyAdmin.NextEnemyActive();
+            }
+            
+            
             // ビートの更新イベントを購読
             _bgmManager.OnJustChangedBeat += OnBeatTrigger;
         }
