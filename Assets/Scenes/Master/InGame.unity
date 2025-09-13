@@ -1226,14 +1226,18 @@ MonoBehaviour:
     m_RotationOrder: 4
   _tutorialFocusFlow: {x: 0, y: 540}
   _playTutorial: 1
+  _skipOnMiss: 1
+  _InvalidationTime: 0
   _attackTutorialClearCount: 4
-  _skillTutorialClearCount: 2
-  _missCount: 2
+  _attackMissCount: 8
+  _othersTutorialClearCount: 2
+  _othersMissCount: 4
   _attackIndicatorKey: attackIndicatorText
   _skillIndicatorKey: skillIndicatorText
   _enemyIndicatorKey: enemyIndicatorText
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
+  _tutorialSE: 
   _ringNormalSound: Ring_Normal
   _comboAttackSound: NormalGunshot
   _perfectAttackSound: Perfect
@@ -1507,7 +1511,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 2908268678855267497}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1866,6 +1870,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5693033747900140600, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5743757986787017527, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6221309583744350708, guid: b76d99356d60d9b40998617976859451, type: 3}
