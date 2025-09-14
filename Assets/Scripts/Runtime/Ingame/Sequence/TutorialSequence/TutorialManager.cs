@@ -303,7 +303,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             if (_skipOnMiss ?  clearCheck || missCheck : clearCheck)
             {
-                if (clearCheck)
+                if (clearCheck && _chartKindEnum == ChartKindEnum.Attack)
                 {
                     PlayVoice(_tutorialSuccess2);
                 }
