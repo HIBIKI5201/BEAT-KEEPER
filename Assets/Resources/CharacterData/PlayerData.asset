@@ -25,21 +25,21 @@ MonoBehaviour:
   _chargeStartScore: 100
   _chargeEndScore: 200
   _comboPerfectRange: 0.5
-  _comboGoodRange: 0.8
+  _comboGoodRange: 1
   _chargeStartPerfectRange: 0.5
-  _chargeStartGoodRange: 0.8
+  _chargeStartGoodRange: 1
   _chargeEndPerfectRange: 0.5
-  _chargeEndGoodRange: 0.8
+  _chargeEndGoodRange: 1
   _flowZoneThreshold: 10
   _flowZoneDuration: 32
   _perfectAvoidRange: 0.7
-  _goodAvoidRange: 0.9
+  _goodAvoidRange: 1
   _avoidInvincibilityTime: 1
   _hitStunTime: 0
   _chargeHitStunTime: 0
   _avoidScore: 100
   _avoidPerfectScoreScale: 1
   _perfectSkillRange: 0.7
-  _goodSkillRange: 0.9
+  _goodSkillRange: 1
   _skillDuration: 5
   _skillStrangth: 1.5
