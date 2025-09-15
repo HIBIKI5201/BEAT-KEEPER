@@ -84,24 +84,38 @@ namespace BeatKeeper
             
             try
             {
-                // フレーム間隔をミリ秒で計算
-                int frameIntervalMs = (int)((MusicEngineHelper.DurationOfBeat / _spectrumsAtlas.spriteCount) * 1000);
+                // アニメーション開始時の時間を記録
+                // NOTE: while文を繰り返すと段々遅くなっていくためその対策 
+                float animationStartTime = Time.time;
                 
-                int currentFrame = 0;
+                // フレーム間隔を計算（BPM / 画像枚数）
+                float frameDuration = (float)(MusicEngineHelper.DurationOfBeat / _spectrumsAtlas.spriteCount);
                 
                 while (!token.IsCancellationRequested)
                 {
-                    // 現在のフレームの画像を設定
-                    if (currentFrame < _spritesCache.Length && _spritesCache[currentFrame] != null)
+                    // 現在の経過時間から正しいフレーム番号を計算
+                    float elapsedTime = Time.time - animationStartTime;
+                    int targetFrame = Mathf.FloorToInt(elapsedTime / frameDuration) % _spritesCache.Length;
+                    
+                    // フレームが変わった時のみ更新する
+                    if (targetFrame < _spritesCache.Length && _spritesCache[targetFrame] != null)
                     {
-                        targetImage.sprite = _spritesCache[currentFrame];
+                        targetImage.sprite = _spritesCache[targetFrame];
                     }
-                    
-                    // 次のフレームへ
-                    currentFrame = (currentFrame + 1) % _spritesCache.Length;
-                    
-                    // フレーム間隔分待機
-                    await UniTask.Delay(frameIntervalMs, cancellationToken: token);
+            
+                    // 次のフレーム時間まで待機
+                    float nextFrameTime = (targetFrame + 1) * frameDuration;
+                    float waitTime = nextFrameTime - elapsedTime;
+            
+                    if (waitTime > 0)
+                    {
+                        await UniTask.Delay(Mathf.Max(1, Mathf.RoundToInt(waitTime * 1000)), cancellationToken: token);
+                    }
+                    else
+                    {
+                        // フレームドロップ対応：1フレーム待機
+                        await UniTask.NextFrame(token);
+                    }
                 }
             }
             catch (System.OperationCanceledException ex)
