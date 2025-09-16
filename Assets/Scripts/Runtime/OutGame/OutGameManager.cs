@@ -197,8 +197,8 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void RegisterInputEvents()
         {
             _inputBuffer.AnyKey.started += OnAnyKeyInput;
-            _inputBuffer.LeftNavigation.started += OnLeftNavigationKeyInput;
-            _inputBuffer.RightNavigation.started += OnRightNavigationKeyInput;
+            _inputBuffer.LeftNavigation.performed += OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.performed += OnRightNavigationKeyInput;
             _inputBuffer.Attack.started += OnAttackKeyInput;
         }
         
@@ -210,8 +210,8 @@ namespace BeatKeeper.Runtime.Outgame.System
             if (_inputBuffer == null) return;
             
             _inputBuffer.AnyKey.started -= OnAnyKeyInput;
-            _inputBuffer.LeftNavigation.started -= OnLeftNavigationKeyInput;
-            _inputBuffer.RightNavigation.started -= OnRightNavigationKeyInput;
+            _inputBuffer.LeftNavigation.performed -= OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.performed -= OnRightNavigationKeyInput;
             _inputBuffer.Attack.started -= OnAttackKeyInput;
         }
     }
