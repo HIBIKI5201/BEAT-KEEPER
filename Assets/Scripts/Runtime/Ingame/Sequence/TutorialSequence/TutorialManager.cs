@@ -74,6 +74,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _flowZone1;
         [SerializeField] private string _chargeStartVoice;
         [SerializeField] private string _chargeCompleteVoice;
+        [SerializeField] private string _missAvoidVoice;
+        [SerializeField] private string _missChargeVoice;
 
         [Header("スキル発動ボイス")]
         [SerializeField] private string _attackNormalVoiceName;
@@ -247,6 +249,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _activeIndicator.End();
                     _activeIndicator = null;
                     _currentMissCount++;
+                    if (_chartKindEnum == ChartKindEnum.Charge)
+                    {
+                        _playerAnimeManager.FatalHit();
+                        _enemyAnimeManager.KnockBack(false);
+                        _enemyAnimeManager.ChargeAttack();
+                        VoiceManager.PlayVoice(_missChargeVoice);
+                    }
+                    else if (_chartKindEnum == ChartKindEnum.Normal)
+                    {
+                        _playerAnimeManager.Hit();
+                        VoiceManager.PlayVoice(_missAvoidVoice);
+                    }
                 }
             }
 
@@ -471,6 +485,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     {
                         ind.PlayPerfectEffect();
                         SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+                        SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                     }
                     else
                     {
@@ -638,6 +653,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
+                SoundEffectManager.PlaySoundEffect(_comboAttackSound);
                 VoiceManager.PlayVoice(_attackNormalVoiceName);
                 _playerAnimeManager.Shoot();
                 yield return new WaitForSeconds(0.5f);
