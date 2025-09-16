@@ -4,6 +4,7 @@ using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
 using System;
 
 namespace BeatKeeper.Runtime.Ingame.UI
@@ -11,20 +12,27 @@ namespace BeatKeeper.Runtime.Ingame.UI
     public class UIElement_CountDown : MonoBehaviour
     {
         /// <summary>
-        ///　ブレイクムービー終了通知イベント
+        /// 敵のモデル変更なしで演出を行う
         /// </summary>
-        public event Action OnMovieFinished;
+        public void StartGame()
+        {
+            if (_isPerforming) return;
+
+            _isPerforming = true;
+            Reset();
+            StartPerform();
+        }
         
         /// <summary>
         /// カウントダウン演出を開始する
         /// </summary>
         public void Play()
         {
-            Debug.LogError("Play");
             if (_isPerforming) return;
 
             _isPerforming = true;
             Reset();
+            ModelsActive();
             StartPerform();
         }
         
@@ -56,10 +64,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Vector3 _maxScale = new Vector3(1.5f, 1.5f, 1f);
         [SerializeField] private Vector3 _normalScale = Vector3.one;
 
-        [Header("Effects")] 
-        [SerializeField] private Color _normalColor = Color.white;
-
         private BGMManager _bgmManager;
+        private PlayerManager _playerManager;
         private int _counter;
         private bool _isPerforming = false;
         private DG.Tweening.Sequence _currentSequence;
@@ -75,8 +81,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             InitializeComponents();
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
-
-            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Locator);
+            _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
         }
         
         /// <summary>
@@ -94,6 +99,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         #endregion
 
+        /// <summary>
+        /// コンポーネントの初期化
+        /// </summary>
         private void InitializeComponents()
         {
             if (_selfImage == null)
@@ -116,11 +124,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         }
 
         /// <summary>
-        /// 演出開始
+        /// プレイヤーと敵のモデルを表示する
+        /// NOTE: フェーズ1は既にチュートリアルで表示済みなのでこのメソッドを呼ぶ必要はない
         /// </summary>
-        private void StartPerform()
+        private void ModelsActive()
         {
-            OnMovieFinished?.Invoke();
+            // プレイヤーのモデルを表示
+            _playerManager.ModelActive();
             
             //次の敵をアクティブ化する
             var enemyAdmin = ServiceLocator.GetInstance<BattleSceneManager>()?.EnemyAdmin;
@@ -128,8 +138,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
             {
                 enemyAdmin.NextEnemyActive();
             }
-            
-            
+        }
+        
+        /// <summary>
+        /// 演出開始
+        /// </summary>
+        private void StartPerform()
+        {
             // ビートの更新イベントを購読
             _bgmManager.OnJustChangedBeat += OnBeatTrigger;
         }
@@ -246,7 +261,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _selfImage.sprite = _number3;
             _canvasGroup.alpha = 0f;
             transform.localScale = Vector3.zero;
-            _selfImage.color = _normalColor;
             _rectTransform.anchoredPosition = _originalPosition;
         }
         
@@ -263,13 +277,5 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _ => null
             };
         }
-
-#if UNITY_EDITOR
-        [ContextMenu("Test Play")]
-        private void TestPlay()
-        {
-            Play();
-        }
-#endif
     }
 }
