@@ -145,6 +145,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_target == null) return false; //ターゲットがいなければフィニッシャーはできない
             return _target.IsFinisherable;
         }
+        
+        /// <summary>
+        /// タイムラインのイベントを元にモデルを表示する
+        /// NOTE: ブレイクムービーから明けたときにはフェーズ変更時ではない任意のタイミングから呼び出せるようにしたい
+        /// </summary>
+        public void ModelActive()
+        {
+            _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+            _modelParent.SetActive(true);
+        }
 
         #endregion
 
@@ -411,8 +421,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     InputRegister();
                     var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                     _target = stage.EnemyAdmin.GetActiveEnemy();
-                    goto case PhaseEnum.Tutorial; //チュートリアルフェーズも同じ処理を行う
-
+                    break;
+                
                 case PhaseEnum.Tutorial:
                     _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
                     _modelParent.SetActive(true);
