@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -11,10 +12,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             base.OnBehaviourPlay(playable, info);
 
-            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            if (phaseManager)
+            var countDownPerformer = ServiceLocator.GetInstance<UIElement_CountDown>();
+            if (countDownPerformer)
             {
-                phaseManager.TransitionTo(PhaseEnum.Battle);
+                countDownPerformer.StartGame();
+            }
+			else
+            {
+                Debug.LogError($"{typeof(UIElement_CountDown)}がServiceロケーターから取得できませんでした");
             }
 
             Debug.Log("StartPerformanceBehaviour_3");
