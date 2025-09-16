@@ -97,8 +97,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             SetActiveModel(false);
             Dispose();
         }
-
-
+        
         /// <summary>
         ///     モデルの表示・非表示を切り替える
         /// </summary>
@@ -123,7 +122,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _onHitNockBackAttack?.Invoke(); //クリティカルヒットイベントを発火
                 Nockback();
+                
+                // ノックバック付きチャージ攻撃を受けた時のSE
+                SoundEffectManager.PlaySoundEffect(_seData.MiddleDamage);
+                return;
             }
+            
+            // プレイヤーから通常攻撃を受けた時のSE
+            SoundEffectManager.PlaySoundEffect(_seData.SmallDamage);
         }
 
         public Transform NormalAttackRandomHit()
@@ -153,6 +159,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField]
         private RingIndicatorData _indicatorData;
+        
+        [SerializeField]
+        private EnemySEDataSO _seData;
 
         private BGMManager _bgmManager;
 
@@ -257,6 +266,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _target.HitAttack(new AttackData(1));
                     OnShootNormalAttack?.Invoke();
                     _animeManager.Attack();
+                    
+                    // 殴り攻撃のSE
+                    SoundEffectManager.PlaySoundEffect(_seData.Punch);
                 }
                 else if (attackKind == ChartKindEnum.Charge) //チャージアタック
                 {
@@ -264,6 +276,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     {
                         _target.HitAttack(new AttackData(1, true));
                         OnShootChargeAttack?.Invoke();
+                        
+                        // ビーム攻撃のSE
+                        SoundEffectManager.PlaySoundEffect(_seData.BeamAttack);
                     }
 
                     _animeManager.ChargeAttack();
@@ -285,11 +300,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else if (chartData[timing + _chargeAttackLength].AttackKind == ChartKindEnum.Charge) //チャージアタックでない場合は何もしない
             {
                 _animeManager.PreChargeAttack();
+                
+                // ビームの溜めはじめのSE
+                SoundEffectManager.PlaySoundEffect(_seData.BeamCharge);
             }
-
         }
-
-
 
         /// <summary>
         ///     フィニッシャー可能かどうかを確認する
