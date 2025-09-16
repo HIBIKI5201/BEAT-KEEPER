@@ -692,7 +692,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2745479511750462267}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -712,6 +712,9 @@ MonoBehaviour:
   - {fileID: 4644901135980416482}
   - {fileID: 542804580380387696}
   _defaultButtonIndex: 0
+  _selectedScaleMultiplier: 1.15
+  _selectedTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _defaultTextColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
 --- !u!1 &2942027040661393438
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,10 +1835,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttons:
+  - {fileID: 4538269229247553236}
   - {fileID: 4622831262354088006}
   - {fileID: 3961133962733423199}
-  - {fileID: 4538269229247553236}
-  _defaultButtonIndex: 2
+  _defaultButtonIndex: 0
+  _selectedScaleMultiplier: 1.15
+  _selectedTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _defaultTextColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
 --- !u!1 &5657562393896568909
 GameObject:
   m_ObjectHideFlags: 0
