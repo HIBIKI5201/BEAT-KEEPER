@@ -1,5 +1,6 @@
 ﻿using SymphonyFrameWork.System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,10 @@ namespace BeatKeeper
         [SerializeField, Header("一文字ごとの表示時間の係数")] private float _perCharacterTimeMultiplier = 0.2f;
         [SerializeField, Header("テキストボックスおよびテキストのオブジェクト")] private Image _textBox;
         [SerializeField] private Text _subTitleText;
+        [SerializeField] private int _textBoxHeightPerLine = 80;
         private LocalizeTextManager _localizeTextManager;
         private float _currentTime = 0f;
+
 
         private async void Awake()
         {
@@ -44,6 +47,8 @@ namespace BeatKeeper
         /// <param name="text"></param>
         private void TextShow(string text)
         {
+            int count = text.Count(c => c == '\n') + 1;
+            _textBox.rectTransform.sizeDelta = new Vector2(_textBox.rectTransform.sizeDelta.x, _textBoxHeightPerLine * count);
             _textBox.enabled = true;
             _subTitleText.enabled = true;
             _subTitleText.text = text;
