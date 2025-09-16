@@ -74,8 +74,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _flowZone1;
         [SerializeField] private string _chargeStartVoice;
         [SerializeField] private string _chargeCompleteVoice;
-        [SerializeField] private string _missAvoidVoice;
-        [SerializeField] private string _missChargeVoice;
 
         [Header("スキル発動ボイス")]
         [SerializeField] private string _attackNormalVoiceName;
@@ -83,6 +81,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _chargeStartVoiceName;
         [SerializeField] private string _chargeEndVoiceName;
         [SerializeField] private string _skillVoiceName;
+        [SerializeField] private string _missAvoidVoice;
+        [SerializeField] private string _missChargeVoice;
+
 
         private ChartKindEnum _chartKindEnum;
 
@@ -208,14 +209,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         public void TutorialUnRegister()
         {
-            _currentIndicatorCount = 0;
-            _director.Resume();
             _bgmManager.OnJustChangedBeat -= OnBeat;
             _inputBuffer.Attack.started -= OnShot;
             _inputBuffer.Attack.started -= OnSkill;
             _inputBuffer.Avoid.started -= OnAvoid;
             _inputBuffer.Interact.started -= OnCharge;
             _inputBuffer.Interact.canceled -= OnCharge;
+            _currentIndicatorCount = 0;
 
             if (_chargeAttackWaiting)
             {
@@ -227,6 +227,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _activeIndicator.End();
                 _activeIndicator = null;
             }
+            _director.Resume();
         }
 
         /// <summary>
@@ -310,12 +311,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (_isCharging) _currentChargeBeat++;
 
             // チュートリアルをクリアしているかを調べる。
-            bool clearCheck = _chartKindEnum == ChartKindEnum.Attack ? 
+            bool clearCheck = _chartKindEnum == ChartKindEnum.Attack ?
                 _attackTutorialClearCount <= _currentTargetClearCount : _othersTutorialClearCount <= _currentTargetClearCount;
             bool missCheck = _chartKindEnum == ChartKindEnum.Attack ?
                 _attackMissCount <= _currentMissCount : _othersMissCount <= _currentMissCount;
 
-            if (_skipOnMiss ?  clearCheck || missCheck : clearCheck)
+            if (_skipOnMiss ? clearCheck || missCheck : clearCheck)
             {
                 if (clearCheck && _chartKindEnum == ChartKindEnum.Attack)
                 {
@@ -332,6 +333,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _inputBuffer.Interact.canceled -= OnCharge;
                 TutorialUnRegister();
             }
+
         }
 
         #region 共通処理
@@ -480,7 +482,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    VoiceManager.PlayVoice(_attackNormalVoiceName);
+                    if (_attackTutorialClearCount - 1 != _currentTargetClearCount)
+                        VoiceManager.PlayVoice(_attackNormalVoiceName);
                     if (CheckPerfect())
                     {
                         ind.PlayPerfectEffect();
@@ -516,7 +519,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ind =>
                 {
                     SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
-                    VoiceManager.PlayVoice(_skillVoiceName);
+                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                        VoiceManager.PlayVoice(_skillVoiceName);
                     ind.PlaySuccessEffectPublic();
                     _playerAnimeManager.Skill();
                 },
@@ -536,7 +540,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    VoiceManager.PlayVoice(_avoidVoiceName);
+                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                        VoiceManager.PlayVoice(_avoidVoiceName);
                     ind.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
                     _playerAnimeManager.Avoid();
@@ -600,7 +605,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _currentTargetClearCount++;
                         chargeIndicator.OnPlayerAttackSuccessTutorial();
                         SoundEffectManager.PlaySoundEffect(_chargeGunshot);
-                        VoiceManager.PlayVoice(_chargeEndVoiceName);
+                        if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                            VoiceManager.PlayVoice(_chargeEndVoiceName);
                         _enemyAnimeManager.ChargeAttack();
                         _enemyAnimeManager.KnockBack(true);
                     }
@@ -649,7 +655,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_attackIndicatorKey), _inputBuffer.Attack);
-                
+
                 ringObj.Resume();
                 ringObj.PlayPerfectEffect();
                 SoundEffectManager.PlaySoundEffect(_perfectAttackSound);
@@ -670,7 +676,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
-                
+
                 _playerAnimeManager.Skill();
                 SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                 VoiceManager.PlayVoice(_skillVoiceName);
@@ -687,7 +693,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_enemyIndicatorKey), _inputBuffer.Avoid);
-                
+
                 _playerManager.FlowZoneSystem.SuccessResonance();
                 _playerAnimeManager.Avoid();
                 _enemyAnimeManager.Attack();
