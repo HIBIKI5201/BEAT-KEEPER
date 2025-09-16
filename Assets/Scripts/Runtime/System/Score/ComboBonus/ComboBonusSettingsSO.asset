@@ -20,4 +20,4 @@ MonoBehaviour:
   - _comboCount: 50
     _multiplier: 2
   - _comboCount: 100
-    _multiplier: 3
+    _multiplier: 2.5
