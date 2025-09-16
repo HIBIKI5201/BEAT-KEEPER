@@ -124,22 +124,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 色変更用にリングを白色のものに変更
             //ChargeStart();
-            
+
             var sequence = DOTween.Sequence()
-                
+
                 // 色変更（チャージ開始時）NOTE: 戻す可能性があるのでコメントアウト
                 // .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
                 // .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
                 // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
-        
-                // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * _animationSpeed).SetEase(Ease.Linear))
-                
-                // 終点リングへ移動
-                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear))
-                .Join(_centerImage.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear))
 
-                .OnComplete(OnChargeComplete);
+                // メインのリング移動アニメーション（外側リングから内側リングへ）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * _animationSpeed)
+                    .SetEase(Ease.Linear))
+
+                // 終点リングへ移動
+                .Join(_startPositionRing.rectTransform
+                    .DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear))
+                .Join(_centerImage.rectTransform
+                    .DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear));
             
             _tweens[0] = sequence;
         }
@@ -153,10 +154,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnChargeComplete()
         {
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
-            // 色とテキストを変更
-            ResetRingsColor(_newColor, _newColor);
+            // var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+            //
+            // // 色とテキストを変更
+            // ResetRingsColor(_newColor, _newColor);
         }
         
         #endregion
