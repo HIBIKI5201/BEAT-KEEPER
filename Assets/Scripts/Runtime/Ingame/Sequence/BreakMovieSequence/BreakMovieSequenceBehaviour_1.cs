@@ -9,10 +9,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
-            var phaseManager = ServiceLocator.GetInstance<UIElement_CountDown>();
-            if (phaseManager)
+            var countDownPerformer = ServiceLocator.GetInstance<UIElement_CountDown>();
+            if (countDownPerformer)
             {
-                phaseManager.Play();
+                countDownPerformer.Play();
             }
         }
     }
