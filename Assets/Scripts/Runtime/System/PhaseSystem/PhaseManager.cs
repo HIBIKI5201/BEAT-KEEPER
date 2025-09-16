@@ -16,11 +16,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         public ReadOnlyReactiveProperty<PhaseEnum> CurrentPhaseProp => _currentPhaseProp;
 
-        public void NextPhase()
-        {
-            TransitionTo((PhaseEnum)((int)(_currentPhaseProp.Value + 1) % Enum.GetValues(typeof(PhaseEnum)).Length));
-        }
-
         /// <summary>
         ///     指定された時間が今とは別のフェーズかどうかをチェックする
         /// </summary>

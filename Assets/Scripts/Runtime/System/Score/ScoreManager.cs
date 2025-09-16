@@ -2,7 +2,6 @@
 using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.Ingame.System;
 using R3;
-using SymphonyFrameWork.Debugger;
 using SymphonyFrameWork.System;
 using UnityEngine;
 
@@ -13,21 +12,46 @@ namespace BeatKeeper
     /// </summary>
     public class ScoreManager : MonoBehaviour, IScoreManager
     {
-        private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
+        /// <summary>
+        /// スコア変更時のイベント
+        /// </summary>
+        public event Action<int> OnChangeScore;
+        
         [SerializeField] private ComboBonusSettingsSO _comboBonusData;
-
-        public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;
+        
         private readonly ReactiveProperty<int> _scoreProp = new ReactiveProperty<int>(0);
+        private readonly ReactiveProperty<float> _bonusMultiply = new ReactiveProperty<float>(0);
+
+        private PlayerManager _playerManager; // コンボ数を取得するためプレイヤーデータを参照
+        private AccuracyTracker _accuracyTracker;
+        private CompositeDisposable _disposable = new CompositeDisposable();
+        private int _maxCombo = 0; // 最大コンボ数
+        private int _preBattleScore = 0; // バトルが始まる直前のスコア（バトルグレードの判定用）
+        
+        /// <summary>
+        /// 現在のスコアの値
+        /// </summary>
         public int Score => _scoreProp.Value;
 
+        /// <summary>
+        /// 最大コンボ数
+        /// </summary>
+        public int MaxCombo => _maxCombo;
+        
+        /// <summary>
+        /// スコアのリアクティブプロパティ
+        /// </summary>
+        public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;
+        
         /// <summary>
         /// コンボによるスコアボーナス倍率
         /// </summary>
         public ReadOnlyReactiveProperty<float> BonusMultiply => _bonusMultiply;
-        private readonly ReactiveProperty<float> _bonusMultiply = new ReactiveProperty<float>(0);
-        private CompositeDisposable _disposable = new CompositeDisposable();
         
-        private int _preBattleScore = 0; // バトルが始まる直前のスコア（バトルグレードの判定用）
+        /// <summary>
+        /// Perfect/Good/Missなどの精度記録用のクラス
+        /// </summary>
+        public AccuracyTracker AccuracyTracker => _accuracyTracker;
         
         private void Awake()
         {
@@ -44,13 +68,21 @@ namespace BeatKeeper
             if (_playerManager != null)
             {
                 _playerManager.ComboSystem.ComboCount.Subscribe(EvaluateComboBonus).AddTo(_disposable);
+                _accuracyTracker = new AccuracyTracker(_playerManager);
+            }
+            else
+            {
+                Debug.LogError($"{typeof(ScoreManager)}: PlayerManagerが取得出来ませんでした。Perfect数などの集計が行えません。");
             }
         }
-
+        
         private void OnDestroy()
         {
             // コンボ数のリアクティブプロパティの購読をやめる
             _disposable?.Dispose();
+            
+            // プレイヤーの入力判定イベントの購読解除
+            _accuracyTracker?.Dispose();
         }
         
         /// <summary>
@@ -58,14 +90,21 @@ namespace BeatKeeper
         /// </summary>
         public void AddScore(int score)
         {
-            int addedScore = score + Score;
-
-            // 正の数ならコンボボーナスも含めて計算する。負の数なら受け取ったスコアのまま
+            int amount;
+            
             if (score > 0)
             {
-                addedScore = Mathf.RoundToInt(score * _bonusMultiply.Value) + Score; // 小数点以下は切り捨ててint型に変換
+                // 正の数ならコンボボーナスも含めて計算する
+                amount = Mathf.RoundToInt(score * _bonusMultiply.Value);
+                OnChangeScore?.Invoke(amount);
             }
-            _scoreProp.Value = Mathf.Max(addedScore, 0); // スコアはゼロ以下にはしない
+            else
+            {
+                // 負の数の場合ボーナスは含めない
+                amount = score;
+            }
+    
+            _scoreProp.Value = Mathf.Max(Score + amount, 0); // スコアはゼロ以下にはしない
         }
 
         /// <summary>
@@ -87,12 +126,13 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        /// スコアをリセットする
+        /// スコアと最大コンボ数をリセットする
         /// </summary>
         public void ResetScore()
         {
             _scoreProp.Value = 0;
-            Debug.Log($"[ScoreManager] スコアをリセットしました 現在: {Score}");
+            _maxCombo = 0;
+            Debug.Log($"[ScoreManager] スコアと最大コンボ数をリセットしました 現在: {Score}");
         }
         
         /// <summary>
@@ -107,6 +147,12 @@ namespace BeatKeeper
 
             // コンボボーナスを設定しているScriptableObjectから現在のコンボに対応するコンボボーナスを取得
             float bonusMultiply = _comboBonusData.GetBonusMultiplier(comboCount);
+
+            if (comboCount > _maxCombo)
+            {
+                // 現在のコンボ数が最大コンボ数より大きければ、最大コンボ数を更新
+                _maxCombo = comboCount;
+            }
             
             // float型の比較になるため「0に近くない時」で比較
             if (!Mathf.Approximately(bonusMultiply, _bonusMultiply.Value))

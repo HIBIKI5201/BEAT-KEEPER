@@ -2,6 +2,7 @@
 using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using UnityEngine;
+using BeatKeeper.Runtime.System;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -77,6 +78,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _resonanceCount.Value = 0;
         }
 
+        private readonly string _voice = "voice_flow_zone_enter";
         private readonly PlayerData _data;
         private readonly BGMManager _musicEngineHelper;
 
@@ -111,6 +113,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void StartFlowZone()
         {
             _isFlowZone.Value = true; // 5回リズム共鳴に成功したらフローゾーン突入
+
+            VoiceManager.PlayVoice(_voice); // ボイス再生
+            
             _musicEngineHelper.OnJustChangedBeat += OnJustBeat; // 継続時間を確認するために拍数を取得する
             OnStartFlowZone?.Invoke();
         }

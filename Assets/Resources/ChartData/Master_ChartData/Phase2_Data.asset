@@ -13,19 +13,123 @@ MonoBehaviour:
   m_Name: Phase2_Data
   m_EditorClassIdentifier: 
   _chart:
-  - AttackKind: 1
+  - AttackKind: 0
     Position: {x: -525, y: 0}
   - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 175, y: 0}
-  - AttackKind: 1
+  - AttackKind: 2
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: -525, y: 0}
   - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 2
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 2
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 2
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 525, y: 0}
@@ -37,108 +141,8 @@ MonoBehaviour:
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
+  _rangeEndPositions:
+    keys: 3c000000
+    values:
+    - {x: -325, y: 0}
   _visible: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

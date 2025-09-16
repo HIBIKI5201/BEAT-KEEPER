@@ -1,6 +1,9 @@
-﻿using BeatKeeper.Runtime.Ingame.Character;
+﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Character;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using SymphonyFrameWork.System;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -30,7 +33,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _playableDirector.stopped += OnPlayableDirectorStopped;
             }
 
-            FinisherEventRegister();
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            var enemyAdmin = battleSceneManager.EnemyAdmin;
+            var lastEnemy = enemyAdmin.Enemies.Last();
+
+            // 最後の敵がアクティブになったら、プレイヤーのフィニッシャーイベントを解除して、敵のフィニッシャーイベントを登録する
+            enemyAdmin.OnNextEnemyActive += enemy =>
+            {
+                if (enemy == lastEnemy)
+                {
+                    EnemyFinisherEventRegister();
+                }
+            };
+
+            PlayerFinisherEventRegister();
         }
 
         private void OnDestroy()
@@ -44,7 +60,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <summary>
         ///     Finisher時のイベントを購買する
         /// </summary>
-        public async void FinisherEventRegister()
+        private async void PlayerFinisherEventRegister()
         {
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
             if (playerManager == null)
@@ -54,6 +70,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             playerManager.OnFinisher += Finisher;
+        }
+
+        private async void EnemyFinisherEventRegister()
+        {
+            var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
+            StageEnemyAdmin enemyAdmin = battleSceneManager.EnemyAdmin;
+            if (enemyAdmin == null)
+            {
+                Debug.LogWarning("StageEnemyAdmin is not found.");
+                return;
+            }
+
+            EnemyManager enemy = enemyAdmin.GetActiveEnemy();
+            enemy.HealthSystem.OnDeath += Finisher;
         }
 
         /// <summary>

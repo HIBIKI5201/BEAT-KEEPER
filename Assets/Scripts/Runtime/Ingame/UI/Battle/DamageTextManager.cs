@@ -1,11 +1,6 @@
-using BeatKeeper.Runtime.Ingame.Battle;
-using BeatKeeper.Runtime.Ingame.Character;
-using BeatKeeper.Runtime.Ingame.System;
-using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using R3;
 
 namespace BeatKeeper
 {
@@ -14,7 +9,8 @@ namespace BeatKeeper
     /// </summary>
     public class DamageTextManager : MonoBehaviour
     {
-        [Header("コンポーネントの参照")]
+        [Header("コンポーネントの参照")] 
+        [SerializeField] private ScoreManager _scoreManager;
         [SerializeField] private UIElement_ScoreText _scoreText;
         [SerializeField] private CanvasGroup _containerCanvasGroup;
         [SerializeField] private RectTransform _plusSignTransform;
@@ -25,10 +21,8 @@ namespace BeatKeeper
         [SerializeField, Tooltip("テキストのY軸上の移動距離")] private float _moveDistanceY = 1.5f;
         [SerializeField, Tooltip("イージング")] private Ease _easeType = Ease.InExpo;
 
-        private EnemyManager _enemy; // アクティブな敵のマネージャー
         private Sequence _animationSequence; // アニメーションシーケンス
         private Vector3 _initialPosition; // CanvasGroupの初期位置
-        private readonly CompositeDisposable _disposable = new CompositeDisposable(); // R3のSubscribe解除管理用CompositeDisposable
 
         private static readonly int[] _digitDivisors = { 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 }; // 桁数分解計算の最適化用。事前計算済み配列
 
@@ -37,7 +31,7 @@ namespace BeatKeeper
         /// <summary>
         /// Start
         /// </summary>
-        private async void Start()
+        private void Start()
         {
             if (!ValidateComponents())
             {
@@ -45,28 +39,19 @@ namespace BeatKeeper
             }
 
             // アニメーション用の初期位置を記録
-            _initialPosition = _containerCanvasGroup.transform.position;
+            _initialPosition = _containerCanvasGroup.transform.localPosition;
             _containerCanvasGroup.alpha = 0; // 初期状態では非表示
 
-            // Battleシーンのロードが完了するまで待機
-            await SceneLoader.WaitForLoadSceneAsync("Battle");
-            
-            // フェーズ変更の監視を開始する
-            SubscribeToPhaseChange();
+            _scoreManager.OnChangeScore += HandleDisplayDamage;
         }
         
         /// <summary>
-        /// Destory
+        /// Destroy
         /// </summary>
         private void OnDestroy()
         {
             _animationSequence?.Kill();
-            _disposable?.Dispose();
-            
-            if (_enemy != null)
-            {
-                _enemy.OnHitAttack -= HandleDisplayDamage;
-            }
+            _scoreManager.OnChangeScore -= HandleDisplayDamage;
         }
 
         #endregion
@@ -89,7 +74,7 @@ namespace BeatKeeper
             SetupDamageDisplay(damageAmount);
 
             // アニメーション開始位置にリセット
-            _containerCanvasGroup.transform.position = _initialPosition;
+            _containerCanvasGroup.transform.localPosition = _initialPosition;
             _containerCanvasGroup.alpha = 1;
 
             // アニメーション終了位置を計算
@@ -97,7 +82,7 @@ namespace BeatKeeper
 
             // アニメーション実行（移動・フェードアニメーション）
             _animationSequence = DOTween.Sequence()
-                .Append(_containerCanvasGroup.transform.DOMove(targetPosition, _displayTime).SetEase(_easeType))
+                .Append(_containerCanvasGroup.transform.DOLocalMove(targetPosition, _displayTime).SetEase(_easeType))
                 .Join(_containerCanvasGroup.DOFade(0, _displayTime).SetEase(_easeType));
         }
 
@@ -175,45 +160,13 @@ namespace BeatKeeper
                 Debug.LogError($"[{nameof(DamageTextManager)}] ScoreTextが設定されていません");
                 return false;
             }
+
+            if (_scoreManager == null)
+            {
+                Debug.LogError($"[{nameof(DamageTextManager)}] ScoreManagerが設定されていません");
+                return false;
+            }
             return true;
-        }
-
-        /// <summary>
-        /// PhaseManagerの変更イベントを購読
-        /// </summary>
-        private void SubscribeToPhaseChange()
-        {
-            var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
-            if (phaseManager)
-            {
-                phaseManager.CurrentPhaseProp.Subscribe(OnPhaseChanged).AddTo(_disposable);
-            }
-            else
-            {
-                Debug.Log($"[{nameof(DamageTextManager)}] {nameof(PhaseManager)}が取得できませんでした");
-            }
-        }
-
-        /// <summary>
-        /// フェーズ変更時、新しいアクティブな敵を取得する
-        /// </summary>
-        private void OnPhaseChanged(PhaseEnum phase)
-        {
-            if (_enemy != null)
-            {
-                _enemy.OnHitAttack -= HandleDisplayDamage;
-            }
-
-            _enemy = ServiceLocator.GetInstance<BattleSceneManager>().EnemyAdmin.GetActiveEnemy();
-
-            if (_enemy != null)
-            {
-                _enemy.OnHitAttack += HandleDisplayDamage;
-            }
-            else
-            {
-                Debug.Log($"[{nameof(DamageTextManager)}] {nameof(EnemyManager)}が取得できませんでした");
-            }
         }
     }
 }

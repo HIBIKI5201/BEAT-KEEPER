@@ -1,4 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.Sequence;
+using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -10,17 +11,16 @@ namespace BeatKeeper
         {
 
             base.OnBehaviourPlay(playable, info);
-            if (_owner)
+
+            ResultManager resultManager = ServiceLocator.GetInstance<ResultManager>();
+
+            if (resultManager)
             {
-                ResultManager resultManager = _owner.GetComponent<ResultManager>();
-                if (resultManager)
-                {
-                    resultManager.AllProductionCompleted();
-                }
-                else
-                {
-                                       Debug.LogError("ResultSequenceBehaviour_2: ResultManager component not found on owner.");
-                }
+                resultManager.AllProductionCompleted();
+            }
+            else
+            {
+                Debug.LogError("ResultSequenceBehaviour_2: ResultManager component not found on owner.");
             }
         }
     }
