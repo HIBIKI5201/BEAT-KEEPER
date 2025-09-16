@@ -145,6 +145,16 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_target == null) return false; //ターゲットがいなければフィニッシャーはできない
             return _target.IsFinisherable;
         }
+        
+        /// <summary>
+        /// タイムラインのイベントを元にモデルを表示する
+        /// NOTE: ブレイクムービーから明けたときにはフェーズ変更時ではない任意のタイミングから呼び出せるようにしたい
+        /// </summary>
+        public void ModelActive()
+        {
+            _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+            _modelParent.SetActive(true);
+        }
 
         #endregion
 
@@ -348,7 +358,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
             _scoreManager = ServiceLocator.GetInstance<ScoreManager>();
             _bgmManager = ServiceLocator.GetInstance<BGMManager>();
-            _countDown = ServiceLocator.GetInstance<UIElement_CountDown>();
 
             if (_bgmManager)
             {
@@ -358,11 +367,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             else
             {
                 Debug.LogWarning("Music engine is null");
-            }
-
-            if (_countDown)
-            {
-                _countDown.OnMovieFinished += ModelActive;
             }
 
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
@@ -396,11 +400,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _bgmManager.OnJustChangedBeat -= OnJustBeat;
                 _bgmManager.OnNearChangedBeat -= OnNearBeat;
-            }
-
-            if (_countDown != null)
-            {
-                _countDown.OnMovieFinished -= ModelActive;
             }
             Dispose();
         }
@@ -437,16 +436,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     _modelParent.SetActive(false);
                     break;
             }
-        }
-
-        /// <summary>
-        /// タイムラインのイベントを元にモデルを表示する
-        /// NOTE: ブレイクムービーから明けたときにはフェーズ変更時ではない任意のタイミングから呼び出せるようにしたい
-        /// </summary>
-        private void ModelActive()
-        {
-            _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
-            _modelParent.SetActive(true);
         }
 
         /// <summary>
