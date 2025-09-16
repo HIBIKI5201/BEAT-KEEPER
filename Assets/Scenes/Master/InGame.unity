@@ -1805,12 +1805,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4254970931461325993, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254970931461325993, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1600
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 4254970931461325993, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -800
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4546012881941083311, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_Name
