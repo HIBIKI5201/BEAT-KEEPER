@@ -326,7 +326,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private SpecialSystem _specialSystem;
         private FlowZoneSystem _flowZoneSystem;
         private SkillSystem _skillSystem;
-        private UIElement_CountDown _countDown;
 
         private bool _isMissed = false;
         #endregion
@@ -422,7 +421,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     InputRegister();
                     var stage = ServiceLocator.GetInstance<BattleSceneManager>();
                     _target = stage.EnemyAdmin.GetActiveEnemy();
-                    //goto case PhaseEnum.Tutorial; //チュートリアルフェーズも同じ処理を行う
                     break;
                 
                 case PhaseEnum.Tutorial:
