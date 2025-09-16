@@ -51,7 +51,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
         // Justタイミングのあとの判定受付時間
-        private const float RECEPTION_TIME = 0.45f;
+        private const float RECEPTION_TIME = 0.5f;
 
         [Header("スキルノーツ特殊デコレーション")]
         [SerializeField] private Image _skillDecorationImage;
