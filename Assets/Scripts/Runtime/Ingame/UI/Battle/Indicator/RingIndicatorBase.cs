@@ -269,8 +269,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
-        // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
-        private const float RECEPTION_TIME = 0.45f;
+        // Justタイミングのあとの判定受付時間 = 拍の半分の時間とする
+        private const float RECEPTION_TIME = 0.5f;
         
         #endregion
         

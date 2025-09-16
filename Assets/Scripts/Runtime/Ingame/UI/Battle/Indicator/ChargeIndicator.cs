@@ -60,7 +60,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         
         private const float CONTRACTION_SPEED = 2; // 始点リングの収束にかける拍数
         private const float CHARGE_TIME = 2; // チャージにかかる拍
-        private const float RECEPTION_TIME = 0.45f; // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
+        private const float RECEPTION_TIME = 0.5f; // Justタイミングのあとの判定受付時間
+        
+        [Header("判定調整用")]
+        [SerializeField, Range(0.9f, 1.0f)] private float _animationSpeed = 0.9f;
         
         [Header("コンポーネントの参照")] 
 		[SerializeField] private Image _startPositionRing; // 長押しの始めを示すリング
@@ -121,22 +124,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 色変更用にリングを白色のものに変更
             //ChargeStart();
-            
+
             var sequence = DOTween.Sequence()
-                
+
                 // 色変更（チャージ開始時）NOTE: 戻す可能性があるのでコメントアウト
                 // .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
                 // .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
                 // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
-        
-                // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration).SetEase(Ease.Linear))
-                
-                // 終点リングへ移動
-                .Join(_startPositionRing.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
-                .Join(_centerImage.rectTransform.DOMove(_endPositionRing.transform.position, totalDuration).SetEase(Ease.Linear))
 
-                .OnComplete(OnChargeComplete);
+                // メインのリング移動アニメーション（外側リングから内側リングへ）
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * _animationSpeed)
+                    .SetEase(Ease.Linear))
+
+                // 終点リングへ移動
+                .Join(_startPositionRing.rectTransform
+                    .DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear))
+                .Join(_centerImage.rectTransform
+                    .DOMove(_endPositionRing.transform.position, totalDuration * _animationSpeed).SetEase(Ease.Linear));
             
             _tweens[0] = sequence;
         }
@@ -150,10 +154,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnChargeComplete()
         {
-            var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
-            
-            // 色とテキストを変更
-            ResetRingsColor(_newColor, _newColor);
+            // var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
+            //
+            // // 色とテキストを変更
+            // ResetRingsColor(_newColor, _newColor);
         }
         
         #endregion
@@ -358,7 +362,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnGoodChargeAttack += HandleGood; // Good成功
             
             // チャージ攻撃失敗
-            //_player.OnMissedCharging += PlayFailEffectCharging;
+            _player.OnMissedCharging += PlayFailEffectCharging;
             _player.OnMissChargeAttack += PlayFailEffectCharging;
         }
 		
@@ -368,7 +372,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _player.OnGoodCharging -= OnPlayerCharge;
             _player.OnPerfectChargeAttack -= HandlePerfect;
             _player.OnGoodChargeAttack -= HandleGood;
-            //_player.OnMissedCharging -= PlayFailEffectCharging;
+            _player.OnMissedCharging -= PlayFailEffectCharging;
             _player.OnMissChargeAttack -= PlayFailEffectCharging;
         }
         
