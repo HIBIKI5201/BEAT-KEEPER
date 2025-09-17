@@ -548,7 +548,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: New Volume Profile
+  m_Name: VolumeProfile_Phase1
   m_EditorClassIdentifier: 
   components:
   - {fileID: -9106796532011795755}
