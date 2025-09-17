@@ -181,21 +181,21 @@ MonoBehaviour:
     Position: {x: 175, y: 0}
   - AttackKind: 8
     Position: {x: -175, y: 0}
-  - AttackKind: 1
+  - AttackKind: 0
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
   - AttackKind: 8
-    Position: {x: -175, y: 0}
+    Position: {x: -525, y: 0}
   - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
   - AttackKind: 8
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 1
     Position: {x: -525, y: 0}
@@ -277,10 +277,10 @@ MonoBehaviour:
     - {x: 375, y: 0}
     - {x: -325, y: 0}
     - {x: 175, y: 0}
-    - {x: 375, y: 0}
+    - {x: -175, y: 0}
     - {x: 25, y: 0}
     - {x: -325, y: 0}
-    - {x: 375, y: 0}
+    - {x: -175, y: 0}
     - {x: 175, y: 0}
     - {x: 175, y: 0}
     - {x: -325, y: 0}
