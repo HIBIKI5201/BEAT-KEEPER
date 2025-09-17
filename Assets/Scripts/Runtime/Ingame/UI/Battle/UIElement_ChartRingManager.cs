@@ -80,6 +80,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (phase == PhaseEnum.Battle) //譜面を取得してビートの購買を開始
             {
+				// バトルの開始タイミングを保存する
+				MusicEngineHelper.SetStartTiming();
+
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
                 _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
