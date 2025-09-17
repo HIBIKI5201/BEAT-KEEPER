@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
@@ -39,6 +41,8 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         #endregion
 
+        public CriAtomSource AtomSource => _atomSource;
+        
         #region BGMの管理
 
         /// <summary>
@@ -52,6 +56,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             if (Music.Current.TryGetComponent<CriAtomSource>(out var source))
             {
                 _atomSource = source;
+                _atomSource.volume = 1f;
                 _lastJustBeat = 0;
                 _lastNearBeat = 0;
                 ChangeSelectLayer(0);
@@ -61,6 +66,41 @@ namespace BeatKeeper.Runtime.Ingame.System
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
+        }
+
+        /// <summary>
+        /// BGMフェードアウト
+        /// </summary>
+        public async UniTask FadeOutBGM(float duration, CancellationToken cancellationToken = default)
+        {
+            if (_atomSource == null)
+                return;
+    
+            float startVolume = _atomSource.volume;
+    
+            try
+            {
+                await UniTask.Create(async () =>
+                {
+                    float progress = 0f;
+                    while (progress < 1f)
+                    {
+                        progress = Mathf.Min(progress + Time.deltaTime / duration, 1f);
+                        float currentVolume = Mathf.Lerp(startVolume, 0f, progress);
+                        _atomSource.volume = currentVolume;
+                
+                        await UniTask.Yield(PlayerLoopTiming.Update);
+                    }
+                }).AttachExternalCancellation(cancellationToken);
+        
+                _atomSource.volume = 0f;
+                Music.Stop();
+            }
+            catch (OperationCanceledException)
+            {
+                // キャンセル時の処理は特に何もしない（ボリュームはそのまま）
+                throw;
+            }
         }
 
         /// <summary>

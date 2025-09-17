@@ -6,6 +6,7 @@ using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace BeatKeeper
 {
@@ -18,7 +19,7 @@ namespace BeatKeeper
         [SerializeField] private GameObject _meterPrefab;
         [SerializeField, Tooltip("点灯していないときの画像")] private Sprite _defaultSprite;
         [SerializeField, Tooltip("点灯時の画像")] private Sprite _lightingSprite;
-        [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
+        [SerializeField] private UIElement_AudioSpectrum _audioSpectrum; // オーディオスペクトラム演出管理クラス
         
         [Header("実行中に追加されるもの")]
         [SerializeField] private Image[] _icons;
@@ -31,9 +32,9 @@ namespace BeatKeeper
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
             await SymphonyTask.WaitUntil(() => _playerManager.FlowZoneSystem != null);
-
+            
             Initialize();
-            GenerateMetar();
+            GenerateMeter();
             AllReset();
         }
 
@@ -42,16 +43,19 @@ namespace BeatKeeper
             _playerManager.FlowZoneSystem.ResonanceCount.Subscribe(IconColorChanged).AddTo(_disposable);
             _playerManager.FlowZoneSystem.IsFlowZone.Subscribe(value =>
             {
-                _overlayCanvasGroup.DOFade(value ? 1 : 0, 0.15f);
-
-                if (!value)
+                if (value)
                 {
+                    _audioSpectrum.PlayAudioSpectrum();
+                }
+                else
+                {
+                    _audioSpectrum.StopAudioSpectrum();
                     AllReset();
                 }
             }).AddTo(_disposable);
         }
 
-        private void GenerateMetar()
+        private void GenerateMeter()
         {
             if (_playerManager == null) return;
             if (_meterPrefab == null) return;

@@ -642,7 +642,7 @@ MonoBehaviour:
   acfFile: BeatKeepr.acf
   cueSheets:
   - name: BGM
-    acbFile: Battle.acb
+    acbFile: BGM.acb
     awbFile: 
     loaderStatus: 0
   - name: SE

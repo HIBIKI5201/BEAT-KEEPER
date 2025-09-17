@@ -35,12 +35,15 @@ namespace BeatKeeper.Runtime.Outgame.System
         [SerializeField] private OutGameUIManager _outGameUIManager;
         [SerializeField] private CriAtomSource _criAtomSourceSE;
         [SerializeField] private string _bgmName = "Phase1";
+        [SerializeField] private float _bgmFadeOutTime = 0.5f;
 
         private InputBuffer _inputBuffer;
         private bool _look;
         
         // ローカライズ用のテキストデータを管理するマネージャー
         private LocalizeTextManager _localizeTextManager; 
+        
+        private BGMManager _bgmManager;
         
         // 現在の状態
         private GameState _currentState = GameState.WaitingForStart;
@@ -54,6 +57,7 @@ namespace BeatKeeper.Runtime.Outgame.System
 
             // サービスロケーターから取得（Systemシーンが読み込まれるまで待つ）
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
+            _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
         }
 
         private void Start()
@@ -156,7 +160,11 @@ namespace BeatKeeper.Runtime.Outgame.System
                 
                 // SE再生
                 _criAtomSourceSE?.Play();
-                
+               
+                // BGMフェードアウト
+                // NOTE: フェードアウトしながらゲーム開始処理は進んでほしいので、awaitはしない
+                _bgmManager.FadeOutBGM(_bgmFadeOutTime).Forget();                
+
                 // ゲーム開始処理
                 await _outGameUIManager.GameStart();
                 
@@ -189,8 +197,8 @@ namespace BeatKeeper.Runtime.Outgame.System
         private void RegisterInputEvents()
         {
             _inputBuffer.AnyKey.started += OnAnyKeyInput;
-            _inputBuffer.LeftNavigation.started += OnLeftNavigationKeyInput;
-            _inputBuffer.RightNavigation.started += OnRightNavigationKeyInput;
+            _inputBuffer.LeftNavigation.performed += OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.performed += OnRightNavigationKeyInput;
             _inputBuffer.Attack.started += OnAttackKeyInput;
         }
         
@@ -202,8 +210,8 @@ namespace BeatKeeper.Runtime.Outgame.System
             if (_inputBuffer == null) return;
             
             _inputBuffer.AnyKey.started -= OnAnyKeyInput;
-            _inputBuffer.LeftNavigation.started -= OnLeftNavigationKeyInput;
-            _inputBuffer.RightNavigation.started -= OnRightNavigationKeyInput;
+            _inputBuffer.LeftNavigation.performed -= OnLeftNavigationKeyInput;
+            _inputBuffer.RightNavigation.performed -= OnRightNavigationKeyInput;
             _inputBuffer.Attack.started -= OnAttackKeyInput;
         }
     }
