@@ -45,11 +45,17 @@ namespace BeatKeeper
             {
                 if (value)
                 {
-                    _audioSpectrum.PlayAudioSpectrum();
+                    if (_audioSpectrum != null)
+                    {
+                        _audioSpectrum.PlayAudioSpectrum();
+                    }
                 }
                 else
                 {
-                    _audioSpectrum.StopAudioSpectrum();
+                    if (_audioSpectrum != null)
+                    {
+                        _audioSpectrum.StopAudioSpectrum();
+                    }
                     AllReset();
                 }
             }).AddTo(_disposable);
