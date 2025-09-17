@@ -1910,10 +1910,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttons:
-  - {fileID: 4538269229247553236}
   - {fileID: 4622831262354088006}
   - {fileID: 3961133962733423199}
-  _defaultButtonIndex: 0
+  - {fileID: 4538269229247553236}
+  _defaultButtonIndex: 2
   _selectedScaleMultiplier: 1.15
   _selectedTextColor: {r: 1, g: 1, b: 1, a: 1}
   _defaultTextColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
