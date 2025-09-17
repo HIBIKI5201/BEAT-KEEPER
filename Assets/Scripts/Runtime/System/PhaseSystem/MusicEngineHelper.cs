@@ -34,7 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             
             // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
             return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
-                + _beatOffset;
+                + _beatOffset - _startTiming;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             // Timingオブジェクトを開始時点からの総拍数に変換
             return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
-                + _beatOffset;
+                + _beatOffset - _startTiming;
         }
 
         /// <summary>
@@ -153,9 +153,21 @@ namespace BeatKeeper.Runtime.Ingame.System
             return GetClosestBeatTimingFromSeconds(msec / 1000.0, meter);
         }
 
+        /// <summary>
+        /// タイミングの開始位置を設定する
+        /// </summary>
+        public static void SetStartTiming()
+        {
+            _startTiming = Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
+                + _beatOffset;
+        }
+
         //ここより下にprivateの変数と関数を定義する
         private static int _beatOffset = 0;
         private static int _last;
+
+        // 今回のフェーズが始まったタイミングの記録
+        private static int _startTiming = 0;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
