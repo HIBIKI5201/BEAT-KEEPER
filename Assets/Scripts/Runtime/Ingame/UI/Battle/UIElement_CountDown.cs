@@ -55,6 +55,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Sprite _number1;
         [SerializeField] private Sprite _number2;
         [SerializeField] private Sprite _number3;
+		[SerializeField] private Sprite _go;
+
+		[SerializeField] private Vector2 _numberSpriteSize;
+		[SerializeField] private Vector2 _goSpriteSize;
 
         [Header("アニメーションの設定")] 
         [SerializeField] private float _scaleAnimationDuration = 0.3f;
@@ -136,6 +140,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初期状態を設定
             _canvasGroup.alpha = 0f;
             transform.localScale = Vector3.zero;
+
+			// Imageの比率を数字のものに設定
+			_selfImage.rectTransform.sizeDelta = _numberSpriteSize;
         }
 
         /// <summary>
@@ -183,19 +190,23 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 16拍区切りの13拍目から開始（3, 2, 1で3拍使用し、16拍目で終了）
             int currentBeat = _bgmStartTiming % 16;
     
-            if (_counter == 0 && currentBeat == 12) // 13拍目から開始
+			if (_counter == 0 && currentBeat == 10)
             {
                 ChangeImage(); // 3を表示
             }
-            else if (_counter == 1 && currentBeat == 13) // 14拍目
+            else if (_counter == 1 && currentBeat == 11)
             {
-                ChangeImage(); // 2を表示  
+                ChangeImage(); // 2を表示
             }
-            else if (_counter == 2 && currentBeat == 14) // 15拍目
+            else if (_counter == 2 && currentBeat == 12)
             {
-                ChangeImage(); // 1を表示
+                ChangeImage(); // 3を表示  
             }
-            else if (_counter == 3 && currentBeat == 15) // 16拍目（0拍目）で終了
+            else if (_counter == 3 && currentBeat == 13)
+            {
+                ChangeImage(); // GOを表示
+            }
+            else if (_counter == 4 && currentBeat == 14)
             {
                 EndPerform();
             }
@@ -213,16 +224,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 現在のカウントのスプライトを入手
             Sprite targetSprite = GetSpriteByCounter(_counter);
+			if(_counter >= 4)
+			{
+				// Counterが4以上のときはGoの表示で、画像の比率を変える必要がある
+				_selfImage.rectTransform.sizeDelta = _goSpriteSize;
+			}
+
             if (targetSprite != null)
             {
                 _selfImage.sprite = targetSprite;
                 PlayCountDownAnimation();
-            }
-
-            // 最後の数字の後は終了処理
-            if (_counter >= 3)
-            {
-                DOVirtual.DelayedCall(_scaleAnimationDuration + 0.1f, EndPerform);
             }
         }
 
@@ -232,8 +243,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <returns></returns>
         private void PlayCountDownAnimation()
         {
+
             transform.localScale = _maxScale;
-            
+
             _currentSequence = DOTween.Sequence();
 
             // フェードイン
@@ -248,7 +260,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             );
 
             // 最後の数字以外はフェードアウト
-            if (_counter < 3)
+            if (_counter < 4)
             {
                 _currentSequence.Append(
                     DOTween.To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 0f, _fadeAnimationDuration)
@@ -274,9 +286,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _bgmManager.OnJustChangedBeat -= OnCount;
             
             _isPerforming = false;
-
-            // ポジションリセット
-            _rectTransform.anchoredPosition = _originalPosition;
             
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
@@ -295,7 +304,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _canvasGroup.alpha = 0f;
             transform.localScale = Vector3.zero;
             _rectTransform.anchoredPosition = _originalPosition;
-        }
+        	_selfImage.rectTransform.sizeDelta = _numberSpriteSize;	
+		}
         
         /// <summary>
         /// 引数に合わせてスプライトを取得
@@ -307,6 +317,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 1 => _number3,
                 2 => _number2,
                 3 => _number1,
+				4 => _go,
                 _ => null
             };
         }
