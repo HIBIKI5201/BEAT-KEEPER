@@ -108,7 +108,6 @@ MonoBehaviour:
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Skill
-  _4kPlay: 1
   _skillDecorationImage: {fileID: 6510102979477291928}
   _defalutDecoration: {fileID: 21300000, guid: 54622d5540c35e84ab66525ae130e342, type: 3}
   _grayDecoration: {fileID: 21300000, guid: 779f2af3c02b0a54ebfb8d579baa4333, type: 3}
@@ -318,10 +317,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 972999094456285954}
   - {fileID: 3664850786923950020}
   - {fileID: 3947355789181687849}
   - {fileID: 2768575999939148061}
+  - {fileID: 972999094456285954}
   m_Father: {fileID: 989207443497645692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -970,11 +969,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5190724371095255277}
   - {fileID: 7066872206902685503}
   - {fileID: 946481309531798489}
   - {fileID: 3464619587593137638}
   - {fileID: 3205257995843917499}
+  - {fileID: 5190724371095255277}
   m_Father: {fileID: 989207443497645692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

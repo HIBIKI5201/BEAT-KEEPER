@@ -302,7 +302,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2, y: -350}
-  m_SizeDelta: {x: 2328, y: 2379}
+  m_SizeDelta: {x: 3005.6707, y: 2379}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6694036231423538494
 CanvasRenderer:
@@ -680,6 +680,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3884830661968032753}
   - component: {fileID: 5653411042876740993}
+  - component: {fileID: 2494177928433662331}
+  - component: {fileID: 5582401474060227977}
   m_Layer: 5
   m_Name: EnemyHealthBar
   m_TagString: Untagged
@@ -722,6 +724,34 @@ MonoBehaviour:
   _initialPosition: {x: 0, y: -40}
   _showDuration: 0.2
   _hideDuration: 0.15
+--- !u!225 &2494177928433662331
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912600952470086673}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &5582401474060227977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912600952470086673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fab1e0423b02514dbeffe9d9abfe6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movePattern: 0
+  _showDuration: 1
+  _hideDuration: 0.5
+  _slideDistance: 100
 --- !u!1 &971120179346222940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,6 +2026,7 @@ MonoBehaviour:
   _canvasControllers:
   - {fileID: 3777806833957445829}
   - {fileID: 2770408662969835650}
+  - {fileID: 5582401474060227977}
   _scoreText: {fileID: 4097051169465662113}
   _chartRingManager: {fileID: 9020171153741558029}
   _healthBar: {fileID: 5653411042876740993}
@@ -2050,12 +2081,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3464,10 +3495,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleResult
       objectReference: {fileID: 0}
-    - target: {fileID: 1383645616969062596, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1520496468489501056, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3548,10 +3575,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2947165769252561863, guid: 8578aadbcd9fc184dbb1bb6a0bb27458, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3600,11 +3623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8876408549803631121, guid: 78e0b00853557174fa0a5029234a9614, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 634.844
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 8876408549803631121, guid: 78e0b00853557174fa0a5029234a9614, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 596.4783
+      value: 423
       objectReference: {fileID: 0}
     - target: {fileID: 8876408549803631121, guid: 78e0b00853557174fa0a5029234a9614, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3640,7 +3663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8876408549803631121, guid: 78e0b00853557174fa0a5029234a9614, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8876408549803631121, guid: 78e0b00853557174fa0a5029234a9614, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
