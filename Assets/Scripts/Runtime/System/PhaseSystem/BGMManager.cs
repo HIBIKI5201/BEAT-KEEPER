@@ -1,15 +1,16 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.System;
 using CriWare;
+using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 using System.Threading;
-using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
@@ -66,6 +67,8 @@ namespace BeatKeeper.Runtime.Ingame.System
                 VoiceManager.ChangePhaseSelector(name);
                 SoundEffectManager.ChangePhaseSelector(name);
                 OnBGMChanged?.Invoke(name);
+
+                ChangeAisacValue("AisacControl_Phase1", 0);
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
@@ -160,6 +163,14 @@ namespace BeatKeeper.Runtime.Ingame.System
             _atomSource.player.SetSelectorLabel(_selectorName, label.ToString());
             _atomSource.player.UpdateAll();
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました。\nセレクター名 {label.ToString()}");
+        }
+
+        public void ChangeAisacValue(string aisac, float value)
+        {
+            if (_atomSource == null) return;
+
+            _atomSource.player.SetAisacControl(aisac, value);
+            Debug.Log($"{aisac} {value}");
         }
 
         #endregion

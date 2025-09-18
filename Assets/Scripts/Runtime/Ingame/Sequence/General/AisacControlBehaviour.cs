@@ -21,15 +21,14 @@ namespace BeatKeeper
         public override async void OnBehaviourPlay(Playable playable, FrameData info)
         {
             var bgmManager = ServiceLocator.GetInstance<BGMManager>();
-            await SymphonyTask.WaitUntil(() => bgmManager.AtomSource != null);
-
-            var player = bgmManager.AtomSource.player;
 
             float timer = 0;
+            float to = _end - _start;
             while (timer < _duration)
             {
                 float proportion = timer / _duration;
-                player.SetAisacControl(_aisac, _start + _end * proportion);
+                float volume = _start + to * proportion;
+                bgmManager.ChangeAisacValue(_aisac, volume);
 
                 timer += Time.deltaTime;
                 await Awaitable.NextFrameAsync();
