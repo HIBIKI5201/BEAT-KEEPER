@@ -1137,7 +1137,6 @@ GameObject:
   - component: {fileID: 1493203128}
   - component: {fileID: 1493203130}
   - component: {fileID: 1493203129}
-  - component: {fileID: 1493203131}
   m_Layer: 0
   m_Name: TutorialSequence
   m_TagString: Untagged
@@ -1267,20 +1266,6 @@ MonoBehaviour:
   _skillVoiceName: voice_skill
   _missAvoidVoice: voice_avoid_damaged
   _missChargeVoice: voice_charge_attack_damaged
---- !u!114 &1493203131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493203127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a581dad74ebe5f84f9d3d281692721df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _holdDuration: 3
-  _director: {fileID: 1493203129}
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
