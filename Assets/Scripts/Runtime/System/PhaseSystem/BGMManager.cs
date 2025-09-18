@@ -123,21 +123,34 @@ namespace BeatKeeper.Runtime.Ingame.System
             else
             {
 				// フローゾーン突入
-                float beat = MusicEngineHelper.GetBeatSinceStart();
+                int beat = MusicEngineHelper.GetBeatSinceStart();
 
-				// イントロ分の16拍を引いて、BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
-				int position = (Mathf.FloorToInt(beat) - 16) % 64;
+				// BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
+				int position = beat % 64;
 			
-				// ループ内での節を計算
-				// position 0: 1小節目 (特別ケース)
-				// position 1-16: 2小節目
-				// position 17-32: 3小節目  
-				// position 33-48: 4小節目
-				// position 49-63: 1小節目 (次ループ)
-				int section = position == 0 ? 0 : (Mathf.FloorToInt((position - 1) / 16f) + 1) % 4;
-				
-				// 小節番号を4n+1形式のレイヤーIDに変換 (5, 9, 13, 17)
-				int layer = section * 4 + 5;
+                // position 0-14: 1小節目 -> 5に変換
+                // position 15-30: 2小節目 -> 9に変換
+                // position 31-46: 3小節目 -> 13に変換
+                // position 47-62: 4小節目 -> 17に変換
+                // position 63: 1小節目（特別ケース） -> 5に変換
+
+                int layer;
+                if (position <= 14 || position == 63)
+                {
+                    layer = 5;  // 1小節目
+                }
+                else if (position <= 30)
+                {
+                    layer = 9;  // 2小節目
+                }
+                else if (position <= 46)
+                {
+                    layer = 13; // 3小節目
+                }
+                else // position <= 62
+                {
+                    layer = 17; // 4小節目
+                }
 
                 //遷移先のレイヤー名を取得
 				label.Append(_selectorFlowZoneLabelName);
