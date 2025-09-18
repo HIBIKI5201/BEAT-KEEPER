@@ -192,23 +192,38 @@ namespace BeatKeeper
             // スコアを元にランクを算出
             var rank = _gradeEvaluator.EvaluateRank(_scoreManager.Score);
 
-            // ランクに応じてボイス再生
+            // ランクに応じて再生するボイス名を取得
             var voice = GetRankVoiceCueName(rank, _rankVoice);
 
-            return DOVirtual.DelayedCall(0.01f, () =>
+            // ランクのスプライトを取得
+            var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
+            if (rankSprite == null)
             {
+                return DOVirtual.DelayedCall(0f, () => { });
+            }
+            
+            // 表示を整える
+            _rankImage.transform.localScale = Vector3.zero;
+            _rankImage.color = new Color(1f, 1f, 1f, 0f);
+            _rankImage.sprite = rankSprite;
+            _rankImage.enabled = true;
+                    
+            var sequence = DOTween.Sequence();
+        
+            // スケールアップと同時にフェードイン
+            sequence.Append(_rankImage.transform.DOScale(1.4f, 0.3f).SetEase(Ease.OutBack));
+            sequence.Join(_rankImage.DOFade(1f, 0.25f).SetEase(Ease.OutQuart));
+            
+            // 通常サイズに戻す
+            sequence.Append(_rankImage.transform.DOScale(1f, 0.2f).SetEase(Ease.InOutQuart));
+            sequence.Join(DOVirtual.DelayedCall(0f, () =>
+            {
+                // ランク読み上げボイス/SEを再生
                 VoiceManager.PlayVoice(voice);
-                // ランクSE再生
                 SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
-                
-                // ランクの文字列とサフィックスを連結して、スプライトをロードしてくる
-                var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
-                if (rankSprite != null)
-                {
-                    _rankImage.sprite = rankSprite;
-                    _rankImage.enabled = true;
-                }
-            });
+            }));
+            
+            return sequence;
         }
 
         /// <summary>
