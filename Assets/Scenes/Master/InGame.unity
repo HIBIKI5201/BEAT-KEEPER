@@ -1237,7 +1237,7 @@ MonoBehaviour:
   _enemyIndicatorKey: enemyIndicatorText
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
-  _tutorialSE: 
+  _tutorialSE: Tutorial_PanelDIsplay
   _ringNormalSound: Ring_Normal
   _comboAttackSound: NormalGunshot
   _perfectAttackSound: Perfect
@@ -1262,6 +1262,8 @@ MonoBehaviour:
   _chargeStartVoiceName: voice_charge_attack_charge
   _chargeEndVoiceName: voice_charge_attack_fire
   _skillVoiceName: voice_skill
+  _missAvoidVoice: voice_avoid_damaged
+  _missChargeVoice: voice_charge_Attack_damaged
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
