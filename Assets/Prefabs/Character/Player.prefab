@@ -43191,7 +43191,8 @@ MonoBehaviour:
   _chargeAttackSound: ChargeGunshot
   _avoidSound: Dodge
   _finisherSound: Finishernotes
-  _hitSound: PlayerHit
+  _hitSound: PlayerHit_Dodge
+  _chargeHitSound: PlayerHit_Charge
   _perfectSound: Perfect
   _flowZone1: Flowzonegauge01
   _flowZone2: Flowzonegauge02

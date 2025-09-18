@@ -178,7 +178,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             base.HitAttack(data);
             _onHitAttack?.Invoke(Mathf.FloorToInt(data.Damage));
-            SoundEffectManager.PlaySoundEffect(_hitSound);
+            SoundEffectManager.PlaySoundEffect(data.IsNockback ? _chargeHitSound : _hitSound);
             VoiceManager.PlayVoice(data.IsNockback ? _chargeDamagedVoice : _avoidDamagedVoice);
 
             float stunTime = data.IsNockback ? _data.ChargeHitStunTime : _data.HitStunTime; //チャージかに応じて変化
@@ -251,8 +251,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField, Tooltip("フィニッシャー")]
         private string _finisherSound;
 
-        [SerializeField, Tooltip("被弾")]
+        [SerializeField, Tooltip("通常攻撃被弾")]
         private string _hitSound;
+        
+        [SerializeField, Tooltip("チャージ攻撃被弾")]
+        private string _chargeHitSound;
 
         [SerializeField, Tooltip("Perfect判定時（攻撃・回避兼用）")]
         private string _perfectSound;
