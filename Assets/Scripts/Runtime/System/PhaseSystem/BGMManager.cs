@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -45,7 +44,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         #endregion
 
         public CriAtomSource AtomSource => _atomSource;
-        
+
         #region BGMの管理
 
         /// <summary>
@@ -67,8 +66,6 @@ namespace BeatKeeper.Runtime.Ingame.System
                 VoiceManager.ChangePhaseSelector(name);
                 SoundEffectManager.ChangePhaseSelector(name);
                 OnBGMChanged?.Invoke(name);
-
-                ChangeAisacValue("AisacControl_Phase1", 0);
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
@@ -81,9 +78,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             if (_atomSource == null)
                 return;
-    
+
             float startVolume = _atomSource.volume;
-    
+
             try
             {
                 await UniTask.Create(async () =>
@@ -94,11 +91,11 @@ namespace BeatKeeper.Runtime.Ingame.System
                         progress = Mathf.Min(progress + Time.deltaTime / duration, 1f);
                         float currentVolume = Mathf.Lerp(startVolume, 0f, progress);
                         _atomSource.volume = currentVolume;
-                
+
                         await UniTask.Yield(PlayerLoopTiming.Update);
                     }
                 }).AttachExternalCancellation(cancellationToken);
-        
+
                 _atomSource.volume = 0f;
                 Music.Stop();
             }
@@ -119,18 +116,18 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             if (index <= 4) //レイヤーのみ変更する
             {
-				// レイヤー0~4の場合 = フローゾーン以外
+                // レイヤー0~4の場合 = フローゾーン以外
                 label.Append(_selectorLabelName);
                 label.Append(index.ToString("0"));
             }
             else
             {
-				// フローゾーン突入 イントロの16拍分を減らす
+                // フローゾーン突入 イントロの16拍分を減らす
                 int beat = Music.Just.Bar * 4 + Music.Just.Beat - 16;
 
-				// BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
-				int position = beat % 64;
-			
+                // BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
+                int position = beat % 64;
+
                 // position 0-14: 1小節目 -> 5に変換
                 // position 15-30: 2小節目 -> 9に変換
                 // position 31-46: 3小節目 -> 13に変換
@@ -156,7 +153,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                 }
 
                 //遷移先のレイヤー名を取得
-				label.Append(_selectorFlowZoneLabelName);
+                label.Append(_selectorFlowZoneLabelName);
                 label.Append(layer.ToString("0"));
             }
 
@@ -170,7 +167,8 @@ namespace BeatKeeper.Runtime.Ingame.System
             if (_atomSource == null) return;
 
             _atomSource.player.SetAisacControl(aisac, value);
-            Debug.Log($"{aisac} {value}");
+            _atomSource.player.UpdateAll();
+            Debug.Log($"{aisac} {value} {_atomSource.player.guid}");
         }
 
         #endregion
@@ -180,9 +178,9 @@ namespace BeatKeeper.Runtime.Ingame.System
             // 既に登録されているものがあれば解除
             _disposable?.Dispose();
             _disposable = null;
-            
+
             _disposable = new CompositeDisposable();
-            
+
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
             await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);

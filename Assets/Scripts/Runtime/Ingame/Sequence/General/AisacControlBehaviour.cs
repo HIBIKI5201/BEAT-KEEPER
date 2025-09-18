@@ -1,8 +1,5 @@
 ﻿using BeatKeeper.Runtime.Ingame.System;
-using CriWare;
 using SymphonyFrameWork.System;
-using SymphonyFrameWork.Utility;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -10,7 +7,7 @@ namespace BeatKeeper
 {
     public class AisacControlBehaviour : PlayableBehaviour
     {
-        public void SetData(string aisac, float duration,float start, float end)
+        public void SetData(string aisac, float duration, float start, float end)
         {
             _aisac = aisac;
             _duration = duration;
