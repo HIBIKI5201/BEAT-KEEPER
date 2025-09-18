@@ -7,6 +7,68 @@ namespace BeatKeeper.Runtime.Outgame.UI
 {
     public class OutGameUIManager : MonoBehaviour
     {
+        public void MoveSelection(bool isLanguageSetting, int direction)
+        {
+            if (isLanguageSetting)
+            {
+                _languageButton.MoveSelection(direction);
+            }
+            else
+            {
+                _subtitleButton.MoveSelection(direction);
+            }
+        }
+
+        /// <summary>
+        /// タイトル画面の表示に戻す
+        /// </summary>
+        public void HideSettingCanvas()
+        {
+            IsActiveCanvas(false, _mainCanvasGroup, 0.3f);
+            IsActiveCanvas(true, _baseCanvasGroup, 0.3f);
+        }
+        
+        /// <summary>
+        /// 設定Canvasを表示する
+        /// </summary>
+        public void ShowSettingCanvas()
+        {
+            IsActiveCanvas(true, _mainCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _baseCanvasGroup, 0.3f);
+            
+            // 言語設定キャンバスを表示。字幕は非表示
+            IsActiveCanvas(true, _languageCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _subtitleCanvasGroup, 0.3f);
+            
+            _languageButton.Setup();
+        }
+        
+        /// <summary>
+        /// 字幕設定キャンバスを表示。言語設定キャンバスを非表示
+        /// </summary>
+        public void ShowSubtitleCanvas()
+        {
+            IsActiveCanvas(true, _subtitleCanvasGroup, 0.3f);
+            IsActiveCanvas(false, _languageCanvasGroup, 0.3f);
+
+            _subtitleButton.Setup();
+        }
+        
+        /// <summary>
+        /// スタートした際に呼び出されるメソッド。
+        /// </summary>
+        public async Task GameStart()
+        {
+            _isGameStarted = true;
+            if (_pressAnyButtonImage != null)
+            {
+                var color = _pressAnyButtonImage.color;
+                color = _onStartColor;
+                _pressAnyButtonImage.color = color;
+            }
+            await _curtainImage.DOFade(1f, _fadeOutDuration).AsyncWaitForCompletion();
+        }
+        
         [SerializeField] private Image _curtainImage;
         [SerializeField] private Image _pressAnyButtonImage;
         [SerializeField, Tooltip("どのようにPressAnyButtonがフェードするかを設定")] private AnimationCurve _fadeCurve;
@@ -55,59 +117,6 @@ namespace BeatKeeper.Runtime.Outgame.UI
                     _pressAnyButtonImage.color = color;
                 }
             }
-        }
-
-        public void MoveSelection(bool isLanguageSetting, int direction)
-        {
-            if (isLanguageSetting)
-            {
-                _languageButton.MoveSelection(direction);
-            }
-            else
-            {
-                _subtitleButton.MoveSelection(direction);
-            }
-        }
-        
-        /// <summary>
-        /// 設定Canvasを表示する
-        /// </summary>
-        public void ShowSettingCanvas()
-        {
-            IsActiveCanvas(true, _mainCanvasGroup, 0.3f);
-            IsActiveCanvas(false, _baseCanvasGroup, 0.3f);
-            
-            // 言語設定キャンバスを表示。字幕は非表示
-            IsActiveCanvas(true, _languageCanvasGroup, 0.3f);
-            IsActiveCanvas(false, _subtitleCanvasGroup, 0.3f);
-            
-            _languageButton.Setup();
-        }
-        
-        /// <summary>
-        /// 字幕設定キャンバスを表示。言語設定キャンバスを非表示
-        /// </summary>
-        public void ShowSubtitleCanvas()
-        {
-            IsActiveCanvas(true, _subtitleCanvasGroup, 0.3f);
-            IsActiveCanvas(false, _languageCanvasGroup, 0.3f);
-
-            _subtitleButton.Setup();
-        }
-        
-        /// <summary>
-        /// スタートした際に呼び出されるメソッド。
-        /// </summary>
-        public async Task GameStart()
-        {
-            _isGameStarted = true;
-            if (_pressAnyButtonImage != null)
-            {
-                var color = _pressAnyButtonImage.color;
-                color = _onStartColor;
-                _pressAnyButtonImage.color = color;
-            }
-            await _curtainImage.DOFade(1f, _fadeOutDuration).AsyncWaitForCompletion();
         }
         
         /// <summary>
