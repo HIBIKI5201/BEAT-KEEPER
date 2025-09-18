@@ -115,28 +115,30 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private readonly string _idleStateName;
 
         private float _animatorSpeed;
-        private bool _isNotIdle;
+        private bool _isIdle;
 
         private void SyncIdle()
         {
             AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(_mainLayer);
-            bool isNotIdle = stateInfo.IsName(_idleStateName);
+            bool isIdle = stateInfo.IsName(_idleStateName);
 
-            if (isNotIdle != _isNotIdle) //変化時
+            Debug.Log(isIdle);
+
+            if (isIdle != _isIdle) //変化時
             {
-                if (isNotIdle)
-                {
-                    _animator.SetLayerWeight(_idleLayer, 0);
-                    Debug.Log("not idle");
-                }
-                else
+                if (isIdle)
                 {
                     _animator.SetLayerWeight(_idleLayer, 1);
                     Debug.Log("idle");
                 }
+                else
+                {
+                    _animator.SetLayerWeight(_idleLayer, 0);
+                    Debug.Log("not idle");
+                }
             }
 
-            _isNotIdle = isNotIdle;
+            _isIdle = isIdle;
         }
     }
 }
