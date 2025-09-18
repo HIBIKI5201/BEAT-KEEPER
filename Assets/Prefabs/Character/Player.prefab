@@ -43184,6 +43184,9 @@ MonoBehaviour:
   _muzzle: {fileID: 0}
   _ringIndicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
   _modelParent: {fileID: 8991426660756910790}
+  _mainLayer: 0
+  _idleLayer: 1
+  _idleStateName: idle
   _comboAttackSound: NormalGunshot
   _skillSound: Skill
   _chargeAttackStartSound: Charging
