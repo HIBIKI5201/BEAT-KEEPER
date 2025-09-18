@@ -195,13 +195,12 @@ namespace BeatKeeper
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _rankVoice);
 
-            // ランクSE再生
-            SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
-
             return DOVirtual.DelayedCall(0.01f, () =>
             {
                 VoiceManager.PlayVoice(voice);
-
+                // ランクSE再生
+                SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
+                
                 // ランクの文字列とサフィックスを連結して、スプライトをロードしてくる
                 var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
                 if (rankSprite != null)
