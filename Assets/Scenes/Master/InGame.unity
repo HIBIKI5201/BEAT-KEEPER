@@ -1237,7 +1237,7 @@ MonoBehaviour:
   _enemyIndicatorKey: enemyIndicatorText
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
-  _tutorialSE: Tutorial_PanelDIsplay
+  _tutorialSE: Tutorial_PanelDisplay
   _ringNormalSound: Ring_Normal
   _comboAttackSound: NormalGunshot
   _perfectAttackSound: Perfect
