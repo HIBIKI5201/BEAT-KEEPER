@@ -194,7 +194,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3721924646816817247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +265,12 @@ MonoBehaviour:
     _cueName: voice_result_b
   - _rank: 3
     _cueName: voice_result_c
+  _rankSSe: Rank_S
+  _rankASe: Rank_A
+  _rankBSe: Rank_B
+  _rankCSe: Rank_C
+  _counterSe: ResultCounter
+  _slideInSe: FrameSlideIn
   _scoreAnimationDuration: 2
   _rankRevealDelay: 1
   _resultRevealDelay: 2.3
@@ -295,14 +301,14 @@ RectTransform:
   m_GameObject: {fileID: 776649170675205362}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.3999999, y: 2.3999999, z: 2.3999999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1520496468489501056}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: -485}
+  m_AnchoredPosition: {x: -569, y: -488}
   m_SizeDelta: {x: 194.4717, y: 83.6891}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4205563267026861871
@@ -335,16 +341,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d61759c5fc5632d41a4ea4cd0b46fb01, type: 3}
-    m_FontSize: 18
+    m_FontSize: 48
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: -PRESS ANY BUTTON-
 --- !u!1 &946098379456882542
