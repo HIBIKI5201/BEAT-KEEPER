@@ -19,8 +19,7 @@ namespace BeatKeeper
         [SerializeField] private GameObject _meterPrefab;
         [SerializeField, Tooltip("点灯していないときの画像")] private Sprite _defaultSprite;
         [SerializeField, Tooltip("点灯時の画像")] private Sprite _lightingSprite;
-        [SerializeField] private CanvasGroup _overlayCanvasGroup; // フローゾーン突入時のオーバーレイ
-        [SerializeField] private VideoPlayer _spectrumPlayer; // オーディオスペクトラムを再生するビデオプレイヤー
+        [SerializeField] private UIElement_AudioSpectrum _audioSpectrum; // オーディオスペクトラム演出管理クラス
         
         [Header("実行中に追加されるもの")]
         [SerializeField] private Image[] _icons;
@@ -46,14 +45,17 @@ namespace BeatKeeper
             {
                 if (value)
                 {
-                    _overlayCanvasGroup.DOFade(1, 0.15f);
-                    _spectrumPlayer.time = 0;
-                    _spectrumPlayer.Play();
+                    if (_audioSpectrum != null)
+                    {
+                        _audioSpectrum.PlayAudioSpectrum();
+                    }
                 }
                 else
                 {
-                    // フェードアウトが終わったらオーディオスペクトラムを停止
-                    _overlayCanvasGroup.DOFade(0, 0.15f).OnComplete(() => _spectrumPlayer.Stop());
+                    if (_audioSpectrum != null)
+                    {
+                        _audioSpectrum.StopAudioSpectrum();
+                    }
                     AllReset();
                 }
             }).AddTo(_disposable);

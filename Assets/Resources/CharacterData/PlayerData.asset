@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Player
   _comboAttackPower: 100
-  _perfectCriticalDamage: 1
+  _perfectCriticalDamage: 1.5
   _comboScoreScale:
-  - 100
-  - 100
-  - 100
+  - 101
+  - 151
+  - 201
   _comboRisetTime: 3
   _chargeAttackPower: 300
   _chargeAttackTime: 2
-  _chargeStartScore: 100
-  _chargeEndScore: 200
-  _comboPerfectRange: 0.5
+  _chargeStartScore: 10000
+  _chargeEndScore: 20000
+  _comboPerfectRange: 0.7
   _comboGoodRange: 1
-  _chargeStartPerfectRange: 0.5
+  _chargeStartPerfectRange: 0
   _chargeStartGoodRange: 1
-  _chargeEndPerfectRange: 0.5
+  _chargeEndPerfectRange: 0.7
   _chargeEndGoodRange: 1
   _flowZoneThreshold: 10
   _flowZoneDuration: 32
@@ -37,9 +37,9 @@ MonoBehaviour:
   _avoidInvincibilityTime: 1
   _hitStunTime: 0
   _chargeHitStunTime: 0
-  _avoidScore: 100
-  _avoidPerfectScoreScale: 1
+  _avoidScore: 30000
+  _avoidPerfectScoreScale: 1.5
   _perfectSkillRange: 0.7
   _goodSkillRange: 1
   _skillDuration: 5
-  _skillStrangth: 1.5
+  _skillStrangth: 2

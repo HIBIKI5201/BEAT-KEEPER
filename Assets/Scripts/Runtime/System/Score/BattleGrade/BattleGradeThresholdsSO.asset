@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461c8179ad98fb74091515591b6706c5, type: 3}
   m_Name: BattleGradeThresholdsSO
   m_EditorClassIdentifier: 
-  _thresholdRankSSS: 10000
-  _thresholdRankSS: 8000
-  _thresholdRankS: 6000
-  _thresholdRankA: 4000
-  _thresholdRankB: 2000
+  _thresholdRankS: 1500000
+  _thresholdRankA: 1250000
+  _thresholdRankB: 1000000

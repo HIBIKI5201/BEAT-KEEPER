@@ -13,87 +13,7 @@ MonoBehaviour:
   m_Name: Phase1_Data_Convart
   m_EditorClassIdentifier: 
   _chart:
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 2
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
   - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 8
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 8
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -117,7 +37,23 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
   - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -129,7 +65,167 @@ MonoBehaviour:
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
   - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -153,103 +249,7 @@ MonoBehaviour:
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 8
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
   - AttackKind: 2
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 8
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 2
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -257,7 +257,7 @@ MonoBehaviour:
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 0
+  - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -270,14 +270,14 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   _rangeEndPositions:
-    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e000000120000001c000000180000004c0000005c000000
+    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e000000120000001c000000180000004c0000005c0000000a000000000000000200000004000000060000000c0000000e000000100000001a0000001e00000020000000220000002a0000002e00000032000000360000003e000000500000005800000060000000680000006a0000006c0000007200000076000000780000002c000000340000003c0000001d0000001f00000019000000460000004a0000004e000000560000005a0000005e0000004400000048000000
     values:
     - {x: 525, y: 0}
     - {x: 525, y: 0}
     - {x: 200, y: 0}
     - {x: 25, y: 0}
     - {x: 725, y: 0}
-    - {x: -325, y: 0}
+    - {x: -175, y: 0}
     - {x: 525, y: 0}
     - {x: 25, y: 0}
     - {x: 525, y: 0}
@@ -288,4 +288,44 @@ MonoBehaviour:
     - {x: -325, y: 0}
     - {x: 375, y: 0}
     - {x: 375, y: 0}
+    - {x: -175, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: -325, y: 0}
+    - {x: -325, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 200, y: 0}
+    - {x: 200, y: 0}
+    - {x: 200, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
   _visible: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
