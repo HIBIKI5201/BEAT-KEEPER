@@ -58,8 +58,8 @@ namespace BeatKeeper.Runtime.Outgame.System
             bgmManager.ChangeBGM(_bgmName);
 
             // サービスロケーターから取得（Systemシーンが読み込まれるまで待つ）
-            _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
+            _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
         }
 
         private void Start()
@@ -112,6 +112,12 @@ namespace BeatKeeper.Runtime.Outgame.System
         {
             _currentState = GameState.SubtitleSetting;
             
+            if (_localizeTextManager == null)
+            {
+                // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
+                ServiceLocator.GetInstance<LocalizeTextManager>();
+            }
+            
             // 言語設定を確定
             _localizeTextManager.ChangeLanguage((LanguageType)_outGameUIManager.LanguageId);
             
@@ -128,6 +134,12 @@ namespace BeatKeeper.Runtime.Outgame.System
             
             try
             {
+                if (_localizeTextManager == null)
+                {
+                    // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
+                    ServiceLocator.GetInstance<LocalizeTextManager>();
+                }
+                
                 // 字幕設定を確定
                 _localizeTextManager.ChangeSubtitleLanguage((LanguageType)_outGameUIManager.SubtitleId);
                 
