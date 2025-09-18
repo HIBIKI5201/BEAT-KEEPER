@@ -194,7 +194,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3721924646816817247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
   _perfectCount: {fileID: 7047120852346443159}
   _goodCount: {fileID: 1683138294846311537}
   _missCount: {fileID: 1071247687753604473}
+  _pulseText: {fileID: 2807488151937987117}
   _rankSpriteAtlas: {fileID: 100100200, guid: 93e35356181195640bce4bd390d5c0f1, type: 3}
   _rankSpriteSuffix: _rank
   _resultCueName: voice_result

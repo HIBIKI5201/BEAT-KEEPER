@@ -48,6 +48,7 @@ namespace BeatKeeper
         [SerializeField] private UIContents_Result _perfectCount; // Perfect判定の回数
         [SerializeField] private UIContents_Result _goodCount; // Good判定の回数
         [SerializeField] private UIContents_Result _missCount; // Miss判定の回数
+        [SerializeField] private Text _pulseText; // 点滅アニメーションをかけるPRESS ANY KEYテキスト
 
         [Header("ランク画像")] 
         [SerializeField] private SpriteAtlas _rankSpriteAtlas; // ランクの画像のスプライトアトラス
@@ -71,7 +72,9 @@ namespace BeatKeeper
         [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
         [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 1f;
         [SerializeField, Tooltip("賞賛ボイスまでの待機時間")] private float _resultRevealDelay = 2f;
-        
+        [SerializeField, Tooltip("ランクImageの拡大率")] private float _rankImageScale = 1.4f;
+        [SerializeField, Tooltip("PRESS ANY BUTTONの部分の点滅間隔")] private float _textPulseDuration = 1.5f;
+        [SerializeField, Tooltip("PRESS ANY BUTTONの部分のパルス時の透明度")] private float _textPulseTargetAlpha = 0.6f;
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
@@ -211,7 +214,7 @@ namespace BeatKeeper
             var sequence = DOTween.Sequence();
         
             // スケールアップと同時にフェードイン
-            sequence.Append(_rankImage.transform.DOScale(1.4f, 0.3f).SetEase(Ease.OutBack));
+            sequence.Append(_rankImage.transform.DOScale(_rankImageScale, 0.3f).SetEase(Ease.OutBack));
             sequence.Join(_rankImage.DOFade(1f, 0.25f).SetEase(Ease.OutQuart));
             
             // 通常サイズに戻す
@@ -286,6 +289,9 @@ namespace BeatKeeper
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _resultVoice);
             _playback = VoiceManager.PlayVoice(voice);
+            
+            // テキストの点滅を始める
+            _pulseText.DOFade(_textPulseTargetAlpha, _textPulseDuration).SetLoops(-1, LoopType.Yoyo);
         }
         
         /// <summary>
