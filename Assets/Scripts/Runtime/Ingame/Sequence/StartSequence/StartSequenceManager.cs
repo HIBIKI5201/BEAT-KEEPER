@@ -16,6 +16,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         [SerializeField] TutorialManager _tutorialManager;
         [SerializeField] PlayableAsset _playableAsset;
+        
+        [Header("スキップ処理")]
+        [SerializeField]
+        private float _skipTiming;
+        
+        [SerializeField]
+        private string _bgmName = "Phase1";
+        
         private async void Start()
         {
             var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
@@ -51,11 +59,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _director = director;
         }
 
-#if UNITY_EDITOR
-        [Header("Debug")]
-        [SerializeField]
-        private float _skipTiming;
-
         [ContextMenu(nameof(SkipStart))]
         private void SkipStart()
         {
@@ -64,8 +67,19 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 Debug.LogError("PlayableDirector is not set. Please run the scene in the editor to set it.");
                 return;
             }
+            
+            if (!Music.IsPlaying)
+            {
+                // BGMが再生されていなかったらBGMを再生
+                var bgmManager = ServiceLocator.GetInstance<BGMManager>();
+                if (bgmManager)
+                {
+                    bgmManager.ChangeBGM(_bgmName);
+                }
+            }
+            
+            // タイムラインの時間をとばす
             _director.time = _skipTiming;
         }
-#endif
     }
 }
