@@ -349,7 +349,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return true;
                 }
             }
-
+            
             PlayVoice(_tutorialField);
             _currentMissCount++;
             if (_activeIndicator != null)
@@ -482,7 +482,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    if (_attackTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_attackTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_attackNormalVoiceName);
                     if (CheckPerfect())
                     {
@@ -519,7 +519,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ind =>
                 {
                     SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
-                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_othersTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_skillVoiceName);
                     ind.PlaySuccessEffectPublic();
                     _playerAnimeManager.Skill();
@@ -540,7 +540,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_othersTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_avoidVoiceName);
                     ind.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
@@ -605,7 +605,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _currentTargetClearCount++;
                         chargeIndicator.OnPlayerAttackSuccessTutorial();
                         SoundEffectManager.PlaySoundEffect(_chargeGunshot);
-                        if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                        if (_othersTutorialClearCount != _currentTargetClearCount)
                             VoiceManager.PlayVoice(_chargeEndVoiceName);
                         _enemyAnimeManager.ChargeAttack();
                         _enemyAnimeManager.KnockBack(true);
