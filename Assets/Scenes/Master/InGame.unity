@@ -1266,6 +1266,7 @@ MonoBehaviour:
   _skillVoiceName: voice_skill
   _missAvoidVoice: voice_avoid_damaged
   _missChargeVoice: voice_charge_attack_damaged
+  _skillEffectName: FX_Skill
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,6 +1405,7 @@ MonoBehaviour:
   _perCharacterTimeMultiplier: 0.2
   _textBox: {fileID: 1215655903}
   _subTitleText: {fileID: 1852328611}
+  _textBoxHeightPerLine: 80
 --- !u!4 &1640088185
 Transform:
   m_ObjectHideFlags: 0

@@ -86,6 +86,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _missAvoidVoice;
         [SerializeField] private string _missChargeVoice;
 
+        [Header("エフェクトのGameObject名")]
+        [SerializeField] private string _skillEffectName;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -96,6 +98,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayerAnimeManager _playerAnimeManager;
         private EnemyAnimeManager _enemyAnimeManager;
         private LocalizeTextManager _localizeTextManager;
+        private ParticleSystem _skillEffect;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -122,6 +125,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var enemy = battleSceneManager.EnemyAdmin.GetActiveEnemy();
             _enemyAnimeManager = enemy.GetEnemyAnimeManager();
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
+
+            _skillEffect = _playerManager.gameObject.transform.Find(_skillEffectName).gameObject.GetComponent<ParticleSystem>();
+
         }
 
         private void OnDestroy()
@@ -353,7 +359,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     return true;
                 }
             }
-            
+
             PlayVoice(_tutorialField);
             _currentMissCount++;
             if (_activeIndicator != null)
@@ -524,6 +530,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    _skillEffect.Play();
                     SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                     if (_othersTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_skillVoiceName);
