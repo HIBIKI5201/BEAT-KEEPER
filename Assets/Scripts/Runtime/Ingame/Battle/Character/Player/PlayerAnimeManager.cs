@@ -7,7 +7,18 @@ namespace BeatKeeper.Runtime.Ingame.Character
     /// </summary>
     public class PlayerAnimeManager : CharacterAnimeManagerB
     {
-        public PlayerAnimeManager(Animator animator) : base(animator) { }
+        public PlayerAnimeManager(Animator animator,
+            int mainLayer, int idleLayer, string idleStateName) : base(animator)
+        {
+            _mainLayer = mainLayer;
+            _idleLayer = idleLayer;
+            _idleStateName = idleStateName;
+        }
+
+        public void Update()
+        {
+            SyncIdle();
+        }
 
         public void Avoid()
         {
@@ -65,6 +76,12 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _animator.SetTrigger(_skill);
         }
 
+        public void ResetIdle()
+        {
+            _animator.SetTrigger(_idle);
+        }
+
+
         public void PauseAnimator()
         {
             if (_animator == null) return;
@@ -91,6 +108,35 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         private readonly int _skill = Animator.StringToHash("Skill");
 
+        private readonly int _idle = Animator.StringToHash("Idle");
+
+        private readonly int _mainLayer;
+        private readonly int _idleLayer;
+        private readonly string _idleStateName;
+
         private float _animatorSpeed;
+        private bool _isNotIdle;
+
+        private void SyncIdle()
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(_mainLayer);
+            bool isNotIdle = stateInfo.IsName(_idleStateName);
+
+            if (isNotIdle != _isNotIdle) //変化時
+            {
+                if (isNotIdle)
+                {
+                    _animator.SetLayerWeight(_idleLayer, 0);
+                    Debug.Log("not idle");
+                }
+                else
+                {
+                    _animator.SetLayerWeight(_idleLayer, 1);
+                    Debug.Log("idle");
+                }
+            }
+
+            _isNotIdle = isNotIdle;
+        }
     }
 }
