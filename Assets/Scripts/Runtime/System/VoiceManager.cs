@@ -6,15 +6,15 @@ namespace BeatKeeper.Runtime.System
     [RequireComponent(typeof(CriAtomSource))]
     public class VoiceManager : MonoBehaviour
     {
-        public static void PlayVoice(string cueName)
+        public static CriAtomExPlayback PlayVoice(string cueName)
         {
             if (_instance == null)
             {
                 Debug.LogError("VoiceManager is not initialized.");
-                return;
+                return default;
             }
             _instance._criAtomSource.cueName = cueName;
-            _instance._criAtomSource.Play();
+            return _instance._criAtomSource.Play();
         }
 
         public static void ChangePhaseSelector(string phaseName)

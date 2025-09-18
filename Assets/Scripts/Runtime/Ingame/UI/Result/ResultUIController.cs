@@ -6,6 +6,7 @@ using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.Battle;
 using BeatKeeper.Runtime.System;
+using CriWare;
 
 namespace BeatKeeper
 {
@@ -27,6 +28,14 @@ namespace BeatKeeper
             
             // 演出開始
             StartPerformance();
+        }
+
+        /// <summary>
+        /// ボイスが再生中なら止める
+        /// </summary>
+        public void StopVoice()
+        {
+            _playback.Stop();
         }
         
         [SerializeField] private ScoreManager _scoreManager; // スコアマネージャー
@@ -66,6 +75,7 @@ namespace BeatKeeper
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
+        private CriAtomExPlayback _playback;
 
         #region Life cycle
 
@@ -94,6 +104,9 @@ namespace BeatKeeper
         private void OnDestroy()
         {
             _resultSequence?.Kill();
+            
+            // ボイスが再生中なら止める
+            _playback.Stop();
         }
 
         #endregion
@@ -258,7 +271,7 @@ namespace BeatKeeper
 
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _resultVoice);
-            VoiceManager.PlayVoice(voice);
+            _playback = VoiceManager.PlayVoice(voice);
         }
         
         /// <summary>
