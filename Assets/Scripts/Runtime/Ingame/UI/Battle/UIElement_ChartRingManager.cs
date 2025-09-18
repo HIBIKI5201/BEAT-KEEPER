@@ -80,6 +80,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             if (phase == PhaseEnum.Battle) //譜面を取得してビートの購買を開始
             {
+				// バトルの開始タイミングを保存する
+				MusicEngineHelper.SetStartTiming();
+
                 var enemy = _enemies.GetActiveEnemy();
                 _targetData = enemy.Data;
                 _enemies.GetActiveEnemy().HealthSystem.OnDeath += OnFinisher;
@@ -119,7 +122,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                     continue;
 
                 //リングを生成する
-                if (_targetData.ChartData.HasEndPosition(chartPosition))
+                if (data.AttackKind == ChartKindEnum.Charge)
                 {
                     // 終点ノーツの座標が辞書に登録されている場合はそれを取得して渡す
                     // NOTE: 座標取得でnullが返ってくる人はないはずだが、念のため(0, 0)の位置を設定しておく

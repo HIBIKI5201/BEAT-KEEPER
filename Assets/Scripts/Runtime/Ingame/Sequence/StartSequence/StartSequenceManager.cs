@@ -12,11 +12,19 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     /// <summary>
     /// 開始演出
     /// </summary>
-    public class StartSequenceManager : MonoBehaviour
+    public class StartSequenceManager : BaseSkipController
     {
         [SerializeField] TutorialManager _tutorialManager;
         [SerializeField] PlayableAsset _playableAsset;
-        private async void Start()
+        
+        [Header("スキップ処理")]
+        [SerializeField] private float _skipTiming;
+        
+        [SerializeField] private string _bgmName = "Phase1";
+        
+        private PlayableDirector _director;
+        
+        protected override async void Start()
         {
             var multiSceneManager = ServiceLocator.GetInstance<MultiSceneManager>();
             if (multiSceneManager)
@@ -28,6 +36,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var movieManager = await ServiceLocator.GetInstanceAsync<MovieManager>();
             var director = movieManager.GetDirector(_playableAsset);
             var phaseManager = await ServiceLocator.GetInstanceAsync<PhaseManager>();
+            
             //スタートシーケンスの再生終了時にチュートリアルシーケンスを再生する
             director.stopped += (_) =>
             {
@@ -41,31 +50,48 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             //director.playableGraph.GetRootPlayable(0).SetSpeed((float)Music.CurrentTempo / 60);
 
             SaveDirector(director);
+
+            base.Start();
         }
 
-        private PlayableDirector _director;
-
-        [Conditional("UNITY_EDITOR")]
-        private void SaveDirector(PlayableDirector director)
+        protected override void Update()
         {
-            _director = director;
+            // タイムラインアセットがnullもしくはタイムラインの再生が終了していたらスキップ処理は行いたくないので早期return
+            if (_director == null || _director.time >= _skipTiming)
+            {
+                return;
+            }
+
+            base.Update();
         }
-
-#if UNITY_EDITOR
-        [Header("Debug")]
-        [SerializeField]
-        private float _skipTiming;
-
-        [ContextMenu(nameof(SkipStart))]
-        private void SkipStart()
+        
+        [ContextMenu(nameof(OnSkip))]
+        protected override void OnSkip()
         {
             if (_director == null)
             {
                 Debug.LogError("PlayableDirector is not set. Please run the scene in the editor to set it.");
                 return;
             }
+            
+            if (!Music.IsPlaying)
+            {
+                // BGMが再生されていなかったらBGMを再生
+                var bgmManager = ServiceLocator.GetInstance<BGMManager>();
+                if (bgmManager)
+                {
+                    bgmManager.ChangeBGM(_bgmName);
+                }
+            }
+            
+            // タイムラインの時間をとばす
             _director.time = _skipTiming;
         }
-#endif
+        
+        [Conditional("UNITY_EDITOR")]
+        private void SaveDirector(PlayableDirector director)
+        {
+            _director = director;
+        }
     }
 }

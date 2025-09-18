@@ -413,7 +413,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  _cueName: NormalGunshot
+  _cueName: Title_Operation
   _cueSheet: SE
 --- !u!225 &1228509995 stripped
 CanvasGroup:

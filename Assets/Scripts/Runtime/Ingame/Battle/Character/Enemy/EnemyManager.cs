@@ -34,7 +34,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         public void Dispose()
         {
             InputUnregister();
-            _disposeCancellationToken?.Cancel();
+            _disposable?.Dispose();
         }
 
         public EnemyAnimeManager GetEnemyAnimeManager()
@@ -81,14 +81,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             SetActiveModel(true);
 
-            _disposeCancellationToken = new();
+            _disposable = new();
             
             //フェーズ変更時のイベント登録
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             phaseManager.CurrentPhaseProp
                 .Skip(1) // 初期フェーズをスキップ
                 .Subscribe(OnPhaseChange)
-                .AddTo(_disposeCancellationToken.Token);
+                .AddTo(_disposable);
             _phaseManager = phaseManager;
         }
 
@@ -170,7 +170,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private EnemyAnimeManager _animeManager;
         private CharacterHealthSystem _healthSystem;
 
-        private CancellationTokenSource _disposeCancellationToken = new CancellationTokenSource();
+        private CompositeDisposable _disposable = new CompositeDisposable();
 
         protected override async void Awake()
         {
@@ -225,7 +225,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         }
 
         private void OnAttack()
-        {
+        {   
             if (!_bgmManager) return;
 
             if (_target.IsStunning()) return; //プレイヤーがスタン中は攻撃しない

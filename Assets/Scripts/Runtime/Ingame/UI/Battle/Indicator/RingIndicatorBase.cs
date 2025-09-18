@@ -23,13 +23,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
         }
 
         public void OnGet(Action onEndAction, Vector2 rectPos, int timing)
         {
             // 終了フラグをリセット
             _isEnded = false;
+
+			// 解像度に合わせる
+            rectPos *= _resolutionMultiply;
 
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
@@ -141,6 +144,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             return true;
         }
+
+        public bool IsExpired()
+        {
+            var remainTime = (EffectLength - _count) * MusicEngineHelper.DurationOfBeat;
+            return remainTime < 0;
+        }
+
+		public void ApplyResolutionMultiply(float multiply)
+		{
+			_resolutionMultiply = multiply;
+		}
         
         #region ノーツの演出（チュートリアル用publicメソッド）
         
@@ -150,6 +164,12 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         public virtual void PlayFailEffect()
         {
+            if (MusicEngineHelper.GetBeatNearerSinceStart() < _timing)
+            {
+                // ノーツのタイミングより前なら処理はスキップ
+                return;
+            }
+            
 			Unsubscribe();
 
             // Tweens配列をクリア
@@ -223,6 +243,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("SE")]
         [SerializeField] protected string _apperanceSoundCueName;
 
+        protected float _resolutionMultiply = 1;
+
         protected PlayerManager _player;
         protected UIElement_ChartRingManager _chartRingManager;
         protected Action _onEndAction;
@@ -242,15 +264,13 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected int _count;
         protected Tween[] _tweens;
 
-        private Vector2 _defaultCenterImageSize; // 中央の画像素材のデフォルトのWidth/Height
-
         protected Color _defaultColor => _colorSettings.DefaultColor;
         protected Color _translucentDefaultColor => _colorSettings.TranslucentDefaultColor;
 
         // Justタイミングは2拍後
         private const float CONTRACTION_SPEED = 2;
-        // Justタイミングのあとの判定受付時間 // TODO: PlayerDataから値をとってくるようにする
-        private const float RECEPTION_TIME = 0.45f;
+        // Justタイミングのあとの判定受付時間 = 拍の半分の時間とする
+        private const float RECEPTION_TIME = 0.5f;
         
         #endregion
         
@@ -263,8 +283,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 // スクリプタブルオブジェクトで割り当てられていない場合のみ、子オブジェクトを取得
                 _ringImage = transform.GetChild(0).GetComponent<Image>();
             }
-
-            _defaultCenterImageSize = _centerImage.rectTransform.sizeDelta;
             
             ResetRingsScale();
             ResetRingsColor(_defaultColor, _translucentDefaultColor);
@@ -306,7 +324,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のImageのスプライト変更とサイズ変更
             _centerImage.sprite = hitResult.Sprite;
-            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = hitResult.SizeDelta * _resolutionMultiply;
 
             if (isPerfect)
             {
@@ -326,7 +344,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         protected void SetMissImage()
         {
             _centerImage.sprite = _hitResult.Miss.Sprite;
-            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _hitResult.Miss.SizeDelta * _resolutionMultiply;
         }
         
         #endregion
@@ -344,14 +362,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var contractionSequence = DOTween.Sequence()
 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED).SetEase(Ease.Linear))
-                
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                    .SetEase(Ease.Linear))
+
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME).SetEase(Ease.Linear))
-                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME))
-                
-                // シーケンスが中断されなかった場合はミス。失敗演出を行う
-                .OnComplete(() => PlayFailEffect());
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale * 0.5f, beatDuration * RECEPTION_TIME)
+                    .SetEase(Ease.Linear))
+                .Join(CreateFadeSequence(beatDuration * RECEPTION_TIME));
+            
+            // TODO: PlayerManagerの修正が終わり次第とる
+            contractionSequence.OnComplete(() => PlayFailEffect());
             
             // Tweenを配列に保存
             if (_tweens != null && _tweens.Length > 1)
@@ -412,11 +432,14 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 白色のSpriteに変更
             ChangeRingsImage();
+
+			// NOTE: CanvasScalerにより演出のscale変更が変わりすぎないようにしたい
+            var multiply = 0.325f * _resolutionMultiply;
             
             var successSequence = DOTween.Sequence();
 
             // パンチスケールと色変更
-            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * 0.65f, _blinkDuration, 2, 0.5f));
+            successSequence.Append(_selfImage.rectTransform.DOPunchScale(Vector3.one * multiply, _blinkDuration, 2, 0.5f));
             successSequence.Join(CreateColorChangeSequence(_newColor, _newTranslucentColor, _fadeDuration));
             
             // フェードアウト
@@ -462,7 +485,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
-            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+            _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
 
             // デフォルトのスプライトを設定する
             _ringImage.sprite = _hitLine;

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8978833402181130982}
   - component: {fileID: 9105084593778582307}
   - component: {fileID: 7913087880712888201}
+  - component: {fileID: -7537579482647627284}
   m_Layer: 5
   m_Name: Skill_RingIndicator
   m_TagString: Untagged
@@ -93,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _contractionScale: {x: 0.99, y: 0.99, z: 0.99}
+  _contractionScale: {x: 0.97, y: 0.97, z: 0.97}
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _hitImage: {fileID: 1064944501665903157}
   _decorationImage: {fileID: 1871314084557727050}
@@ -122,6 +123,21 @@ MonoBehaviour:
   - {fileID: 2791112836386193321}
   - {fileID: 6510102979477291928}
   _translucentRingImages: []
+  _skillApperanceSoundCueName: Ring_Skill
+  _finisherApperanceSoundCueName: Ring_Finisher
+  _centerImageMultiply: 2
+--- !u!114 &-7537579482647627284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751697491445142840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786f403b4cdfd43419fcfdf2f00ca0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2225135670728700143
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +248,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1782409324661750441
 CanvasRenderer:
@@ -301,10 +317,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 972999094456285954}
   - {fileID: 3664850786923950020}
   - {fileID: 3947355789181687849}
   - {fileID: 2768575999939148061}
+  - {fileID: 972999094456285954}
   m_Father: {fileID: 989207443497645692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -509,7 +525,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &598795666085567313
 CanvasRenderer:
@@ -584,7 +600,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 240, y: 240}
+  m_SizeDelta: {x: 355.6317, y: 355.6317}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2066630295639611868
 CanvasRenderer:
@@ -809,7 +825,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 260, y: 260}
+  m_SizeDelta: {x: 385.2676, y: 385.2676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1421722422397237101
 CanvasRenderer:
@@ -884,7 +900,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 270}
+  m_SizeDelta: {x: 400.0857, y: 400.0857}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7073882177844550948
 CanvasRenderer:
@@ -953,11 +969,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5190724371095255277}
   - {fileID: 7066872206902685503}
   - {fileID: 946481309531798489}
   - {fileID: 3464619587593137638}
   - {fileID: 3205257995843917499}
+  - {fileID: 5190724371095255277}
   m_Father: {fileID: 989207443497645692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
