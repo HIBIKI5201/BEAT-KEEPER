@@ -60,10 +60,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _skillSuccessSound;
         [SerializeField] private string _ringAvoidSound;
         [SerializeField] private string _dodgeSound;
+        [SerializeField] private string _avoidMissSound;
         [SerializeField] private string _chargeSound;
         [SerializeField] private string _charging;
         [SerializeField] private string _chargeComplete;
         [SerializeField] private string _chargeGunshot;
+        [SerializeField] private string _chargeMissSound;
 
         [Header("ボイス")]
         [SerializeField] private bool _useSubtitle = true;
@@ -256,11 +258,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.KnockBack(false);
                         _enemyAnimeManager.ChargeAttack();
                         VoiceManager.PlayVoice(_missChargeVoice);
+                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                     }
                     else if (_chartKindEnum == ChartKindEnum.Normal)
                     {
                         _playerAnimeManager.Hit();
                         VoiceManager.PlayVoice(_missAvoidVoice);
+                        SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                     }
                 }
             }
@@ -438,16 +442,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 if (ringIndicatorBase as ChargeIndicator && _chargeAttackWaiting)
                 {
                     //チャージ中にリングが消える場合は失敗扱いにする
-                    _isCharging = false;
                     _currentChargeBeat = 0;
+                    _isCharging = false;
+                    _chargeAttackWaiting = false;
                     _enemyAnimeManager.ChargeAttack();
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
-                    _chargeAttackWaiting = false;
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
                 else if (ringIndicatorBase as EnemyIndicator)
                 {
                     _playerAnimeManager.Hit();
+                    SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             }
 
@@ -551,6 +557,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 {
                     ind.PlayFailEffect();
                     _playerAnimeManager.Hit();
+                    SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             );
         }
@@ -591,6 +598,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _activeIndicator = null;
                     }
                     PlayVoice(_tutorialField);
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -617,6 +625,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.KnockBack(false);
                         _playerAnimeManager.FatalHit();
                         PlayVoice(_tutorialField);
+                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                     }
                 }
                 else
@@ -626,6 +635,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
                     PlayVoice(_tutorialField);
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
                 if (_activeIndicator != null)
                 {
