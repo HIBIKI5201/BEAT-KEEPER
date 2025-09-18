@@ -122,8 +122,8 @@ namespace BeatKeeper.Runtime.Ingame.System
             }
             else
             {
-				// フローゾーン突入
-                int beat = MusicEngineHelper.GetBeatSinceStart();
+				// フローゾーン突入 イントロの16拍分を減らす
+                int beat = Music.Just.Bar * 4 + Music.Just.Beat - 16;
 
 				// BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
 				int position = beat % 64;
