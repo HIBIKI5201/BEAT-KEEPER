@@ -694,6 +694,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
 
+                _skillEffect.Play();
                 _playerAnimeManager.Skill();
                 SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                 VoiceManager.PlayVoice(_skillVoiceName);
