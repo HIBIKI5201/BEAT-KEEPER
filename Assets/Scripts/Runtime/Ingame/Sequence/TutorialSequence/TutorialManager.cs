@@ -60,10 +60,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _skillSuccessSound;
         [SerializeField] private string _ringAvoidSound;
         [SerializeField] private string _dodgeSound;
+        [SerializeField] private string _avoidMissSound;
         [SerializeField] private string _chargeSound;
         [SerializeField] private string _charging;
         [SerializeField] private string _chargeComplete;
         [SerializeField] private string _chargeGunshot;
+        [SerializeField] private string _chargeMissSound;
 
         [Header("ボイス")]
         [SerializeField] private bool _useSubtitle = true;
@@ -84,6 +86,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _missAvoidVoice;
         [SerializeField] private string _missChargeVoice;
 
+        [Header("エフェクトのGameObject名")]
+        [SerializeField] private string _skillEffectName;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -94,6 +98,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private PlayerAnimeManager _playerAnimeManager;
         private EnemyAnimeManager _enemyAnimeManager;
         private LocalizeTextManager _localizeTextManager;
+        private ParticleSystem _skillEffect;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -120,6 +125,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             var enemy = battleSceneManager.EnemyAdmin.GetActiveEnemy();
             _enemyAnimeManager = enemy.GetEnemyAnimeManager();
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
+
+            _skillEffect = _playerManager.gameObject.transform.Find(_skillEffectName).gameObject.GetComponent<ParticleSystem>();
+
         }
 
         private void OnDestroy()
@@ -256,11 +264,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.KnockBack(false);
                         _enemyAnimeManager.ChargeAttack();
                         VoiceManager.PlayVoice(_missChargeVoice);
+                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                     }
                     else if (_chartKindEnum == ChartKindEnum.Normal)
                     {
                         _playerAnimeManager.Hit();
                         VoiceManager.PlayVoice(_missAvoidVoice);
+                        SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                     }
                 }
             }
@@ -438,16 +448,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 if (ringIndicatorBase as ChargeIndicator && _chargeAttackWaiting)
                 {
                     //チャージ中にリングが消える場合は失敗扱いにする
-                    _isCharging = false;
                     _currentChargeBeat = 0;
+                    _isCharging = false;
+                    _chargeAttackWaiting = false;
                     _enemyAnimeManager.ChargeAttack();
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
-                    _chargeAttackWaiting = false;
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
                 else if (ringIndicatorBase as EnemyIndicator)
                 {
                     _playerAnimeManager.Hit();
+                    SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             }
 
@@ -482,7 +494,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    if (_attackTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_attackTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_attackNormalVoiceName);
                     if (CheckPerfect())
                     {
@@ -518,8 +530,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
+                    _skillEffect.Play();
                     SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
-                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_othersTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_skillVoiceName);
                     ind.PlaySuccessEffectPublic();
                     _playerAnimeManager.Skill();
@@ -540,7 +553,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 () => CheckGood(),
                 ind =>
                 {
-                    if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                    if (_othersTutorialClearCount != _currentTargetClearCount)
                         VoiceManager.PlayVoice(_avoidVoiceName);
                     ind.OnPlayerAvoidSuccess(true);
                     SoundEffectManager.PlaySoundEffect(_dodgeSound);
@@ -551,6 +564,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 {
                     ind.PlayFailEffect();
                     _playerAnimeManager.Hit();
+                    SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             );
         }
@@ -591,6 +605,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _activeIndicator = null;
                     }
                     PlayVoice(_tutorialField);
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -605,7 +620,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _currentTargetClearCount++;
                         chargeIndicator.OnPlayerAttackSuccessTutorial();
                         SoundEffectManager.PlaySoundEffect(_chargeGunshot);
-                        if (_othersTutorialClearCount - 1 != _currentTargetClearCount)
+                        if (_othersTutorialClearCount != _currentTargetClearCount)
                             VoiceManager.PlayVoice(_chargeEndVoiceName);
                         _enemyAnimeManager.ChargeAttack();
                         _enemyAnimeManager.KnockBack(true);
@@ -617,6 +632,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.KnockBack(false);
                         _playerAnimeManager.FatalHit();
                         PlayVoice(_tutorialField);
+                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                     }
                 }
                 else
@@ -626,6 +642,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
                     PlayVoice(_tutorialField);
+                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                 }
                 if (_activeIndicator != null)
                 {
@@ -677,6 +694,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 ringObj.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_skillIndicatorKey), _inputBuffer.Attack);
 
+                _skillEffect.Play();
                 _playerAnimeManager.Skill();
                 SoundEffectManager.PlaySoundEffect(_skillSuccessSound);
                 VoiceManager.PlayVoice(_skillVoiceName);
