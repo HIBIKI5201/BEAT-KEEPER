@@ -32,6 +32,8 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <summary>拍の切り替わりが近づいた時に発火するイベント</summary>
         public event Action OnNearChangedBeat;
 
+        public event Action<string> OnBGMChanged;
+
         #endregion
 
         #region リアクティブプロパティ
@@ -63,6 +65,7 @@ namespace BeatKeeper.Runtime.Ingame.System
 
                 VoiceManager.ChangePhaseSelector(name);
                 SoundEffectManager.ChangePhaseSelector(name);
+                OnBGMChanged?.Invoke(name);
             }
 
             Debug.Log($"{nameof(BGMManager)} BGMを変更しました");
