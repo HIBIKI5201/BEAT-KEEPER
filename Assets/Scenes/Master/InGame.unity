@@ -1268,6 +1268,7 @@ MonoBehaviour:
   _skillVoiceName: voice_skill
   _missAvoidVoice: voice_avoid_damaged
   _missChargeVoice: voice_charge_attack_damaged
+  _skillEffectName: FX_Skill
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
