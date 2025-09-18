@@ -32,9 +32,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1192621808415416265}
   - {fileID: 5184067000131770246}
   - {fileID: 6948879313488365171}
+  - {fileID: 1192621808415416265}
   - {fileID: 7572282237492635276}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -109,7 +109,6 @@ MonoBehaviour:
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Avoid
-  _4kPlay: 1
 --- !u!114 &-2377371535590100811
 MonoBehaviour:
   m_ObjectHideFlags: 0

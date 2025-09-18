@@ -72,6 +72,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private RectTransform _rectTransform;
         private Vector3 _originalPosition;
 
+        private int _bgmStartTiming = 1;
+
         #region Life cycle
         
         /// <summary>
@@ -82,6 +84,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             InitializeComponents();
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            
+            // BGMが切り替わったときのイベントを購読
+            _bgmManager.OnBGMChanged += OnBGMChanged;
+        }
+
+        private void OnBGMChanged(string phaseName)
+        {
+            // カウントをリセット
+            _bgmStartTiming = 1;
+
+            _bgmManager.OnJustChangedBeat += OnCount;
         }
         
         /// <summary>
@@ -94,6 +107,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (_bgmManager != null)
             {
                 _bgmManager.OnJustChangedBeat -= OnBeatTrigger;
+                _bgmManager.OnJustChangedBeat -= OnCount;
+                _bgmManager.OnBGMChanged -= OnBGMChanged;
             }
         }
         
@@ -139,6 +154,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 enemyAdmin.NextEnemyActive();
             }
         }
+
+        /// <summary>
+        /// BGMが始まって何拍目かカウント
+        /// </summary>
+        private void OnCount()
+        {
+            _bgmStartTiming = Music.Just.Bar * 4 + Music.Just.Beat - 2;
+            //Debug.LogWarning(_bgmStartTiming);
+        }
         
         /// <summary>
         /// 演出開始
@@ -155,18 +179,25 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnBeatTrigger()
         {
             if (!_isPerforming) return;
-
-            int currentBeat = MusicEngineHelper.GetBeatSinceStart();
             
-            if (_counter == 0 && currentBeat % 4 == 0)
+            // 16拍区切りの13拍目から開始（3, 2, 1で3拍使用し、16拍目で終了）
+            int currentBeat = _bgmStartTiming % 16;
+    
+            if (_counter == 0 && currentBeat == 12) // 13拍目から開始
             {
-                // 4で割り切れる拍から始める
-                ChangeImage();
+                ChangeImage(); // 3を表示
             }
-            else if (_counter > 0 && _counter < 3)
+            else if (_counter == 1 && currentBeat == 13) // 14拍目
             {
-                // 既に演出が始まっている場合
-                ChangeImage();
+                ChangeImage(); // 2を表示  
+            }
+            else if (_counter == 2 && currentBeat == 14) // 15拍目
+            {
+                ChangeImage(); // 1を表示
+            }
+            else if (_counter == 3 && currentBeat == 15) // 16拍目（0拍目）で終了
+            {
+                EndPerform();
             }
         }
 
@@ -240,6 +271,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void EndPerform()
         {
             _bgmManager.OnJustChangedBeat -= OnBeatTrigger;
+            _bgmManager.OnJustChangedBeat -= OnCount;
+            
             _isPerforming = false;
 
             // ポジションリセット
