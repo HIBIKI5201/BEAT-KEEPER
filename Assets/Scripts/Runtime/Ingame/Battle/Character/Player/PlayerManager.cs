@@ -228,6 +228,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
         [SerializeField] private RingIndicatorData _ringIndicatorData;
         [SerializeField] private GameObject _modelParent;
 
+        [Space]
+        [SerializeField]
+        private int _mainLayer = 0;
+        [SerializeField]
+        private int _idleLayer = 1;
+        [SerializeField]
+        private string _idleStateName = "Idle";
+
         #region サウンドクリップ
         [Header("SE")]
         [SerializeField, Tooltip("汎用的な発砲音（通常攻撃の1段目の発砲音）")]
@@ -365,6 +373,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _bgmManager.OnJustChangedBeat += OnJustBeat;
                 _bgmManager.OnNearChangedBeat += OnNearBeat;
+
+                _bgmManager.OnBGMChanged += OnBGMChanged;
             }
             else
             {
@@ -388,6 +398,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private void Update()
         {
             _comboSystem.Update();
+            _animeManager.Update();
         }
 
         public void Dispose()
@@ -402,6 +413,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 _bgmManager.OnJustChangedBeat -= OnJustBeat;
                 _bgmManager.OnNearChangedBeat -= OnNearBeat;
+
+                _bgmManager.OnBGMChanged -= OnBGMChanged;
             }
             Dispose();
         }
@@ -656,6 +669,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
             }
         }
 
+        private void OnBGMChanged(string bgm)
+        {
+            _animeManager.ResetIdle();
+        }
+
         /// <summary>
         ///     フローゾーンが開始した時のイベント
         /// </summary>
@@ -695,7 +713,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Animator animator = GetComponentInChildren<Animator>();
             if (animator != null)
             {
-                _animeManager = new(animator);
+                _animeManager = new(animator, _mainLayer, _idleLayer, _idleStateName);
             }
             else
             {
