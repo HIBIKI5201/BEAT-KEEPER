@@ -17,12 +17,12 @@ namespace BeatKeeper
     [Serializable]
     public struct BackGroundMaterialData
     {
-        public Material Original => _ogirinalMaterial;
+        public Material Original => _originalMaterial;
         public Material Phase1 => _phase1Material;
         public Material Phase3 => _phase3Material;
 
         [SerializeField]
-        private Material _ogirinalMaterial;
+        private Material _originalMaterial;
 
         [SerializeField]
         private Material _phase1Material;
