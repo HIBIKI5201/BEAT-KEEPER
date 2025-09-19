@@ -118,23 +118,11 @@ namespace BeatKeeper.Runtime.Ingame.UI
             
             var beatDuration = (float)MusicEngineHelper.DurationOfBeat;
             var totalDuration = beatDuration * CHARGE_TIME;
-    
-            // マスクのスケールを外側リングの大きさに合わせる
-            _endPositionRing.rectTransform.localScale = _ringImage.rectTransform.localScale;
-
-            // 色変更用にリングを白色のものに変更
-            //ChargeStart();
 
             var sequence = DOTween.Sequence()
 
-                // 色変更（チャージ開始時）NOTE: 戻す可能性があるのでコメントアウト
-                // .Append(_ringImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリング
-                // .Join(_decorationImage.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 縮小するリングの発光部分
-                // .Join(_startPositionRing.DOColor(_chargeColor, totalDuration * 0.1f).SetEase(Ease.OutFlash)) // 自身
-
                 // メインのリング移動アニメーション（外側リングから内側リングへ）
-                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * _animationSpeed)
-                    .SetEase(Ease.Linear))
+                .Append(_ringImage.rectTransform.DOScale(_centerRingsScale, totalDuration * _animationSpeed).SetEase(Ease.Linear))
 
                 // 終点リングへ移動
                 .Join(_startPositionRing.rectTransform
@@ -192,6 +180,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 
                 // 拡大
                 .Append(_startPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
+                .Join(_endPositionRing.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(_ringImage.rectTransform.DOScale(Vector3.one * _initialScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 .Join(_decorationImage.rectTransform.DOScale(_centerRingsScale * 1.05f, _blinkDuration * 0.4f).SetEase(Ease.OutBack))
                 
@@ -261,6 +250,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 			// 移動するオブジェクトの位置を変更
 			_startPositionRing.transform.position = transform.position;
+            
+            // マスクのスケールを変更
+            _endPositionRing.rectTransform.localScale = _centerRingsScale;
 
             _startPositionRing.sprite = _defaultEndRingSprite;
             _endPositionRing.sprite = _defaultEndRingSprite;
@@ -309,7 +301,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if(_ringImage != null) _ringImage.color = color;
             if(_startPositionRing != null) _startPositionRing.color = color;
             if(_endPositionRing != null) _endPositionRing.color = color;
-            if(_decorationImage != null) _decorationImage.color = color;
+            if(_decorationImage != null) _decorationImage.color = translucentColor;
             if(_centerImage != null) _centerImage.color = Color.white;
         }
 
