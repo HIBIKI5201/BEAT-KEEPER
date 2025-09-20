@@ -15,6 +15,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 {
     public class TutorialManager : MonoBehaviour
     {
+        private readonly int ChargeHash = Animator.StringToHash("Beam_01");
         [Header("UI")]
         [SerializeField] private GameObject _tutorialUi;
         [SerializeField] private Text _tutorialText;
@@ -87,7 +88,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private string _missChargeVoice;
 
         [Header("エフェクトのGameObject名")]
-        [SerializeField] private string _skillEffectName;
+        [SerializeField] private string _playerSkillEffectName;
+        [SerializeField] private string _enemyBeamEffectName;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -99,6 +101,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private EnemyAnimeManager _enemyAnimeManager;
         private LocalizeTextManager _localizeTextManager;
         private ParticleSystem _skillEffect;
+        private Animator _enemyBeamEffect;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -126,8 +129,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _enemyAnimeManager = enemy.GetEnemyAnimeManager();
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
 
-            _skillEffect = _playerManager.gameObject.transform.Find(_skillEffectName).gameObject.GetComponent<ParticleSystem>();
-
+            _skillEffect = _playerManager.gameObject.transform.Find(_playerSkillEffectName).gameObject.GetComponent<ParticleSystem>();
+            _enemyBeamEffect = enemy.gameObject.transform.Find(_enemyBeamEffectName).gameObject.GetComponent<Animator>();
         }
 
         private void OnDestroy()
@@ -265,6 +268,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.ChargeAttack();
                         VoiceManager.PlayVoice(_missChargeVoice);
                         SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                        _enemyBeamEffect.Play(ChargeHash);
                     }
                     else if (_chartKindEnum == ChartKindEnum.Normal)
                     {
@@ -455,6 +459,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                    _enemyBeamEffect.Play(ChargeHash);
                 }
                 else if (ringIndicatorBase as EnemyIndicator)
                 {
@@ -606,6 +611,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     }
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                    _enemyBeamEffect.Play(ChargeHash);
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -633,6 +639,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _playerAnimeManager.FatalHit();
                         PlayVoice(_tutorialField);
                         SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                        _enemyBeamEffect.Play(ChargeHash);
                     }
                 }
                 else
@@ -643,6 +650,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _playerAnimeManager.FatalHit();
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                    _enemyBeamEffect.Play(ChargeHash);
                 }
                 if (_activeIndicator != null)
                 {
