@@ -133,6 +133,20 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _enemyBeamEffect = enemy.gameObject.transform.Find(_enemyBeamEffectName).gameObject.GetComponent<Animator>();
         }
 
+        private void Update()
+        {
+            if (_currentIndicatorCount == 2)
+            {
+                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
+                {
+                    Debug.Log("Good Timing");
+                    return;
+                }
+            }
+            Debug.Log("No Good Timing");
+        }
+
         private void OnDestroy()
         {
             TutorialUnRegister();
@@ -338,16 +352,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 }
                 _currentTargetClearCount = 0;
                 _currentMissCount = 0;
-                //デリゲート登録を解除
-                _inputBuffer.Attack.started -= OnShot;
-                _inputBuffer.Attack.started -= OnSkill;
-                _inputBuffer.Avoid.started -= OnAvoid;
-                _inputBuffer.Avoid.started -= OnAvoid;
-                _inputBuffer.Interact.started -= OnCharge;
-                _inputBuffer.Interact.canceled -= OnCharge;
                 TutorialUnRegister();
             }
-
         }
 
         #region 共通処理
@@ -423,7 +429,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <returns></returns>
         private bool HandleIndicator<T>(Func<bool> successCondition, Action<T> onSuccess, Action<T> onFail) where T : RingIndicatorBase
         {
-            if (_activeIndicator == null) return false;
             var indicator = _activeIndicator as T;
             if (indicator == null) return false;
 
@@ -449,7 +454,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (_isIndicatorWaitForInput)
             {
-                if (ringIndicatorBase as ChargeIndicator && _chargeAttackWaiting)
+                if (ringIndicatorBase is ChargeIndicator && _chargeAttackWaiting)
                 {
                     //チャージ中にリングが消える場合は失敗扱いにする
                     _currentChargeBeat = 0;
@@ -461,7 +466,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
                     _enemyBeamEffect.Play(ChargeHash);
                 }
-                else if (ringIndicatorBase as EnemyIndicator)
+                else if (ringIndicatorBase is EnemyIndicator)
                 {
                     _playerAnimeManager.Hit();
                     SoundEffectManager.PlaySoundEffect(_avoidMissSound);
@@ -471,8 +476,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _isIndicatorWaitForInput = false;
 
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat);
-            ringIndicatorBase.AddCount();
-            ringIndicatorBase.End();
+            if (ringIndicatorBase != _activeIndicator)
+            {
+                ringIndicatorBase.End();
+                ringIndicatorBase.AddCount();
+            }
         }
 
         private IEnumerator EnemyDelayAnimation()
@@ -492,7 +500,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private void OnShot(InputAction.CallbackContext ctx)
         {
-            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time) return;
+            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time || _activeIndicator == null) return;
             _indicatorTimer = Time.time + (float)MusicEngineHelper.DurationOfBeat * _InvalidationTime;
 
             HandleIndicator<PlayerIndicator>(
@@ -528,7 +536,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private void OnSkill(InputAction.CallbackContext ctx)
         {
 
-            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time) return;
+            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time || _activeIndicator == null) return;
             _indicatorTimer = Time.time + (float)MusicEngineHelper.DurationOfBeat * _InvalidationTime;
 
             HandleIndicator<SpecialIndicator>(
@@ -552,7 +560,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <param name="ctx"></param>
         private void OnAvoid(InputAction.CallbackContext ctx)
         {
-            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time) return;
+            if (ctx.phase != InputActionPhase.Started || _indicatorTimer >= Time.time || _activeIndicator == null) return;
             _indicatorTimer = Time.time + (float)MusicEngineHelper.DurationOfBeat * _InvalidationTime;
             HandleIndicator<EnemyIndicator>(
                 () => CheckGood(),
@@ -580,8 +588,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <param name="ctx"></param>
         private void OnCharge(InputAction.CallbackContext ctx)
         {
+            if (_activeIndicator == null) return;
             var chargeIndicator = _activeIndicator as ChargeIndicator;
-            if (chargeIndicator == null) return;
 
             if (ctx.phase == InputActionPhase.Started)
             {
@@ -787,10 +795,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         /// <param name="ctx"></param>
         private void OnWaitInput(InputAction.CallbackContext ctx)
         {
-            if (ctx.phase == InputActionPhase.Started || ctx.phase == InputActionPhase.Canceled)
-            {
-                _nextTutorial = true;
-            }
+            _nextTutorial = true;
         }
 
         #endregion

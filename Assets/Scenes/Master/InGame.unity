@@ -1229,7 +1229,7 @@ MonoBehaviour:
   _tutorialFocusFlow: {x: 0, y: 540}
   _playTutorial: 1
   _skipOnMiss: 1
-  _InvalidationTime: 0
+  _InvalidationTime: 1
   _attackTutorialClearCount: 4
   _attackMissCount: 8
   _othersTutorialClearCount: 2
