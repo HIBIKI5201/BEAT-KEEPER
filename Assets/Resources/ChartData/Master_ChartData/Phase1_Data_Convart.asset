@@ -34,7 +34,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -525, y: 0}
+    Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1

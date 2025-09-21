@@ -31,7 +31,7 @@ namespace BeatKeeper
             // 両方のアニメーションを並行実行
             await UniTask.WhenAll(leftTask, rightTask);
         }
-
+        
         public void StopAudioSpectrum()
         {
             // キャンバスを非表示にしたあと、アニメーションをキャンセル
@@ -47,7 +47,7 @@ namespace BeatKeeper
         [SerializeField] private float _fadeDuration = 0.15f;
         
         private Sprite[] _spritesCache; // SpriteAtlasのデータのキャッシュ
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
         
         private void Start()
         {
@@ -95,10 +95,12 @@ namespace BeatKeeper
                 {
                     // 現在の経過時間から正しいフレーム番号を計算
                     float elapsedTime = Time.time - animationStartTime;
-                    int targetFrame = Mathf.FloorToInt(elapsedTime / frameDuration) % _spritesCache.Length;
+                    int rawFrame = Mathf.FloorToInt(elapsedTime / frameDuration);
+                    int targetFrame = Mathf.Abs(rawFrame) % _spritesCache.Length;
                     
                     // フレームが変わった時のみ更新する
-                    if (targetFrame < _spritesCache.Length && _spritesCache[targetFrame] != null)
+                    // NOTE: 万が一負の数が与えられるとエラーになるため、正の数であることもチェックする
+                    if (targetFrame >= 0 && targetFrame < _spritesCache.Length && _spritesCache[targetFrame] != null)
                     {
                         targetImage.sprite = _spritesCache[targetFrame];
                     }

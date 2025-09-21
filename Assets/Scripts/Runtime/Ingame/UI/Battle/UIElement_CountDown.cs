@@ -55,6 +55,10 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] private Sprite _number1;
         [SerializeField] private Sprite _number2;
         [SerializeField] private Sprite _number3;
+		[SerializeField] private Sprite _go;
+
+		[SerializeField] private Vector2 _numberSpriteSize;
+		[SerializeField] private Vector2 _goSpriteSize;
 
         [Header("アニメーションの設定")] 
         [SerializeField] private float _scaleAnimationDuration = 0.3f;
@@ -72,6 +76,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private RectTransform _rectTransform;
         private Vector3 _originalPosition;
 
+        private int _bgmStartTiming = 1;
+
         #region Life cycle
         
         /// <summary>
@@ -82,6 +88,17 @@ namespace BeatKeeper.Runtime.Ingame.UI
             InitializeComponents();
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            
+            // BGMが切り替わったときのイベントを購読
+            _bgmManager.OnBGMChanged += OnBGMChanged;
+        }
+
+        private void OnBGMChanged(string phaseName)
+        {
+            // カウントをリセット
+            _bgmStartTiming = 1;
+
+            _bgmManager.OnJustChangedBeat += OnCount;
         }
         
         /// <summary>
@@ -94,6 +111,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             if (_bgmManager != null)
             {
                 _bgmManager.OnJustChangedBeat -= OnBeatTrigger;
+                _bgmManager.OnJustChangedBeat -= OnCount;
+                _bgmManager.OnBGMChanged -= OnBGMChanged;
             }
         }
         
@@ -121,6 +140,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 初期状態を設定
             _canvasGroup.alpha = 0f;
             transform.localScale = Vector3.zero;
+
+			// Imageの比率を数字のものに設定
+			_selfImage.rectTransform.sizeDelta = _numberSpriteSize;
         }
 
         /// <summary>
@@ -139,6 +161,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 enemyAdmin.NextEnemyActive();
             }
         }
+
+        /// <summary>
+        /// BGMが始まって何拍目かカウント
+        /// </summary>
+        private void OnCount()
+        {
+            _bgmStartTiming = Music.Just.Bar * 4 + Music.Just.Beat - 2;
+            //Debug.LogWarning(_bgmStartTiming);
+        }
         
         /// <summary>
         /// 演出開始
@@ -155,18 +186,29 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void OnBeatTrigger()
         {
             if (!_isPerforming) return;
-
-            int currentBeat = MusicEngineHelper.GetBeatSinceStart();
             
-            if (_counter == 0 && currentBeat % 4 == 0)
+            // 16拍区切りの13拍目から開始（3, 2, 1で3拍使用し、16拍目で終了）
+            int currentBeat = _bgmStartTiming % 16;
+    
+			if (_counter == 0 && currentBeat == 10)
             {
-                // 4で割り切れる拍から始める
-                ChangeImage();
+                ChangeImage(); // 3を表示
             }
-            else if (_counter > 0 && _counter < 3)
+            else if (_counter == 1 && currentBeat == 11)
             {
-                // 既に演出が始まっている場合
-                ChangeImage();
+                ChangeImage(); // 2を表示
+            }
+            else if (_counter == 2 && currentBeat == 12)
+            {
+                ChangeImage(); // 3を表示  
+            }
+            else if (_counter == 3 && currentBeat == 13)
+            {
+                ChangeImage(); // GOを表示
+            }
+            else if (_counter == 4 && currentBeat == 14)
+            {
+                EndPerform();
             }
         }
 
@@ -182,16 +224,16 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
             // 現在のカウントのスプライトを入手
             Sprite targetSprite = GetSpriteByCounter(_counter);
+			if(_counter >= 4)
+			{
+				// Counterが4以上のときはGoの表示で、画像の比率を変える必要がある
+				_selfImage.rectTransform.sizeDelta = _goSpriteSize;
+			}
+
             if (targetSprite != null)
             {
                 _selfImage.sprite = targetSprite;
                 PlayCountDownAnimation();
-            }
-
-            // 最後の数字の後は終了処理
-            if (_counter >= 3)
-            {
-                DOVirtual.DelayedCall(_scaleAnimationDuration + 0.1f, EndPerform);
             }
         }
 
@@ -201,8 +243,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// <returns></returns>
         private void PlayCountDownAnimation()
         {
+
             transform.localScale = _maxScale;
-            
+
             _currentSequence = DOTween.Sequence();
 
             // フェードイン
@@ -217,7 +260,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             );
 
             // 最後の数字以外はフェードアウト
-            if (_counter < 3)
+            if (_counter < 4)
             {
                 _currentSequence.Append(
                     DOTween.To(() => _canvasGroup.alpha, x => _canvasGroup.alpha = x, 0f, _fadeAnimationDuration)
@@ -240,10 +283,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private void EndPerform()
         {
             _bgmManager.OnJustChangedBeat -= OnBeatTrigger;
+            _bgmManager.OnJustChangedBeat -= OnCount;
+            
             _isPerforming = false;
-
-            // ポジションリセット
-            _rectTransform.anchoredPosition = _originalPosition;
             
             var phaseManager = ServiceLocator.GetInstance<PhaseManager>();
             if (phaseManager)
@@ -262,7 +304,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _canvasGroup.alpha = 0f;
             transform.localScale = Vector3.zero;
             _rectTransform.anchoredPosition = _originalPosition;
-        }
+        	_selfImage.rectTransform.sizeDelta = _numberSpriteSize;	
+		}
         
         /// <summary>
         /// 引数に合わせてスプライトを取得
@@ -274,6 +317,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 1 => _number3,
                 2 => _number2,
                 3 => _number1,
+				4 => _go,
                 _ => null
             };
         }

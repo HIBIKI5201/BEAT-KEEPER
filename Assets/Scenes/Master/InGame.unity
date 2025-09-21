@@ -893,9 +893,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba89522decac8d4b8a38bcd6ee55b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _holdDuration: 3
   _tutorialManager: {fileID: 1493203130}
   _playableAsset: {fileID: 11400000, guid: e9df9d845e0507941af030695dbf5371, type: 2}
   _skipTiming: 70
+  _bgmName: Phase1
 --- !u!4 &1042500690
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,7 +1239,7 @@ MonoBehaviour:
   _enemyIndicatorKey: enemyIndicatorText
   _chargeIndicatorKey1: chargeIndicatorText1
   _chargeIndicatorKey2: chargeIndicatorText2
-  _tutorialSE: 
+  _tutorialSE: Tutorial_PanelDisplay
   _ringNormalSound: Ring_Normal
   _comboAttackSound: NormalGunshot
   _perfectAttackSound: Perfect
@@ -1245,10 +1247,12 @@ MonoBehaviour:
   _skillSuccessSound: Skill
   _ringAvoidSound: Ring_Avoid
   _dodgeSound: Dodge
+  _avoidMissSound: PlayerHit_Dodge
   _chargeSound: Ring_Charge
   _charging: Charging
   _chargeComplete: ChargeCOmplete
   _chargeGunshot: ChargeGunshot
+  _chargeMissSound: PlayerHit_Charge
   _useSubtitle: 1
   _tutorialSuccess1: voice_tutorial_normal_attack_encourage_01
   _tutorialAttackStartVoice: voice_tutorial_normal_attack_03
@@ -1262,6 +1266,9 @@ MonoBehaviour:
   _chargeStartVoiceName: voice_charge_attack_charge
   _chargeEndVoiceName: voice_charge_attack_fire
   _skillVoiceName: voice_skill
+  _missAvoidVoice: voice_avoid_damaged
+  _missChargeVoice: voice_charge_attack_damaged
+  _skillEffectName: FX_Skill
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,6 +1407,7 @@ MonoBehaviour:
   _perCharacterTimeMultiplier: 0.2
   _textBox: {fileID: 1215655903}
   _subTitleText: {fileID: 1852328611}
+  _textBoxHeightPerLine: 80
 --- !u!4 &1640088185
 Transform:
   m_ObjectHideFlags: 0

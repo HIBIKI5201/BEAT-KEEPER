@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using CriWare;
 
 namespace BeatKeeper
 {
@@ -25,6 +26,7 @@ namespace BeatKeeper
 
         private InputBuffer _inputBuffer;
 		private Vector3 _originalResultPanelPosition; 
+		private CriAtomExPlayback _playback;
         private bool _isEndPanelOpen;
         private bool _lock;
 
@@ -90,6 +92,9 @@ namespace BeatKeeper
 			{
 				_inputBuffer.AnyKey.started -= OnAnyKeyInput;
 			}
+
+			// ボイスが再生中であれば止める
+			_playback.Stop();
         }
 
 		/// <summary>
@@ -109,8 +114,11 @@ namespace BeatKeeper
                 // パネルを入れ替える
                 _resultPanel.DOFade(0, _fadeDuration);
                 _endPanel.DOFade(1, _fadeDuration);
+
+                // ランクのボイス再生を止める
+                _resultUIController.StopVoice();
                 
-				VoiceManager.PlayVoice(_endingVoice);
+                _playback = VoiceManager.PlayVoice(_endingVoice);
 				return;
             }
             
