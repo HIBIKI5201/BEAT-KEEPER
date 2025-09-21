@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MT_Rinha_3
+  m_Name: MT_Rinha_3_magic
   m_Shader: {fileID: 4800000, guid: 9294844b15dca184d914a632279b24e1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -682,8 +682,8 @@ Material:
     - _AudioLinkVertexUVParams: {r: 0.25, g: 0, b: 0, a: 0.125}
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
-    - _BaseColor: {r: 0.9073756, g: 1.0365373, b: 1.0511674, a: 1}
-    - _Color: {r: 0.9073756, g: 1.0365373, b: 1.0511674, a: 1}
+    - _BaseColor: {r: 0.9725011, g: 1.1109332, b: 1.1266133, a: 1}
+    - _Color: {r: 0.9725011, g: 1.1109332, b: 1.1266133, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}

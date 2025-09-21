@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - GEOM_TYPE_BRANCH_DETAIL
   - UNITY_UI_CLIP_RECT
+  - _EMISSION
   - _METALLICGLOSSMAP
   - _REQUIRE_UV2
   m_InvalidKeywords: []
@@ -109,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: dc0ea4f3a737deb4290f5bfc4673f482, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlitterColorTex:
@@ -617,7 +618,7 @@ Material:
     - _UseBumpMap: 0
     - _UseClippingCanceller: 0
     - _UseDither: 0
-    - _UseEmission: 0
+    - _UseEmission: 1
     - _UseEmission2nd: 0
     - _UseGlitter: 0
     - _UseMain2ndTex: 0
