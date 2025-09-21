@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MT_Beam_2
+  m_Name: MT_Beam_orange_02
   m_Shader: {fileID: 4800000, guid: 9294844b15dca184d914a632279b24e1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -773,8 +773,8 @@ Material:
     - _AudioLinkVertexUVParams: {r: 0.25, g: 0, b: 0, a: 0.125}
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
-    - _BaseColor: {r: 3.3895445, g: 0.5595945, b: 2.7656188, a: 0.80784315}
-    - _Color: {r: 3.3895445, g: 0.5595945, b: 2.7656188, a: 0.80784315}
+    - _BaseColor: {r: 4.787388, g: 2.5969322, b: 4.411881, a: 0.80784315}
+    - _Color: {r: 4.787388, g: 2.5969322, b: 4.411881, a: 0.80784315}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
