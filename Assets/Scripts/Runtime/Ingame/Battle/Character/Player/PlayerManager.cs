@@ -1041,7 +1041,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             // スコア計算
             float score = power * _data.ComboScoreScale
                 [_comboAttackCounter.Value % _data.ComboScoreScale.Length];
-            _scoreManager?.AddScore(Mathf.FloorToInt(power)); // スコアを加算。小数点以下は切り捨てる
+            _scoreManager?.AddScore(Mathf.FloorToInt(score)); // スコアを加算。小数点以下は切り捨てる
         }
 
         /// <summary>

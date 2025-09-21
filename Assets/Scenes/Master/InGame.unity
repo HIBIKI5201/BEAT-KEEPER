@@ -959,7 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb2b09bf82e821419b6ac763a4c2084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _finisherScore: 100000
+  _playerData: {fileID: 11400000, guid: b02e335feeb586f4ca543a64070ad17f, type: 2}
   _playableAsset: {fileID: 11400000, guid: 4914a492972d7e449a406d28d9ffd8a5, type: 2}
 --- !u!1 &1118530755
 GameObject:
