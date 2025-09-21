@@ -13,10 +13,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
     {
         public event Action OnFinisherSequenceEnd;
 
-        public int FinisherScore => _finisherScore;
+        public int FinisherScore => _playerData.FinisherScore;
 
         [SerializeField, Tooltip("フィニッシャー時の加算スコア")]
-        private int _finisherScore = 2000;
+        private PlayerData _playerData;
 
         [SerializeField]
         private PlayableAsset _playableAsset;

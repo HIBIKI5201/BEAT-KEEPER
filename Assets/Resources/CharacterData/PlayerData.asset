@@ -16,14 +16,15 @@ MonoBehaviour:
   _comboAttackPower: 100
   _perfectCriticalDamage: 1.5
   _comboScoreScale:
-  - 101
-  - 151
-  - 201
+  - 10000
+  - 15000
+  - 20000
   _comboRisetTime: 3
   _chargeAttackPower: 300
   _chargeAttackTime: 2
   _chargeStartScore: 10000
   _chargeEndScore: 20000
+  _finisherScore: 100000
   _comboPerfectRange: 0.7
   _comboGoodRange: 1
   _chargeStartPerfectRange: 0
