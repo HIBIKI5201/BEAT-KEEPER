@@ -1229,7 +1229,7 @@ MonoBehaviour:
   _tutorialFocusFlow: {x: 0, y: 540}
   _playTutorial: 1
   _skipOnMiss: 1
-  _InvalidationTime: 0
+  _InvalidationTime: 1
   _attackTutorialClearCount: 4
   _attackMissCount: 8
   _othersTutorialClearCount: 2
@@ -1268,7 +1268,8 @@ MonoBehaviour:
   _skillVoiceName: voice_skill
   _missAvoidVoice: voice_avoid_damaged
   _missChargeVoice: voice_charge_attack_damaged
-  _skillEffectName: FX_Skill
+  _playerSkillEffectName: FX_Skill
+  _enemyBeamEffectName: FX_chageBeam
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
