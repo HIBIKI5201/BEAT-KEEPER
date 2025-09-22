@@ -16,8 +16,8 @@ MonoBehaviour:
   - _comboCount: 10
     _multiplier: 1.5
   - _comboCount: 30
-    _multiplier: 1.75
+    _multiplier: 1.6
   - _comboCount: 50
-    _multiplier: 2
+    _multiplier: 1.75
   - _comboCount: 100
-    _multiplier: 2.5
+    _multiplier: 2
