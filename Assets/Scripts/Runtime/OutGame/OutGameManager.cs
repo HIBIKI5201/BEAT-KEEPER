@@ -54,6 +54,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         {
             _look = false;
             await SceneLoader.LoadScene(StageScene.ToString());
+            SceneLoader.SetActiveScene(StageScene.ToString());
             var bgmManager = ServiceLocator.GetInstance<BGMManager>();
             bgmManager.ChangeBGM(_bgmName);
 
