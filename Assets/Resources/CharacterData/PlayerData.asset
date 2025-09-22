@@ -22,7 +22,7 @@ MonoBehaviour:
   _comboRisetTime: 3
   _chargeAttackPower: 300
   _chargeAttackTime: 2
-  _chargeStartScore: 10000
+  _chargeStartScore: 15000
   _chargeEndScore: 20000
   _finisherScore: 100000
   _comboPerfectRange: 0.7
@@ -38,9 +38,9 @@ MonoBehaviour:
   _avoidInvincibilityTime: 1
   _hitStunTime: 0
   _chargeHitStunTime: 0
-  _avoidScore: 30000
+  _avoidScore: 50000
   _avoidPerfectScoreScale: 1.5
   _perfectSkillRange: 0.7
   _goodSkillRange: 1
-  _skillDuration: 5
+  _skillDuration: 7
   _skillStrangth: 1.5
