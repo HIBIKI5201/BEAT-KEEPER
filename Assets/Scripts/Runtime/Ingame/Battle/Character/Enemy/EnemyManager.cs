@@ -111,6 +111,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log(active);
             _modelParent.SetActive(active);
+            _animeManager.ChangeSpeed((float)(Music.CurrentTempo / 120d));
         }
 
         public override void HitAttack(AttackData data)
