@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   _name: Player
-  _comboAttackPower: 100
-  _perfectCriticalDamage: 1.5
+  _comboAttackPower: 150
+  _perfectCriticalDamage: 1.2
   _comboScoreScale:
   - 51
   - 101
   - 151
   _comboRisetTime: 3
-  _chargeAttackPower: 300
+  _chargeAttackPower: 450
   _chargeAttackTime: 2
   _chargeStartScore: 15000
   _chargeEndScore: 20000
