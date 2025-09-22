@@ -302,6 +302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 789693826}
   - component: {fileID: 789693825}
+  - component: {fileID: 789693827}
   m_Layer: 0
   m_Name: OutGameManager
   m_TagString: Untagged
@@ -324,6 +325,8 @@ MonoBehaviour:
   _outGameUIManager: {fileID: 1982149415}
   _criAtomSourceSE: {fileID: 1102409121}
   _bgmName: Phase1
+  _bgmFadeOutTime: 0.5
+  _backgroundConverter: {fileID: 0}
 --- !u!4 &789693826
 Transform:
   m_ObjectHideFlags: 0
@@ -339,6 +342,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &789693827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789693824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebec16217af747b49980d7eb8d325686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _database: {fileID: 11400000, guid: d7dc7525fad9b2948a388965c5a500e4, type: 2}
+  _grobalVolume: {fileID: 0}
+  _phase1Profile: {fileID: 0}
+  _phase3Profile: {fileID: 0}
 --- !u!114 &810077985 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3934234335554024238, guid: b936382315e17a04291d9fb2f1a5db9a, type: 3}

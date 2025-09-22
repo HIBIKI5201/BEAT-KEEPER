@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.Timeline;
 
 namespace BeatKeeper.Runtime.Outgame.System
 {
@@ -36,6 +37,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         [SerializeField] private CriAtomSource _criAtomSourceSE;
         [SerializeField] private string _bgmName = "Phase1";
         [SerializeField] private float _bgmFadeOutTime = 0.5f;
+        [SerializeField] private BackGroundPhaseConverter _backgroundConverter;
 
         private InputBuffer _inputBuffer;
         private bool _look;
@@ -66,6 +68,11 @@ namespace BeatKeeper.Runtime.Outgame.System
         {
             Debug.Log("OutGameManager Start");
             _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+
+            if (TryGetComponent(out _backgroundConverter))
+            {
+                _backgroundConverter.ToPhase1();
+            }
             
             // 入力イベントの購読
             RegisterInputEvents();
