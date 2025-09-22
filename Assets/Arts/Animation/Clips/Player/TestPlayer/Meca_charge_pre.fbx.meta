@@ -3,7 +3,22 @@ guid: 6e14911645e10844c961f1c01da462ad
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_mecarobot
+    second: {fileID: 2100000, guid: 06487243ec83ce046959ea7642e4773d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert4
+    second: {fileID: 2100000, guid: 9a6aeafeeed083e44b50c6cc6619a8e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface2
+    second: {fileID: 2100000, guid: 5593466a163e1df45989ae44034f0d64, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

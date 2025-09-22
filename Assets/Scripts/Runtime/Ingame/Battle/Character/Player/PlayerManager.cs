@@ -1007,11 +1007,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     敵に攻撃を行う
         /// </summary>
-        /// <param name="damageScale"></param>
-        private void AttackEnemy(float power, float damageScale = 1, bool nockback = false)
+        /// <param name="scoreScale"></param>
+        private void AttackEnemy(float power, float scoreScale = 1, bool nockback = false)
         {
-            power *= damageScale;
-
             if (_battleBuffData) //タイムラインバフ
             {
                 var buffData = _battleBuffData.Data;
@@ -1039,7 +1037,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target.HitAttack(new(power, nockback));
 
             // スコア計算
-            float score = power * _data.ComboScoreScale
+            float score = power * scoreScale * _data.ComboScoreScale
                 [_comboAttackCounter.Value % _data.ComboScoreScale.Length];
             _scoreManager?.AddScore(Mathf.FloorToInt(score)); // スコアを加算。小数点以下は切り捨てる
         }
