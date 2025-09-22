@@ -8,6 +8,7 @@ using SymphonyFrameWork.System;
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -111,7 +112,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log(active);
             _modelParent.SetActive(active);
-            _animeManager.ChangeSpeed((float)(Music.CurrentTempo / 120d));
+
+            float speed = (float)(Music.CurrentTempo / 120d);
+            _animeManager.ChangeSpeed(speed);
+            foreach (var animator in _beamAnimators)
+            {
+                animator.speed = speed;
+            }
         }
 
         public override void HitAttack(AttackData data)
@@ -157,6 +164,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private Transform[] _normalAttackHitPositions;
         [SerializeField]
         private GameObject _normalAttackHitPerticle;
+
+        [SerializeField]
+        private Animator[] _beamAnimators;
 
         [SerializeField]
         private RingIndicatorData _indicatorData;
