@@ -16,9 +16,9 @@ MonoBehaviour:
   _comboAttackPower: 150
   _perfectCriticalDamage: 1.2
   _comboScoreScale:
+  - 51
   - 101
   - 151
-  - 202
   _comboRisetTime: 3
   _chargeAttackPower: 450
   _chargeAttackTime: 2
@@ -38,7 +38,7 @@ MonoBehaviour:
   _avoidInvincibilityTime: 1
   _hitStunTime: 0
   _chargeHitStunTime: 0
-  _avoidScore: 50000
+  _avoidScore: 45000
   _avoidPerfectScoreScale: 1.5
   _perfectSkillRange: 0.7
   _goodSkillRange: 1
