@@ -10058,6 +10058,10 @@ MonoBehaviour:
   _modelParent: {fileID: 3914750233683809333}
   _normalAttackHitPositions: []
   _normalAttackHitPerticle: {fileID: 0}
+  _beamAnimators:
+  - {fileID: 2333020696227949662}
+  - {fileID: 2930733529535092081}
+  - {fileID: 6074790875518009167}
   _indicatorData: {fileID: 11400000, guid: 450d1063b9645b545925918aeec006ec, type: 2}
 --- !u!114 &3979840490643913428
 MonoBehaviour:
@@ -10153,7 +10157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationAtRest.y
-      value: -30.000103
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationAtRest.z
@@ -10161,7 +10165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.x
-      value: -1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.y
@@ -10169,7 +10173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.z
-      value: 7.809009
+      value: 8.30901
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationOffsets.Array.data[0].x
@@ -10316,7 +10320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationAtRest.y
-      value: 30.000319
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationAtRest.z
@@ -10324,7 +10328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.x
-      value: 1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.y
@@ -10332,7 +10336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_TranslationAtRest.z
-      value: 7.809009
+      value: 8.30901
       objectReference: {fileID: 0}
     - target: {fileID: 3843074186111758347, guid: 30b69b1be8623d84095d681fba57872e, type: 3}
       propertyPath: m_RotationOffsets.Array.data[0].x
