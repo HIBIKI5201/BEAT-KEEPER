@@ -497,54 +497,56 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         private void ProcessTimingActions()
         {
-            var currentTiming = MusicEngineHelper.GetCurrentTiming();
-
-            if (_timingActions.TryGetValue(currentTiming, out var actionDict))
+            try
             {
-                // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
-                List<Guid> actionsToRemove = new List<Guid>();
-
-                // 登録されたアクションを全て実行する
-                foreach (var actionEntry in actionDict)
+                var currentTiming = MusicEngineHelper.GetCurrentTiming();
+                if (_timingActions.TryGetValue(currentTiming, out var actionDict))
                 {
-                    var actionId = actionEntry.Key;
-                    var actionInfo = actionEntry.Value;
+                    // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
+                    List<Guid> actionsToRemove = new List<Guid>();
 
-                    try
+                    // 登録されたアクションを全て実行する
+                    foreach (var actionEntry in actionDict)
                     {
-                        actionInfo.Action?.Invoke(); // アクション実行
+                        var actionId = actionEntry.Key;
+                        var actionInfo = actionEntry.Value;
 
-                        if (!actionInfo.IsRepeating)
+                        try
                         {
-                            actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
+                            actionInfo.Action?.Invoke(); // アクション実行
+
+                            if (!actionInfo.IsRepeating)
+                            {
+                                actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
+                            actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
                         }
                     }
-                    catch (Exception ex)
+
+                    // 削除リストに含まれるアクションを削除
+                    foreach (var actionId in actionsToRemove)
                     {
-                        Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
-                        actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
+                        actionDict.Remove(actionId);
+                    }
+
+                    // アクションが空になった場合はタイミングエントリーも削除
+                    if (actionDict.Count == 0)
+                    {
+                        _timingActions.Remove(currentTiming);
                     }
                 }
-
-                // 削除リストに含まれるアクションを削除
-                foreach (var actionId in actionsToRemove)
-                {
-                    actionDict.Remove(actionId);
-                }
-
-                // アクションが空になった場合はタイミングエントリーも削除
-                if (actionDict.Count == 0)
-                {
-                    _timingActions.Remove(currentTiming);
-                }
             }
+            catch { }
         }
-
         #endregion
 
-        /// <summary>
-        ///     タイミングアクションの情報を格納する構造体
-        /// </summary>
+            /// <summary>
+            ///     タイミングアクションの情報を格納する構造体
+            /// </summary>
         private readonly struct TimingActionInfo
         {
             /// <summary>実行するアクション</summary>
