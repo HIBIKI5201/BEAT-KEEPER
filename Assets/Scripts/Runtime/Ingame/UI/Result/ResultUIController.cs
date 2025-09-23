@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.U2D;
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.Battle;
@@ -35,7 +36,11 @@ namespace BeatKeeper
         /// </summary>
         public void StopVoice()
         {
-            _playback.Stop();
+            // ボイス再生中なら止める
+            foreach (var playback in _playbackList)
+            {
+                playback.Stop();
+            }
         }
         
         [SerializeField] private ScoreManager _scoreManager; // スコアマネージャー
@@ -79,7 +84,7 @@ namespace BeatKeeper
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
-        private CriAtomExPlayback _playback;
+        private List<CriAtomExPlayback> _playbackList = new List<CriAtomExPlayback>();
 
         #region Life cycle
 
@@ -110,7 +115,10 @@ namespace BeatKeeper
             _resultSequence?.Kill();
             
             // ボイスが再生中なら止める
-            _playback.Stop();
+            foreach (var playback in _playbackList)
+            {
+                playback.Stop();
+            }
         }
 
         #endregion
@@ -136,7 +144,6 @@ namespace BeatKeeper
 
             // ランク表示
             _resultSequence.Append(CreateRankTween());
-            //_resultSequence.Join(DOVirtual.DelayedCall(_resultRevealDelay, () => { }));
             
             // ランク読み上げを待ってから賞賛ボイスを再生
             _resultSequence.AppendCallback(PlayPraiseVoice);
@@ -148,7 +155,7 @@ namespace BeatKeeper
         private void ShowCanvas()
         {
             // NOTE: CanvasGroupの不透明度は現状ResultManagerから変更しているのでその処理は書いてない
-            VoiceManager.PlayVoice(_resultCueName);
+            _playbackList.Add(VoiceManager.PlayVoice(_resultCueName));
         }
         
         /// <summary>
@@ -159,7 +166,7 @@ namespace BeatKeeper
             if(_scoreText == null) return DOVirtual.DelayedCall(0f, () => { });
             
             // SE再生
-            SoundEffectManager.PlaySoundEffect(_counterSe);
+            _playbackList.Add(SoundEffectManager.PlaySoundEffect(_counterSe));
             
             // スコアを先に取得しておく
             var targetScore = _scoreManager.Score;
@@ -224,8 +231,8 @@ namespace BeatKeeper
             sequence.Join(DOVirtual.DelayedCall(0f, () =>
             {
                 // ランク読み上げボイス/SEを再生
-                VoiceManager.PlayVoice(voice);
-                SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
+                _playbackList.Add(VoiceManager.PlayVoice(voice));
+                _playbackList.Add(SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank)));
             }));
 
             sequence.Append(DOVirtual.DelayedCall(1.5f, () => { }));
@@ -236,7 +243,7 @@ namespace BeatKeeper
                 sequence.Append(DOVirtual.DelayedCall(0f, () =>
                 {
                     // 専用ボイスを再生
-                    VoiceManager.PlayVoice(_perfectSyncVoice);
+                    _playbackList.Add(VoiceManager.PlayVoice(_perfectSyncVoice));
                 }));
                 sequence.Append(DOVirtual.DelayedCall(2.5f, () => { }));
             }
@@ -275,7 +282,7 @@ namespace BeatKeeper
                 // 最初の要素だけ即座にSE再生
                 if (i == 0)
                 {
-                    SoundEffectManager.PlaySoundEffect(_slideInSe);
+                    _playbackList.Add(SoundEffectManager.PlaySoundEffect(_slideInSe));
                 }
 
                 sequence.Insert(i * 0.06f, element.CanvasGroup.DOFade(1f, 0.3f).SetEase(Ease.OutQuad));
@@ -284,7 +291,10 @@ namespace BeatKeeper
                 // 2番目以降の要素は遅延してSE再生
                 if (i > 0)
                 {
-                    sequence.InsertCallback(i * 0.06f, () => SoundEffectManager.PlaySoundEffect(_slideInSe));
+                    sequence.InsertCallback(i * 0.06f, () =>
+                    {
+                        _playbackList.Add(SoundEffectManager.PlaySoundEffect(_slideInSe));
+                    });
                 }
             }
     
@@ -303,7 +313,7 @@ namespace BeatKeeper
 
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _resultVoice);
-            _playback = VoiceManager.PlayVoice(voice);
+            _playbackList.Add(VoiceManager.PlayVoice(voice));
             
             // テキストの点滅を始める
             _pulseText.DOFade(_textPulseTargetAlpha, _textPulseDuration).SetLoops(-1, LoopType.Yoyo);
