@@ -138,23 +138,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
         }
 
-        private void Update()
-        {
-            if (_currentIndicatorCount == 2)
-            {
-                var normalizedTimingFromJust = (float)Music.UnitFromJust;
-                if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
-                {
-                    return;
-                }
-            }
-        }
-
-        private void OnDestroy()
-        {
-            TutorialUnRegister();
-        }
-
         public void EndTutorial()
         {
             _tutorialUi.SetActive(false);
@@ -196,6 +179,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (_chartKindEnum == chartKindEnum) return;
 
             _currentMissCount = 0;
+            _currentTargetClearCount = 0;
             _chartKindEnum = chartKindEnum;
             _director.Pause();
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
@@ -280,6 +264,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _currentMissCount++;
                     if (_chartKindEnum == ChartKindEnum.Charge)
                     {
+                        _isCharging = false;
+                        _currentChargeBeat = 0;
                         _playerAnimeManager.FatalHit();
                         _enemyAnimeManager.KnockBack(false);
                         _enemyAnimeManager.ChargeAttack();
@@ -458,6 +444,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private IEnumerator EndIndicator(RingIndicatorBase ringIndicatorBase)
         {
+            _activeIndicator = null; 
+            _isIndicatorWaitForInput = false;
             if (_isIndicatorWaitForInput)
             {
                 if (ringIndicatorBase is ChargeIndicator && _chargeAttackWaiting)
@@ -481,9 +469,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             }
-
-            _isIndicatorWaitForInput = false;
-
+            
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat);
             if (ringIndicatorBase != _activeIndicator)
             {
@@ -628,10 +614,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     }
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                    _currentMissCount++;
                     foreach (var item in _enemyBeamEffects)
                     {
                         item.Play(ChargeHash);
                     }
+                    _currentMissCount++;
+                    _isCharging = false;
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -659,10 +648,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _playerAnimeManager.FatalHit();
                         PlayVoice(_tutorialField);
                         SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                        _currentMissCount++;
                         foreach (var item in _enemyBeamEffects)
                         {
                             item.Play(ChargeHash);
                         }
+                        _currentMissCount++;
+                        _isCharging = false;
                     }
                 }
                 else
@@ -673,10 +665,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _playerAnimeManager.FatalHit();
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                    _currentMissCount++;
                     foreach (var item in _enemyBeamEffects)
                     {
                         item.Play(ChargeHash);
                     }
+                    _currentMissCount++;
+                    _isCharging = false;
                 }
                 if (_activeIndicator != null)
                 {
