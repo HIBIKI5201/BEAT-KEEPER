@@ -30,6 +30,9 @@ namespace BeatKeeper.Runtime.Ingame.UI
 			// 終点リングの位置を設定
 			_endPositionRing.rectTransform.position = endPosition
                                                 + new Vector2(Screen.width / 2, Screen.height / 2);
+            
+            // 中央イメージ
+            _centerImage.rectTransform.position = _startPositionRing.rectTransform.position;
 		}
         
         public override void End()
