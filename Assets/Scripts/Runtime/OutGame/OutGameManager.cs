@@ -4,11 +4,10 @@ using BeatKeeper.Runtime.System;
 using CriWare;
 using Cysharp.Threading.Tasks;
 using SymphonyFrameWork.System;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-using UnityEngine.Timeline;
 
 namespace BeatKeeper.Runtime.Outgame.System
 {
@@ -28,7 +27,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             GameStarting,        // ゲーム開始処理中
             Finished             // 完了
         }
-        
+
         private const SceneListEnum OutGameScene = SceneListEnum.OutGame;
         private const SceneListEnum InGameScene = SceneListEnum.InGame;
         private const SceneListEnum StageScene = SceneListEnum.Stage;
@@ -37,16 +36,16 @@ namespace BeatKeeper.Runtime.Outgame.System
         [SerializeField] private CriAtomSource _criAtomSourceSE;
         [SerializeField] private string _bgmName = "Phase1";
         [SerializeField] private float _bgmFadeOutTime = 0.5f;
-        [SerializeField] private BackGroundPhaseConverter _backgroundConverter;
 
+        private BackGroundPhaseConverter _backgroundConverter;
         private InputBuffer _inputBuffer;
         private bool _look;
-        
+
         // ローカライズ用のテキストデータを管理するマネージャー
-        private LocalizeTextManager _localizeTextManager; 
-        
+        private LocalizeTextManager _localizeTextManager;
+
         private BGMManager _bgmManager;
-        
+
         // 現在の状態
         private GameState _currentState = GameState.WaitingForStart;
 
@@ -74,11 +73,11 @@ namespace BeatKeeper.Runtime.Outgame.System
             {
                 _backgroundConverter.ToPhase1();
             }
-            
+
             // 入力イベントの購読
             RegisterInputEvents();
         }
-        
+
         private void OnDisable()
         {
             UnregisterInputEvents();
@@ -93,12 +92,12 @@ namespace BeatKeeper.Runtime.Outgame.System
         {
             // 状態をスタート待ちに戻す
             _currentState = GameState.WaitingForStart;
-            
+
             // 設定UIを隠す
             _outGameUIManager.HideSettingCanvas();
 
             await Task.Delay(1000);
-                
+
             // すぐにイベントを購読すると、すぐにstartedが反応してしまうため
             // 時間をおいて再度AnyKeyの入力イベントを購読する
             _inputBuffer.AnyKey.started += OnAnyKeyInput;
@@ -112,23 +111,23 @@ namespace BeatKeeper.Runtime.Outgame.System
             _currentState = GameState.LanguageSetting;
             _outGameUIManager.ShowSettingCanvas();
         }
-        
+
         /// <summary>
         /// 言語設定の確定処理
         /// </summary>
         private void HandleLanguageSettingConfirm()
         {
             _currentState = GameState.SubtitleSetting;
-            
+
             if (_localizeTextManager == null)
             {
                 // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
                 ServiceLocator.GetInstance<LocalizeTextManager>();
             }
-            
+
             // 言語設定を確定
             _localizeTextManager.ChangeLanguage((LanguageType)_outGameUIManager.LanguageId);
-            
+
             // UI更新
             _outGameUIManager.ShowSubtitleCanvas();
         }
@@ -139,7 +138,7 @@ namespace BeatKeeper.Runtime.Outgame.System
         private async Task HandleSubtitleSettingConfirm()
         {
             _currentState = GameState.GameStarting;
-            
+
             try
             {
                 if (_localizeTextManager == null)
@@ -147,23 +146,23 @@ namespace BeatKeeper.Runtime.Outgame.System
                     // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
                     ServiceLocator.GetInstance<LocalizeTextManager>();
                 }
-                
+
                 // 字幕設定を確定
                 _localizeTextManager.ChangeSubtitleLanguage((LanguageType)_outGameUIManager.SubtitleId);
-                
+
                 // SE再生
                 _criAtomSourceSE?.Play();
-               
+
                 // BGMフェードアウト
                 // NOTE: フェードアウトしながらゲーム開始処理は進んでほしいので、awaitはしない
-                _bgmManager.FadeOutBGM(_bgmFadeOutTime).Forget();                
+                _bgmManager.FadeOutBGM(_bgmFadeOutTime).Forget();
 
                 // ゲーム開始処理
                 await _outGameUIManager.GameStart();
-                
+
                 // シーン遷移
                 await TransitionToInGameScene();
-                
+
                 _currentState = GameState.Finished;
             }
             catch (Exception ex)
@@ -183,7 +182,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             await SceneLoader.LoadScene(InGameScene.ToString());
             SceneLoader.SetActiveScene(InGameScene.ToString());
         }
-        
+
         /// <summary>
         /// 入力イベントを購読する
         /// </summary>
@@ -195,34 +194,34 @@ namespace BeatKeeper.Runtime.Outgame.System
             _inputBuffer.Attack.started += OnAttackKeyInput;
             _inputBuffer.Interact.started += OnInteractKeyInput;
         }
-        
+
         /// <summary>
         /// 入力イベントの購読を解除する
         /// </summary>
         private void UnregisterInputEvents()
         {
             if (_inputBuffer == null) return;
-            
+
             _inputBuffer.AnyKey.started -= OnAnyKeyInput;
             _inputBuffer.LeftNavigation.performed -= OnLeftNavigationKeyInput;
             _inputBuffer.RightNavigation.performed -= OnRightNavigationKeyInput;
             _inputBuffer.Attack.started -= OnAttackKeyInput;
             _inputBuffer.Interact.started -= OnInteractKeyInput;
         }
-        
+
         /// <summary>
         /// 何らかの入力を受け取ったときに呼び出されるメソッド。
         /// </summary>
         private void OnAnyKeyInput(InputAction.CallbackContext callbackContext)
         {
             Debug.Log("OnAnyKeyInput called");
-            
+
             if (_currentState != GameState.WaitingForStart) return;
-            
+
             // 言語設定キャンバスを開く
             _currentState = GameState.LanguageSetting;
             _outGameUIManager.ShowSettingCanvas();
-            
+
             // 不要になるため入力購読を解除
             _inputBuffer.AnyKey.started -= OnAnyKeyInput;
         }
@@ -237,11 +236,11 @@ namespace BeatKeeper.Runtime.Outgame.System
                 case GameState.LanguageSetting: // 言語設定
                     HandleLanguageSettingConfirm();
                     break;
-                    
+
                 case GameState.SubtitleSetting: // 字幕設定
                     await HandleSubtitleSettingConfirm();
                     break;
-                    
+
                 default:
                     // その他の状態では何もしない
                     break;
@@ -259,12 +258,12 @@ namespace BeatKeeper.Runtime.Outgame.System
                 case GameState.LanguageSetting:
                     HandleHideSetting();
                     break;
-                
+
                 // 字幕設定の場合、言語設定に戻る
                 case GameState.SubtitleSetting:
                     HandleShowLanguageSetting();
                     break;
-                    
+
                 default:
                     // その他の状態では何もしない
                     break;
@@ -279,7 +278,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             bool isLanguageSetting = _currentState == GameState.LanguageSetting;
             _outGameUIManager.MoveSelection(isLanguageSetting, -1);
         }
-        
+
         /// <summary>
         /// ナビゲーションキーの入力を受け取ったときに呼び出されるメソッド
         /// </summary>
