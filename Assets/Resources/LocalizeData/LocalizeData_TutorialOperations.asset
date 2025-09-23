@@ -26,5 +26,5 @@ MonoBehaviour:
     _japaneseMessage: "A\u30DC\u30BF\u30F3\u3092\u9577\u62BC\u3057\uFF01"
     _englishMessage: Hold A Button!
   - _cueName: chargeIndicatorText2
-    _japaneseMessage: "A\u30DC\u30BF\u30F3\u3092\u653E\u305B\uFF01"
+    _japaneseMessage: "A\u30DC\u30BF\u30F3\u3092\u96E2\u305B\uFF01"
     _englishMessage: Release A Button!

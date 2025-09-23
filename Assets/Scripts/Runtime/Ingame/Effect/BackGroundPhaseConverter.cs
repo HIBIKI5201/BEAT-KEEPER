@@ -8,31 +8,53 @@ namespace BeatKeeper
         [ContextMenu(nameof(ToPhase1))]
         public void ToPhase1()
         {
-            if (_database == null) return;
-
-            foreach (var data in _database.Datas)
+            if (_database != null)
             {
-                data.Original.CopyPropertiesFromMaterial(data.Phase1);
+                foreach (var data in _database.Datas)
+                {
+                    data.Original.CopyPropertiesFromMaterial(data.Phase1);
+                }
             }
 
-            if (_grobalVolume == null) return;
+            if (_grobalVolume != null)
+            {
+                _grobalVolume.profile = _phase1Profile;
+            }
 
-            _grobalVolume.profile = _phase1Profile;
+            if (_trafficLightManagers != null)
+            {
+                foreach (var manager in _trafficLightManagers)
+                {
+                    manager.ToPhase1();
+                }
+            }
+
         }
 
         [ContextMenu(nameof(ToPhase3))]
         public void ToPhase3()
         {
-            if (_database == null) return;
-
-            foreach (var data in _database.Datas)
+            if (_database != null)
             {
-                data.Original.CopyPropertiesFromMaterial(data.Phase3);
+                foreach (var data in _database.Datas)
+                {
+                    data.Original.CopyPropertiesFromMaterial(data.Phase3);
+                }
             }
 
-            if (_grobalVolume == null) return;
 
-            _grobalVolume.profile = _phase3Profile;
+            if (_grobalVolume != null)
+            {
+                _grobalVolume.profile = _phase3Profile;
+            }
+
+            if (_trafficLightManagers != null)
+            {
+                foreach (var manager in _trafficLightManagers)
+                {
+                    manager.ToPhase3();
+                }
+            }
         }
 
         [SerializeField]
@@ -46,5 +68,12 @@ namespace BeatKeeper
         private VolumeProfile _phase1Profile;
         [SerializeField]
         private VolumeProfile _phase3Profile;
+
+        private TrafficLightManager[] _trafficLightManagers;
+
+        private void Start()
+        {
+            _trafficLightManagers = FindObjectsByType<TrafficLightManager>(FindObjectsSortMode.None);
+        }
     }
 }

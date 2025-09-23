@@ -570,8 +570,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //敵が攻撃しないならミス
             if (!chartData.IsEnemyAttack(timing))
             {
-                MissedAvoid();
-
                 SymphonyDebugLogger.AddText($"Enemy not attack at timing {timing}");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -586,7 +584,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 //失敗時の処理
                 MissedAvoid();
-
+                
                 SymphonyDebugLogger.AddText("avoid result : failed");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -936,6 +934,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _chargeAttackChargingTokenSource = new();
             _scoreManager.AddScore(_data.ChargeStartScore);
+            _comboSystem.Attack();
 
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
             VoiceManager.PlayVoice(_chargeStartShootVoice);
@@ -1007,11 +1006,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// <summary>
         ///     敵に攻撃を行う
         /// </summary>
-        /// <param name="damageScale"></param>
-        private void AttackEnemy(float power, float damageScale = 1, bool nockback = false)
+        /// <param name="scoreScale"></param>
+        private void AttackEnemy(float power, float scoreScale = 1, bool nockback = false)
         {
-            power *= damageScale;
-
             if (_battleBuffData) //タイムラインバフ
             {
                 var buffData = _battleBuffData.Data;
@@ -1039,7 +1036,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             _target.HitAttack(new(power, nockback));
 
             // スコア計算
-            float score = power * _data.ComboScoreScale
+            float score = power * scoreScale * _data.ComboScoreScale
                 [_comboAttackCounter.Value % _data.ComboScoreScale.Length];
             _scoreManager?.AddScore(Mathf.FloorToInt(score)); // スコアを加算。小数点以下は切り捨てる
         }

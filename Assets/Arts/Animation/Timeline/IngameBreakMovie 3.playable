@@ -342,7 +342,7 @@ MonoBehaviour:
   ignoreBlend: 0
   loopWithinClip: 0
   stopAtClipEnd: 1
-  clipDuration: 0
+  clipDuration: 11.541315192743765
   cueSheet: SE
   cueName: Clearmovie
   templateBehaviour:
@@ -1230,7 +1230,7 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 4.350000000000001
+    m_Start: 10.033333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 3583642813127236046}
     m_Duration: 1
@@ -1299,7 +1299,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: ResultSequenceAsset
   - m_Version: 1
-    m_Start: 6.35
+    m_Start: 11.8
     m_ClipIn: 0
     m_Asset: {fileID: 1124273326526729364}
     m_Duration: 1
@@ -1609,7 +1609,7 @@ MonoBehaviour:
   m_Name: RecorderClip
   m_EditorClassIdentifier: 
   enabled: 1
-  take: 20
+  take: 24
   captureEveryNthFrame: 1
   fileNameGenerator:
     m_Path:

@@ -119,6 +119,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &2583780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &13591139
 Mesh:
   m_ObjectHideFlags: 0
@@ -1138,6 +1150,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1964552216}
   m_LocalEulerAnglesHint: {x: 102.53699, y: 0, z: 0}
+--- !u!114 &134210120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!21 &164626408
 Material:
   serializedVersion: 8
@@ -1218,7 +1242,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &180329148
@@ -1749,7 +1773,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &231093170
@@ -2082,6 +2106,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &285913899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &292650777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2541,7 +2577,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &321911734
@@ -2789,7 +2825,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &341082458
@@ -3102,7 +3138,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.23508991, g: -0.9713447, b: 0.034958597, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!4 &381536027 stripped
@@ -3110,6 +3146,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5801369394100242158, guid: 9cfa0e46514b90a469b5e33beaffefb6, type: 3}
   m_PrefabInstance: {fileID: 1579282850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &389332023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &392807965
 Mesh:
   m_ObjectHideFlags: 0
@@ -3355,7 +3403,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &416903785
@@ -3438,7 +3486,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.06454769, g: 0.9932375, b: 0.09650311, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &427172322
@@ -3521,9 +3569,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.0992471, g: 0.9932377, b: -0.060243256, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &439492004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &472101555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4539836571077829975, guid: 2e757bfbc118c9c49b843bf9dd00ddc4, type: 3}
@@ -3609,7 +3669,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.049319863, g: 0.99323756, b: -0.10510373, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &495560114
@@ -4572,6 +4632,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &534551736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &544837263
 Mesh:
   m_ObjectHideFlags: 0
@@ -4982,7 +5054,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.08340192, g: 0.99323756, b: -0.0807673, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &562881801
@@ -5395,7 +5467,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.07105735, g: 0.99323773, b: -0.09181544, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &576455425
@@ -5510,7 +5582,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.10323325, g: 0.99323773, b: -0.053123742, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &630680281
@@ -5593,7 +5665,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &651006501
@@ -5891,7 +5963,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.11423376, g: 0.99323756, b: 0.020733856, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &663285289
@@ -6443,6 +6515,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1259901297}
+    - target: {fileID: 8396253935588655635, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      propertyPath: shadowCullingMask.m_Bits
+      value: 117
+      objectReference: {fileID: 0}
     - target: {fileID: 8400695670782919744, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6474,8 +6550,252 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3043637537012233505, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 671018482}
+    - targetCorrespondingSourceObject: {fileID: 5634343880488841242, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 671018481}
+    - targetCorrespondingSourceObject: {fileID: 2861334238174652744, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 671018480}
+    - targetCorrespondingSourceObject: {fileID: 255990698015009043, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 671018479}
+    - targetCorrespondingSourceObject: {fileID: 5874129057953034534, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 671018478}
+    - targetCorrespondingSourceObject: {fileID: 3893287892378496929, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1524363093}
+    - targetCorrespondingSourceObject: {fileID: 3962697603980381431, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1015348767}
+    - targetCorrespondingSourceObject: {fileID: 1164063263255805994, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 134210120}
+    - targetCorrespondingSourceObject: {fileID: 3759559802116718024, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 819211038}
+    - targetCorrespondingSourceObject: {fileID: 2262073558218280394, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1451628517}
+    - targetCorrespondingSourceObject: {fileID: 8846043853386152607, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2583780}
+    - targetCorrespondingSourceObject: {fileID: 2944922509695521106, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 851491727}
+    - targetCorrespondingSourceObject: {fileID: 6881405396745706741, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759627945}
+    - targetCorrespondingSourceObject: {fileID: 6978275018430574489, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221837961}
+    - targetCorrespondingSourceObject: {fileID: 636303744833512935, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 389332023}
+    - targetCorrespondingSourceObject: {fileID: 8907889909105516306, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1829175213}
+    - targetCorrespondingSourceObject: {fileID: 3991104048681630578, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2147220799}
+    - targetCorrespondingSourceObject: {fileID: 2800588744375160243, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1001161354}
+    - targetCorrespondingSourceObject: {fileID: 4638095379309466167, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 838432300}
+    - targetCorrespondingSourceObject: {fileID: 5130060433974432001, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1253771935}
+    - targetCorrespondingSourceObject: {fileID: 1025744826496942067, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 285913899}
+    - targetCorrespondingSourceObject: {fileID: 280460392957165738, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 439492004}
+    - targetCorrespondingSourceObject: {fileID: 6160065994353031681, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 534551736}
   m_SourcePrefab: {fileID: 100100000, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+--- !u!1 &671018455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6160065994353031681, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018456 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 280460392957165738, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018457 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1025744826496942067, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5130060433974432001, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4638095379309466167, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018460 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2800588744375160243, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3991104048681630578, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018462 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8907889909105516306, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018463 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 636303744833512935, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018464 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6978275018430574489, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6881405396745706741, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2944922509695521106, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8846043853386152607, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018468 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2262073558218280394, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3759559802116718024, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018470 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1164063263255805994, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018471 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3962697603980381431, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3893287892378496929, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018473 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5874129057953034534, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018474 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 255990698015009043, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2861334238174652744, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018476 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5634343880488841242, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671018477 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3043637537012233505, guid: a9b14f62a18738a42856ca73c98551bd, type: 3}
+  m_PrefabInstance: {fileID: 671018454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &671018478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &671018479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &671018480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &671018481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &671018482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &680642598
 GameObject:
   m_ObjectHideFlags: 0
@@ -6731,7 +7051,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.05681765, g: 0.9932376, b: 0.1012474, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &730624698
@@ -7088,7 +7408,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.056486577, g: 0.99323756, b: -0.101432264, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &746645455
@@ -7171,7 +7491,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &752650003
@@ -7186,6 +7506,7 @@ GameObject:
   - component: {fileID: 752650004}
   - component: {fileID: 752650006}
   - component: {fileID: 752650007}
+  - component: {fileID: 752650008}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -7253,6 +7574,51 @@ MonoBehaviour:
   _grobalVolume: {fileID: 292650778}
   _phase1Profile: {fileID: 11400000, guid: e3811732835c55944b5e6f7aeb19429c, type: 2}
   _phase3Profile: {fileID: 11400000, guid: de4adb18f67e05647968535fadb248b8, type: 2}
+--- !u!114 &752650008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752650003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 669db383252bce74b8e80d4d05d05510, type: 2}
+    - {fileID: 11400000, guid: 577fed3e6bc3c594abda986e2dacfd8a, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 752650007}
+          m_TargetAssemblyTypeName: BeatKeeper.BackGroundPhaseConverter, Assembly-CSharp
+          m_MethodName: ToPhase1
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 752650007}
+          m_TargetAssemblyTypeName: BeatKeeper.BackGroundPhaseConverter, Assembly-CSharp
+          m_MethodName: ToPhase3
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!43 &758413153
 Mesh:
   m_ObjectHideFlags: 0
@@ -7498,7 +7864,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932376, b: -0.11293203, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &799896829
@@ -7581,7 +7947,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.41715053, g: -0.9081648, b: 0.03495878, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &812298071
@@ -7664,7 +8030,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &812873247
@@ -7747,7 +8113,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.0992471, g: 0.9932377, b: -0.060243256, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &819043052
@@ -7830,9 +8196,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &819211038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!21 &825022611
 Material:
   serializedVersion: 8
@@ -7913,9 +8291,33 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0109421015, g: 0.9932374, b: 0.11558324, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &838432300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &851491727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &860211345
 Mesh:
   m_ObjectHideFlags: 0
@@ -8102,9 +8504,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1052159840}
     - target: {fileID: 6482325277796535223, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
+      propertyPath: m_SceneBindings.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482325277796535223, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
+      propertyPath: m_SceneBindings.Array.data[12].key
+      value: 
+      objectReference: {fileID: -792161272847696877, guid: 6b95d50c8848a794f840cbf13fead130, type: 2}
+    - target: {fileID: 6482325277796535223, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
       propertyPath: m_SceneBindings.Array.data[10].value
       value: 
       objectReference: {fileID: 1052159840}
+    - target: {fileID: 6482325277796535223, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
+      propertyPath: m_SceneBindings.Array.data[12].value
+      value: 
+      objectReference: {fileID: 752650008}
     - target: {fileID: 7121218656000997882, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8403,7 +8817,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.049319863, g: 0.99323756, b: -0.10510373, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &906637454
@@ -8486,7 +8900,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0013538301, g: 0.9932376, b: 0.116092354, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &941558610
@@ -8734,7 +9148,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.10410097, g: 0.99323756, b: 0.051402792, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &993873023
@@ -8848,9 +9262,33 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.35260594, g: -0.9357448, b: 0.0071201026, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1001161354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1015348767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!21 &1027581774
 Material:
   serializedVersion: 8
@@ -8931,7 +9369,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.12442526, g: -0.991613, b: 0.034958705, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1028848451
@@ -9014,7 +9452,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.056486577, g: 0.99323756, b: -0.101432264, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1036013684
@@ -9186,7 +9624,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0013538301, g: 0.9932376, b: 0.116092354, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1052159840 stripped
@@ -9440,7 +9878,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1125706321
@@ -9688,7 +10126,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!4 &1142308758 stripped
@@ -9948,9 +10386,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1221837961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1228199986
 GameObject:
   m_ObjectHideFlags: 0
@@ -12591,9 +13041,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1253771935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1259901297
 Mesh:
   m_ObjectHideFlags: 0
@@ -13342,7 +13804,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1368778223
@@ -13647,7 +14109,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0994499, g: 0.9932375, b: 0.059907973, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1421946397
@@ -13730,7 +14192,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.3255062, g: -0.9455131, b: 0.007120122, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1429453357
@@ -14063,6 +14525,18 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1451628517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1478091676
 Mesh:
   m_ObjectHideFlags: 0
@@ -14473,7 +14947,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1512328099
@@ -14677,9 +15151,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1524363093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1533623279
 GameObject:
   m_ObjectHideFlags: 0
@@ -14881,7 +15367,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1541488453
@@ -15421,7 +15907,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.07143533, g: 0.9932377, b: 0.09152189, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1609138894
@@ -16192,7 +16678,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.10323325, g: 0.99323773, b: -0.053123742, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1670997232
@@ -16967,7 +17453,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.043390512, g: 0.9932376, b: -0.107687056, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1752315262
@@ -17002,6 +17488,18 @@ Transform:
   - {fileID: 381536027}
   m_Father: {fileID: 1964552216}
   m_LocalEulerAnglesHint: {x: -8.318, y: -6.654, z: 38.883}
+--- !u!114 &1759627945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1767462929
 Mesh:
   m_ObjectHideFlags: 0
@@ -17247,9 +17745,21 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.06454769, g: 0.9932375, b: 0.09650311, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!114 &1829175213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1843799356
 GameObject:
   m_ObjectHideFlags: 0
@@ -18120,7 +18630,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1959352291
@@ -18470,7 +18980,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.10390589, g: 0.9932376, b: 0.051795974, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2000250479
@@ -18553,7 +19063,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2000729248
@@ -18636,7 +19146,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.09538485, g: 0.9932375, b: 0.06618892, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2027016241
@@ -18719,7 +19229,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &2039221335
@@ -19187,7 +19697,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.50743014, g: -0.8609835, b: 0.034959137, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2078427356
@@ -19270,7 +19780,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &2119183435
@@ -19518,7 +20028,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 0.8310104, g: 0.55400664, b: 0, a: 20.395123}
+    - _WindDirection: {r: 3.9901164, g: 2.6600761, b: 0, a: 263.2825}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &2143363065
@@ -19718,6 +20228,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d78e8d05b8f0971438799538db23b2c8, type: 3}
   m_PrefabInstance: {fileID: 496434661}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2147220799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671018461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe0f6e5218d60046840347126539d36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1934171267838840463
 PrefabInstance:
   m_ObjectHideFlags: 0
