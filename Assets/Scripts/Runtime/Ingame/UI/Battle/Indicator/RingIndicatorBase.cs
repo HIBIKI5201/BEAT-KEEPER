@@ -486,6 +486,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
             _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
+            _centerImage.rectTransform.position = _ringImage.rectTransform.position;
 
             // デフォルトのスプライトを設定する
             _ringImage.sprite = _hitLine;

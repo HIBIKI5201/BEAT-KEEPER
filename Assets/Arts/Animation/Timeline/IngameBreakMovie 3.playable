@@ -1299,7 +1299,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: ResultSequenceAsset
   - m_Version: 1
-    m_Start: 6.35
+    m_Start: 9.3
     m_ClipIn: 0
     m_Asset: {fileID: 1124273326526729364}
     m_Duration: 1
