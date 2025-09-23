@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BattleGradeThresholdsSO
   m_EditorClassIdentifier: 
   _thresholdRankS: 10000000
-  _thresholdRankA: 8000000
+  _thresholdRankA: 8500000
   _thresholdRankB: 6000000
