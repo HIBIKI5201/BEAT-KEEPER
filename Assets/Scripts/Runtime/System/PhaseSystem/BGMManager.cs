@@ -168,7 +168,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             _atomSource.player.SetAisacControl(aisac, value);
             _atomSource.player.UpdateAll();
-            Debug.Log($"{aisac} {value} {_atomSource.player.guid}");
         }
 
         #endregion
