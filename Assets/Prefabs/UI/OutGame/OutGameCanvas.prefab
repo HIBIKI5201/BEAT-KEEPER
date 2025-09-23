@@ -286,7 +286,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30E0\u30FC\u30D3\u30FC\u306E\u5B57\u5E55\u8868\u793A\u3092\u8A2D\u5B9A\u3067\u304D\u307E\u3059\u3002\u97F3\u58F0\u306F\u65E5\u672C\u8A9E\u3067\u518D\u751F\u3055\u308C\u307E\u3059\u3002"
+  m_Text: "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u306E\u5B57\u5E55\u8868\u793A\u3092\u8A2D\u5B9A\u3067\u304D\u307E\u3059\u3002\u97F3\u58F0\u306F\u65E5\u672C\u8A9E\u3067\u518D\u751F\u3055\u308C\u307E\u3059\u3002"
 --- !u!1 &1599694871469877199
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +692,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2745479511750462267}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2070,7 +2070,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Movie subtitle settings. Audio playback is in Japanese.
+  m_Text: Tutorial subtitle settings. Audio playback is in Japanese.
 --- !u!1 &5675509901910257941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2502,7 +2502,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30E0\u30FC\u30D3\u30FC\u5B57\u5E55\u8A2D\u5B9A"
+  m_Text: "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB\u5B57\u5E55\u8A2D\u5B9A"
 --- !u!1 &6128789202751184304
 GameObject:
   m_ObjectHideFlags: 0

@@ -122,7 +122,7 @@ namespace BeatKeeper.Runtime.Outgame.System
             if (_localizeTextManager == null)
             {
                 // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
-                ServiceLocator.GetInstance<LocalizeTextManager>();
+                _localizeTextManager = ServiceLocator.GetInstance<LocalizeTextManager>();
             }
 
             // 言語設定を確定
@@ -144,7 +144,7 @@ namespace BeatKeeper.Runtime.Outgame.System
                 if (_localizeTextManager == null)
                 {
                     // 念のため、取得できていなかったらServiceLocatorからもう一度取得できるか試す
-                    ServiceLocator.GetInstance<LocalizeTextManager>();
+                    _localizeTextManager = ServiceLocator.GetInstance<LocalizeTextManager>();
                 }
 
                 // 字幕設定を確定
@@ -153,6 +153,10 @@ namespace BeatKeeper.Runtime.Outgame.System
                 // SE再生
                 _criAtomSourceSE?.Play();
 
+				if(_bgmManager == null)
+				{
+					_bgmManager = ServiceLocator.GetInstance<BGMManager>();
+				}
                 // BGMフェードアウト
                 // NOTE: フェードアウトしながらゲーム開始処理は進んでほしいので、awaitはしない
                 _bgmManager.FadeOutBGM(_bgmFadeOutTime).Forget();
