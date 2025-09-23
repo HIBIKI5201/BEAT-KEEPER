@@ -123,11 +123,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _bgmManager = await ServiceLocator.GetInstanceAsync<BGMManager>();
             _inputBuffer = await ServiceLocator.GetInstanceAsync<InputBuffer>();
             _playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
+            _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
             _playerAnimeManager = _playerManager.GetPlayerAnimeManager();
             var battleSceneManager = await ServiceLocator.GetInstanceAsync<BattleSceneManager>();
             var enemy = battleSceneManager.EnemyAdmin.GetActiveEnemy();
             _enemyAnimeManager = enemy.GetEnemyAnimeManager();
-            _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
 
             _skillEffect = _playerManager.gameObject.transform.Find(_playerSkillEffectName).gameObject.GetComponent<ParticleSystem>();
 
@@ -136,23 +136,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 _enemyBeamEffects[i] = enemy.transform.Find(_enemyBeamEffectNames[i]).GetComponent<Animator>();
             }
-        }
-
-        private void Update()
-        {
-            if (_currentIndicatorCount == 2)
-            {
-                var normalizedTimingFromJust = (float)Music.UnitFromJust;
-                if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
-                {
-                    return;
-                }
-            }
-        }
-
-        private void OnDestroy()
-        {
-            TutorialUnRegister();
         }
 
         public void EndTutorial()
@@ -266,10 +249,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _allBeat++;
             _currentIndicatorCount++;
 
-            // インジケーターが存在する場合の処理
+            // インジケーターが存在する場合に時間切れを調べる
             if (_activeIndicator != null)
             {
-                // ノーツにAddCountをする
                 _activeIndicator.AddCount();
 
                 // ノーツが時間切れを起こしているかを調べる。
@@ -377,13 +359,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             PlayVoice(_tutorialField);
+
             _currentMissCount++;
+            _generateInterval = 2;
             if (_activeIndicator != null)
             {
                 _activeIndicator.End();
                 _activeIndicator = null;
             }
-            _generateInterval = 2;
+
             return false;
         }
         private bool CheckPerfect()
@@ -616,76 +600,54 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 }
                 else
                 {
-                    chargeIndicator.PlayFailEffect();
-                    _enemyAnimeManager.ChargeAttack();
-                    _enemyAnimeManager.KnockBack(false);
-                    _playerAnimeManager.FatalHit();
-                    _chargeAttackWaiting = false;
-                    if (_activeIndicator != null)
-                    {
-                        StartCoroutine(EndIndicator(_activeIndicator));
-                        _activeIndicator = null;
-                    }
-                    PlayVoice(_tutorialField);
-                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    foreach (var item in _enemyBeamEffects)
-                    {
-                        item.Play(ChargeHash);
-                    }
+                    OnMissCharge(chargeIndicator);
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
             {
                 //チャージ完了時の処理
                 if (!_isCharging) return;
-                if (_currentChargeBeat == 2 || _currentChargeBeat == 1)
+                var normalizedTiming = (float)Music.UnitFromJust;
+                if ((_currentChargeBeat == 2 || _currentChargeBeat == 1) &&
+                    Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 0)
                 {
-                    var normalizedTiming = (float)Music.UnitFromJust;
-                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 0)
-                    {
-                        _currentTargetClearCount++;
-                        chargeIndicator.OnPlayerAttackSuccessTutorial();
-                        SoundEffectManager.PlaySoundEffect(_chargeGunshot);
-                        if (_othersTutorialClearCount != _currentTargetClearCount)
-                            VoiceManager.PlayVoice(_chargeEndVoiceName);
-                        _enemyAnimeManager.ChargeAttack();
-                        _enemyAnimeManager.KnockBack(true);
-                    }
-                    else
-                    {
-                        chargeIndicator.PlayFailEffect();
-                        _enemyAnimeManager.ChargeAttack();
-                        _enemyAnimeManager.KnockBack(false);
-                        _playerAnimeManager.FatalHit();
-                        PlayVoice(_tutorialField);
-                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                        foreach (var item in _enemyBeamEffects)
-                        {
-                            item.Play(ChargeHash);
-                        }
-                    }
+                    _currentTargetClearCount++;
+                    chargeIndicator.OnPlayerAttackSuccessTutorial();
+                    SoundEffectManager.PlaySoundEffect(_chargeGunshot);
+                    if (_othersTutorialClearCount != _currentTargetClearCount)
+                        VoiceManager.PlayVoice(_chargeEndVoiceName);
+                    _enemyAnimeManager.ChargeAttack();
+                    _enemyAnimeManager.KnockBack(true);
                 }
                 else
                 {
-                    chargeIndicator.PlayFailEffect();
-                    _enemyAnimeManager.ChargeAttack();
-                    _enemyAnimeManager.KnockBack(false);
-                    _playerAnimeManager.FatalHit();
-                    PlayVoice(_tutorialField);
-                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    foreach (var item in _enemyBeamEffects)
-                    {
-                        item.Play(ChargeHash);
-                    }
+                    OnMissCharge(chargeIndicator);
                 }
-                if (_activeIndicator != null)
-                {
-                    StartCoroutine(EndIndicator(_activeIndicator));
-                    _activeIndicator = null;
-                }
-                _isCharging = false;
-                _currentChargeBeat = 0;
             }
+        }
+
+        private void OnMissCharge(ChargeIndicator chargeIndicator)
+        {
+            _currentMissCount++;
+            _chargeAttackWaiting = false;
+            _isCharging = false;
+            _currentChargeBeat = 0;
+            chargeIndicator.PlayFailEffect();
+            _enemyAnimeManager.ChargeAttack();
+            _enemyAnimeManager.KnockBack(false);
+            _playerAnimeManager.FatalHit();
+            if(_activeIndicator != null)
+            {
+                _activeIndicator.End();
+                _activeIndicator = null;
+            }
+            SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+            PlayVoice(_tutorialField);
+            foreach (var item in _enemyBeamEffects)
+            {
+                item.Play(ChargeHash);
+            }
+            
         }
 
         #endregion
