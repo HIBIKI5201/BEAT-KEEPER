@@ -378,6 +378,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 phaseManager.CurrentPhaseProp
                     .Subscribe(OnPhaseChanged)
                     .AddTo(destroyCancellationToken);
+                
+                // コンボシステムにフェーズマネージャーを渡す
+                _comboSystem.SetupPhaseManager(phaseManager);
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BeatKeeper.Runtime.Ingame.System;
 using R3;
 using UnityEngine;
 using BeatKeeper.Runtime.System;
@@ -28,7 +29,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void ComboReset() 
         {
-            if (_comboCount.Value == 0) return;
+            // バトルフェーズ以外のときとコンボがゼロの時は早期リターン
+            if (_phaseManager.CurrentPhase != PhaseEnum.Battle || _comboCount.Value == 0) return;
 
             _comboCount.Value = 0;
             Debug.Log("Combo Reset");
@@ -36,6 +38,14 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         // NOTE: 使用しなくなったが、互換性のためにメソッドは残してある
         public void Update() { }
+
+        /// <summary>
+        /// フェーズマネージャーの参照を受け取る
+        /// </summary>
+        public void SetupPhaseManager(PhaseManager phaseManager)
+        {
+            _phaseManager = phaseManager;
+        }
 
         // 各コンボボイスのcueName
         private static readonly Dictionary<int, string> _comboVoiceMap = new()
@@ -48,6 +58,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private readonly string _highComboVoices = "voice_combo_high";
         
         private readonly PlayerData _data;
+        private PhaseManager _phaseManager;
         private ReactiveProperty<int> _comboCount = new();
 
         /// <summary>

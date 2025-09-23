@@ -13,16 +13,16 @@ namespace BeatKeeper.Runtime.System
         ///     指定されたキュー名のサウンドエフェクトを再生します。
         /// </summary>
         /// <param name="cueName"></param>
-        public static void PlaySoundEffect(string cueName)
+        public static CriAtomExPlayback PlaySoundEffect(string cueName)
         {
             if (_instance == null)
             {
                 Debug.LogError("SoundEffectManager is not initialized.");
-                return;
+                return default;
             }
 
             _instance._criAtomSource.cueName = cueName;
-            _instance._criAtomSource.Play();
+            return _instance._criAtomSource.Play();
         }
 
         public static void ChangePhaseSelector(string phaseName)
