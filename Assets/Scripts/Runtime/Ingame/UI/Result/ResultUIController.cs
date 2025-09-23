@@ -59,6 +59,7 @@ namespace BeatKeeper
         [SerializeField] private string _resultCueName;
         [SerializeField] private RankVoice[] _rankVoice = new RankVoice[4];
         [SerializeField] private RankVoice[] _resultVoice = new RankVoice[4];
+        [SerializeField] private string _perfectSyncVoice = "voice_perfect_sync";
         
         [Header("SEのCueNameの設定")]
         [SerializeField] private string _rankSSe = "Rank_S";
@@ -135,7 +136,7 @@ namespace BeatKeeper
 
             // ランク表示
             _resultSequence.Append(CreateRankTween());
-            _resultSequence.Join(DOVirtual.DelayedCall(_resultRevealDelay, () => { }));
+            //_resultSequence.Join(DOVirtual.DelayedCall(_resultRevealDelay, () => { }));
             
             // ランク読み上げを待ってから賞賛ボイスを再生
             _resultSequence.AppendCallback(PlayPraiseVoice);
@@ -219,12 +220,26 @@ namespace BeatKeeper
             
             // 通常サイズに戻す
             sequence.Append(_rankImage.transform.DOScale(1f, 0.2f).SetEase(Ease.InOutQuart));
+            
             sequence.Join(DOVirtual.DelayedCall(0f, () =>
             {
                 // ランク読み上げボイス/SEを再生
                 VoiceManager.PlayVoice(voice);
                 SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
             }));
+
+            sequence.Append(DOVirtual.DelayedCall(1.5f, () => { }));
+            
+            // フルコンボの場合の処理
+            if (_scoreManager.PerfectSync)
+            {
+                sequence.Append(DOVirtual.DelayedCall(0f, () =>
+                {
+                    // 専用ボイスを再生
+                    VoiceManager.PlayVoice(_perfectSyncVoice);
+                }));
+                sequence.Append(DOVirtual.DelayedCall(2.5f, () => { }));
+            }
             
             return sequence;
         }
