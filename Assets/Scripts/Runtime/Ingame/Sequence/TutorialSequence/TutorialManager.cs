@@ -146,11 +146,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 var normalizedTimingFromJust = (float)Music.UnitFromJust;
                 if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
                 {
-                    Debug.Log("Good Timing");
                     return;
                 }
             }
-            Debug.Log("No Good Timing");
         }
 
         private void OnDestroy()
