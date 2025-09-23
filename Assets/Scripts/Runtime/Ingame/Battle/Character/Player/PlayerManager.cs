@@ -570,8 +570,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             //敵が攻撃しないならミス
             if (!chartData.IsEnemyAttack(timing))
             {
-                MissedAvoid();
-
                 SymphonyDebugLogger.AddText($"Enemy not attack at timing {timing}");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -586,7 +584,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 //失敗時の処理
                 MissedAvoid();
-
+                
                 SymphonyDebugLogger.AddText("avoid result : failed");
                 SymphonyDebugLogger.TextLog();
                 return;
@@ -936,6 +934,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             _chargeAttackChargingTokenSource = new();
             _scoreManager.AddScore(_data.ChargeStartScore);
+            _comboSystem.Attack();
 
             SoundEffectManager.PlaySoundEffect(_chargeAttackStartSound);
             VoiceManager.PlayVoice(_chargeStartShootVoice);
