@@ -6,6 +6,7 @@ using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -89,7 +90,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         [Header("エフェクトのGameObject名")]
         [SerializeField] private string _playerSkillEffectName;
-        [SerializeField] private string _enemyBeamEffectName;
+        [SerializeField] private string[] _enemyBeamEffectNames;
 
         private ChartKindEnum _chartKindEnum;
 
@@ -101,7 +102,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private EnemyAnimeManager _enemyAnimeManager;
         private LocalizeTextManager _localizeTextManager;
         private ParticleSystem _skillEffect;
-        private Animator _enemyBeamEffect;
+        private Animator[] _enemyBeamEffects;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -130,7 +131,12 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _localizeTextManager = await ServiceLocator.GetInstanceAsync<LocalizeTextManager>();
 
             _skillEffect = _playerManager.gameObject.transform.Find(_playerSkillEffectName).gameObject.GetComponent<ParticleSystem>();
-            _enemyBeamEffect = enemy.gameObject.transform.Find(_enemyBeamEffectName).gameObject.GetComponent<Animator>();
+
+            _enemyBeamEffects = new Animator[_enemyBeamEffectNames.Length];
+            for (int i = 0; i < _enemyBeamEffectNames.Length; i++)
+            {
+                _enemyBeamEffects[i] = enemy.transform.Find(_enemyBeamEffectNames[i]).GetComponent<Animator>();
+            }
         }
 
         private void Update()
@@ -282,7 +288,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _enemyAnimeManager.ChargeAttack();
                         VoiceManager.PlayVoice(_missChargeVoice);
                         SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                        _enemyBeamEffect.Play(ChargeHash);
+                        foreach (var item in _enemyBeamEffects)
+                        {
+                            item.Play(ChargeHash);
+                        }
                     }
                     else if (_chartKindEnum == ChartKindEnum.Normal)
                     {
@@ -464,7 +473,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _enemyAnimeManager.KnockBack(false);
                     _playerAnimeManager.FatalHit();
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    _enemyBeamEffect.Play(ChargeHash);
+                    foreach (var item in _enemyBeamEffects)
+                    {
+                        item.Play(ChargeHash);
+                    }
                 }
                 else if (ringIndicatorBase is EnemyIndicator)
                 {
@@ -619,7 +631,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     }
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    _enemyBeamEffect.Play(ChargeHash);
+                    foreach (var item in _enemyBeamEffects)
+                    {
+                        item.Play(ChargeHash);
+                    }
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -647,7 +662,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         _playerAnimeManager.FatalHit();
                         PlayVoice(_tutorialField);
                         SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                        _enemyBeamEffect.Play(ChargeHash);
+                        foreach (var item in _enemyBeamEffects)
+                        {
+                            item.Play(ChargeHash);
+                        }
                     }
                 }
                 else
@@ -658,7 +676,10 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     _playerAnimeManager.FatalHit();
                     PlayVoice(_tutorialField);
                     SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    _enemyBeamEffect.Play(ChargeHash);
+                    foreach (var item in _enemyBeamEffects)
+                    {
+                        item.Play(ChargeHash);
+                    }
                 }
                 if (_activeIndicator != null)
                 {
