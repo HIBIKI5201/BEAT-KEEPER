@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using SymphonyFrameWork.System;
 
 namespace BeatKeeper
@@ -28,15 +28,6 @@ namespace BeatKeeper
         /// 字幕を使うか
         /// </summary>
         public bool DontUseSubtitle => _currentSubtitleLanguage == LanguageType.None;
-
-        /// <summary>
-        /// Awake
-        /// </summary>
-        private void Awake()
-        {
-            // シングルトンに登録
-            ServiceLocator.SetInstance(this, ServiceLocator.LocateType.Singleton);
-        }
 
         /// <summary>
         /// スタートムービー用のデータからメッセージを取得する
