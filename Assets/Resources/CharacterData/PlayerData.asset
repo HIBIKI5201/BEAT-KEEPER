@@ -23,8 +23,8 @@ MonoBehaviour:
   _chargeAttackPower: 450
   _chargeAttackTime: 2
   _chargeStartScore: 20000
-  _chargeEndScore: 25000
-  _finisherScore: 100000
+  _chargeEndScore: 30000
+  _finisherScore: 200000
   _comboPerfectRange: 0.7
   _comboGoodRange: 1
   _chargeStartPerfectRange: 0
