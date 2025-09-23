@@ -179,6 +179,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             if (_chartKindEnum == chartKindEnum) return;
 
             _currentMissCount = 0;
+            _currentTargetClearCount = 0;
             _chartKindEnum = chartKindEnum;
             _director.Pause();
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
@@ -618,6 +619,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     {
                         item.Play(ChargeHash);
                     }
+                    _currentMissCount++;
+                    _isCharging = false;
                 }
             }
             else if (ctx.phase == InputActionPhase.Canceled)
@@ -650,6 +653,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                         {
                             item.Play(ChargeHash);
                         }
+                        _currentMissCount++;
+                        _isCharging = false;
                     }
                 }
                 else
@@ -665,6 +670,8 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     {
                         item.Play(ChargeHash);
                     }
+                    _currentMissCount++;
+                    _isCharging = false;
                 }
                 if (_activeIndicator != null)
                 {
