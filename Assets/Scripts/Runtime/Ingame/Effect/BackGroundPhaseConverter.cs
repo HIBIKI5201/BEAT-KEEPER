@@ -16,7 +16,7 @@ namespace BeatKeeper
                 }
             }
 
-            if (_grobalVolume == null)
+            if (_grobalVolume != null)
             {
                 _grobalVolume.profile = _phase1Profile;
             }

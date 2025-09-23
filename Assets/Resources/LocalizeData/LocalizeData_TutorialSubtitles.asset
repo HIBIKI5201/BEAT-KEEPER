@@ -72,7 +72,7 @@ MonoBehaviour:
     _japaneseMessage: "\u30DC\u30BF\u30F3\u3092\u62BC\u3057\u7D9A\u3051\u3066\uFF01"
     _englishMessage: Keep holding the button!
   - _cueName: voice_tutorial_charge_attack_05
-    _japaneseMessage: "\u30C1\u30E3\u30FC\u30B8\u5B8C\u4E86\uFF01\u30DC\u30BF\u30F3\u3092\u653E\u3057\u3066\uFF01"
+    _japaneseMessage: "\u30C1\u30E3\u30FC\u30B8\u5B8C\u4E86\uFF01\u30DC\u30BF\u30F3\u3092\u96E2\u3057\u3066\uFF01"
     _englishMessage: Charge complete! Release the button!
   - _cueName: voice_tutorial_end_01
     _japaneseMessage: "\u6C7A\u307E\u3063\u305F\u308F\uFF01"
