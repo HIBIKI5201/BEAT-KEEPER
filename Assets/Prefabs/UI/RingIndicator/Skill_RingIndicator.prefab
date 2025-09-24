@@ -125,7 +125,7 @@ MonoBehaviour:
   _translucentRingImages: []
   _skillApperanceSoundCueName: Ring_Skill
   _finisherApperanceSoundCueName: Ring_Finisher
-  _centerImageMultiply: 2
+  _centerImageMultiply: 1
 --- !u!114 &-7537579482647627284
 MonoBehaviour:
   m_ObjectHideFlags: 0
