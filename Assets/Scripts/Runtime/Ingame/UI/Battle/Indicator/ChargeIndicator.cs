@@ -18,10 +18,8 @@ namespace BeatKeeper.Runtime.Ingame.UI
 
 		public override void OnGet(Action onEndAction, Vector2 startPosition, Vector2 endPosition, int timing)
 		{
-            base.OnGet(onEndAction, startPosition, endPosition, timing);
+			base.OnGet(onEndAction, startPosition, endPosition, timing);
 
-            _resolutionMultiply = 2;　// TODO: TGS用
-            
             startPosition *= _resolutionMultiply;
             endPosition *= _resolutionMultiply;
             

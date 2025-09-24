@@ -32,7 +32,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             _isEnded = false;
 
 			// 解像度に合わせる
-            rectPos *= 2; // TODO: TGS用
+            rectPos *= _resolutionMultiply;
 
             _selfImage.rectTransform.position = rectPos
                 + new Vector2(Screen.width / 2, Screen.height / 2);
@@ -57,7 +57,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         {
             // 終了フラグをリセット
             _isEnded = false;
-            
+
             // 初期化
             InitializeComponents();
             UIInitialized();
@@ -434,7 +434,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             ChangeRingsImage();
 
 			// NOTE: CanvasScalerにより演出のscale変更が変わりすぎないようにしたい
-            var multiply = 0.325f ;
+            var multiply = 0.325f * _resolutionMultiply;
             
             var successSequence = DOTween.Sequence();
 

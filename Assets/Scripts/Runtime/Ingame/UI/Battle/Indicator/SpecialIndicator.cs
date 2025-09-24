@@ -267,7 +267,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _centerImage.sprite = _guideIcon;
                 
                 // 中央の操作イメージのサイズも変更する
-                _centerImage.rectTransform.sizeDelta *= (_centerImageMultiply * _resolutionMultiply);
+                _centerImage.rectTransform.sizeDelta *= _centerImageMultiply;
             }
             else
             {
@@ -277,7 +277,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _centerImage.sprite = _guide.Sprite;
                 
                 // 通常サイズ
-                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
+                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
             }
 
             _tweens[2] = sequence;
