@@ -185,12 +185,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
         }
 
-        public void PauseTimeline()
-        {
-            if (_operationTutorialPlaying)
-                _director.Pause();
-        }
-
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
         {
             yield return new WaitUntil(() => !_operationTutorialPlaying);
@@ -739,8 +733,9 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
 
                 ringObj.Pause();
+                _director.Pause();
                 yield return ShowTutorialMessage(_localizeTextManager.GetTutorialOperationMessage(_enemyIndicatorKey), _inputBuffer.Avoid);
-
+                _director.Resume();
                 _playerManager.FlowZoneSystem.SuccessResonance();
                 _playerAnimeManager.Avoid();
                 _enemyAnimeManager.Attack();

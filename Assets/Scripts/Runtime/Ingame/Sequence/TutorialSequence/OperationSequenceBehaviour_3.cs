@@ -6,15 +6,20 @@ namespace BeatKeeper
 {
     public class OperationSequenceBehaviour_3 : SequenceBehaviourBase
     {
+        private bool _isFirstFrame = true;
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
-            base.OnBehaviourPlay(playable, info);
-            if (_owner)
+            if (_isFirstFrame)
             {
-                TutorialManager tutorialManager = _owner.GetComponent<TutorialManager>();
-                if (tutorialManager)
+                _isFirstFrame = false;
+                base.OnBehaviourPlay(playable, info);
+                if (_owner)
                 {
-                    tutorialManager.OperationTutorialStart(ChartKindEnum.Normal);
+                    TutorialManager tutorialManager = _owner.GetComponent<TutorialManager>();
+                    if (tutorialManager)
+                    {
+                        tutorialManager.OperationTutorialStart(ChartKindEnum.Normal);
+                    }
                 }
             }
         }
