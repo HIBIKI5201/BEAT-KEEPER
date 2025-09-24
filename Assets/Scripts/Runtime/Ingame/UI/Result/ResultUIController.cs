@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.U2D;
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
 using BeatKeeper.Runtime.Ingame.Battle;
@@ -35,7 +36,11 @@ namespace BeatKeeper
         /// </summary>
         public void StopVoice()
         {
-            _playback.Stop();
+            // ボイス再生中なら止める
+            foreach (var playback in _playbackList)
+            {
+                playback.Stop();
+            }
         }
         
         [SerializeField] private ScoreManager _scoreManager; // スコアマネージャー
@@ -48,6 +53,7 @@ namespace BeatKeeper
         [SerializeField] private UIContents_Result _perfectCount; // Perfect判定の回数
         [SerializeField] private UIContents_Result _goodCount; // Good判定の回数
         [SerializeField] private UIContents_Result _missCount; // Miss判定の回数
+        [SerializeField] private Text _pulseText; // 点滅アニメーションをかけるPRESS ANY KEYテキスト
 
         [Header("ランク画像")] 
         [SerializeField] private SpriteAtlas _rankSpriteAtlas; // ランクの画像のスプライトアトラス
@@ -58,6 +64,7 @@ namespace BeatKeeper
         [SerializeField] private string _resultCueName;
         [SerializeField] private RankVoice[] _rankVoice = new RankVoice[4];
         [SerializeField] private RankVoice[] _resultVoice = new RankVoice[4];
+        [SerializeField] private string _perfectSyncVoice = "voice_perfect_sync";
         
         [Header("SEのCueNameの設定")]
         [SerializeField] private string _rankSSe = "Rank_S";
@@ -71,11 +78,13 @@ namespace BeatKeeper
         [SerializeField, Tooltip("スコアアニメーションにかける時間")] private float _scoreAnimationDuration = 2f; 
         [SerializeField, Tooltip("ランク発表までの待機時間")] private float _rankRevealDelay = 1f;
         [SerializeField, Tooltip("賞賛ボイスまでの待機時間")] private float _resultRevealDelay = 2f;
-        
+        [SerializeField, Tooltip("ランクImageの拡大率")] private float _rankImageScale = 1.4f;
+        [SerializeField, Tooltip("PRESS ANY BUTTONの部分の点滅間隔")] private float _textPulseDuration = 1.5f;
+        [SerializeField, Tooltip("PRESS ANY BUTTONの部分のパルス時の透明度")] private float _textPulseTargetAlpha = 0.6f;
         
         private BattleGradeEnum _currentRank; // 今回のランク
         private Sequence _resultSequence;
-        private CriAtomExPlayback _playback;
+        private List<CriAtomExPlayback> _playbackList = new List<CriAtomExPlayback>();
 
         #region Life cycle
 
@@ -106,7 +115,10 @@ namespace BeatKeeper
             _resultSequence?.Kill();
             
             // ボイスが再生中なら止める
-            _playback.Stop();
+            foreach (var playback in _playbackList)
+            {
+                playback.Stop();
+            }
         }
 
         #endregion
@@ -132,7 +144,6 @@ namespace BeatKeeper
 
             // ランク表示
             _resultSequence.Append(CreateRankTween());
-            _resultSequence.Join(DOVirtual.DelayedCall(_resultRevealDelay, () => { }));
             
             // ランク読み上げを待ってから賞賛ボイスを再生
             _resultSequence.AppendCallback(PlayPraiseVoice);
@@ -144,7 +155,7 @@ namespace BeatKeeper
         private void ShowCanvas()
         {
             // NOTE: CanvasGroupの不透明度は現状ResultManagerから変更しているのでその処理は書いてない
-            VoiceManager.PlayVoice(_resultCueName);
+            _playbackList.Add(VoiceManager.PlayVoice(_resultCueName));
         }
         
         /// <summary>
@@ -155,7 +166,7 @@ namespace BeatKeeper
             if(_scoreText == null) return DOVirtual.DelayedCall(0f, () => { });
             
             // SE再生
-            SoundEffectManager.PlaySoundEffect(_counterSe);
+            _playbackList.Add(SoundEffectManager.PlaySoundEffect(_counterSe));
             
             // スコアを先に取得しておく
             var targetScore = _scoreManager.Score;
@@ -192,24 +203,52 @@ namespace BeatKeeper
             // スコアを元にランクを算出
             var rank = _gradeEvaluator.EvaluateRank(_scoreManager.Score);
 
-            // ランクに応じてボイス再生
-            var voice = GetRankVoiceCueName(rank, _rankVoice);
+            // ランクに応じて再生するボイス名を取得
+            var voiceData = GetRankVoiceCueName(rank, _rankVoice);
 
-            // ランクSE再生
-            SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank));
-
-            return DOVirtual.DelayedCall(0.01f, () =>
+            // ランクのスプライトを取得
+            var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
+            if (rankSprite == null)
             {
-                VoiceManager.PlayVoice(voice);
+                return DOVirtual.DelayedCall(0f, () => { });
+            }
+            
+            // 表示を整える
+            _rankImage.transform.localScale = Vector3.zero;
+            _rankImage.color = new Color(1f, 1f, 1f, 0f);
+            _rankImage.sprite = rankSprite;
+            _rankImage.enabled = true;
+                    
+            var sequence = DOTween.Sequence();
+        
+            // スケールアップと同時にフェードイン
+            sequence.Append(_rankImage.transform.DOScale(_rankImageScale, 0.3f).SetEase(Ease.OutBack));
+            sequence.Join(_rankImage.DOFade(1f, 0.25f).SetEase(Ease.OutQuart));
+            
+            // 通常サイズに戻す
+            sequence.Append(_rankImage.transform.DOScale(1f, 0.2f).SetEase(Ease.InOutQuart));
+            
+            sequence.Join(DOVirtual.DelayedCall(0f, () =>
+            {
+                // ランク読み上げボイス/SEを再生
+                _playbackList.Add(VoiceManager.PlayVoice(voiceData.CueName));
+                _playbackList.Add(SoundEffectManager.PlaySoundEffect(GetRankSeCueName(rank)));
+            }));
 
-                // ランクの文字列とサフィックスを連結して、スプライトをロードしてくる
-                var rankSprite = _rankSpriteAtlas.GetSprite($"{rank.ToString()}{_rankSpriteSuffix}");
-                if (rankSprite != null)
+            sequence.Append(DOVirtual.DelayedCall(voiceData.DurationTime, () => { }));
+            
+            // フルコンボの場合の処理
+            if (_scoreManager.PerfectSync)
+            {
+                sequence.Append(DOVirtual.DelayedCall(0f, () =>
                 {
-                    _rankImage.sprite = rankSprite;
-                    _rankImage.enabled = true;
-                }
-            });
+                    // 専用ボイスを再生
+                    _playbackList.Add(VoiceManager.PlayVoice(_perfectSyncVoice));
+                }));
+                sequence.Append(DOVirtual.DelayedCall(2.5f, () => { }));
+            }
+            
+            return sequence;
         }
 
         /// <summary>
@@ -243,7 +282,7 @@ namespace BeatKeeper
                 // 最初の要素だけ即座にSE再生
                 if (i == 0)
                 {
-                    SoundEffectManager.PlaySoundEffect(_slideInSe);
+                    _playbackList.Add(SoundEffectManager.PlaySoundEffect(_slideInSe));
                 }
 
                 sequence.Insert(i * 0.06f, element.CanvasGroup.DOFade(1f, 0.3f).SetEase(Ease.OutQuad));
@@ -252,7 +291,10 @@ namespace BeatKeeper
                 // 2番目以降の要素は遅延してSE再生
                 if (i > 0)
                 {
-                    sequence.InsertCallback(i * 0.06f, () => SoundEffectManager.PlaySoundEffect(_slideInSe));
+                    sequence.InsertCallback(i * 0.06f, () =>
+                    {
+                        _playbackList.Add(SoundEffectManager.PlaySoundEffect(_slideInSe));
+                    });
                 }
             }
     
@@ -271,24 +313,27 @@ namespace BeatKeeper
 
             // ランクに応じてボイス再生
             var voice = GetRankVoiceCueName(rank, _resultVoice);
-            _playback = VoiceManager.PlayVoice(voice);
+            _playbackList.Add(VoiceManager.PlayVoice(voice.CueName));
+            
+            // テキストの点滅を始める
+            _pulseText.DOFade(_textPulseTargetAlpha, _textPulseDuration).SetLoops(-1, LoopType.Yoyo);
         }
         
         /// <summary>
         /// ランクボイスの配列から指定されたランクに対応するCueNameを取得する
         /// </summary>
-        private string GetRankVoiceCueName(BattleGradeEnum rank, RankVoice[] voiceNames)
+        private RankVoice GetRankVoiceCueName(BattleGradeEnum rank, RankVoice[] voiceNames)
         {
             foreach (var rankVoice in voiceNames)
             {
                 if (rankVoice.Rank == rank)
                 {
-                    return rankVoice.CueName;
+                    return rankVoice;
                 }
             }
     
             Debug.LogWarning($"{typeof(ResultUIController)}: ランク {rank} に対応するボイスが見つかりません");
-            return string.Empty;
+            return default;
         }
 
         /// <summary>
@@ -340,9 +385,11 @@ namespace BeatKeeper
         {
             [SerializeField] private BattleGradeEnum _rank;
             [SerializeField] private string _cueName;
+            [SerializeField] private float _durationTime;
             
             public BattleGradeEnum Rank => _rank;
             public string CueName => _cueName;
+            public float DurationTime => _durationTime;
         }
     }
 }

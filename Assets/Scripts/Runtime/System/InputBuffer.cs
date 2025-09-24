@@ -59,11 +59,6 @@ namespace BeatKeeper.Runtime.System
             {
                 Debug.LogWarning("PlayerInput is null");
             }
-
-            if (_quit != null)
-            {
-                _quit.started += n => Application.Quit();
-            }
         }
 
         /// <summary>

@@ -36,6 +36,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Shoot
+    m_EventTreshold: 0
   - m_ConditionMode: 6
     m_ConditionEvent: Combo
     m_EventTreshold: 2
@@ -545,6 +548,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Shoot
+    m_EventTreshold: 0
   - m_ConditionMode: 6
     m_ConditionEvent: Combo
     m_EventTreshold: 3
@@ -748,12 +754,12 @@ AnimatorStateMachine:
   - {fileID: -5817243727427385319}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -3163636177700007560}
-    second:
-    - {fileID: 7053060066390159466}
   - first: {fileID: -4997636563471328745}
     second:
     - {fileID: -1444661943233491612}
+  - first: {fileID: -3163636177700007560}
+    second:
+    - {fileID: 7053060066390159466}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 970, y: 0, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}

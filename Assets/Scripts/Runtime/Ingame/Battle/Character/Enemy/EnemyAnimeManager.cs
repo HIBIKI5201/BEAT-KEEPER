@@ -15,13 +15,15 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public void PreChargeAttack() => _animator?.SetTrigger(_chargeAttackHash);
         public void ChargeAttack() => _animator?.SetTrigger(_chargeAttackEndHash);
+        public void ChangeSpeed(float value)
+        {
+            _animator.speed = value;
+        }
 
         private readonly int _knockBackHash = Animator.StringToHash("KnockBack");
         private readonly int _attackHash = Animator.StringToHash("Attack");
         private readonly int _preAttackHash = Animator.StringToHash("PreAttack");
         private readonly int _chargeAttackHash = Animator.StringToHash("ChargeAttackStart");
         private readonly int _chargeAttackEndHash = Animator.StringToHash("ChargeAttackEnd");
-
-        private float _animeSpeed = 1f;
     }
 }

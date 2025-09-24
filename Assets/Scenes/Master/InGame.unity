@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 10756, guid: 0000000000000000e000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -701,6 +701,12 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: 364244107356732402, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
     value: {fileID: 0}
+  - key: {fileID: 7604559620125558133, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -5304472478733097311, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 7201165623287103990, guid: 74f64ac4e40ed79498f1301e4e5a944b, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &634489671
@@ -787,50 +793,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
---- !u!1 &712200584
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 712200586}
-  - component: {fileID: 712200585}
-  m_Layer: 0
-  m_Name: DebugHUD
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!114 &712200585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712200584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e62faa3184d249c48884f8486b58c986, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &712200586
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712200584}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &719706917 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7683056384977647134, guid: b38d8bd7842ac77448cd393f8e904d8e, type: 3}
@@ -959,7 +921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb2b09bf82e821419b6ac763a4c2084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _finisherScore: 2000
+  _playerData: {fileID: 11400000, guid: b02e335feeb586f4ca543a64070ad17f, type: 2}
   _playableAsset: {fileID: 11400000, guid: 4914a492972d7e449a406d28d9ffd8a5, type: 2}
 --- !u!1 &1118530755
 GameObject:
@@ -1229,7 +1191,7 @@ MonoBehaviour:
   _tutorialFocusFlow: {x: 0, y: 540}
   _playTutorial: 1
   _skipOnMiss: 1
-  _InvalidationTime: 0
+  _InvalidationTime: 1
   _attackTutorialClearCount: 4
   _attackMissCount: 8
   _othersTutorialClearCount: 2
@@ -1268,7 +1230,11 @@ MonoBehaviour:
   _skillVoiceName: voice_skill
   _missAvoidVoice: voice_avoid_damaged
   _missChargeVoice: voice_charge_attack_damaged
-  _skillEffectName: FX_Skill
+  _playerSkillEffectName: FX_Skill
+  _enemyBeamEffectNames:
+  - FX_chageBeam_1
+  - FX_chageBeam_2
+  - FX_chageBeam_3
 --- !u!1 &1573882305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1995,5 +1961,4 @@ SceneRoots:
   - {fileID: 439801351}
   - {fileID: 1959385957}
   - {fileID: 1175477591}
-  - {fileID: 712200586}
   - {fileID: 1640088185}

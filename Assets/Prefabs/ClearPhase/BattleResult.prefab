@@ -194,7 +194,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3721924646816817247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,27 +244,37 @@ MonoBehaviour:
   _perfectCount: {fileID: 7047120852346443159}
   _goodCount: {fileID: 1683138294846311537}
   _missCount: {fileID: 1071247687753604473}
+  _pulseText: {fileID: 2807488151937987117}
   _rankSpriteAtlas: {fileID: 100100200, guid: 93e35356181195640bce4bd390d5c0f1, type: 3}
   _rankSpriteSuffix: _rank
   _resultCueName: voice_result
   _rankVoice:
   - _rank: 0
     _cueName: voice_rank_s
+    _durationTime: 2.5
   - _rank: 1
     _cueName: voice_rank_a
+    _durationTime: 1.7
   - _rank: 2
     _cueName: voice_rank_b
+    _durationTime: 1.5
   - _rank: 3
     _cueName: voice_rank_c
+    _durationTime: 1.6
   _resultVoice:
   - _rank: 0
     _cueName: voice_result_s
+    _durationTime: 0
   - _rank: 1
     _cueName: voice_result_a
+    _durationTime: 0
   - _rank: 2
     _cueName: voice_result_b
+    _durationTime: 0
   - _rank: 3
     _cueName: voice_result_c
+    _durationTime: 0
+  _perfectSyncVoice: voice_perfect_sync
   _rankSSe: Rank_S
   _rankASe: Rank_A
   _rankBSe: Rank_B
@@ -274,6 +284,9 @@ MonoBehaviour:
   _scoreAnimationDuration: 2
   _rankRevealDelay: 1
   _resultRevealDelay: 2.3
+  _rankImageScale: 1.4
+  _textPulseDuration: 1.5
+  _textPulseTargetAlpha: 0.6
 --- !u!1 &776649170675205362
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -569, y: -488}
+  m_AnchoredPosition: {x: 0, y: -488}
   m_SizeDelta: {x: 194.4717, y: 83.6891}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4205563267026861871
@@ -352,7 +365,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: -PRESS ANY BUTTON-
+  m_Text: '- PRESS ANY BUTTON -'
 --- !u!1 &946098379456882542
 GameObject:
   m_ObjectHideFlags: 0
