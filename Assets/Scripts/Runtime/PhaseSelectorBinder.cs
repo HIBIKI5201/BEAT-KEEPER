@@ -30,8 +30,11 @@ namespace BeatKeeper
         private void HandlePhaseChanged(string phase)
         {
             CriAtomExPlayer player = _source.player;
-            player.SetSelectorLabel(_selector, phase);
-            player.UpdateAll();
+            if (player != null)
+            {
+                player.SetSelectorLabel(_selector, phase);
+                player.UpdateAll();
+            }
         }
     }
 }

@@ -194,7 +194,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3721924646816817247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,21 +251,30 @@ MonoBehaviour:
   _rankVoice:
   - _rank: 0
     _cueName: voice_rank_s
+    _durationTime: 2.5
   - _rank: 1
     _cueName: voice_rank_a
+    _durationTime: 1.7
   - _rank: 2
     _cueName: voice_rank_b
+    _durationTime: 1.5
   - _rank: 3
     _cueName: voice_rank_c
+    _durationTime: 1.6
   _resultVoice:
   - _rank: 0
     _cueName: voice_result_s
+    _durationTime: 0
   - _rank: 1
     _cueName: voice_result_a
+    _durationTime: 0
   - _rank: 2
     _cueName: voice_result_b
+    _durationTime: 0
   - _rank: 3
     _cueName: voice_result_c
+    _durationTime: 0
+  _perfectSyncVoice: voice_perfect_sync
   _rankSSe: Rank_S
   _rankASe: Rank_A
   _rankBSe: Rank_B
