@@ -1,0 +1,377 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00eea894381a8374eb7be1a9619d606d, type: 3}
+  m_Name: Phase3_Data_Convert
+  m_EditorClassIdentifier: 
+  _chart:
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 2
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 2
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 2
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 1
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 8
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 2
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 8
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 4
+    Position: {x: -375, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 8
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 2
+    Position: {x: -375, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -525, y: 0}
+  - AttackKind: 8
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 4
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -375, y: 0}
+  - AttackKind: 1
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 375, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 2
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
+    Position: {x: 300, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -375, y: 0}
+  - AttackKind: 1
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 375, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 8
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 2
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  - AttackKind: 8
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
+  _rangeEndPositions:
+    keys: 3c0000007d00000052000000540000005f0000005a000000590000005800000056000000570000005b0000005c0000005d000000600000006600000067000000180000001c0000007f0000007c0000003e0000003400000038000000010000000300000005000000060000001000000011000000130000000c0000000e000000080000000a000000160000001700000012000000090000000b0000000d0000000f000000150000001f00000014000000190000001a0000001e000000220000002300000026000000270000001d0000001b00000020000000210000002400000025000000280000002a0000002e0000002f0000002d0000002c0000003100000032000000360000003f000000400000004100000043000000420000004500000046000000480000004a0000004c0000004e0000005000000051000000530000005e0000006200000063000000680000006e00000074000000760000007800000071000000790000007e00000055000000440000004f00000047000000490000004b00000072000000750000007a000000640000006a000000
+    values:
+    - {x: -175, y: 0}
+    - {x: 175, y: 0}
+    - {x: -175, y: 0}
+    - {x: 375, y: 0}
+    - {x: 175, y: 0}
+    - {x: -175, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: 175, y: 0}
+    - {x: -175, y: 0}
+    - {x: 375, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 575, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: -325, y: 0}
+    - {x: 725, y: 0}
+    - {x: 175, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: 375, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: 375, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: -175, y: 0}
+    - {x: -175, y: 0}
+    - {x: 25, y: 0}
+    - {x: -175, y: 0}
+    - {x: -325, y: 0}
+    - {x: -175, y: 0}
+    - {x: -325, y: 0}
+    - {x: -175, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: -175, y: 0}
+    - {x: 375, y: 0}
+    - {x: 575, y: 0}
+    - {x: 725, y: 0}
+    - {x: -325, y: 0}
+    - {x: 575, y: 0}
+    - {x: 175, y: 0}
+    - {x: -175, y: 0}
+    - {x: -325, y: 0}
+    - {x: 25, y: 0}
+    - {x: 25, y: 0}
+    - {x: -175, y: 0}
+    - {x: 25, y: 0}
+    - {x: -325, y: 0}
+    - {x: 525, y: 0}
+    - {x: 525, y: 0}
+    - {x: 25, y: 0}
+    - {x: -175, y: 0}
+    - {x: 375, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
+    - {x: -325, y: 0}
+    - {x: 575, y: 0}
+  _visible: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
