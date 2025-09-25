@@ -66,7 +66,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private const float RECEPTION_TIME = 0.5f; // Justタイミングのあとの判定受付時間
         
         [Header("判定調整用")]
-        [SerializeField, Range(0.9f, 1.0f)] private float _animationSpeed = 0.9f;
+        [SerializeField, Range(0.8f, 1.0f)] private float _animationSpeed = 0.9f;
         
         [Header("コンポーネントの参照")] 
 		[SerializeField] private Image _startPositionRing; // 長押しの始めを示すリング
