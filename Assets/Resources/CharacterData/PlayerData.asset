@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Player
   _comboAttackPower: 150
-  _perfectCriticalDamage: 1.4
+  _perfectCriticalDamage: 1.5
   _comboScoreScale:
   - 51
   - 101

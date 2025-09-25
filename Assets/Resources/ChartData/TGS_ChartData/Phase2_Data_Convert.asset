@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00eea894381a8374eb7be1a9619d606d, type: 3}
-  m_Name: Phase2_Data_Convart
+  m_Name: Phase2_Data_Convert
   m_EditorClassIdentifier: 
   _chart:
   - AttackKind: 4
@@ -21,11 +21,11 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 8
-    Position: {x: -175, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 1
+  - AttackKind: 2
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 8
+  - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -50,102 +50,6 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 2
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -375, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 375, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 2
-    Position: {x: -375, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 375, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 2
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -161,7 +65,7 @@ MonoBehaviour:
     Position: {x: -525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
-  - AttackKind: 0
+  - AttackKind: 1
     Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -170,37 +74,6 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 8
-<<<<<<< HEAD
-=======
-    Position: {x: 175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 4
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: 0, y: 0}
-  - AttackKind: 0
-    Position: {x: 525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -525, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
-    Position: {x: -175, y: 0}
-  - AttackKind: 0
-    Position: {x: 0, y: 0}
-  - AttackKind: 1
->>>>>>> chartData
     Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
@@ -217,9 +90,105 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: -375, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 375, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
     Position: {x: 525, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 8
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 2
+    Position: {x: -525, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: -175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 8
+    Position: {x: 175, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 4
+    Position: {x: -375, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 1
+    Position: {x: 375, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 0, y: 0}
+  - AttackKind: 0
+    Position: {x: 525, y: 0}
   - AttackKind: 1
     Position: {x: -375, y: 0}
   - AttackKind: 0
@@ -241,7 +210,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
-    Position: {x: 0, y: 0}
+    Position: {x: -175, y: 0}
   - AttackKind: 1
     Position: {x: -300, y: 0}
   - AttackKind: 1
@@ -273,21 +242,21 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -400, y: 0}
+    Position: {x: -600, y: 0}
   - AttackKind: 1
-    Position: {x: -200, y: 0}
-  - AttackKind: 4
+    Position: {x: -300, y: 0}
+  - AttackKind: 1
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 200, y: 0}
+    Position: {x: 300, y: 0}
   - AttackKind: 1
-    Position: {x: 400, y: 0}
+    Position: {x: 600, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -652, y: 0}
+    Position: {x: -625, y: 0}
   - AttackKind: 1
     Position: {x: -375, y: 0}
   - AttackKind: 1
@@ -301,13 +270,13 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   _rangeEndPositions:
-    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e000000120000001c000000180000004c0000005c0000000a000000000000000200000004000000060000000c0000000e000000100000001a0000001e00000020000000220000002a0000002e00000032000000360000003e000000500000005800000060000000680000006a0000006c0000007200000076000000780000002c000000340000003c0000001d0000001f00000019000000460000004a0000004e000000560000005a0000005e0000004400000048000000280000003000000038000000740000007e0000006600000026000000620000007a00000071000000630000006100000053000000550000007f0000007700000065000000
+    keys: 140000002400000040000000420000001600000008000000540000005200000064000000700000006e000000120000001c000000180000004c0000005c0000000a000000000000000200000004000000060000000c0000000e000000100000001a0000001e00000020000000220000002a0000002e00000032000000360000003e000000500000005800000060000000680000006a0000006c0000007200000076000000780000002c000000340000003c0000001d0000001f00000019000000460000004a0000004e000000560000005a0000005e0000004400000048000000280000003000000038000000740000007e0000006600000026000000620000007a00000071000000630000006100000065000000770000007f0000005300000055000000
     values:
     - {x: 525, y: 0}
-    - {x: 525, y: 0}
+    - {x: 375, y: 0}
     - {x: 200, y: 0}
     - {x: 25, y: 0}
-    - {x: 725, y: 0}
+    - {x: 525, y: 0}
     - {x: -175, y: 0}
     - {x: 525, y: 0}
     - {x: 25, y: 0}
@@ -322,13 +291,13 @@ MonoBehaviour:
     - {x: -175, y: 0}
     - {x: -325, y: 0}
     - {x: 25, y: 0}
-    - {x: 175, y: 0}
+    - {x: 375, y: 0}
     - {x: 725, y: 0}
     - {x: 175, y: 0}
     - {x: 725, y: 0}
     - {x: -325, y: 0}
     - {x: 25, y: 0}
-    - {x: 725, y: 0}
+    - {x: 525, y: 0}
     - {x: -325, y: 0}
     - {x: 25, y: 0}
     - {x: 25, y: 0}
@@ -371,9 +340,9 @@ MonoBehaviour:
     - {x: 200, y: 0}
     - {x: 200, y: 0}
     - {x: 200, y: 0}
-    - {x: 200, y: 0}
-    - {x: 200, y: 0}
-    - {x: 825, y: 0}
-    - {x: 600, y: 0}
     - {x: 500, y: 0}
+    - {x: 800, y: 0}
+    - {x: 825, y: 0}
+    - {x: 25, y: 0}
+    - {x: 375, y: 0}
   _visible: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
