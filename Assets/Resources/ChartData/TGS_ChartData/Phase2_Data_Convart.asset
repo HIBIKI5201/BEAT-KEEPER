@@ -22,7 +22,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 8
-    Position: {x: 175, y: 0}
+    Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 8
-    Position: {x: 175, y: 0}
+    Position: {x: -175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
@@ -78,15 +78,15 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 4
-    Position: {x: -525, y: 0}
+    Position: {x: -375, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -175, y: 0}
+    Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 175, y: 0}
+    Position: {x: 375, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
@@ -94,15 +94,15 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 2
-    Position: {x: -525, y: 0}
+    Position: {x: -375, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: -175, y: 0}
+    Position: {x: 0, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 1
-    Position: {x: 175, y: 0}
+    Position: {x: 375, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 8
-    Position: {x: 525, y: 0}
+    Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 2
@@ -170,7 +170,7 @@ MonoBehaviour:
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 8
-    Position: {x: 525, y: 0}
+    Position: {x: 175, y: 0}
   - AttackKind: 0
     Position: {x: 0, y: 0}
   - AttackKind: 4
@@ -291,9 +291,9 @@ MonoBehaviour:
     - {x: -175, y: 0}
     - {x: -325, y: 0}
     - {x: 25, y: 0}
-    - {x: 375, y: 0}
+    - {x: 175, y: 0}
     - {x: 725, y: 0}
-    - {x: 375, y: 0}
+    - {x: 175, y: 0}
     - {x: 725, y: 0}
     - {x: -325, y: 0}
     - {x: 25, y: 0}
@@ -320,9 +320,9 @@ MonoBehaviour:
     - {x: 200, y: 0}
     - {x: 200, y: 0}
     - {x: 200, y: 0}
-    - {x: 725, y: 0}
+    - {x: 525, y: 0}
     - {x: 25, y: 0}
-    - {x: 725, y: 0}
+    - {x: 525, y: 0}
     - {x: 725, y: 0}
     - {x: 25, y: 0}
     - {x: 725, y: 0}
