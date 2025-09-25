@@ -1156,7 +1156,7 @@ MonoBehaviour:
   _tutorialText: {fileID: 2908268678855267499}
   _tutorialFocusImage: {fileID: 1877079637}
   _defaultFocusPosition: {x: -4, y: -350}
-  _chargeEndFocusPosition: {x: 169.9, y: -314}
+  _chargeEndFocusPosition: {x: 340.4, y: -282}
   _subTitleManager: {fileID: 1640088184}
   _director: {fileID: 1493203129}
   _chartRingManager: {fileID: 1325421708}
@@ -1738,6 +1738,10 @@ PrefabInstance:
       propertyPath: '_numberSpriteAtlas.Array.data[2]'
       value: 
       objectReference: {fileID: 100100200, guid: e8a55790c1b448045b8d06c90de55cb9, type: 3}
+    - target: {fileID: 2916375148089893408, guid: b76d99356d60d9b40998617976859451, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3272895625840884379, guid: b76d99356d60d9b40998617976859451, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
