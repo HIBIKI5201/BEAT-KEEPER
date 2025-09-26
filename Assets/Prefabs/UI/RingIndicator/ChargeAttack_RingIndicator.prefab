@@ -486,7 +486,7 @@ MonoBehaviour:
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Charge
-  _animationSpeed: 0.87
+  _animationSpeed: 0.915
   _startPositionRing: {fileID: 9076401914382325685}
   _endPositionRing: {fileID: 2486665361135006193}
   _chargeColor: {r: 1, g: 0.6745098, b: 0.7458095, a: 1}
