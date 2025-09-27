@@ -37,13 +37,13 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         [SerializeField] private Vector2 _tutorialFocusFlow;
 
         [Header("チュートリアルの設定")]
-        [SerializeField, Tooltip("チュートリアルをプレイするかどうか")] private bool _playTutorial = true;
         [SerializeField, Tooltip("一定回数失敗でスキップするかどうか")] private bool _skipOnMiss = true;
         [SerializeField, Tooltip("ミスをしたときに一定拍数判定を取れなくする")] private int _InvalidationTime;
         [SerializeField] private int _attackTutorialClearCount = 4;
         [SerializeField] private int _attackMissCount;
         [SerializeField] private int _othersTutorialClearCount = 1;
         [SerializeField] private int _othersMissCount;
+        [SerializeField] private float _skipTime = 1.5f;
 
         [Header("チュートリアル用のテキスト")]
         [SerializeField] private string _attackIndicatorKey;
@@ -102,6 +102,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private LocalizeTextManager _localizeTextManager;
         private ParticleSystem _skillEffect;
         private Animator[] _enemyBeamEffects;
+        private Coroutine _tutorialCoroutine;
         private int _currentIndicatorCount = 0;
         private int _currentTargetClearCount = 0;
         private int _currentChargeBeat;
@@ -109,12 +110,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private int _generateInterval;
         private int _currentMissCount;
         private float _indicatorTimer;
+        private float _skipThresholdTime;
         private bool _nextTutorial;
         private bool _operationTutorialPlaying;
         private bool _chargeAttackWaiting;
         private bool _isCharging;
         private bool _isIndicatorWaitForInput;
-
+        private bool _operationTutorialEnemyAttacking;
+        private bool _operationTutorialEnemyCharging;
         private async void Start()
         {
             _tutorialUi.SetActive(false);
@@ -141,11 +144,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         public void EndTutorial()
         {
             _tutorialUi.SetActive(false);
+            _inputBuffer.Quit.started -= OnSkipTutorial;
+            _inputBuffer.Quit.canceled -= OnSkipTutorial;
         }
 
         public void StartTutorial()
         {
             _director.Play();
+            _inputBuffer.Quit.started += OnSkipTutorial;
+            _inputBuffer.Quit.canceled += OnSkipTutorial;
         }
 
         public void PlayVoice(string cueName)
@@ -157,21 +164,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _tutorialFocusImage.GetComponent<RectTransform>().anchoredPosition = _tutorialFocusFlow;
                 _tutorialFocusImage.enabled = true;
             }
-#if UNITY_EDITOR
-            if (!_playTutorial)
-            {
-                double duration = _director.playableAsset.duration;
-                double jumpTime = duration * 0.95;
-
-                _director.time = jumpTime;
-                _director.Evaluate();
-            }
-#endif
         }
 
         public void OperationTutorialStart(ChartKindEnum chartKindEnum)
         {
-            StartCoroutine(Explanation(chartKindEnum));
+            _tutorialCoroutine = StartCoroutine(Explanation(chartKindEnum));
         }
 
         public void TutorialRegister(ChartKindEnum chartKindEnum)
@@ -438,7 +435,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
         private IEnumerator EndIndicator(RingIndicatorBase ringIndicatorBase)
         {
-            _activeIndicator = null; 
+            _activeIndicator = null;
             _isIndicatorWaitForInput = false;
             if (_isIndicatorWaitForInput)
             {
@@ -463,7 +460,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     SoundEffectManager.PlaySoundEffect(_avoidMissSound);
                 }
             }
-            
+
             yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat);
             if (ringIndicatorBase != _activeIndicator)
             {
@@ -579,101 +576,106 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (_activeIndicator == null) return;
             var chargeIndicator = _activeIndicator as ChargeIndicator;
+            var normalizedTiming = (float)Music.UnitFromJust;
 
-            if (ctx.phase == InputActionPhase.Started)
+            if (ctx.phase == InputActionPhase.Started &&
+                Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 2)
             {
-                //チャージ開始時の処理
-                var normalizedTiming = (float)Music.UnitFromJust;
-                if (Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 2)
-                {
-                    _isCharging = true;
-                    _currentChargeBeat = 0;
-                    chargeIndicator.OnPlayerChargeTutorial();
-                    SoundEffectManager.PlaySoundEffect(_charging);
-                    VoiceManager.PlayVoice(_chargeStartVoiceName);
-                    _playerAnimeManager.ChargeShoot();
-                    _chargeAttackWaiting = false;
-                }
-                else
-                {
-                    chargeIndicator.PlayFailEffect();
-                    _enemyAnimeManager.ChargeAttack();
-                    _enemyAnimeManager.KnockBack(false);
-                    _playerAnimeManager.FatalHit();
-                    _chargeAttackWaiting = false;
-                    if (_activeIndicator != null)
-                    {
-                        StartCoroutine(EndIndicator(_activeIndicator));
-                        _activeIndicator = null;
-                    }
-                    PlayVoice(_tutorialField);
-                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    _currentMissCount++;
-                    foreach (var item in _enemyBeamEffects)
-                    {
-                        item.Play(ChargeHash);
-                    }
-                    _currentMissCount++;
-                    _isCharging = false;
-                }
+                _isCharging = true;
+                _currentChargeBeat = 0;
+                chargeIndicator.OnPlayerChargeTutorial();
+                SoundEffectManager.PlaySoundEffect(_charging);
+                VoiceManager.PlayVoice(_chargeStartVoiceName);
+                _playerAnimeManager.ChargeShoot();
+                _chargeAttackWaiting = false;
             }
-            else if (ctx.phase == InputActionPhase.Canceled)
+            else if (ctx.phase == InputActionPhase.Canceled &&
+                _currentChargeBeat == 2 || _currentChargeBeat == 1 &&
+                Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 0)
             {
-                //チャージ完了時の処理
-                if (!_isCharging) return;
-                if (_currentChargeBeat == 2 || _currentChargeBeat == 1)
+                _currentTargetClearCount++;
+                chargeIndicator.OnPlayerAttackSuccessTutorial();
+                SoundEffectManager.PlaySoundEffect(_chargeGunshot);
+                if (_othersTutorialClearCount != _currentTargetClearCount)
+                    VoiceManager.PlayVoice(_chargeEndVoiceName);
+                _enemyAnimeManager.ChargeAttack();
+                _enemyAnimeManager.KnockBack(true);
+            }
+            else
+            {
+                chargeIndicator.PlayFailEffect();
+                _enemyAnimeManager.ChargeAttack();
+                _enemyAnimeManager.KnockBack(false);
+                _playerAnimeManager.FatalHit();
+                PlayVoice(_tutorialField);
+                SoundEffectManager.PlaySoundEffect(_chargeMissSound);
+                _currentMissCount++;
+                foreach (var item in _enemyBeamEffects)
                 {
-                    var normalizedTiming = (float)Music.UnitFromJust;
-                    if (Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 0)
-                    {
-                        _currentTargetClearCount++;
-                        chargeIndicator.OnPlayerAttackSuccessTutorial();
-                        SoundEffectManager.PlaySoundEffect(_chargeGunshot);
-                        if (_othersTutorialClearCount != _currentTargetClearCount)
-                            VoiceManager.PlayVoice(_chargeEndVoiceName);
-                        _enemyAnimeManager.ChargeAttack();
-                        _enemyAnimeManager.KnockBack(true);
-                    }
-                    else
-                    {
-                        chargeIndicator.PlayFailEffect();
-                        _enemyAnimeManager.ChargeAttack();
-                        _enemyAnimeManager.KnockBack(false);
-                        _playerAnimeManager.FatalHit();
-                        PlayVoice(_tutorialField);
-                        SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                        _currentMissCount++;
-                        foreach (var item in _enemyBeamEffects)
-                        {
-                            item.Play(ChargeHash);
-                        }
-                        _currentMissCount++;
-                        _isCharging = false;
-                    }
+                    item.Play(ChargeHash);
                 }
-                else
-                {
-                    chargeIndicator.PlayFailEffect();
-                    _enemyAnimeManager.ChargeAttack();
-                    _enemyAnimeManager.KnockBack(false);
-                    _playerAnimeManager.FatalHit();
-                    PlayVoice(_tutorialField);
-                    SoundEffectManager.PlaySoundEffect(_chargeMissSound);
-                    _currentMissCount++;
-                    foreach (var item in _enemyBeamEffects)
-                    {
-                        item.Play(ChargeHash);
-                    }
-                    _currentMissCount++;
-                    _isCharging = false;
-                }
+                _isCharging = false;
+                _chargeAttackWaiting = false;
                 if (_activeIndicator != null)
                 {
                     StartCoroutine(EndIndicator(_activeIndicator));
                     _activeIndicator = null;
                 }
-                _isCharging = false;
-                _currentChargeBeat = 0;
+            }
+            if (_activeIndicator != null)
+            {
+                StartCoroutine(EndIndicator(_activeIndicator));
+                _activeIndicator = null;
+            }
+            _isCharging = false;
+            _currentChargeBeat = 0;
+        }
+
+        private void OnSkipTutorial(InputAction.CallbackContext context)
+        {
+            Debug.Log("SkipTutorial");
+            if (context.phase == InputActionPhase.Started)
+            {
+                _skipThresholdTime = Time.time + _skipTime;
+            }
+            else if (context.phase == InputActionPhase.Canceled)
+            {
+                if (Time.time >= _skipThresholdTime)
+                {
+                    if (_tutorialCoroutine != null)
+                    {
+                        StopCoroutine(_tutorialCoroutine);
+                        _tutorialCoroutine = null;
+                    }
+                    _inputBuffer.Attack.started -= OnWaitInput;
+                    _inputBuffer.Avoid.started -= OnWaitInput;
+                    _inputBuffer.Interact.started -= OnWaitInput;
+                    _inputBuffer.Interact.canceled -= OnWaitInput;
+
+                    _tutorialUi.SetActive(false);
+                    _tutorialFocusImage.enabled = false;
+
+                    if (_operationTutorialEnemyAttacking)
+                    {
+                        _enemyAnimeManager.Attack();
+                        _operationTutorialEnemyAttacking = false;
+                    }
+                    else if(_operationTutorialEnemyCharging)
+                    {
+                        _enemyAnimeManager.ChargeAttack();
+                        _enemyAnimeManager.KnockBack(false);
+                        _operationTutorialEnemyCharging = false;
+                    }
+
+                    _activeIndicator?.End();
+
+                    double duration = _director.playableAsset.duration;
+                    double jumpTime = duration * 0.95;
+                    _director.time = jumpTime;
+                    _director.Evaluate();
+
+                    TutorialUnRegister();
+                }
             }
         }
 
@@ -685,7 +687,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             _operationTutorialPlaying = true;
             var ring = _chartRingManager.GenerateRing(chartKindEnum, Vector2.zero, 0);
-
+            _activeIndicator = ring.GetComponent<RingIndicatorBase>();
             if (chartKindEnum == ChartKindEnum.Attack)
             {
                 var ringObj = ring.GetComponent<PlayerIndicator>();
@@ -728,6 +730,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 var ringObj = ring.GetComponent<EnemyIndicator>();
                 ringObj.AddCount();
+                _operationTutorialEnemyAttacking = true;
                 SoundEffectManager.PlaySoundEffect(_ringAvoidSound);
                 _enemyAnimeManager.PreAttack();
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
@@ -739,6 +742,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _playerManager.FlowZoneSystem.SuccessResonance();
                 _playerAnimeManager.Avoid();
                 _enemyAnimeManager.Attack();
+                _operationTutorialEnemyAttacking = false;
                 ringObj.Resume();
                 ringObj.OnPlayerAvoidSuccess(true);
                 SoundEffectManager.PlaySoundEffect(_dodgeSound);
@@ -749,6 +753,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             {
                 var ringObj = ring.GetComponent<ChargeIndicator>();
                 ringObj.AddCount();
+                _operationTutorialEnemyCharging = true;
                 SoundEffectManager.PlaySoundEffect(_chargeSound);
                 _enemyAnimeManager.PreChargeAttack();
                 yield return new WaitForSeconds((float)MusicEngineHelper.DurationOfBeat * 2);
@@ -782,6 +787,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 _playerAnimeManager.ResumeAnimator();
                 _enemyAnimeManager.ChargeAttack();
                 _enemyAnimeManager.KnockBack(true);
+                _operationTutorialEnemyCharging = false;
                 _tutorialUi.SetActive(false);
                 ringObj.OnPlayerAttackSuccessTutorial();
                 _inputBuffer.Interact.canceled -= OnWaitInput;
@@ -795,6 +801,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
             _operationTutorialPlaying = false;
             ring.GetComponent<RingIndicatorBase>().End();
+            _activeIndicator = null;
         }
 
         /// <summary>
