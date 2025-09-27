@@ -118,6 +118,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         private bool _isIndicatorWaitForInput;
         private bool _operationTutorialEnemyAttacking;
         private bool _operationTutorialEnemyCharging;
+        private bool _isPushSkipButton;
         private async void Start()
         {
             _tutorialUi.SetActive(false);
@@ -138,6 +139,15 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             for (int i = 0; i < _enemyBeamEffectNames.Length; i++)
             {
                 _enemyBeamEffects[i] = enemy.transform.Find(_enemyBeamEffectNames[i]).GetComponent<Animator>();
+            }
+        }
+
+        private void Update()
+        {
+            if (_isPushSkipButton && Time.time >= _skipThresholdTime)
+            {
+                SkipTutorial();
+                _isPushSkipButton = false;
             }
         }
 
@@ -180,6 +190,43 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _chartKindEnum = chartKindEnum;
             _director.Pause();
             StartCoroutine(TutorialStartCoroutine(chartKindEnum));
+        }
+
+        private void SkipTutorial()
+        {
+            if (_tutorialCoroutine != null)
+            {
+                StopCoroutine(_tutorialCoroutine);
+                _tutorialCoroutine = null;
+            }
+            _inputBuffer.Attack.started -= OnWaitInput;
+            _inputBuffer.Avoid.started -= OnWaitInput;
+            _inputBuffer.Interact.started -= OnWaitInput;
+            _inputBuffer.Interact.canceled -= OnWaitInput;
+
+            _tutorialUi.SetActive(false);
+            _tutorialFocusImage.enabled = false;
+
+            if (_operationTutorialEnemyAttacking)
+            {
+                _enemyAnimeManager.Attack();
+                _operationTutorialEnemyAttacking = false;
+            }
+            else if (_operationTutorialEnemyCharging)
+            {
+                _enemyAnimeManager.ChargeAttack();
+                _enemyAnimeManager.KnockBack(false);
+                _operationTutorialEnemyCharging = false;
+            }
+
+            _activeIndicator?.End();
+
+            double duration = _director.playableAsset.duration;
+            double jumpTime = duration * 0.95;
+            _director.time = jumpTime;
+            _director.Evaluate();
+
+            TutorialUnRegister();
         }
 
         private IEnumerator TutorialStartCoroutine(ChartKindEnum chartKindEnum)
@@ -636,47 +683,14 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             Debug.Log("SkipTutorial");
             if (context.phase == InputActionPhase.Started)
             {
+                _isPushSkipButton = true;
                 _skipThresholdTime = Time.time + _skipTime;
             }
-            else if (context.phase == InputActionPhase.Canceled)
+            else
             {
-                if (Time.time >= _skipThresholdTime)
-                {
-                    if (_tutorialCoroutine != null)
-                    {
-                        StopCoroutine(_tutorialCoroutine);
-                        _tutorialCoroutine = null;
-                    }
-                    _inputBuffer.Attack.started -= OnWaitInput;
-                    _inputBuffer.Avoid.started -= OnWaitInput;
-                    _inputBuffer.Interact.started -= OnWaitInput;
-                    _inputBuffer.Interact.canceled -= OnWaitInput;
-
-                    _tutorialUi.SetActive(false);
-                    _tutorialFocusImage.enabled = false;
-
-                    if (_operationTutorialEnemyAttacking)
-                    {
-                        _enemyAnimeManager.Attack();
-                        _operationTutorialEnemyAttacking = false;
-                    }
-                    else if(_operationTutorialEnemyCharging)
-                    {
-                        _enemyAnimeManager.ChargeAttack();
-                        _enemyAnimeManager.KnockBack(false);
-                        _operationTutorialEnemyCharging = false;
-                    }
-
-                    _activeIndicator?.End();
-
-                    double duration = _director.playableAsset.duration;
-                    double jumpTime = duration * 0.95;
-                    _director.time = jumpTime;
-                    _director.Evaluate();
-
-                    TutorialUnRegister();
-                }
+                _isPushSkipButton = false;
             }
+
         }
 
         #endregion
