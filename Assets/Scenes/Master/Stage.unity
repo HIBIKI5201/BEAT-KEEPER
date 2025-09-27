@@ -776,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2232030082424575940, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: orthographic size
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2232030082424575940, guid: d8af45382e24b6c48b31daa27d348936, type: 3}
       propertyPath: m_projectionMatrixMode
@@ -1242,9 +1242,111 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
+--- !u!1 &172002790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 172002791}
+  - component: {fileID: 172002794}
+  - component: {fileID: 172002793}
+  - component: {fileID: 172002792}
+  m_Layer: 0
+  m_Name: StartSequenceUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &172002791
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172002790}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1573882306}
+  m_Father: {fileID: 867685599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &172002792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172002790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &172002793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172002790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &172002794
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172002790}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &180329148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,7 +1875,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &231093170
@@ -1941,6 +2043,81 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &255368724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 255368725}
+  - component: {fileID: 255368727}
+  - component: {fileID: 255368726}
+  m_Layer: 0
+  m_Name: Guage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &255368725
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255368724}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1573882306}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 250, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &255368726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255368724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5924529, g: 0.5924529, b: 0.5924529, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &255368727
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255368724}
+  m_CullTransparentMesh: 1
 --- !u!43 &276550981
 Mesh:
   m_ObjectHideFlags: 0
@@ -2577,7 +2754,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &321911734
@@ -2825,7 +3002,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &341082458
@@ -3138,7 +3315,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.23508991, g: -0.9713447, b: 0.034958597, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!4 &381536027 stripped
@@ -3403,7 +3580,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &416903785
@@ -3486,7 +3663,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.06454769, g: 0.9932375, b: 0.09650311, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &427172322
@@ -3569,7 +3746,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.0992471, g: 0.9932377, b: -0.060243256, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &439492004
@@ -3669,7 +3846,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.049319863, g: 0.99323756, b: -0.10510373, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &495560114
@@ -5054,7 +5231,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.08340192, g: 0.99323756, b: -0.0807673, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &562881801
@@ -5467,7 +5644,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.07105735, g: 0.99323773, b: -0.09181544, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &576455425
@@ -5582,7 +5759,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.10323325, g: 0.99323773, b: -0.053123742, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &630680281
@@ -5665,7 +5842,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &651006501
@@ -5963,7 +6140,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.11423376, g: 0.99323756, b: 0.020733856, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &663285289
@@ -7051,7 +7228,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.05681765, g: 0.9932376, b: 0.1012474, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &730624698
@@ -7408,7 +7585,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.056486577, g: 0.99323756, b: -0.101432264, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &746645455
@@ -7491,7 +7668,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &752650003
@@ -7864,7 +8041,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932376, b: -0.11293203, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &799896829
@@ -7947,7 +8124,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.41715053, g: -0.9081648, b: 0.03495878, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &812298071
@@ -8030,7 +8207,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &812873247
@@ -8113,7 +8290,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.0992471, g: 0.9932377, b: -0.060243256, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &819043052
@@ -8196,7 +8373,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &819211038
@@ -8291,7 +8468,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0109421015, g: 0.9932374, b: 0.11558324, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &838432300
@@ -8649,12 +8826,20 @@ PrefabInstance:
       objectReference: {fileID: 1052159840}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6478912709606228799, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 172002791}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
 --- !u!95 &867685598 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 504222011758595169, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
+  m_PrefabInstance: {fileID: 867685597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &867685599 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6478912709606228799, guid: 4f1f55a5f714e2b45adb18d9b797292a, type: 3}
   m_PrefabInstance: {fileID: 867685597}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &887890571
@@ -8902,7 +9087,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.049319863, g: 0.99323756, b: -0.10510373, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &906637454
@@ -8985,7 +9170,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0013538301, g: 0.9932376, b: 0.116092354, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &941558610
@@ -9233,7 +9418,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.10410097, g: 0.99323756, b: 0.051402792, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &993873023
@@ -9347,7 +9532,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.35260594, g: -0.9357448, b: 0.0071201026, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1001161354
@@ -9454,7 +9639,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.12442526, g: -0.991613, b: 0.034958705, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1028848451
@@ -9537,7 +9722,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.056486577, g: 0.99323756, b: -0.101432264, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1036013684
@@ -9709,7 +9894,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0013538301, g: 0.9932376, b: 0.116092354, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1052159840 stripped
@@ -9963,7 +10148,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1125706321
@@ -10211,7 +10396,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!4 &1142308758 stripped
@@ -10471,7 +10656,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1221837961
@@ -13126,7 +13311,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1253771935
@@ -13889,7 +14074,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1368778223
@@ -14194,7 +14379,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.0994499, g: 0.9932375, b: 0.059907973, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1421946397
@@ -14277,7 +14462,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.3255062, g: -0.9455131, b: 0.007120122, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &1429453357
@@ -15032,7 +15217,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1512328099
@@ -15236,7 +15421,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1524363093
@@ -15452,7 +15637,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1541488453
@@ -15823,6 +16008,80 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1573882305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1573882306}
+  - component: {fileID: 1573882308}
+  - component: {fileID: 1573882310}
+  - component: {fileID: 1573882309}
+  m_Layer: 0
+  m_Name: Text_Encounter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1573882306
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573882305}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 255368725}
+  - {fileID: 1919721311}
+  m_Father: {fileID: 172002791}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 100}
+  m_Pivot: {x: 1, y: 0}
+--- !u!222 &1573882308
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573882305}
+  m_CullTransparentMesh: 1
+--- !u!114 &1573882309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573882305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac259f265bc8d03418d3a5543744b11d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _holdDuration: 3
+  _guage: {fileID: 255368726}
+--- !u!225 &1573882310
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573882305}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1579282850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15992,7 +16251,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.07143533, g: 0.9932377, b: 0.09152189, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1609138894
@@ -16763,7 +17022,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.10323325, g: 0.99323773, b: -0.053123742, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1670997232
@@ -17538,7 +17797,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.043390512, g: 0.9932376, b: -0.107687056, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1752315262
@@ -17830,7 +18089,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.06454769, g: 0.9932375, b: 0.09650311, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &1829175213
@@ -18470,6 +18729,85 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1919721310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919721311}
+  - component: {fileID: 1919721313}
+  - component: {fileID: 1919721312}
+  m_Layer: 0
+  m_Name: 'Text '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1919721311
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919721310}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1573882306}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1919721312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919721310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: New Text
+--- !u!222 &1919721313
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919721310}
+  m_CullTransparentMesh: 1
 --- !u!43 &1924306925
 Mesh:
   m_ObjectHideFlags: 0
@@ -18715,7 +19053,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &1959352291
@@ -19065,7 +19403,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.10390589, g: 0.9932376, b: 0.051795974, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2000250479
@@ -19148,7 +19486,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2000729248
@@ -19231,7 +19569,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.09538485, g: 0.9932375, b: 0.06618892, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2027016241
@@ -19314,7 +19652,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.08592312, g: 0.9932376, b: 0.07807992, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &2039221335
@@ -19782,7 +20120,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.50743014, g: -0.8609835, b: 0.034959137, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &2078427356
@@ -19865,7 +20203,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.026936322, g: 0.9932375, b: -0.112932205, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &2119183435
@@ -20113,7 +20451,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.079915866, g: 0.99323744, b: -0.0842183, a: 0}
-    - _WindDirection: {r: 1.5927665, g: 1.0618439, b: 0, a: 258.95624}
+    - _WindDirection: {r: 3.7428646, g: 2.4952433, b: 0, a: 271.31693}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!43 &2143363065

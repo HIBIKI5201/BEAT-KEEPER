@@ -94,12 +94,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 cameraManager.ChangeCamera(stageManager.PlayerCamera);
             }
 
-            var text = GetComponentInChildren<UIElement_EncounterText>();
-            if (text)
-            {
-                text.HideEncounterText();
-            }
-
             // タイムラインの時間をとばす
             _director.time = _skipTiming;
         }
