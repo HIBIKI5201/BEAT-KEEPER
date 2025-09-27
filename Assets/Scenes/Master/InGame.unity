@@ -1086,13 +1086,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _tutorialFocusFlow: {x: 0, y: 540}
-  _playTutorial: 1
   _skipOnMiss: 1
   _InvalidationTime: 1
   _attackTutorialClearCount: 4
   _attackMissCount: 8
   _othersTutorialClearCount: 2
   _othersMissCount: 4
+  _skipTime: 3
   _attackIndicatorKey: attackIndicatorText
   _skillIndicatorKey: skillIndicatorText
   _enemyIndicatorKey: enemyIndicatorText
