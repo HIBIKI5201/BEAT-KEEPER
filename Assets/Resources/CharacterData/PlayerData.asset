@@ -16,8 +16,8 @@ MonoBehaviour:
   _comboAttackPower: 150
   _perfectCriticalDamage: 1.5
   _comboScoreScale:
-  - 51
-  - 101
+  - 76
+  - 126
   - 151
   _comboRisetTime: 3
   _chargeAttackPower: 450
