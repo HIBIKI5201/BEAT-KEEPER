@@ -858,7 +858,7 @@ MonoBehaviour:
   _holdDuration: 3
   _tutorialManager: {fileID: 1493203130}
   _playableAsset: {fileID: 11400000, guid: e9df9d845e0507941af030695dbf5371, type: 2}
-  _skipTiming: 70
+  _skipTiming: 66
   _bgmName: Phase1
 --- !u!4 &1042500690
 Transform:
