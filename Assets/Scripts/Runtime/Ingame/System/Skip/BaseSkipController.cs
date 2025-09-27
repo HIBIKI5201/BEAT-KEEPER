@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
@@ -53,6 +53,8 @@ namespace BeatKeeper
                     
                     _isSkipping = false;
                     _skipHoldTime = 0f;
+
+                    UnregisterSkipInput();
                 }
             }
         }

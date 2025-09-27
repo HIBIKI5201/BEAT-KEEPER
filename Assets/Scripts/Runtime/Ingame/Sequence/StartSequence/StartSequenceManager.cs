@@ -104,7 +104,6 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             _director.time = _skipTiming;
         }
         
-        [Conditional("UNITY_EDITOR")]
         private void SaveDirector(PlayableDirector director)
         {
             _director = director;
