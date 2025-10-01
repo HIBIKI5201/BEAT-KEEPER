@@ -129,12 +129,10 @@ namespace BeatKeeper.Runtime.Ingame.Character
                 if (isIdle)
                 {
                     _animator.SetLayerWeight(_idleLayer, 1);
-                    Debug.Log("idle");
                 }
                 else
                 {
                     _animator.SetLayerWeight(_idleLayer, 0);
-                    Debug.Log("not idle");
                 }
             }
 
