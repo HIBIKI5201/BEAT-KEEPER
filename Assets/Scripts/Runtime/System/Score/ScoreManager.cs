@@ -39,6 +39,11 @@ namespace BeatKeeper
         public int MaxCombo => _maxCombo;
         
         /// <summary>
+        /// フルコンボか
+        /// </summary>
+        public bool PerfectSync =>  _accuracyTracker.AllCount == _maxCombo;
+        
+        /// <summary>
         /// スコアのリアクティブプロパティ
         /// </summary>
         public ReadOnlyReactiveProperty<int> ScoreProp => _scoreProp;

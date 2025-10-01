@@ -1,15 +1,15 @@
 ﻿using BeatKeeper.Runtime.Ingame.Character;
 using BeatKeeper.Runtime.System;
 using CriWare;
+using Cysharp.Threading.Tasks;
 using R3;
 using SymphonyFrameWork.System;
 using SymphonyFrameWork.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 using System.Threading;
-using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
 {
@@ -44,7 +44,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         #endregion
 
         public CriAtomSource AtomSource => _atomSource;
-        
+
         #region BGMの管理
 
         /// <summary>
@@ -78,9 +78,9 @@ namespace BeatKeeper.Runtime.Ingame.System
         {
             if (_atomSource == null)
                 return;
-    
+
             float startVolume = _atomSource.volume;
-    
+
             try
             {
                 await UniTask.Create(async () =>
@@ -91,11 +91,11 @@ namespace BeatKeeper.Runtime.Ingame.System
                         progress = Mathf.Min(progress + Time.deltaTime / duration, 1f);
                         float currentVolume = Mathf.Lerp(startVolume, 0f, progress);
                         _atomSource.volume = currentVolume;
-                
+
                         await UniTask.Yield(PlayerLoopTiming.Update);
                     }
                 }).AttachExternalCancellation(cancellationToken);
-        
+
                 _atomSource.volume = 0f;
                 Music.Stop();
             }
@@ -116,18 +116,18 @@ namespace BeatKeeper.Runtime.Ingame.System
 
             if (index <= 4) //レイヤーのみ変更する
             {
-				// レイヤー0~4の場合 = フローゾーン以外
+                // レイヤー0~4の場合 = フローゾーン以外
                 label.Append(_selectorLabelName);
                 label.Append(index.ToString("0"));
             }
             else
             {
-				// フローゾーン突入 イントロの16拍分を減らす
+                // フローゾーン突入 イントロの16拍分を減らす
                 int beat = Music.Just.Bar * 4 + Music.Just.Beat - 16;
 
-				// BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
-				int position = beat % 64;
-			
+                // BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
+                int position = beat % 64;
+
                 // position 0-14: 1小節目 -> 5に変換
                 // position 15-30: 2小節目 -> 9に変換
                 // position 31-46: 3小節目 -> 13に変換
@@ -153,13 +153,21 @@ namespace BeatKeeper.Runtime.Ingame.System
                 }
 
                 //遷移先のレイヤー名を取得
-				label.Append(_selectorFlowZoneLabelName);
+                label.Append(_selectorFlowZoneLabelName);
                 label.Append(layer.ToString("0"));
             }
 
             _atomSource.player.SetSelectorLabel(_selectorName, label.ToString());
             _atomSource.player.UpdateAll();
             Debug.Log($"{nameof(BGMManager)} BGMのレイヤーを{index}に変更しました。\nセレクター名 {label.ToString()}");
+        }
+
+        public void ChangeAisacValue(string aisac, float value)
+        {
+            if (_atomSource == null) return;
+
+            _atomSource.player.SetAisacControl(aisac, value);
+            _atomSource.player.UpdateAll();
         }
 
         #endregion
@@ -169,9 +177,9 @@ namespace BeatKeeper.Runtime.Ingame.System
             // 既に登録されているものがあれば解除
             _disposable?.Dispose();
             _disposable = null;
-            
+
             _disposable = new CompositeDisposable();
-            
+
             PlayerManager playerManager = await ServiceLocator.GetInstanceAsync<PlayerManager>();
 
             await SymphonyTask.WaitUntil(() => playerManager.FlowZoneSystem != null);
@@ -489,54 +497,56 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         private void ProcessTimingActions()
         {
-            var currentTiming = MusicEngineHelper.GetCurrentTiming();
-
-            if (_timingActions.TryGetValue(currentTiming, out var actionDict))
+            try
             {
-                // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
-                List<Guid> actionsToRemove = new List<Guid>();
-
-                // 登録されたアクションを全て実行する
-                foreach (var actionEntry in actionDict)
+                var currentTiming = MusicEngineHelper.GetCurrentTiming();
+                if (_timingActions.TryGetValue(currentTiming, out var actionDict))
                 {
-                    var actionId = actionEntry.Key;
-                    var actionInfo = actionEntry.Value;
+                    // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
+                    List<Guid> actionsToRemove = new List<Guid>();
 
-                    try
+                    // 登録されたアクションを全て実行する
+                    foreach (var actionEntry in actionDict)
                     {
-                        actionInfo.Action?.Invoke(); // アクション実行
+                        var actionId = actionEntry.Key;
+                        var actionInfo = actionEntry.Value;
 
-                        if (!actionInfo.IsRepeating)
+                        try
                         {
-                            actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
+                            actionInfo.Action?.Invoke(); // アクション実行
+
+                            if (!actionInfo.IsRepeating)
+                            {
+                                actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
+                            actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
                         }
                     }
-                    catch (Exception ex)
+
+                    // 削除リストに含まれるアクションを削除
+                    foreach (var actionId in actionsToRemove)
                     {
-                        Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
-                        actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
+                        actionDict.Remove(actionId);
+                    }
+
+                    // アクションが空になった場合はタイミングエントリーも削除
+                    if (actionDict.Count == 0)
+                    {
+                        _timingActions.Remove(currentTiming);
                     }
                 }
-
-                // 削除リストに含まれるアクションを削除
-                foreach (var actionId in actionsToRemove)
-                {
-                    actionDict.Remove(actionId);
-                }
-
-                // アクションが空になった場合はタイミングエントリーも削除
-                if (actionDict.Count == 0)
-                {
-                    _timingActions.Remove(currentTiming);
-                }
             }
+            catch { }
         }
-
         #endregion
 
-        /// <summary>
-        ///     タイミングアクションの情報を格納する構造体
-        /// </summary>
+            /// <summary>
+            ///     タイミングアクションの情報を格納する構造体
+            /// </summary>
         private readonly struct TimingActionInfo
         {
             /// <summary>実行するアクション</summary>

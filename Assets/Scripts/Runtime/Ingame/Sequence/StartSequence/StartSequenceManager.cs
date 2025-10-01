@@ -1,10 +1,13 @@
 ﻿using BeatKeeper.Runtime.Ingame.Battle;
+using BeatKeeper.Runtime.Ingame.Stsge;
 using BeatKeeper.Runtime.Ingame.System;
+using BeatKeeper.Runtime.Ingame.UI;
 using BeatKeeper.Runtime.System;
 using SymphonyFrameWork.System;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Playables;
+using static UnityEngine.UI.GridLayoutGroup;
 using Debug = UnityEngine.Debug;
 
 namespace BeatKeeper.Runtime.Ingame.Sequence
@@ -83,12 +86,18 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                     bgmManager.ChangeBGM(_bgmName);
                 }
             }
-            
+
+            var cameraManager = ServiceLocator.GetInstance<CameraManager>();
+            if (cameraManager)
+            {
+                var stageManager = ServiceLocator.GetInstance<StageSceneManager>();
+                cameraManager.ChangeCamera(stageManager.PlayerCamera);
+            }
+
             // タイムラインの時間をとばす
             _director.time = _skipTiming;
         }
         
-        [Conditional("UNITY_EDITOR")]
         private void SaveDirector(PlayableDirector director)
         {
             _director = director;

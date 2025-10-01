@@ -8,6 +8,7 @@ using SymphonyFrameWork.System;
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BeatKeeper.Runtime.Ingame.Character
 {
@@ -20,7 +21,11 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         public event Action OnShootAttack;
         public event Action OnShootNormalAttack;
-        public event Action OnShootChargeAttack;
+        public event Action OnShootChargeAttack
+        {
+            add => _onShootChargeAttack.Event += value;
+            remove => _onShootChargeAttack.Event -= value;
+        }
 
         public event Action OnHitNockBackAttack
         {
@@ -107,6 +112,13 @@ namespace BeatKeeper.Runtime.Ingame.Character
         {
             Debug.Log(active);
             _modelParent.SetActive(active);
+
+            float speed = (float)(Music.CurrentTempo / 120d);
+            _animeManager.ChangeSpeed(speed);
+            foreach (var animator in _beamAnimators)
+            {
+                animator.speed = speed;
+            }
         }
 
         public override void HitAttack(AttackData data)
@@ -143,6 +155,8 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
         [SerializeField]
         private UnityEventWrapper _onHitNockBackAttack = new();
+        [SerializeField]
+        private UnityEventWrapper _onShootChargeAttack = new();
 
         [SerializeField, Tooltip("モデルの親オブジェクト")]
         private GameObject _modelParent;
@@ -150,6 +164,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
         private Transform[] _normalAttackHitPositions;
         [SerializeField]
         private GameObject _normalAttackHitPerticle;
+
+        [SerializeField]
+        private Animator[] _beamAnimators;
 
         [SerializeField]
         private RingIndicatorData _indicatorData;
@@ -263,7 +280,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     if (!_isKnockback) //ノックバック中でない場合のみチャージアタックを行う
                     {
                         _target.HitAttack(new AttackData(1, true));
-                        OnShootChargeAttack?.Invoke();
+                        _onShootChargeAttack?.Invoke();
                     }
 
                     _animeManager.ChargeAttack();

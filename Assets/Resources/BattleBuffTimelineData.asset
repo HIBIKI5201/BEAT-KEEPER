@@ -13,5 +13,19 @@ MonoBehaviour:
   m_Name: BattleBuffTimelineData
   m_EditorClassIdentifier: 
   _data:
-  - _timing: 64
-    _value: 1
+  - _timing: 192
+    _value: 1.5
+  - _timing: 256
+    _value: 2
+  - _timing: 320
+    _value: 2.5
+  - _timing: 384
+    _value: 3
+  - _timing: 448
+    _value: 3.5
+  - _timing: 512
+    _value: 4
+  - _timing: 576
+    _value: 4.5
+  - _timing: 640
+    _value: 5

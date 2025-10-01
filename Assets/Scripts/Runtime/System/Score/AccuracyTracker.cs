@@ -28,6 +28,11 @@ namespace BeatKeeper
         /// Miss判定の回数
         /// </summary>
         public int MissCount => _missCount;
+
+        /// <summary>
+        /// 全ての判定の回数
+        /// </summary>
+        public int AllCount => _perfectCount + _goodCount + _missCount;
         
         /// <summary>
         /// コンストラクタ

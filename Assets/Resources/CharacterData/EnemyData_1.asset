@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyData_1
   m_EditorClassIdentifier: 
   _name: Enemy
-  _maxHealth: 7500
+  _maxHealth: 7000
   _finisherThreshold: 10
   _nockbackTime: 1
-  _chartData: {fileID: 11400000, guid: 0fc4e8e412a95cc4c850f7ebbc3940a3, type: 2}
-  _flowZoneChartData: {fileID: 11400000, guid: 522c857536d3ca34cbbc807b0d591675, type: 2}
+  _chartData: {fileID: 11400000, guid: b49b5c8319f983e4281331d04e988430, type: 2}
+  _flowZoneChartData: {fileID: 11400000, guid: bfb137c6534787c4e9e40b4535e35408, type: 2}

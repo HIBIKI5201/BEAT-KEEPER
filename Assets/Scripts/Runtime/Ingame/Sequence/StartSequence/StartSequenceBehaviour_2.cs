@@ -22,7 +22,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             }
 
             //スタートテキストを隠す
-            var text = _owner.GetComponentInChildren<UIElement_EncounterText>();
+            var text = _owner.GetComponentInChildren<UIElement_StartSkipGuage>();
             if (text)
             {
                 text.HideEncounterText();

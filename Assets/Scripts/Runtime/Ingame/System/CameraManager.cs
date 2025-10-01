@@ -31,6 +31,11 @@ namespace BeatKeeper.Runtime.System
         private CinemachineCamera _camera;
         private readonly Dictionary<string, CinemachineCamera> _cameras = new();
 
+        private void Awake()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
         private async void Start()
         {
             var stageManager = await ServiceLocator.GetInstanceAsync<StageSceneManager>();

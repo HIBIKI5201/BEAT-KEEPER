@@ -471,7 +471,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _contractionScale: {x: 0.97, y: 0.97, z: 0.97}
+  _contractionScale: {x: 0.98, y: 0.98, z: 0.98}
+  _contractionAnimSpeed: 0.965
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _hitImage: {fileID: 9076401914382325685}
   _decorationImage: {fileID: 2752318165461998402}
@@ -485,7 +486,7 @@ MonoBehaviour:
     SizeDelta: {x: 215, y: 215}
   _hitResult: {fileID: 11400000, guid: d40d858a627f6684cb4791c97a211ff9, type: 2}
   _apperanceSoundCueName: Ring_Charge
-  _animationSpeed: 0.92
+  _animationSpeed: 0.915
   _startPositionRing: {fileID: 9076401914382325685}
   _endPositionRing: {fileID: 2486665361135006193}
   _chargeColor: {r: 1, g: 0.6745098, b: 0.7458095, a: 1}

@@ -21,12 +21,11 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
 
                 default:
                     break;
-                    //return ScriptPlayable<StartSequenceBehaviour_3>.Create(graph);
             }
 
             return Playable.Null;
         }
 
-        [SerializeField, Range(1, 3)] private int _behaviourKind;
+        [SerializeField, Range(1, 2)] private int _behaviourKind;
     }
 }

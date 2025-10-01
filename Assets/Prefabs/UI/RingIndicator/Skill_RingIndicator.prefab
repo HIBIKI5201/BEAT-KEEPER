@@ -94,7 +94,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScale: 2
   _centerRingsScale: {x: 1, y: 1, z: 1}
-  _contractionScale: {x: 0.97, y: 0.97, z: 0.97}
+  _contractionScale: {x: 0.98, y: 0.98, z: 0.98}
+  _contractionAnimSpeed: 0.965
   _commonSprite: {fileID: 11400000, guid: 03b7b8ad5d3a95e4caf0997afb20ca52, type: 2}
   _hitImage: {fileID: 1064944501665903157}
   _decorationImage: {fileID: 1871314084557727050}

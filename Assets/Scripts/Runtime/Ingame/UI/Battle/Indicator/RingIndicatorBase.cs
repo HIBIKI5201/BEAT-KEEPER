@@ -221,6 +221,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [SerializeField] protected float _initialScale = 3.5f;
         [SerializeField] protected Vector3 _centerRingsScale = Vector3.one;
 		[SerializeField] protected Vector3 _contractionScale = new Vector3(0.95f, 0.95f, 0.95f);
+        [SerializeField] protected float _contractionAnimSpeed = 0.95f; // ノーツ収縮アニメーションのDurationにかける倍率
         [SerializeField] protected IndicatorSpriteDataSO _commonSprite; // Perfect/Good判定で色を変更するための白色リング
 
         [Header("リングのImageコンポーネントの設定")]
@@ -362,7 +363,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var contractionSequence = DOTween.Sequence()
 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED * _contractionAnimSpeed)
                     .SetEase(Ease.Linear))
 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
@@ -486,6 +487,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
             // 中央のリングの画像を操作方法のものに差し替える
             _centerImage.sprite = _guide.Sprite;
             _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
+            _centerImage.rectTransform.position = _ringImage.rectTransform.position;
 
             // デフォルトのスプライトを設定する
             _ringImage.sprite = _hitLine;

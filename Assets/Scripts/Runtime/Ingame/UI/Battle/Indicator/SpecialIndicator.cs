@@ -118,15 +118,15 @@ namespace BeatKeeper.Runtime.Ingame.UI
             var sequence = DOTween.Sequence()
 
                 // Just判定まで縮小を行う
-                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                .Append(_ringImage.rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED * _contractionAnimSpeed)
                     .SetEase(Ease.Linear))
-                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED)
+                .Join(_ringImages[0].rectTransform.DOScale(_contractionScale, beatDuration * CONTRACTION_SPEED * _contractionAnimSpeed)
                     .SetEase(Ease.Linear))
 
                 // 中央のリング
-                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                .Join(_hitImage.rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED * _contractionAnimSpeed)
                     .SetEase(Ease.Linear))
-                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED)
+                .Join(_ringImages[1].rectTransform.DOScale(_centerRingsScale, beatDuration * CONTRACTION_SPEED * _contractionAnimSpeed)
                     .SetEase(Ease.Linear))
 
                 // Just判定を過ぎたら縮小は続行しつつ段々フェードアウトする
@@ -267,7 +267,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _centerImage.sprite = _guideIcon;
                 
                 // 中央の操作イメージのサイズも変更する
-                _centerImage.rectTransform.sizeDelta *= _centerImageMultiply;
+                _centerImage.rectTransform.sizeDelta *= (_centerImageMultiply * _resolutionMultiply);
             }
             else
             {
@@ -277,7 +277,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
                 _centerImage.sprite = _guide.Sprite;
                 
                 // 通常サイズ
-                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta;
+                _centerImage.rectTransform.sizeDelta = _guide.SizeDelta * _resolutionMultiply;
             }
 
             _tweens[2] = sequence;

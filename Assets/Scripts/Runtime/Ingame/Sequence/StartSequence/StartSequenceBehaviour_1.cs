@@ -23,7 +23,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 }
             }
 
-            var text = _owner.GetComponentInChildren<UIElement_EncounterText>();
+            var text = _owner.GetComponentInChildren<UIElement_StartSkipGuage>();
             if (text)
             {
                 text.ShowEncounterText(1);
