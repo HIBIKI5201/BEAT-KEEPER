@@ -8,34 +8,49 @@ namespace BeatKeeper
     [DefaultExecutionOrder(-1000)] // なるべく早く動かす。
     public class SymphonyMusicEngine : MonoBehaviour
     {
-        /// <summary> 再生中のCRIソース。 </summary>
-        public static CriAtomSource CurrentSource => _self._currentTrack.Source;
-        /// <summary> 再生中のCRIプレイバック </summary>
-
-        public static CriAtomExPlayback CurrentPlayback => _self._currentPlayback;
-
-        /// <summary> 再生中のBPM </summary>
-        public static int CurrentBPM => _self._currentTrack.BPM;
-
-        /// <summary> 現在の小節番号（1始まり） </summary>
-        public static int CurrentBar => _self._currentBar;
-
-        /// <summary> 現在の拍番号（1始まり） </summary>
-        public static int CurrentBeat => _self._currentBeat;
+        /// <summary>
+        /// 拍の位置が変化したときに発火するイベント。
+        /// </summary>
+        public static event Action OnBeatChanged
+        {
+            add => _self._onBeatChanged += value;
+            remove => _self._onBeatChanged -= value;
+        }
 
         /// <summary>
-        ///     指定したオブジェクト名の音楽を再生する。
+        /// 拍の中心（裏拍など）を通過したときに発火するイベント。
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        public static event Action OnBeatNeared
+        {
+            add => _self._onBeatNeared += value;
+            remove => _self._onBeatNeared -= value;
+        }
+
+        public static CriAtomSource CurrentSource => _self._currentTrack.Source;
+        public static CriAtomExPlayback CurrentPlayback => _self._currentPlayback;
+        public static int CurrentBPM => _self._currentTrack.BPM;
+
+        /// <summary> 現在の整数の拍番号（1始まり） </summary>
+        public static int CurrentBeat => _self._currentBeat;
+
+        /// <summary> 現在の近接拍位置（例: 3.5 など） </summary>
+        public static float CurrentNearBeat => _self._currentBeatNear;
+
+        /// <summary>
+        /// 最後の Near 拍の整数部分（floor 値）
+        /// </summary>
+        public static int LastNearFloor => Mathf.FloorToInt(_self._currentBeatNear);
+
+        /// <summary>
+        /// 指定したオブジェクト名の音楽を再生する。
+        /// </summary>
         public static CriAtomExPlayback Play(string name)
         {
-            // 新しい曲を再生。
             MusicTrack newTrack = _self._tracks.FirstOrDefault(x => x.Name == name);
             CriAtomExPlayback playback = newTrack.Source.Play();
 
-            // 再生中のを止める。
             _self._currentTrack.Source.Stop();
+
             _self._currentTrack = newTrack;
             _self._currentPlayback = playback;
 
@@ -43,7 +58,7 @@ namespace BeatKeeper
         }
 
         /// <summary>
-        ///     再生中の音楽を停止する。
+        /// 再生中の音楽を停止する。
         /// </summary>
         public static void Stop()
         {
@@ -51,7 +66,7 @@ namespace BeatKeeper
             _self._currentTrack = default;
         }
 
-        private const int BEATS_PER_MEASURE = 4; // 1小節あたりの拍数
+        private const int BEATS_PER_MEASURE = 4; // 1小節あたりの拍数。
 
         private static SymphonyMusicEngine _self;
 
@@ -64,21 +79,25 @@ namespace BeatKeeper
         [SerializeField]
         private MusicTrack[] _tracks;
 
+        private event Action _onBeatChanged;
+        private event Action _onBeatNeared;
+
         private MusicTrack _currentTrack;
         private CriAtomExPlayback _currentPlayback;
 
-        private int _currentBar;
         private int _currentBeat;
+        private float _currentBeatNear;
+
+        private int _lastBeat;
 
         private void Awake()
         {
-            //シングルトン化
+            // シングルトン化
             if (_self != null)
             {
                 Destroy(gameObject);
                 return;
             }
-
             _self = this;
         }
 
@@ -92,19 +111,36 @@ namespace BeatKeeper
 
         private void Tick()
         {
-            long timeMs = _currentPlayback.GetTime(); // 再生開始からの経過時間（ms）。
+            long timeMs = _currentPlayback.GetTime(); // 再生開始からの経過時間（ms）
 
-            // 1拍の長さ（ms）。
-            float beatLengthMs = 60000f / _currentTrack.BPM;
+            float beatLengthMs = 60000f / _currentTrack.BPM; // 1拍の長さ（ms）
 
-            float beatPosition = timeMs / beatLengthMs;
+            float beatPosition = timeMs / beatLengthMs; // 小数付きの拍位置（絶対）
 
-            // 小節番号と小節内の拍位置に分解
-            int measure = Mathf.FloorToInt(beatPosition / BEATS_PER_MEASURE) + 1; // 1始まりの小節番号
-            float beatInMeasure = (beatPosition % BEATS_PER_MEASURE) + 1; // +1 して 1拍目から始まるように調整。
+            float beatInMeasure = (beatPosition % BEATS_PER_MEASURE) + 1f; // 小節内の拍位置
 
-            _currentBar = measure;
-            _currentBeat = Mathf.FloorToInt(beatInMeasure);
+            _currentBeat = Mathf.FloorToInt(beatPosition) + 1;
+
+            CheckBeat(beatInMeasure);
+        }
+
+        private void CheckBeat(float beatInMeasure)
+        {
+            // 拍の変化チェック
+            if (_lastBeat != _currentBeat)
+            {
+                _lastBeat = _currentBeat;
+                _onBeatChanged?.Invoke();
+            }
+
+            // 裏拍（0.5 を超えた瞬間に発火）
+            float targetNear = _currentBeat + 0.5f;
+
+            if (_currentBeatNear < targetNear && beatInMeasure >= targetNear)
+            {
+                _currentBeatNear = targetNear;
+                _onBeatNeared?.Invoke();
+            }
         }
 
         [Serializable]
@@ -114,11 +150,8 @@ namespace BeatKeeper
             public CriAtomSource Source => _source;
             public int BPM => _bpm;
 
-            [SerializeField]
-            private CriAtomSource _source;
-
-            [SerializeField]
-            private int _bpm;
+            [SerializeField] private CriAtomSource _source;
+            [SerializeField] private int _bpm;
         }
     }
 }
