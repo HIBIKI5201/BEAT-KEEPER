@@ -5,19 +5,33 @@ using UnityEngine;
 
 namespace BeatKeeper
 {
+    [DefaultExecutionOrder(-1000)] // なるべく早く動かす。
     public class SymphonyMusicEngine : MonoBehaviour
     {
+        /// <summary> 再生中のCRIソース。 </summary>
         public static CriAtomSource CurrentSource => _self._currentTrack.Source;
+        /// <summary> 再生中のCRIプレイバック </summary>
+
         public static CriAtomExPlayback CurrentPlayback => _self._currentPlayback;
+
+        /// <summary> 再生中のBPM </summary>
         public static int CurrentBPM => _self._currentTrack.BPM;
 
+        /// <summary> 現在の小節番号（1始まり） </summary>
         public static int CurrentBar => _self._currentBar;
+
+        /// <summary> 現在の拍番号（1始まり） </summary>
         public static int CurrentBeat => _self._currentBeat;
 
+        /// <summary>
+        ///     指定したオブジェクト名の音楽を再生する。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static CriAtomExPlayback Play(string name)
         {
             // 新しい曲を再生。
-            MusicTrack newTrack = _self._sources.FirstOrDefault(x => x.Name == name);
+            MusicTrack newTrack = _self._tracks.FirstOrDefault(x => x.Name == name);
             CriAtomExPlayback playback = newTrack.Source.Play();
 
             // 再生中のを止める。
@@ -28,6 +42,9 @@ namespace BeatKeeper
             return playback;
         }
 
+        /// <summary>
+        ///     再生中の音楽を停止する。
+        /// </summary>
         public static void Stop()
         {
             _self._currentTrack.Source.Stop();
@@ -44,7 +61,9 @@ namespace BeatKeeper
             _self = null;
         }
 
-        private MusicTrack[] _sources;
+        [SerializeField]
+        private MusicTrack[] _tracks;
+
         private MusicTrack _currentTrack;
         private CriAtomExPlayback _currentPlayback;
 
