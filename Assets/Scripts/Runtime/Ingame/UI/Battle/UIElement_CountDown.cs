@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using BeatKeeper.Runtime.Ingame.System;
@@ -167,7 +167,7 @@ namespace BeatKeeper.Runtime.Ingame.UI
         /// </summary>
         private void OnCount()
         {
-            _bgmStartTiming = Music.Just.Bar * 4 + Music.Just.Beat - 2;
+            _bgmStartTiming = SymphonyMusicEngine.CurrentBeat - 2;
             //Debug.LogWarning(_bgmStartTiming);
         }
         

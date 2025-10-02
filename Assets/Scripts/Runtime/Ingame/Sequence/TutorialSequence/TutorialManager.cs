@@ -393,7 +393,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
             //インジケーターが生成されるのは_currentIndicatorCountが4の際
             if (_currentIndicatorCount == 2 && _generateInterval == 0)
             {
-                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                var normalizedTimingFromJust = SymphonyMusicEngine.UnitFromJust;
                 if (Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _goodRange / 2)
                 {
                     return true;
@@ -414,7 +414,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (_currentIndicatorCount == 2)
             {
-                var normalizedTimingFromJust = (float)Music.UnitFromJust;
+                var normalizedTimingFromJust = SymphonyMusicEngine.UnitFromJust;
                 return Mathf.Abs(normalizedTimingFromJust - 0.5f) <= _perfectRange / 2;
             }
             return false;
@@ -623,7 +623,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
         {
             if (_activeIndicator == null) return;
             var chargeIndicator = _activeIndicator as ChargeIndicator;
-            var normalizedTiming = (float)Music.UnitFromJust;
+            var normalizedTiming = SymphonyMusicEngine.UnitFromJust;
 
             if (ctx.phase == InputActionPhase.Started &&
                 Mathf.Abs(normalizedTiming - 0.5f) <= _goodRange / 2 && _currentIndicatorCount == 2)

@@ -77,7 +77,7 @@ namespace BeatKeeper.Runtime.Ingame.Sequence
                 return;
             }
             
-            if (!Music.IsPlaying)
+            if (!SymphonyMusicEngine.IsPlaying)
             {
                 // BGMが再生されていなかったらBGMを再生
                 var bgmManager = ServiceLocator.GetInstance<BGMManager>();

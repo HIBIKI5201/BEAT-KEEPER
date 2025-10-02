@@ -33,13 +33,21 @@ namespace BeatKeeper
         /// <summary> 現在の整数の拍番号（1始まり） </summary>
         public static int CurrentBeat => _self._currentBeat;
 
-        /// <summary> 現在の近接拍位置（例: 3.5 など） </summary>
-        public static float CurrentNearBeat => _self._currentBeatNear;
+        /// <summary> 現在の近接拍位置 </summary>
+        public static int CurrentNearBeat => Mathf.FloorToInt(_self._currentBeatNear);
+
+        /// <summary> 直前のジャストからの正規化した距離 </summary>
+        public static float UnitFromJust => _self._unitFromJust;
 
         /// <summary>
         /// 最後の Near 拍の整数部分（floor 値）
         /// </summary>
         public static int LastNearFloor => Mathf.FloorToInt(_self._currentBeatNear);
+
+        public static bool IsPlaying
+        {
+            get => !_self._currentTrack.Source?.IsPaused() ?? false;
+        }
 
         /// <summary>
         /// 指定したオブジェクト名の音楽を再生する。
@@ -49,7 +57,7 @@ namespace BeatKeeper
             MusicTrack newTrack = _self._tracks.FirstOrDefault(x => x.Name == name);
             CriAtomExPlayback playback = newTrack.Source.Play();
 
-            _self._currentTrack.Source.Stop();
+            _self._currentTrack.Source?.Stop();
 
             _self._currentTrack = newTrack;
             _self._currentPlayback = playback;
@@ -65,8 +73,6 @@ namespace BeatKeeper
             _self._currentTrack.Source.Stop();
             _self._currentTrack = default;
         }
-
-        private const int BEATS_PER_MEASURE = 4; // 1小節あたりの拍数。
 
         private static SymphonyMusicEngine _self;
 
@@ -86,9 +92,11 @@ namespace BeatKeeper
         private CriAtomExPlayback _currentPlayback;
 
         private int _currentBeat;
-        private float _currentBeatNear;
+        private int _currentBeatNear;
+        private float _unitFromJust;
 
         private int _lastBeat;
+        private int _lastNearBeat;
 
         private void Awake()
         {
@@ -111,34 +119,34 @@ namespace BeatKeeper
 
         private void Tick()
         {
-            long timeMs = _currentPlayback.GetTime(); // 再生開始からの経過時間（ms）
+            // 経過時間（秒）
+            float elapsedSec = _currentPlayback.GetTime() / 1000f;
 
-            float beatLengthMs = 60000f / _currentTrack.BPM; // 1拍の長さ（ms）
+            // 1拍の秒数
+            float beatDuration = 60f / _currentTrack.BPM;
 
-            float beatPosition = timeMs / beatLengthMs; // 小数付きの拍位置（絶対）
+            // Beat（1始まりの整数）
+            _currentBeat = Mathf.FloorToInt(elapsedSec / beatDuration) + 1;
 
-            float beatInMeasure = (beatPosition % BEATS_PER_MEASURE) + 1f; // 小節内の拍位置
+            // NearBeat（裏拍：0.5刻み → 拍を2倍して整数化）
+            _currentBeatNear = Mathf.FloorToInt((elapsedSec / beatDuration) - 0.5f)+1;
 
-            _currentBeat = Mathf.FloorToInt(beatPosition) + 1;
-
-            CheckBeat(beatInMeasure);
+            // ジャストからの正規化位置（0〜1）
+            _unitFromJust = (elapsedSec % beatDuration) / beatDuration;
+            CheckBeat();
         }
 
-        private void CheckBeat(float beatInMeasure)
+        private void CheckBeat()
         {
-            // 拍の変化チェック
             if (_lastBeat != _currentBeat)
             {
                 _lastBeat = _currentBeat;
                 _onBeatChanged?.Invoke();
             }
 
-            // 裏拍（0.5 を超えた瞬間に発火）
-            float targetNear = _currentBeat + 0.5f;
-
-            if (_currentBeatNear < targetNear && beatInMeasure >= targetNear)
+            if (_lastNearBeat != _currentBeatNear)
             {
-                _currentBeatNear = targetNear;
+                _lastNearBeat = _currentBeatNear;
                 _onBeatNeared?.Invoke();
             }
         }

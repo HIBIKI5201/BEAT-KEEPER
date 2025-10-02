@@ -11,30 +11,14 @@ namespace BeatKeeper.Runtime.Ingame.System
     public static class MusicEngineHelper
     {
         /// <summary>1拍の秒数</summary>
-        public static double DurationOfBeat => 60 / Music.CurrentTempo;
-
-        /// <summary>現在の小節数を取得する</n>
-        public static int GetCurrentBarCount() => Music.Just.Bar;
-
-        /// <summary>現在の拍数を取得する</n>
-        public static int GetCurrentBeatCount() => Music.Just.Beat;
-
-        /// <summary>現在の16分音符位置を取得する</n>
-        public static int GetCurrentUnitCount() => Music.Just.Unit;
-
-        /// <summary>現在の音楽タイミングを取得する</n>
-        public static TimingKey GetCurrentTiming() => new(Music.Just.Bar, Music.Just.Beat, Music.Just.Unit);
+        public static double DurationOfBeat => 60f / SymphonyMusicEngine.CurrentBPM;
 
         /// <summary>
         ///     現在の音楽タイミングから、開始時点からの拍数を取得します。
         /// </summary>
         public static int GetBeatSinceStart()
         {
-            if (Music.CurrentMeter == null)return 0;
-            
-            // Music.Justは現在の拍のタイミングを表すため、その総単位数を取得し、拍単位に変換する
-            return Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
-                + _beatOffset - _startTiming;
+            return SymphonyMusicEngine.CurrentBeat;
         }
 
         /// <summary>
@@ -42,13 +26,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatNearerSinceStart()
         {
-            if (Music.CurrentMeter == null) return 0;
-
-            // 新しいメソッドを使用して最も近い拍のタイミングを取得
-            Timing closestBeatTiming = GetClosestBeatTiming();
+            if (!SymphonyMusicEngine.IsPlaying) return 0;
 
             // Timingオブジェクトを開始時点からの総拍数に変換
-            return closestBeatTiming.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
+            return SymphonyMusicEngine.CurrentNearBeat
                 + _beatOffset - _startTiming;
         }
 
@@ -64,7 +45,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                 return false;
             }
 
-            var normalizedTimingFromJust = (float)Music.UnitFromJust;
+            var normalizedTimingFromJust = SymphonyMusicEngine.UnitFromJust;
 
             #region デバッグログ
             SymphonyDebugLog.DirectLog(
@@ -79,87 +60,11 @@ namespace BeatKeeper.Runtime.Ingame.System
         }
 
         /// <summary>
-        /// 現在の音楽再生位置から最も近い拍のタイミングを取得します。
-        /// </summary>
-        /// <returns>最も近い拍のTimingオブジェクト</returns>
-        public static Timing GetClosestBeatTiming()
-        {
-            if (Music.CurrentMeter == null)
-            {
-                return new Timing();
-            }
-
-            MusicMeter meter = Music.CurrentMeter;
-
-            // 現在の正確な総単位数を計算
-            double currentTotalUnits = Music.Just.GetTotalUnits(meter) + Music.UnitFromJust;
-
-            // 最も近い拍単位の総数を計算
-            double totalBeats = currentTotalUnits / meter.UnitPerBeat;
-            int closestTotalBeats = (int)Math.Round(totalBeats);
-
-            // 最も近い拍単位の総数を音楽単位に戻す
-            int closestTotalUnits = closestTotalBeats * meter.UnitPerBeat;
-
-            // この総単位数からTimingオブジェクトを生成
-            int bar = closestTotalUnits / meter.UnitPerBar;
-            int remainingUnits = closestTotalUnits % meter.UnitPerBar;
-            int beat = remainingUnits / meter.UnitPerBeat;
-            int unit = remainingUnits % meter.UnitPerBeat; // 拍上なのでunitは0になるはず
-
-            return new Timing(bar + meter.StartBar, beat, unit);
-        }
-
-        /// <summary>
-        /// 指定されたタイミング（秒）から最も近い拍のタイミングを取得します。
-        /// </summary>
-        /// <param name="sec">秒単位のタイミング</param>
-        /// <param name="meter">使用するMusicMeterインスタンス</param>
-        /// <returns>最も近い拍のTimingオブジェクト</returns>
-        public static Timing GetClosestBeatTimingFromSeconds(double sec, MusicMeter meter)
-        {
-            if (meter == null)
-            {
-                Debug.LogWarning("MusicMeter is null. Cannot get closest beat timing.");
-                return new Timing();
-            }
-
-            // StartSecからの総単位数を計算
-            double meterSec = sec - meter.StartSec;
-            double totalUnits = meterSec / meter.SecPerUnit;
-            
-            // 最も近い拍単位の総数を計算
-            double totalBeats = totalUnits / meter.UnitPerBeat;
-            int closestTotalBeats = (int)Math.Round(totalBeats);
-            int closestTotalUnits = closestTotalBeats * meter.UnitPerBeat;
-
-            // この総単位数からTimingオブジェクトを生成
-            int bar = closestTotalUnits / meter.UnitPerBar;
-            int remainingUnits = closestTotalUnits % meter.UnitPerBar;
-            int beat = remainingUnits / meter.UnitPerBeat;
-            int unit = remainingUnits % meter.UnitPerBeat;
-
-            return new Timing(bar + meter.StartBar, beat, unit);
-        }
-
-        /// <summary>
-        /// 指定されたタイミング（ミリ秒）から最も近い拍のタイミングを取得します。
-        /// </summary>
-        /// <param name="msec">ミリ秒単位のタイミング</param>
-        /// <param name="meter">使用するMusicMeterインスタンス</param>
-        /// <returns>最も近い拍のTimingオブジェクト</returns>
-        public static Timing GetClosestBeatTimingFromMilliSeconds(double msec, MusicMeter meter)
-        {
-            return GetClosestBeatTimingFromSeconds(msec / 1000.0, meter);
-        }
-
-        /// <summary>
         /// タイミングの開始位置を設定する
         /// </summary>
         public static void SetStartTiming()
         {
-            _startTiming = Music.Just.GetTotalUnits(Music.CurrentMeter) / Music.CurrentMeter.UnitPerBeat
-                + _beatOffset;
+            _startTiming = SymphonyMusicEngine.CurrentBeat + _beatOffset;
         }
 
         //ここより下にprivateの変数と関数を定義する
@@ -179,6 +84,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static async void Update()
         {
+            /*
             while (Application.isPlaying)
             {
                 //ここからブロックのループとオフセットの設定の処理
@@ -196,6 +102,7 @@ namespace BeatKeeper.Runtime.Ingame.System
 
                 await Awaitable.NextFrameAsync();
             }
+            */
         }
     }
 }

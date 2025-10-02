@@ -152,7 +152,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
         /// </summary>
         public void ModelActive()
         {
-            _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+            _animeManager.SetAnimatorSpeed((float)(SymphonyMusicEngine.CurrentBPM / 120d));
             _modelParent.SetActive(true);
         }
 
@@ -430,7 +430,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
                     break;
                 
                 case PhaseEnum.Tutorial:
-                    _animeManager.SetAnimatorSpeed((float)(Music.CurrentTempo / 120d));
+                    _animeManager.SetAnimatorSpeed((float)(SymphonyMusicEngine.CurrentBPM / 120d));
                     _modelParent.SetActive(true);
                     break;
 
@@ -752,7 +752,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 if (isPerfectHit)
                 {
-                    if (0 < (float)Music.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
+                    if (0 < SymphonyMusicEngine.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
                     {
                         _willPerfectAttack = true;
                     }

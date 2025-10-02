@@ -113,7 +113,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             Debug.Log(active);
             _modelParent.SetActive(active);
 
-            float speed = (float)(Music.CurrentTempo / 120d);
+            float speed = (float)(SymphonyMusicEngine.CurrentBPM / 120d);
             _animeManager.ChangeSpeed(speed);
             foreach (var animator in _beamAnimators)
             {

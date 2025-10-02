@@ -20,14 +20,8 @@ namespace BeatKeeper.Runtime.Ingame.System
     {
         #region イベント
 
-        /// <summary>小節が切り替わった時に発火するイベント</summary>
-        public event Action OnJustChangedBar;
-
         /// <summary>拍が切り替わった時に発火するイベント</summary>
         public event Action OnJustChangedBeat;
-
-        /// <summary>小節の切り替わりが近づいた時に発火するイベント</summary>
-        public event Action OnNearChangedBar;
 
         /// <summary>拍の切り替わりが近づいた時に発火するイベント</summary>
         public event Action OnNearChangedBeat;
@@ -53,9 +47,10 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// <param name="name"></param>
         public void ChangeBGM(string name)
         {
-            Music.Play(name);
+            SymphonyMusicEngine.Play(name);
 
-            if (Music.Current.TryGetComponent<CriAtomSource>(out var source))
+            CriAtomSource source = SymphonyMusicEngine.CurrentSource;
+            if (source != null)
             {
                 _atomSource = source;
                 _atomSource.volume = 1f;
@@ -97,7 +92,7 @@ namespace BeatKeeper.Runtime.Ingame.System
                 }).AttachExternalCancellation(cancellationToken);
 
                 _atomSource.volume = 0f;
-                Music.Stop();
+                SymphonyMusicEngine.Stop();
             }
             catch (OperationCanceledException)
             {
@@ -123,7 +118,7 @@ namespace BeatKeeper.Runtime.Ingame.System
             else
             {
                 // フローゾーン突入 イントロの16拍分を減らす
-                int beat = Music.Just.Bar * 4 + Music.Just.Beat - 16;
+                int beat = SymphonyMusicEngine.CurrentBeat - 16;
 
                 // BGMのループの長さ64拍の剰余をすることで、現在のループでの再生位置を取得する
                 int position = beat % 64;
@@ -398,7 +393,6 @@ namespace BeatKeeper.Runtime.Ingame.System
 
         private void Update()
         {
-            CheckAndNotifyBarChanges();
             CheckAndNotifyBeatChanges();
         }
 
@@ -410,28 +404,6 @@ namespace BeatKeeper.Runtime.Ingame.System
         #endregion
 
         #region タイミング変更の検知（Update内で呼んでいるメソッド2種）
-
-        /// <summary>
-        /// 小節情報の処理
-        /// </summary>
-        private void CheckAndNotifyBarChanges()
-        {
-            // 小節の切り替わりチェック
-            if (Music.IsJustChangedBar())
-            {
-                _isNearBarChange.Value = false;
-                OnJustChangedBar?.Invoke();
-                return;
-            }
-
-            // 小節の切り替わりが近いかチェック
-            bool isNear = Music.IsNearChangedBar();
-            if (isNear && !_isNearBarChange.Value)
-            {
-                _isNearBarChange.Value = true;
-                OnNearChangedBar?.Invoke();
-            }
-        }
 
         /// <summary>
         /// 拍情報の処理
@@ -455,7 +427,6 @@ namespace BeatKeeper.Runtime.Ingame.System
                 {
                     Debug.LogError($"BGMManager: 拍の切り替わり処理でエラー: {ex}");
                 }
-                ProcessTimingActions(); // タイミングアクションの実行
                 return;
             }
 
@@ -489,60 +460,6 @@ namespace BeatKeeper.Runtime.Ingame.System
                 _timingActions[timing][actionId] = actionInfo;
             }
         }
-
-        #region タイミングアクションの実行処理
-
-        /// <summary>
-        /// 拍が切り替わるタイミングで登録されたタイミングアクションを処理
-        /// </summary>
-        private void ProcessTimingActions()
-        {
-            try
-            {
-                var currentTiming = MusicEngineHelper.GetCurrentTiming();
-                if (_timingActions.TryGetValue(currentTiming, out var actionDict))
-                {
-                    // 削除が必要なアクション（＝繰り替えさないアクション）のIDを記録するリスト
-                    List<Guid> actionsToRemove = new List<Guid>();
-
-                    // 登録されたアクションを全て実行する
-                    foreach (var actionEntry in actionDict)
-                    {
-                        var actionId = actionEntry.Key;
-                        var actionInfo = actionEntry.Value;
-
-                        try
-                        {
-                            actionInfo.Action?.Invoke(); // アクション実行
-
-                            if (!actionInfo.IsRepeating)
-                            {
-                                actionsToRemove.Add(actionId); // 繰り返さないアクションを削除リストに追加
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.LogError($"TimingAction実行エラー [Timing:{currentTiming.ToString()}, ID:{actionId.ToString()}]: {ex}");
-                            actionsToRemove.Add(actionId); // エラーが発生したアクションも削除
-                        }
-                    }
-
-                    // 削除リストに含まれるアクションを削除
-                    foreach (var actionId in actionsToRemove)
-                    {
-                        actionDict.Remove(actionId);
-                    }
-
-                    // アクションが空になった場合はタイミングエントリーも削除
-                    if (actionDict.Count == 0)
-                    {
-                        _timingActions.Remove(currentTiming);
-                    }
-                }
-            }
-            catch { }
-        }
-        #endregion
 
             /// <summary>
             ///     タイミングアクションの情報を格納する構造体

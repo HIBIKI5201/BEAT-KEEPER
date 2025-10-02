@@ -49,11 +49,13 @@ namespace BeatKeeper.Runtime.Develop
                 (totalReserved / (1024 * 1024))
                 );
 
-            if (Music.Current != null)
+            if (SymphonyMusicEngine.CurrentSource != null)
             {
                 (int just, int near) beat = (MusicEngineHelper.GetBeatSinceStart(), MusicEngineHelper.GetBeatNearerSinceStart());
+                text += $"Duration: {MusicEngineHelper.DurationOfBeat}";
                 text += $"Beat: just {beat.just}, near {beat.near}\n";
-                text += $"Bar:{Music.Just.Bar}, Just:{Music.Just.Beat}\n";
+                text += $"Just:{SymphonyMusicEngine.CurrentBeat}\n";
+                text += $"UnitFromJust: {SymphonyMusicEngine.UnitFromJust}\n";
             }
 
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
