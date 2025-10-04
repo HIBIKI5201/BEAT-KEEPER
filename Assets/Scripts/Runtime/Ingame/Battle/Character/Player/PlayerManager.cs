@@ -751,7 +751,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
             {
                 if (isPerfectHit)
                 {
-                    if (0 < SymphonyMusicEngine.UnitFromJust - 0.5f) //ビート前なら次のJustまで予約
+                    if (0.5f < SymphonyMusicEngine.UnitFromJust) //ビート前なら次のJustまで予約
                     {
                         _willPerfectAttack = true;
                     }

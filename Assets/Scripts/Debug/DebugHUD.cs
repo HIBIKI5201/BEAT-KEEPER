@@ -2,6 +2,7 @@
 using BeatKeeper.Runtime.Ingame.System;
 using SymphonyFrameWork.System;
 using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -10,6 +11,22 @@ namespace BeatKeeper.Runtime.Develop
     public class DebugHUD : MonoBehaviour
     {
         private float deltaTime = 0.0f;
+        private GUIStyle _style;
+        private Rect _rect;
+
+        private void Awake()
+        {
+            int w = Screen.width, h = Screen.height;
+            Rect rect = new Rect(10, 10, w, h * 2 / 100);
+            GUIStyle style = new GUIStyle();
+
+            style.alignment = TextAnchor.UpperLeft;
+            style.fontSize = h * 1 / 50;
+            style.normal.textColor = Color.white;
+
+            _style = style;
+            _rect = rect;
+        }
 
         void Update()
         {
@@ -21,15 +38,6 @@ namespace BeatKeeper.Runtime.Develop
         {
             if (!Application.isPlaying) return;
 
-            int w = Screen.width, h = Screen.height;
-
-            GUIStyle style = new GUIStyle();
-
-            Rect rect = new Rect(10, 10, w, h * 2 / 100);
-            style.alignment = TextAnchor.UpperLeft;
-            style.fontSize = h * 1 / 50;
-            style.normal.textColor = Color.white;
-
             float msec = deltaTime * 1000.0f;
             float fps = 1.0f / deltaTime;
 
@@ -38,7 +46,7 @@ namespace BeatKeeper.Runtime.Develop
             long totalAllocated = Profiler.GetTotalAllocatedMemoryLong(); // 全体の割り当て
             long totalReserved = Profiler.GetTotalReservedMemoryLong(); // 予約済み
 
-            string text = string.Format(
+            StringBuilder text = new(string.Format(
                 "FPS: {0:0.} ({1:0.0} ms)\n" +
                 "Mono Memory: {2} MB\n" +
                 "Total Allocated: {3} MB\n" +
@@ -47,24 +55,24 @@ namespace BeatKeeper.Runtime.Develop
                 (monoMemory / (1024 * 1024)),
                 (totalAllocated / (1024 * 1024)),
                 (totalReserved / (1024 * 1024))
-                );
+                ));
 
             if (SymphonyMusicEngine.CurrentSource != null)
             {
                 (int just, int near) beat = (MusicEngineHelper.GetBeatSinceStart(), MusicEngineHelper.GetBeatNearerSinceStart());
-                text += $"Duration: {MusicEngineHelper.DurationOfBeat}";
-                text += $"Beat: just {beat.just}, near {beat.near}\n";
-                text += $"Just:{SymphonyMusicEngine.CurrentBeat}\n";
-                text += $"UnitFromJust: {SymphonyMusicEngine.UnitFromJust}\n";
+                text.AppendLine($"[MusicHelper] Beat: just {beat.just}, near {beat.near}");
+                text.AppendLine($"[MusicEngine]\n Just:{SymphonyMusicEngine.CurrentBeat} Near:{SymphonyMusicEngine.CurrentNearBeat}");
+                text.AppendLine($"Duration: {MusicEngineHelper.DurationOfBeat}");
+                text.AppendLine($"UnitFromJust: {SymphonyMusicEngine.UnitFromJust}");
             }
 
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
             if (player != null)
             {
-                text += $"combo : {player.ComboSystem.ComboCount}\n";
+                text.AppendLine($"combo : {player.ComboSystem.ComboCount}");
             }
 
-            GUI.Label(rect, text, style);
+            GUI.Label(_rect, text.ToString(), _style);
         }
     }
 }
