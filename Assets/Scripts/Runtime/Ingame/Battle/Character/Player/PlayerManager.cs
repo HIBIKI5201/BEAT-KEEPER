@@ -453,9 +453,9 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isThisBeatInputed) return; //連打防止
             if (_target == null) return;
 
-            ChartData.ChartDataElement[] chart = _target.EnemyData
-                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue).Chart;
-            int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chart.Length;
+            ChartData chart = _target.EnemyData
+                .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart();
             ChartKindEnum kind = chart[timing].AttackKind;
 
             if (IsAnotherPhaseByChartKind(kind)) return; //別のフェーズなら何もしない
@@ -643,7 +643,6 @@ namespace BeatKeeper.Runtime.Ingame.Character
             if (_isBattle)
             {
                 MissedChart();
-                Debug.Log($"on near beat {Time.time} {MusicEngineHelper.GetBeatSinceStart()}");
             }
 
             if (_isMissed)

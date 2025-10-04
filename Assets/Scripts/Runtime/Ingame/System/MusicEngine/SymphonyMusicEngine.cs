@@ -46,7 +46,9 @@ namespace BeatKeeper
 
         public static bool IsPlaying
         {
-            get => !_self._currentTrack.Source?.IsPaused() ?? false;
+            get => _self != null &&
+                   _self._currentTrack.Source != null &&
+                   _self._currentTrack.Source.status == CriAtomSource.Status.Playing;
         }
 
         /// <summary>
@@ -111,9 +113,10 @@ namespace BeatKeeper
 
         private void Update()
         {
-            if (!_currentPlayback.IsPaused())
+            if (IsPlaying)
             {
                 Tick();
+                BeatEvent();
             }
         }
 
@@ -128,15 +131,14 @@ namespace BeatKeeper
             // Beat（1始まりの整数）
             _currentBeat = Mathf.FloorToInt(elapsedSec / beatDuration) + 1;
 
-            // NearBeat（裏拍：0.5刻み → 拍を2倍して整数化）
-            _currentBeatNear = Mathf.FloorToInt((elapsedSec / beatDuration) - 0.5f)+1;
+            // 裏拍
+            _currentBeatNear = Mathf.FloorToInt((elapsedSec / (beatDuration / 2f))) + 1;
 
             // ジャストからの正規化位置（0〜1）
             _unitFromJust = (elapsedSec % beatDuration) / beatDuration;
-            CheckBeat();
         }
 
-        private void CheckBeat()
+        private void BeatEvent()
         {
             if (_lastBeat != _currentBeat)
             {
