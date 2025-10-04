@@ -74,8 +74,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         private bool _isFinisherable; // フィニッシャー可能か
         private Color _currentPulseColor; // パルスの色の管理
 		
-        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length; // 譜面の長さ
-
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>

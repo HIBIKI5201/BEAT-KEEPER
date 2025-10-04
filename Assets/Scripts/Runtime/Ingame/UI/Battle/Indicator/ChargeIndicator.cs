@@ -78,9 +78,6 @@ namespace BeatKeeper.Runtime.Ingame.UI
         [Header("追加の画像設定")]
         [SerializeField] private Sprite _defaultEndRingSprite;
 
-		// 譜面の長さ
-        private int _chartLength => _chartRingManager.TargetData.ChartData.Chart.Length;
-        
         /// <summary>
         /// コンポーネントの初期化
         /// </summary>

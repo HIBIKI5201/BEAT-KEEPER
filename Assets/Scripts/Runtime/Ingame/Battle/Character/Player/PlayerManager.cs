@@ -551,7 +551,7 @@ namespace BeatKeeper.Runtime.Ingame.Character
 
             ChartData chartData = _target.EnemyData
                 .GetChartDataByFlowZone(_flowZoneSystem.IsFlowZone.CurrentValue);
-            int timing = MusicEngineHelper.GetBeatNearerSinceStart() % chartData.Chart.Length;
+            int timing = MusicEngineHelper.GetBeatNearerSinceStart();
             ChartKindEnum enemyAttackKind = chartData[timing].AttackKind;
 
             if (IsAnotherPhaseByChartKind(enemyAttackKind))
