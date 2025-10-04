@@ -1,6 +1,4 @@
 ﻿using SymphonyFrameWork.Debugger;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BeatKeeper.Runtime.Ingame.System
@@ -18,7 +16,7 @@ namespace BeatKeeper.Runtime.Ingame.System
         /// </summary>
         public static int GetBeatSinceStart()
         {
-            return SymphonyMusicEngine.CurrentBeat;
+            return SymphonyMusicEngine.CurrentBeat - _startTiming;
         }
 
         /// <summary>
@@ -27,10 +25,14 @@ namespace BeatKeeper.Runtime.Ingame.System
         public static int GetBeatNearerSinceStart()
         {
             if (!SymphonyMusicEngine.IsPlaying) return 0;
+            int timing = SymphonyMusicEngine.CurrentBeat - _startTiming;
 
-            // Timingオブジェクトを開始時点からの総拍数に変換
-            return SymphonyMusicEngine.CurrentNearBeat
-                + _beatOffset - _startTiming;
+            if (0.5 < SymphonyMusicEngine.UnitFromJust)
+            {
+                timing++;
+            }
+
+            return timing;
         }
 
         /// <summary>
