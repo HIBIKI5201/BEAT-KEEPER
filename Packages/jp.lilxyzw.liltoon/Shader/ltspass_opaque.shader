@@ -778,7 +778,7 @@ Shader "Hidden/ltspass_opaque"
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
             #define LIL_SRP_VERSION_MAJOR 17
-            #define LIL_SRP_VERSION_MINOR 1
+            #define LIL_SRP_VERSION_MINOR 2
             #define LIL_SRP_VERSION_PATCH 0
 
             #pragma target 4.5
@@ -1262,7 +1262,7 @@ Shader "Hidden/ltspass_opaque"
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
             #define LIL_SRP_VERSION_MAJOR 17
-            #define LIL_SRP_VERSION_MINOR 1
+            #define LIL_SRP_VERSION_MINOR 2
             #define LIL_SRP_VERSION_PATCH 0
 
             #pragma target 3.5

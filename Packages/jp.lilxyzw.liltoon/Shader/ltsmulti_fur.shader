@@ -692,7 +692,7 @@ Shader "Hidden/lilToonMultiFur"
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent" "ShaderModel" = "4.5"}
         HLSLINCLUDE
             #define LIL_SRP_VERSION_MAJOR 17
-            #define LIL_SRP_VERSION_MINOR 1
+            #define LIL_SRP_VERSION_MINOR 2
             #define LIL_SRP_VERSION_PATCH 0
 
             #pragma target 4.5
@@ -1201,7 +1201,7 @@ Shader "Hidden/lilToonMultiFur"
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
         HLSLINCLUDE
             #define LIL_SRP_VERSION_MAJOR 17
-            #define LIL_SRP_VERSION_MINOR 1
+            #define LIL_SRP_VERSION_MINOR 2
             #define LIL_SRP_VERSION_PATCH 0
 
             #pragma target 4.5
